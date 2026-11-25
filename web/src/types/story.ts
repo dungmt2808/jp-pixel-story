@@ -37,7 +37,20 @@ export type SceneType =
   | "konbini_walkin"
   | "drag_counter"
   | "closeup_choice"
-  | "outro_celebrate";
+  | "outro_celebrate"
+  | "hybrid_alley_intro"
+  | "hybrid_alley_zoom"
+  | "hybrid_counter_order"
+  | "hybrid_noodle_firmness"
+  | "hybrid_drag_toppings"
+  | "hybrid_outro_ramen";
+
+export interface StoryArtAssets {
+  backgrounds: Record<string, string>;
+  portraits: Record<string, string>;
+  items: Record<string, string>;
+  cardPortrait?: string;
+}
 
 export interface StoryScene {
   id: string;
@@ -107,6 +120,8 @@ export interface QuizQuestion {
 
 export interface StoryData {
   id: string;
+  engine?: "procedural" | "hybrid";
+  assets?: StoryArtAssets;
   series: string;
   titleJa: string;
   titleVi: string;

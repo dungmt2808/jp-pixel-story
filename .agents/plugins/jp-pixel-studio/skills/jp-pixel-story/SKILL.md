@@ -39,11 +39,13 @@ And choose one of two formats:
   Create `web/public/stories/<story-id>/index.html` using `{漢字|かんじ}` markup, `sayW(jp, vi)`, `PASSAGE`, `DICT`, `QUIZ`, a **`ふりがな ON/OFF`** toggle (no Romaji), a **`📚 Thư viện`** button (`../../`), and a **`🎧 Nghe chép`** button (`../../?story=<story-id>&mode=dictation`).
   - Run MCP tool `voicevox_generate_standalone_pack` to synthesize all VOICEVOX `.mp3` clips, `audio/manifest.json`, and **`dictation.json`** for Daily Dictation in one step!
 
-## Step 2: Process Custom Pixel-Art Sprites (Optional)
+## Step 2: Generate & Lock Unified Pixel Art Assets (Hybrid Upgrade)
 
-If generating character/prop images via Gemini:
-1. Check palettes with `pixellab_list_palettes`.
-2. Clean single sprites with `pixellab_clean_sprite` or walk-cycle grids with `pixellab_slice_spritesheet`.
+Follow the Art Style Bible in [art-style.md](./references/art-style.md) strictly so every lesson matches the exact same retro Japanese 16-bit style:
+1. Always pass style anchor images from `web/public/assets/style-ref/` (`ref_background.png`, `ref_minh.png`) when generating new artwork.
+2. Lock backgrounds (`320×200`) with MCP tool `pixellab_clean_background(..., palette_name="ramen_midnight")`.
+3. Lock character portraits (`96×96`) and interactive items (`36×36`–`80×80`) with `pixellab_clean_sprite` or `pixellab_slice_spritesheet(..., palette_name="ramen_midnight", bg_mode="chroma_green")`.
+4. Declare `"engine": "hybrid"` and `"assets": { ... }` in `story.json` so `HybridStage.tsx` renders crisp PNG art + live Canvas FX (rain, steam, lantern pulse, Bayer dithering).
 
 ## Step 3: Register in Library Catalog
 

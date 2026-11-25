@@ -448,7 +448,7 @@ export function DictationView({
                 setInput(e.target.value);
                 if (grade) setGrade(null);
               }}
-              placeholder="Nghe VOICEVOX rồi gõ lại câu tiếng Nhật (gõ Hiragana thuần hay Kanji đều chấm đúng)..."
+              placeholder="Gõ câu tiếng Nhật bạn nghe được (Hiragana hoặc Kanji)..."
               autoComplete="off"
               spellCheck={false}
             />

@@ -1,12 +1,18 @@
 import type { CharacterCard } from "../types/story";
+import { resolveAssetUrl } from "../utils/assetUrl";
 import { PortraitCanvas } from "./PortraitCanvas";
 
 interface CharacterCardModalProps {
   card: CharacterCard;
+  portraitUrl?: string;
   onClose: () => void;
 }
 
-export function CharacterCardModal({ card, onClose }: CharacterCardModalProps) {
+export function CharacterCardModal({
+  card,
+  portraitUrl,
+  onClose,
+}: CharacterCardModalProps) {
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="char-card" onClick={(e) => e.stopPropagation()}>
@@ -21,7 +27,21 @@ export function CharacterCardModal({ card, onClose }: CharacterCardModalProps) {
 
         <div className="char-card-header">
           <div className="char-portrait-box">
-            <PortraitCanvas />
+            {portraitUrl ? (
+              <img
+                src={resolveAssetUrl(portraitUrl)}
+                alt={card.nameJa}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  imageRendering: "pixelated",
+                  display: "block",
+                }}
+              />
+            ) : (
+              <PortraitCanvas />
+            )}
           </div>
           <div>
             <h2 className="char-card-name">{card.nameJa}</h2>

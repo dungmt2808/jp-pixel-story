@@ -5,7 +5,9 @@ export interface StoryCatalogEntry {
   category: StoryCategory;
   kind?: "engine" | "standalone";
   href?: string;
-  thumbStyle?: "konbini" | "hachiko";
+  thumbStyle?: "konbini" | "hachiko" | "image";
+  thumbImage?: string;
+  artBadge?: string;
   titleJa: string;
   titleVi: string;
   level: string;

@@ -101,7 +101,21 @@ export function ReadingView({
         <div className="reading-passage-col">
           <div className="reading-intro-head">
             <div className="reading-avatar">
-              <PortraitCanvas />
+              {story.assets?.cardPortrait ? (
+                <img
+                  src={resolveAssetUrl(story.assets.cardPortrait)}
+                  alt={story.titleJa}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    imageRendering: "pixelated",
+                    display: "block",
+                  }}
+                />
+              ) : (
+                <PortraitCanvas />
+              )}
             </div>
             <div>
               <h1 className="reading-h1">{story.reading.sectionTitle}</h1>

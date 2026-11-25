@@ -1174,6 +1174,12 @@ rt {
   box-shadow: 0 0 0 3px rgba(70, 184, 157, 0.2);
 }
 
+.dict-input::placeholder {
+  font-family: var(--font-vi);
+  font-size: 15px;
+  color: #7d8fb8;
+}
+
 .dict-tiles-wrap {
   margin-bottom: 16px;
 }
@@ -1339,4 +1345,17 @@ rt {
   background: #1b233d;
   color: var(--accent-amber);
   padding: 1px 5px;
+}
+
+.story-card-art-badge {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: rgba(244, 164, 66, 0.94);
+  color: #101322;
+  padding: 2px 7px;
+  border: 1px solid #241712;
 }

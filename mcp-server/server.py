@@ -18,6 +18,7 @@ except ImportError:
 from content_validator import validate_story_folder
 from pixel_processor import (
     list_palettes_info,
+    process_pixel_background,
     process_pixel_sprite,
     process_sprite_sheet,
 )
@@ -143,6 +144,27 @@ def story_validate_content(
 def pixellab_list_palettes() -> str:
     """List all built-in retro Japanese pixel-art color palettes."""
     return json.dumps(list_palettes_info(), ensure_ascii=False, indent=2)
+
+
+@mcp.tool()
+def pixellab_clean_background(
+    input_path: str,
+    output_path: str,
+    target_width: int = 320,
+    target_height: int = 200,
+    palette_name: str = "ramen_midnight",
+    dither_strength: float = 18.0,
+) -> str:
+    """Convert an AI-generated scene illustration into a crisp 320x200 pixel-art background locked to a Master Palette with subtle retro Bayer ordered dithering."""
+    result: dict[str, Any] = process_pixel_background(
+        input_path=input_path,
+        output_path=output_path,
+        target_width=target_width,
+        target_height=target_height,
+        palette_name=palette_name,
+        dither_strength=dither_strength,
+    )
+    return json.dumps(result, ensure_ascii=False, indent=2)
 
 
 @mcp.tool()

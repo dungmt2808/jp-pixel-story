@@ -67,13 +67,13 @@ function drawHachikoThumb(ctx: CanvasRenderingContext2D, title: string): void {
   // Paws
   px(hx + 4, hy + 21, 6, 4, "#f6eedd");
   px(hx + 18, hy + 21, 6, 4, "#f6eedd");
-  // Title text
-  ctx.font = 'bold 20px "DotGothic16", monospace';
+  // Title text cleanly below top badges
+  ctx.font = 'bold 18px "DotGothic16", monospace';
   ctx.textAlign = "center";
   ctx.fillStyle = "#151b30";
-  ctx.fillText(title, VIRTUAL_W / 2 + 2, 46);
+  ctx.fillText(title, VIRTUAL_W / 2 + 2, 56);
   ctx.fillStyle = "#f3e6c6";
-  ctx.fillText(title, VIRTUAL_W / 2, 44);
+  ctx.fillText(title, VIRTUAL_W / 2, 54);
 }
 
 function MiniPreviewCanvas({
@@ -193,10 +193,21 @@ export function StoryLibrary({
                 className="story-card-thumb"
                 onClick={() => openItem(item, false)}
               >
-                <MiniPreviewCanvas title={item.titleJa} style={item.thumbStyle} />
+                {item.thumbImage ? (
+                  <img
+                    src={resolveAssetUrl(item.thumbImage)}
+                    alt={item.titleJa}
+                    className="library-thumb-canvas"
+                  />
+                ) : (
+                  <MiniPreviewCanvas title={item.titleJa} style={item.thumbStyle === "hachiko" ? "hachiko" : "konbini"} />
+                )}
                 <span className={`story-card-cat ${cat.badgeClass}`}>
                   {cat.icon} {cat.label}
                 </span>
+                {item.artBadge && (
+                  <span className="story-card-art-badge">{item.artBadge}</span>
+                )}
                 <span className="story-card-level">{item.level}</span>
               </div>
 

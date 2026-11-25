@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { retroAudio } from "./audio/chiptune";
 import { DictationView } from "./components/DictationView";
+import { HybridStage } from "./components/HybridStage";
 import { PixelStage } from "./components/PixelStage";
 import { ReadingView } from "./components/ReadingView";
 import { StoryLibrary } from "./components/StoryLibrary";
@@ -381,17 +382,32 @@ export function App() {
             </div>
           </div>
 
-          <PixelStage
-            key={`${story.id}-${autoplay ? "auto" : "play"}`}
-            story={story}
-            showFurigana={showFurigana}
-            muted={muted}
-            autoplay={autoplay}
-            onOpenReading={() => {
-              updateUrl(story.id, "reading", false);
-              setMode("reading");
-            }}
-          />
+          {story.engine === "hybrid" ? (
+            <HybridStage
+              key={`${story.id}-${autoplay ? "auto" : "play"}`}
+              story={story}
+              showFurigana={showFurigana}
+              muted={muted}
+              autoplay={autoplay}
+              onOpenReading={() => {
+                updateUrl(story.id, "reading", false);
+                setMode("reading");
+              }}
+              onOpenDictation={() => handleOpenDictation(story.id)}
+            />
+          ) : (
+            <PixelStage
+              key={`${story.id}-${autoplay ? "auto" : "play"}`}
+              story={story}
+              showFurigana={showFurigana}
+              muted={muted}
+              autoplay={autoplay}
+              onOpenReading={() => {
+                updateUrl(story.id, "reading", false);
+                setMode("reading");
+              }}
+            />
+          )}
         </div>
       ) : (
         <ReadingView

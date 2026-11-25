@@ -313,3 +313,84 @@ def list_palettes_info() -> dict[str, Any]:
         }
         for name, info in PALETTES.items()
     }
+
+
+_BAYER_4X4 = np.array(
+    [
+        [0, 8, 2, 10],
+        [12, 4, 14, 6],
+        [3, 11, 1, 9],
+        [15, 7, 13, 5],
+    ],
+    dtype=np.float32,
+) / 16.0 - 0.5
+
+
+def process_pixel_background(
+    input_path: str | Path,
+    output_path: str | Path,
+    *,
+    target_width: int = 320,
+    target_height: int = 200,
+    palette_name: str = "ramen_midnight",
+    dither_strength: float = 18.0,
+) -> dict[str, Any]:
+    """Convert an AI-generated environment illustration into a true crisp 320x200 pixel-art background
+    locked strictly to a Master Palette with subtle retro Bayer ordered dithering for warm lighting.
+    """
+    inp = Path(input_path).expanduser().resolve()
+    out = Path(output_path).expanduser().resolve()
+    out.parent.mkdir(parents=True, exist_ok=True)
+
+    img = Image.open(inp).convert("RGB")
+    # Center-crop to exact target aspect ratio so nothing gets stretched
+    src_w, src_h = img.size
+    target_ratio = target_width / float(target_height)
+    src_ratio = src_w / float(src_h)
+    if src_ratio > target_ratio:
+        new_w = int(round(src_h * target_ratio))
+        left = (src_w - new_w) // 2
+        img = img.crop((left, 0, left + new_w, src_h))
+    elif src_ratio < target_ratio:
+        new_h = int(round(src_w / target_ratio))
+        top = (src_h - new_h) // 2
+        img = img.crop((0, top, src_w, top + new_h))
+
+    # Downscale crisply with BOX area sampling (clean pixel clusters without ringing)
+    small = img.resize((target_width, target_height), resample=Image.Resampling.BOX)
+
+    if palette_name == "none":
+        small.save(out, format="PNG")
+        return {
+            "ok": True,
+            "output_path": str(out),
+            "size": [target_width, target_height],
+            "palette": "none",
+        }
+
+    arr = np.array(small, dtype=np.float32)
+    h, w, _ = arr.shape
+    if dither_strength > 0:
+        bayer_tile = np.tile(_BAYER_4X4, (h // 4 + 1, w // 4 + 1))[:h, :w]
+        arr = np.clip(arr + bayer_tile[:, :, None] * dither_strength, 0, 255)
+
+    palette_rgb = np.array(get_palette_rgb(palette_name), dtype=np.float32)
+    # Perceptually weighted RGB distance (human eye is more sensitive to green & red warmth)
+    weights = np.array([2.0, 4.0, 3.0], dtype=np.float32)
+    flat = arr.reshape(-1, 3)
+    diffs = flat[:, None, :] - palette_rgb[None, :, :]
+    dists = np.sum((diffs * diffs) * weights[None, None, :], axis=-1)
+    nearest = np.argmin(dists, axis=-1)
+    quantized = palette_rgb[nearest].reshape(h, w, 3).astype(np.uint8)
+
+    Image.fromarray(quantized, mode="RGB").save(out, format="PNG")
+    used = np.unique(quantized.reshape(-1, 3), axis=0)
+    return {
+        "ok": True,
+        "input_path": str(inp),
+        "output_path": str(out),
+        "size": [target_width, target_height],
+        "palette": palette_name,
+        "dither_strength": dither_strength,
+        "unique_colors": int(len(used)),
+    }

@@ -113,8 +113,24 @@ def test_validate_real_repo_stories() -> None:
     from content_validator import validate_story_folder
 
     stories_root = Path(__file__).resolve().parents[2] / "web" / "public" / "stories"
-    for story_id in ("konbini-onigiri", "hachiko"):
+    for story_id in ("konbini-onigiri", "hachiko", "ramen-midnight"):
         res = validate_story_folder(stories_root / story_id)
         assert res["ok"] is True, f"Validation failed for {story_id}: {res['issues']}"
         assert res["registered_in_catalog"] is True
         assert res["stats"]["audio_checked"] >= 14
+
+
+def test_clean_background_palette_lock(tmp_path: Path) -> None:
+    from pixel_processor import process_pixel_background
+
+    raw_bg = tmp_path / "raw_bg.png"
+    out_bg = tmp_path / "clean_bg.png"
+    Image.new("RGB", (640, 400), (200, 120, 60)).save(raw_bg)
+    res = process_pixel_background(raw_bg, out_bg, palette_name="ramen_midnight")
+    assert res["ok"] is True
+    out = Image.open(out_bg)
+    assert out.size == (320, 200)
+    allowed = set(get_palette_rgb("ramen_midnight"))
+    arr = np.array(out)
+    for px in np.unique(arr.reshape(-1, 3), axis=0):
+        assert tuple(int(c) for c in px) in allowed

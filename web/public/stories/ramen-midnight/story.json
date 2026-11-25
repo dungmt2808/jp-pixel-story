@@ -1,0 +1,1255 @@
+{
+  "id": "ramen-midnight",
+  "engine": "hybrid",
+  "series": "jp-pixel-story · HYBRID PIXEL ART",
+  "titleJa": "深夜のラーメン屋",
+  "titleVi": "Gọi mì Ramen lúc đêm muộn",
+  "level": "JLPT N4",
+  "author": "jp-pixel-studio",
+  "palette": "ramen_midnight",
+  "assets": {
+    "backgrounds": {
+      "alley": "/stories/ramen-midnight/assets/bg_alley.png",
+      "counter": "/stories/ramen-midnight/assets/bg_counter.png",
+      "table": "/stories/ramen-midnight/assets/bg_bowl_table.png"
+    },
+    "portraits": {
+      "minh_neutral": "/stories/ramen-midnight/assets/portrait_minh_neutral.png",
+      "minh_thinking": "/stories/ramen-midnight/assets/portrait_minh_thinking.png",
+      "minh_happy": "/stories/ramen-midnight/assets/portrait_minh_happy.png",
+      "chef_warm": "/stories/ramen-midnight/assets/portrait_chef_warm.png",
+      "chef_happy": "/stories/ramen-midnight/assets/portrait_chef_happy.png"
+    },
+    "items": {
+      "ramen_base": "/stories/ramen-midnight/assets/item_ramen_base.png",
+      "chashu": "/stories/ramen-midnight/assets/item_chashu.png",
+      "egg": "/stories/ramen-midnight/assets/item_egg.png",
+      "nori": "/stories/ramen-midnight/assets/item_nori.png"
+    },
+    "cardPortrait": "/stories/ramen-midnight/assets/portrait_chef_warm.png"
+  },
+  "voices": {
+    "narrator": {
+      "label": "ナレーター (四国めたん)",
+      "speakerId": 2,
+      "speedScale": 0.93
+    },
+    "chef": {
+      "label": "大将 (青山龍星)",
+      "speakerId": 13,
+      "speedScale": 0.92
+    },
+    "minh": {
+      "label": "ミン (玄野武宏)",
+      "speakerId": 11,
+      "speedScale": 0.95
+    }
+  },
+  "characterCard": {
+    "nameJa": "ラーメン屋の大将 (TAISHŌ)",
+    "subtitle": "LATE-NIGHT TOKYO RAMEN MASTER · 深夜のラーメン屋",
+    "facts": [
+      {
+        "label": "SHOP",
+        "value": "東京の路地裏にある小さなラーメン屋 (Quán mì nhỏ trong con hẻm Tokyo)"
+      },
+      {
+        "label": "NOREN",
+        "value": "入り口の赤い「のれん」が出ているときは営業中のサイン！(Rèm vải đỏ trước cửa báo hiệu quán đang mở)"
+      },
+      {
+        "label": "SPECIALTY",
+        "value": "じっくり煮込んだ醤油ラーメン (Mì Ramen nước tương ninh kỹ suốt nhiều giờ)"
+      },
+      {
+        "label": "KEY PHRASE",
+        "value": "「麺のかたさはどうしますか？」— Câu hỏi kinh điển về độ cứng sợi mì (かため / ふつう / やわらかめ)!"
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "alley_intro",
+      "type": "hybrid_alley_intro",
+      "bannerTitle": "TOKYO 00:15",
+      "actionLabel": "のれんをくぐる · VÀO QUÁN",
+      "lines": [
+        {
+          "id": "r01_l01",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "雨の降る夜中、小さなラーメン屋の明かりが見えました。",
+          "ttsText": "あめのふるよなか、ちいさなラーメンやのあかりがみえました。",
+          "jaRuby": [
+            {
+              "t": "雨",
+              "r": "あめ"
+            },
+            {
+              "t": "の"
+            },
+            {
+              "t": "降",
+              "r": "ふ"
+            },
+            {
+              "t": "る"
+            },
+            {
+              "t": "夜中",
+              "r": "よなか"
+            },
+            {
+              "t": "、"
+            },
+            {
+              "t": "小",
+              "r": "ちい"
+            },
+            {
+              "t": "さなラーメン"
+            },
+            {
+              "t": "屋",
+              "r": "や"
+            },
+            {
+              "t": "の"
+            },
+            {
+              "t": "明",
+              "r": "あ"
+            },
+            {
+              "t": "かりが"
+            },
+            {
+              "t": "見",
+              "r": "み"
+            },
+            {
+              "t": "えました。"
+            }
+          ],
+          "vi": "Giữa đêm mưa rơi, ánh đèn ấm áp của một quán mì ramen nhỏ hiện ra.",
+          "audioUrl": "/stories/ramen-midnight/audio/r01_l01.mp3",
+          "durationSec": 4.363
+        }
+      ]
+    },
+    {
+      "id": "alley_zoom",
+      "type": "hybrid_alley_zoom",
+      "locationBadge": "深夜のラーメン屋 · 路地裏の小さな店",
+      "lines": [
+        {
+          "id": "r02_l01",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "お腹がぺこぺこです。温かいラーメンを食べましょう！",
+          "ttsText": "おなかがぺこぺこです。あたたかいラーメンをたべましょう！",
+          "jaRuby": [
+            {
+              "t": "お"
+            },
+            {
+              "t": "腹",
+              "r": "なか"
+            },
+            {
+              "t": "がぺこぺこです。"
+            },
+            {
+              "t": "温",
+              "r": "あたた"
+            },
+            {
+              "t": "かいラーメンを"
+            },
+            {
+              "t": "食",
+              "r": "た"
+            },
+            {
+              "t": "べましょう！"
+            }
+          ],
+          "vi": "Bụng đói meo rồi. Vào ăn một bát mì ramen nóng hổi thôi!",
+          "audioUrl": "/stories/ramen-midnight/audio/r02_l01.mp3",
+          "durationSec": 3.787
+        }
+      ]
+    },
+    {
+      "id": "counter_order",
+      "type": "hybrid_counter_order",
+      "whoButtonLabel": "? 大将ってだれ",
+      "lines": [
+        {
+          "id": "r03_l01",
+          "voice": "chef",
+          "speakerLabel": "大将",
+          "jaPlain": "いらっしゃい！雨の中、大変だったね。何にしますか？",
+          "ttsText": "いらっしゃい！あめのなか、たいへんだったね。なににしますか？",
+          "jaRuby": [
+            {
+              "t": "いらっしゃい！"
+            },
+            {
+              "t": "雨",
+              "r": "あめ"
+            },
+            {
+              "t": "の"
+            },
+            {
+              "t": "中",
+              "r": "なか"
+            },
+            {
+              "t": "、"
+            },
+            {
+              "t": "大変",
+              "r": "たいへん"
+            },
+            {
+              "t": "だったね。"
+            },
+            {
+              "t": "何",
+              "r": "なに"
+            },
+            {
+              "t": "にしますか？"
+            }
+          ],
+          "vi": "Chào cậu! Đi dưới mưa vất vả rồi nhỉ. Cậu gọi món gì nào?",
+          "audioUrl": "/stories/ramen-midnight/audio/r03_l01.mp3",
+          "durationSec": 5.12
+        }
+      ],
+      "minigame": {
+        "prompt": "Chọn bát mì Ramen bạn muốn gọi:",
+        "choices": [
+          {
+            "id": "shoyu",
+            "labelJa": "おすすめの醤油ラーメンをお願いします！",
+            "labelRuby": [
+              {
+                "t": "おすすめの"
+              },
+              {
+                "t": "醤油",
+                "r": "しょうゆ"
+              },
+              {
+                "t": "ラーメンをお"
+              },
+              {
+                "t": "願",
+                "r": "ねが"
+              },
+              {
+                "t": "いします！"
+              }
+            ],
+            "labelVi": "Cho cháu bát mì Shōyu đặc trưng của quán ạ!",
+            "effect": "shoyu",
+            "responseLine": {
+              "id": "r03_c01",
+              "voice": "minh",
+              "speakerLabel": "ミン",
+              "jaPlain": "おすすめの醤油ラーメンをお願いします！",
+              "ttsText": "おすすめのしょうゆラーメンをおねがいします！",
+              "jaRuby": [
+                {
+                  "t": "おすすめの"
+                },
+                {
+                  "t": "醤油",
+                  "r": "しょうゆ"
+                },
+                {
+                  "t": "ラーメンをお"
+                },
+                {
+                  "t": "願",
+                  "r": "ねが"
+                },
+                {
+                  "t": "いします！"
+                }
+              ],
+              "vi": "Cho cháu bát mì nước tương Shōyu đặc trưng của quán ạ!",
+              "audioUrl": "/stories/ramen-midnight/audio/r03_c01.mp3",
+              "durationSec": 2.56
+            }
+          },
+          {
+            "id": "miso",
+            "labelJa": "温かい味噌ラーメンをください！",
+            "labelRuby": [
+              {
+                "t": "温",
+                "r": "あたた"
+              },
+              {
+                "t": "かい"
+              },
+              {
+                "t": "味噌",
+                "r": "みそ"
+              },
+              {
+                "t": "ラーメンをください！"
+              }
+            ],
+            "labelVi": "Cho cháu một bát mì Miso nóng ạ!",
+            "effect": "miso",
+            "responseLine": {
+              "id": "r03_c02",
+              "voice": "minh",
+              "speakerLabel": "ミン",
+              "jaPlain": "温かい味噌ラーメンをください！",
+              "ttsText": "あたたかいみそラーメンをください！",
+              "jaRuby": [
+                {
+                  "t": "温",
+                  "r": "あたた"
+                },
+                {
+                  "t": "かい"
+                },
+                {
+                  "t": "味噌",
+                  "r": "みそ"
+                },
+                {
+                  "t": "ラーメンをください！"
+                }
+              ],
+              "vi": "Cho cháu một bát mì tương đậu Miso nóng ạ!",
+              "audioUrl": "/stories/ramen-midnight/audio/r03_c02.mp3",
+              "durationSec": 2.091
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "noodle_firmness",
+      "type": "hybrid_noodle_firmness",
+      "lines": [
+        {
+          "id": "r04_l01",
+          "voice": "chef",
+          "speakerLabel": "大将",
+          "jaPlain": "あいよ！麺のかたさはどうしますか？",
+          "ttsText": "あいよ！めんのかたさはどうしますか？",
+          "jaRuby": [
+            {
+              "t": "あいよ！"
+            },
+            {
+              "t": "麺",
+              "r": "めん"
+            },
+            {
+              "t": "のかたさはどうしますか？"
+            }
+          ],
+          "vi": "Có ngay! Độ cứng của sợi mì cậu muốn thế nào?",
+          "audioUrl": "/stories/ramen-midnight/audio/r04_l01.mp3",
+          "durationSec": 3.157
+        },
+        {
+          "id": "r04_l02",
+          "voice": "minh",
+          "speakerLabel": "ミン",
+          "jaPlain": "あ、麺のかたさだ！どれにしようかな？",
+          "ttsText": "あ、めんのかたさだ！どれにしようかな？",
+          "jaRuby": [
+            {
+              "t": "あ、"
+            },
+            {
+              "t": "麺",
+              "r": "めん"
+            },
+            {
+              "t": "のかたさだ！どれにしようかな？"
+            }
+          ],
+          "vi": "À, độ cứng của sợi mì kìa! Chọn mức nào đây nhỉ?",
+          "audioUrl": "/stories/ramen-midnight/audio/r04_l02.mp3",
+          "durationSec": 3.243
+        }
+      ],
+      "minigame": {
+        "prompt": "Chọn độ cứng sợi mì yêu thích của bạn:",
+        "choices": [
+          {
+            "id": "katame",
+            "labelJa": "かためでお願いします！",
+            "labelRuby": [
+              {
+                "t": "かためでお"
+              },
+              {
+                "t": "願",
+                "r": "ねが"
+              },
+              {
+                "t": "いします！"
+              }
+            ],
+            "labelVi": "Cho cháu sợi hơi cứng (dai) ạ!",
+            "effect": "katame",
+            "responseLine": {
+              "id": "r04_c01",
+              "voice": "minh",
+              "speakerLabel": "ミン",
+              "jaPlain": "かためでお願いします！",
+              "ttsText": "かためでおねがいします！",
+              "jaRuby": [
+                {
+                  "t": "かためでお"
+                },
+                {
+                  "t": "願",
+                  "r": "ねが"
+                },
+                {
+                  "t": "いします！"
+                }
+              ],
+              "vi": "Cho cháu sợi hơi cứng (dai) ạ!",
+              "audioUrl": "/stories/ramen-midnight/audio/r04_c01.mp3",
+              "durationSec": 1.6
+            }
+          },
+          {
+            "id": "futsuu",
+            "labelJa": "ふつうでお願いします！",
+            "labelRuby": [
+              {
+                "t": "ふつうでお"
+              },
+              {
+                "t": "願",
+                "r": "ねが"
+              },
+              {
+                "t": "いします！"
+              }
+            ],
+            "labelVi": "Cho cháu mức vừa phải ạ!",
+            "effect": "futsuu",
+            "responseLine": {
+              "id": "r04_c02",
+              "voice": "minh",
+              "speakerLabel": "ミン",
+              "jaPlain": "ふつうでお願いします！",
+              "ttsText": "ふつうでおねがいします！",
+              "jaRuby": [
+                {
+                  "t": "ふつうでお"
+                },
+                {
+                  "t": "願",
+                  "r": "ねが"
+                },
+                {
+                  "t": "いします！"
+                }
+              ],
+              "vi": "Cho cháu mức vừa phải ạ!",
+              "audioUrl": "/stories/ramen-midnight/audio/r04_c02.mp3",
+              "durationSec": 1.579
+            }
+          },
+          {
+            "id": "yawarakame",
+            "labelJa": "やわらかめでお願いします！",
+            "labelRuby": [
+              {
+                "t": "やわらかめでお"
+              },
+              {
+                "t": "願",
+                "r": "ねが"
+              },
+              {
+                "t": "いします！"
+              }
+            ],
+            "labelVi": "Cho cháu sợi mềm một chút ạ!",
+            "effect": "yawarakame",
+            "responseLine": {
+              "id": "r04_c03",
+              "voice": "minh",
+              "speakerLabel": "ミン",
+              "jaPlain": "やわらかめでお願いします！",
+              "ttsText": "やわらかめでおねがいします！",
+              "jaRuby": [
+                {
+                  "t": "やわらかめでお"
+                },
+                {
+                  "t": "願",
+                  "r": "ねが"
+                },
+                {
+                  "t": "いします！"
+                }
+              ],
+              "vi": "Cho cháu sợi mềm một chút ạ!",
+              "audioUrl": "/stories/ramen-midnight/audio/r04_c03.mp3",
+              "durationSec": 1.803
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "drag_toppings",
+      "type": "hybrid_drag_toppings",
+      "instruction": "トッピングを3つ ラーメンにのせよう！ · Kéo 3 topping vào bát mì",
+      "lines": [
+        {
+          "id": "r05_l01",
+          "voice": "chef",
+          "speakerLabel": "大将",
+          "jaPlain": "お待たせしました！特製ラーメンです！",
+          "ttsText": "おまたせしました！とくせいラーメンです！",
+          "jaRuby": [
+            {
+              "t": "お"
+            },
+            {
+              "t": "待",
+              "r": "ま"
+            },
+            {
+              "t": "たせしました！"
+            },
+            {
+              "t": "特製",
+              "r": "とくせい"
+            },
+            {
+              "t": "ラーメンです！"
+            }
+          ],
+          "vi": "Để cậu chờ lâu rồi! Đây là bát mì ramen đặc biệt!",
+          "audioUrl": "/stories/ramen-midnight/audio/r05_l01.mp3",
+          "durationSec": 3.04
+        }
+      ]
+    },
+    {
+      "id": "itadakimasu_outro",
+      "type": "hybrid_outro_ramen",
+      "lines": [
+        {
+          "id": "r06_l01",
+          "voice": "minh",
+          "speakerLabel": "ミン",
+          "jaPlain": "わあ、おいしそう！いただきます！",
+          "ttsText": "わあ、おいしそう！いただきます！",
+          "jaRuby": [
+            {
+              "t": "わあ、おいしそう！いただきます！"
+            }
+          ],
+          "vi": "Oa, trông ngon quá đi! Cháu xin phép ăn ạ!",
+          "audioUrl": "/stories/ramen-midnight/audio/r06_l01.mp3",
+          "durationSec": 3.029
+        },
+        {
+          "id": "r06_l02",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "温かいスープを飲むと、体も心もぽかぽかになりました。",
+          "ttsText": "あたたかいスープをのむと、からだもこころもぽかぽかになりました。",
+          "jaRuby": [
+            {
+              "t": "温",
+              "r": "あたた"
+            },
+            {
+              "t": "かいスープを"
+            },
+            {
+              "t": "飲",
+              "r": "の"
+            },
+            {
+              "t": "むと、"
+            },
+            {
+              "t": "体",
+              "r": "からだ"
+            },
+            {
+              "t": "も"
+            },
+            {
+              "t": "心",
+              "r": "こころ"
+            },
+            {
+              "t": "もぽかぽかになりました。"
+            }
+          ],
+          "vi": "Húp một ngụm nước dùng ấm nóng, cả cơ thể lẫn tâm hồn đều ấm áp hẳn lên.",
+          "audioUrl": "/stories/ramen-midnight/audio/r06_l02.mp3",
+          "durationSec": 4.619
+        }
+      ]
+    }
+  ],
+  "reading": {
+    "sectionTitle": "深夜のラーメン屋 · Luyện đọc, Từ vựng & Ngữ pháp N4",
+    "subtitle": "Bấm vào từng câu để nghe lại giọng VOICEVOX, xem từ vựng/ngữ pháp bên phải và làm 4 câu hỏi đọc hiểu ở cuối trang.",
+    "sentences": [
+      {
+        "id": "rr_01",
+        "voice": "narrator",
+        "jaPlain": "日本のラーメン屋では、入り口に「のれん」がかかっています。のれんが出ているときは、お店があいている印です。",
+        "ttsText": "にほんのラーメンやでは、いりぐちにのれんがかかっています。のれんがでているときは、おみせがあいているしるしです。",
+        "jaRuby": [
+          {
+            "t": "日本",
+            "r": "にほん"
+          },
+          {
+            "t": "のラーメン"
+          },
+          {
+            "t": "屋",
+            "r": "や"
+          },
+          {
+            "t": "では、"
+          },
+          {
+            "t": "入",
+            "r": "い"
+          },
+          {
+            "t": "り"
+          },
+          {
+            "t": "口",
+            "r": "ぐち"
+          },
+          {
+            "t": "に「のれん」がかかっています。のれんが"
+          },
+          {
+            "t": "出",
+            "r": "で"
+          },
+          {
+            "t": "ているときは、お"
+          },
+          {
+            "t": "店",
+            "r": "みせ"
+          },
+          {
+            "t": "があいている"
+          },
+          {
+            "t": "印",
+            "r": "しるし"
+          },
+          {
+            "t": "です。"
+          }
+        ],
+        "vi": "Ở các quán mì ramen Nhật Bản, trước lối vào có treo rèm vải \"noren\". Khi rèm noren được treo ra ngoài, đó là dấu hiệu quán đang mở cửa.",
+        "highlightVocabIds": [
+          "noren",
+          "iriguchi"
+        ],
+        "audioUrl": "/stories/ramen-midnight/audio/rr_01.mp3",
+        "durationSec": 7.744
+      },
+      {
+        "id": "rr_02",
+        "voice": "narrator",
+        "jaPlain": "注文するとき、店員さんから「麺のかたさはどうしますか？」と聞かれることがあります。",
+        "ttsText": "ちゅうもんするとき、てんいんさんから、めんのかたさはどうしますか、ときかれることがあります。",
+        "jaRuby": [
+          {
+            "t": "注文",
+            "r": "ちゅうもん"
+          },
+          {
+            "t": "するとき、"
+          },
+          {
+            "t": "店員",
+            "r": "てんいん"
+          },
+          {
+            "t": "さんから「"
+          },
+          {
+            "t": "麺",
+            "r": "めん"
+          },
+          {
+            "t": "のかたさはどうしますか？」と"
+          },
+          {
+            "t": "聞",
+            "r": "き"
+          },
+          {
+            "t": "かれることがあります。"
+          }
+        ],
+        "vi": "Khi gọi món, đôi khi bạn sẽ được nhân viên hỏi \"Độ cứng của sợi mì bạn muốn thế nào?\".",
+        "highlightVocabIds": [
+          "chuumon",
+          "katasa"
+        ],
+        "audioUrl": "/stories/ramen-midnight/audio/rr_02.mp3",
+        "durationSec": 6.741
+      },
+      {
+        "id": "rr_03",
+        "voice": "narrator",
+        "jaPlain": "自分の好みに合わせて、「かため」「ふつう」「やわらかめ」から選ぶことができます。",
+        "ttsText": "じぶんのこのみにあわせて、かため、ふつう、やわらかめ、からえらぶことができます。",
+        "jaRuby": [
+          {
+            "t": "自分",
+            "r": "じぶん"
+          },
+          {
+            "t": "の"
+          },
+          {
+            "t": "好",
+            "r": "この"
+          },
+          {
+            "t": "みに"
+          },
+          {
+            "t": "合",
+            "r": "あ"
+          },
+          {
+            "t": "わせて、「かため」「ふつう」「やわらかめ」から"
+          },
+          {
+            "t": "選",
+            "r": "えら"
+          },
+          {
+            "t": "ぶことができます。"
+          }
+        ],
+        "vi": "Tùy theo sở thích của mình, bạn có thể chọn giữa \"hơi cứng (katame)\", \"vừa (futsū)\" hoặc \"hơi mềm (yawarakame)\".",
+        "highlightVocabIds": [
+          "katasa",
+          "erabu"
+        ],
+        "audioUrl": "/stories/ramen-midnight/audio/rr_03.mp3",
+        "durationSec": 6.539
+      },
+      {
+        "id": "rr_04",
+        "voice": "narrator",
+        "jaPlain": "ラーメンが来たら「いただきます」と言って、温かいうちに食べましょう。チャーシューや味玉をのせると、さらにおいしくなります。",
+        "ttsText": "ラーメンがきたら、いただきますといって、あたたかいうちにたべましょう。チャーシューやあじたまをのせると、さらにおいしくなります。",
+        "jaRuby": [
+          {
+            "t": "ラーメンが"
+          },
+          {
+            "t": "来",
+            "r": "き"
+          },
+          {
+            "t": "たら「いただきます」と"
+          },
+          {
+            "t": "言",
+            "r": "い"
+          },
+          {
+            "t": "って、"
+          },
+          {
+            "t": "温",
+            "r": "あたた"
+          },
+          {
+            "t": "かいうちに"
+          },
+          {
+            "t": "食",
+            "r": "た"
+          },
+          {
+            "t": "べましょう。チャーシューや"
+          },
+          {
+            "t": "味玉",
+            "r": "あじたま"
+          },
+          {
+            "t": "をのせると、さらにおいしくなります。"
+          }
+        ],
+        "vi": "Khi mì được mang ra, hãy nói \"Itadakimasu\" và thưởng thức lúc còn nóng. Thêm thịt xá xíu chashu và trứng lòng đào ajitama sẽ càng ngon hơn nữa.",
+        "highlightVocabIds": [
+          "itadakimasu",
+          "ajitama"
+        ],
+        "audioUrl": "/stories/ramen-midnight/audio/rr_04.mp3",
+        "durationSec": 9.045
+      }
+    ],
+    "vocab": [
+      {
+        "id": "noren",
+        "word": "のれん",
+        "reading": "のれん (暖簾)",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Rèm vải treo trước cửa quán",
+        "note": "Cụm 「のれんをくぐる」 nghĩa là vén rèm bước vào quán ăn truyền thống Nhật."
+      },
+      {
+        "id": "chuumon",
+        "word": "注文",
+        "reading": "ちゅうもん",
+        "level": "N4",
+        "partOfSpeech": "Danh từ / Động từ する",
+        "meaningVi": "Gọi món, đặt hàng",
+        "note": "Ví dụ: ラーメンを注文する (Gọi món mì ramen)."
+      },
+      {
+        "id": "katasa",
+        "word": "かたさ (硬さ)",
+        "reading": "かたさ",
+        "level": "N4",
+        "partOfSpeech": "Danh từ (từ tính từ 硬い + さ)",
+        "meaningVi": "Độ cứng (của sợi mì)",
+        "note": "3 mức phổ biến nhất: かため (hơi cứng/dai), ふつう (vừa), やわらかめ (hơi mềm)."
+      },
+      {
+        "id": "erabu",
+        "word": "選ぶ",
+        "reading": "えらぶ",
+        "level": "N4",
+        "partOfSpeech": "Động từ nhóm I",
+        "meaningVi": "Lựa chọn",
+        "note": "Thường đi với trợ từ から: AやBから選ぶ (chọn từ A hoặc B)."
+      },
+      {
+        "id": "ajitama",
+        "word": "味玉",
+        "reading": "あじたま",
+        "level": "N4",
+        "partOfSpeech": "Danh từ (viết tắt 味付け玉子)",
+        "meaningVi": "Trứng luộc lòng đào ngâm tương",
+        "note": "Topping được yêu thích số 1 trong hầu hết các quán ramen ở Nhật!"
+      },
+      {
+        "id": "itadakimasu",
+        "word": "いただきます",
+        "reading": "いただきます",
+        "level": "N5",
+        "partOfSpeech": "Câu chào trước bữa ăn",
+        "meaningVi": "Xin phép dùng bữa",
+        "note": "Ăn xong nhớ nói 「ごちそうさまでした！」 để cảm ơn chú chủ quán (大将) nhé."
+      }
+    ],
+    "grammar": [
+      {
+        "id": "rg_ni_shimasu",
+        "pattern": "N + にしますか？ / N + でお願いします",
+        "level": "N4",
+        "meaningVi": "Bạn chọn món gì? / Cho tôi chọn mức N ạ",
+        "explanation": "「何にしますか？」 dùng để hỏi khách chọn món; khi chọn tùy chỉnh (như độ cứng mì, kích cỡ) dùng 「〜でお願いします」.",
+        "exampleJa": "麺のかたさはかためでお願いします。",
+        "exampleRuby": [
+          {
+            "t": "麺",
+            "r": "めん"
+          },
+          {
+            "t": "のかたさはかためでお"
+          },
+          {
+            "t": "願",
+            "r": "ねが"
+          },
+          {
+            "t": "いします。"
+          }
+        ],
+        "exampleVi": "Độ cứng sợi mì cho cháu mức hơi cứng ạ."
+      },
+      {
+        "id": "rg_ukemi_koto",
+        "pattern": "V (bị động) + ことがある",
+        "level": "N4",
+        "meaningVi": "Đôi khi bị/được hỏi...",
+        "explanation": "Kết hợp thể bị động 「聞かれる」(được/bị hỏi) với 「ことがある」 (đôi khi có lúc xảy ra).",
+        "exampleJa": "店員さんから「麺のかたさはどうしますか？」と聞かれることがあります。",
+        "exampleRuby": [
+          {
+            "t": "店員",
+            "r": "てんいん"
+          },
+          {
+            "t": "さんから「"
+          },
+          {
+            "t": "麺",
+            "r": "めん"
+          },
+          {
+            "t": "のかたさはどうしますか？」と"
+          },
+          {
+            "t": "聞",
+            "r": "き"
+          },
+          {
+            "t": "かれることがあります。"
+          }
+        ],
+        "exampleVi": "Đôi khi bạn sẽ được nhân viên hỏi về độ cứng sợi mì."
+      },
+      {
+        "id": "rg_uchi_ni",
+        "pattern": "Tính từ い + うちに",
+        "level": "N4",
+        "meaningVi": "Trong lúc còn... (trước khi thay đổi)",
+        "explanation": "Nhấn mạnh nên làm hành động trước khi trạng thái tốt hiện tại mất đi (trước khi mì nguội).",
+        "exampleJa": "温かいうちに食べましょう。",
+        "exampleRuby": [
+          {
+            "t": "温",
+            "r": "あたた"
+          },
+          {
+            "t": "かいうちに"
+          },
+          {
+            "t": "食",
+            "r": "た"
+          },
+          {
+            "t": "べましょう。"
+          }
+        ],
+        "exampleVi": "Hãy ăn trong lúc mì còn nóng nhé."
+      },
+      {
+        "id": "rg_sou",
+        "pattern": "Tính từ い (bỏ い) + そう",
+        "level": "N4",
+        "meaningVi": "Trông có vẻ... (cảm quan bằng mắt)",
+        "explanation": "「おいしい」 bỏ 「い」 cộng 「そう」 → 「おいしそう」 (trông ngon quá!).",
+        "exampleJa": "わあ、このラーメン、とてもおいしそう！",
+        "exampleRuby": [
+          {
+            "t": "わあ、このラーメン、とてもおいしそう！"
+          }
+        ],
+        "exampleVi": "Oa, bát mì ramen này trông ngon quá!"
+      }
+    ],
+    "quiz": [
+      {
+        "id": "rq1",
+        "questionJa": [
+          {
+            "t": "ラーメン"
+          },
+          {
+            "t": "屋",
+            "r": "や"
+          },
+          {
+            "t": "の"
+          },
+          {
+            "t": "入",
+            "r": "い"
+          },
+          {
+            "t": "り"
+          },
+          {
+            "t": "口",
+            "r": "ぐち"
+          },
+          {
+            "t": "に「のれん」が"
+          },
+          {
+            "t": "出",
+            "r": "で"
+          },
+          {
+            "t": "ているとき、"
+          },
+          {
+            "t": "何",
+            "r": "なに"
+          },
+          {
+            "t": "の"
+          },
+          {
+            "t": "印",
+            "r": "しるし"
+          },
+          {
+            "t": "ですか。"
+          }
+        ],
+        "questionVi": "Khi rèm \"noren\" được treo ra trước cửa quán ramen, đó là dấu hiệu gì?",
+        "options": [
+          {
+            "ja": [
+              {
+                "t": "お"
+              },
+              {
+                "t": "店",
+                "r": "みせ"
+              },
+              {
+                "t": "が"
+              },
+              {
+                "t": "休",
+                "r": "やす"
+              },
+              {
+                "t": "み (Quán nghỉ)"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "お"
+              },
+              {
+                "t": "店",
+                "r": "みせ"
+              },
+              {
+                "t": "があいている (Quán đang mở cửa)"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "雨",
+                "r": "あめ"
+              },
+              {
+                "t": "が"
+              },
+              {
+                "t": "降",
+                "r": "ふ"
+              },
+              {
+                "t": "っている (Trời đang mưa)"
+              }
+            ]
+          }
+        ],
+        "correctIndex": 1,
+        "explanationVi": "Đoạn 1: のれんが出ているときは、お店があいている印です。"
+      },
+      {
+        "id": "rq2",
+        "questionJa": [
+          {
+            "t": "少",
+            "r": "すこ"
+          },
+          {
+            "t": "し"
+          },
+          {
+            "t": "硬",
+            "r": "かた"
+          },
+          {
+            "t": "い"
+          },
+          {
+            "t": "麺",
+            "r": "めん"
+          },
+          {
+            "t": "を"
+          },
+          {
+            "t": "食",
+            "r": "た"
+          },
+          {
+            "t": "べたいとき、どれを"
+          },
+          {
+            "t": "選",
+            "r": "えら"
+          },
+          {
+            "t": "びますか。"
+          }
+        ],
+        "questionVi": "Khi muốn ăn sợi mì hơi cứng/dai một chút, bạn chọn mức nào?",
+        "options": [
+          {
+            "ja": [
+              {
+                "t": "かため"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "ふつう"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "やわらかめ"
+              }
+            ]
+          }
+        ],
+        "correctIndex": 0,
+        "explanationVi": "「かため」 (硬め) = sợi mì hơi cứng/dai; 「やわらかめ」 = hơi mềm."
+      },
+      {
+        "id": "rq3",
+        "questionJa": [
+          {
+            "t": "「"
+          },
+          {
+            "t": "温",
+            "r": "あたた"
+          },
+          {
+            "t": "かいうちに"
+          },
+          {
+            "t": "食",
+            "r": "た"
+          },
+          {
+            "t": "べましょう」の"
+          },
+          {
+            "t": "意味",
+            "r": "いみ"
+          },
+          {
+            "t": "はどれですか。"
+          }
+        ],
+        "questionVi": "Câu 「温かいうちに食べましょう」 nghĩa là gì?",
+        "options": [
+          {
+            "ja": [
+              {
+                "t": "Hãy ăn trong lúc còn nóng"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "Hãy đợi mì nguội rồi ăn"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "Hãy mang về nhà ăn"
+              }
+            ]
+          }
+        ],
+        "correctIndex": 0,
+        "explanationVi": "Cấu trúc N4 「〜うちに」 = tranh thủ trong lúc vẫn còn đang ở trạng thái đó."
+      },
+      {
+        "id": "rq4",
+        "questionJa": [
+          {
+            "t": "「"
+          },
+          {
+            "t": "味玉",
+            "r": "あじたま"
+          },
+          {
+            "t": "」は"
+          },
+          {
+            "t": "何",
+            "r": "なに"
+          },
+          {
+            "t": "のことですか。"
+          }
+        ],
+        "questionVi": "「味玉」(あじたま) là món topping nào?",
+        "options": [
+          {
+            "ja": [
+              {
+                "t": "Rong biển khô"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "Thịt heo nướng xá xíu"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "Trứng luộc lòng đào ngâm tương"
+              }
+            ]
+          }
+        ],
+        "correctIndex": 2,
+        "explanationVi": "「味玉」 viết tắt từ 「味付け玉子」 — trứng lòng đào ướp nước tương."
+      }
+    ]
+  }
+}

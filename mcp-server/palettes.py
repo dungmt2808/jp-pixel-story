@@ -3,6 +3,35 @@
 from __future__ import annotations
 
 PALETTES: dict[str, dict[str, object]] = {
+    "ramen_midnight": {
+        "description": "Master 24-color cozy Japanese retro adventure palette: midnight indigo, espresso outlines, warm cedar wood, lantern amber, vermilion noren, soft cream & fresh scallion green.",
+        "colors": [
+            "#101322",  # deep midnight ink
+            "#1b223b",  # midnight navy
+            "#2a3559",  # indigo mid
+            "#41527d",  # slate twilight
+            "#6c80ad",  # moonlight mist
+            "#a7bad9",  # cool highlight
+            "#241712",  # warm espresso outline (master outline!)
+            "#45281c",  # dark cedar wood
+            "#6e3f27",  # medium cedar wood
+            "#995f39",  # warm counter oak
+            "#c78b56",  # golden wood / broth light
+            "#e8bc7d",  # pale noodle gold
+            "#f6eed8",  # warm cream white
+            "#ffe38c",  # lantern glow highlight
+            "#f4a442",  # lantern amber orange
+            "#d96934",  # warm burnt orange
+            "#b8382c",  # vermilion noren red
+            "#7a2024",  # deep crimson shadow
+            "#f2c6a0",  # warm light skin
+            "#d4956a",  # shaded skin
+            "#a66848",  # deep skin shadow
+            "#5a8c4e",  # fresh negi scallion green
+            "#2f5c3a",  # deep seaweed / green shadow
+            "#8f56b8",  # accent retro violet
+        ],
+    },
     "midnight_tokyo": {
         "description": "Deep indigo Tokyo night sky, warm konbini amber, soft sakura pink & cream highlights.",
         "colors": [
