@@ -21,6 +21,7 @@ export function App() {
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<"stage" | "reading">("stage");
   const [showFurigana, setShowFurigana] = useState(true);
+  const [showRomaji, setShowRomaji] = useState(true);
   const [muted, setMuted] = useState(false);
 
   // Load story catalog for the Library screen
@@ -40,6 +41,9 @@ export function App() {
           setCatalog([
             {
               id: "konbini-onigiri",
+              category: "situation",
+              kind: "engine",
+              thumbStyle: "konbini",
               titleJa: "夜のコンビニ",
               titleVi: "Lần đầu mua cơm nắm lúc nửa đêm",
               level: "JLPT N5–N4",
@@ -194,6 +198,14 @@ export function App() {
               </button>
               <button
                 type="button"
+                className={`pixel-icon-btn ${showRomaji ? "active" : ""}`}
+                onClick={() => setShowRomaji((v) => !v)}
+                title="Bật / Tắt Romaji"
+              >
+                Romaji {showRomaji ? "ON" : "OFF"}
+              </button>
+              <button
+                type="button"
                 className="pixel-icon-btn"
                 onClick={() => setMuted((m) => !m)}
                 title="Bật / Tắt âm thanh"
@@ -207,6 +219,7 @@ export function App() {
             key={`${story.id}-${autoplay ? "auto" : "play"}`}
             story={story}
             showFurigana={showFurigana}
+            showRomaji={showRomaji}
             muted={muted}
             autoplay={autoplay}
             onOpenReading={() => setMode("reading")}
@@ -216,7 +229,9 @@ export function App() {
         <ReadingView
           story={story}
           showFurigana={showFurigana}
+          showRomaji={showRomaji}
           onToggleFurigana={() => setShowFurigana((v) => !v)}
+          onToggleRomaji={() => setShowRomaji((v) => !v)}
           onBackToStory={() => setMode("stage")}
           onOpenLibrary={handleOpenLibrary}
         />

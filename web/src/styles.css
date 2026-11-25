@@ -789,3 +789,216 @@ rt {
   color: var(--accent-amber);
   padding: 1px 5px;
 }
+
+/* Category tabs & badges in Story Library */
+.category-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.cat-tab {
+  font-family: var(--font-vi);
+  font-size: 13px;
+  font-weight: 600;
+  color: #b7c4e0;
+  background: #151b30;
+  border: 2px solid #2d385c;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.cat-tab:hover {
+  border-color: #5a6f9c;
+  color: #ffffff;
+}
+
+.cat-tab.active {
+  background: var(--accent-mint);
+  border-color: #f5f1e6;
+  color: #0b0e1a;
+}
+
+.story-card-cat {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.story-card-cat.cat-situation {
+  background: rgba(34, 110, 104, 0.92);
+  color: #f5f1e6;
+}
+
+.story-card-cat.cat-story {
+  background: rgba(122, 63, 160, 0.92);
+  color: #f5f1e6;
+}
+
+/* Romaji lines */
+.subtitle-romaji {
+  font-family: var(--font-vi);
+  font-size: clamp(11px, 1.3vw, 13px);
+  color: #ffd875;
+  font-style: italic;
+  margin-top: 2px;
+  opacity: 0.92;
+}
+
+.sentence-romaji {
+  font-family: var(--font-vi);
+  font-size: 12.5px;
+  color: #7c42a6;
+  font-style: italic;
+  margin-top: 4px;
+}
+
+/* Reading sidebar tabs, Grammar cards & Quiz */
+.sidebar-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.sidebar-tab {
+  font-family: var(--font-vi);
+  font-size: 12px;
+  font-weight: 600;
+  background: #ffffff;
+  color: #4d453b;
+  border: 1px solid #d4cbb8;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.sidebar-tab.active {
+  background: #222c4a;
+  color: #ffd875;
+  border-color: #222c4a;
+}
+
+.vocab-card.vocab-type {
+  border-left: 4px solid #f2c96b;
+}
+
+.vocab-card.grammar-type {
+  border-left: 4px solid #9b4dca;
+}
+
+.vocab-level.grammar-badge {
+  background: #7c42a6;
+  color: #ffffff;
+}
+
+.grammar-example {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed #d4cbb8;
+}
+
+.grammar-ex-ja {
+  font-family: var(--font-jp);
+  font-size: 14px;
+  color: #191d2b;
+}
+
+.grammar-ex-vi {
+  font-size: 12px;
+  font-style: italic;
+  color: #635c50;
+  margin-top: 2px;
+}
+
+.reading-quiz-section {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 2px solid #2b2119;
+}
+
+.reading-quiz-title {
+  margin: 0 0 14px;
+  font-family: var(--font-jp);
+  font-size: 19px;
+  color: #191d2b;
+}
+
+.reading-quiz-title span {
+  font-family: var(--font-vi);
+  font-size: 13px;
+  font-weight: 500;
+  color: #635c50;
+}
+
+.quiz-card {
+  background: #ffffff;
+  border: 1px solid #e2dac9;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.quiz-q-ja {
+  font-family: var(--font-jp);
+  font-size: 16px;
+  line-height: 1.8;
+  color: #191d2b;
+}
+
+.quiz-q-vi {
+  font-size: 12.5px;
+  font-style: italic;
+  color: #635c50;
+  margin-top: 3px;
+}
+
+.quiz-opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.quiz-opt-btn {
+  font-family: var(--font-vi);
+  font-size: 13px;
+  background: #fcfaf4;
+  color: #1f1b18;
+  border: 2px solid #2b2119;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.quiz-opt-btn:hover {
+  background: #f0e8d6;
+}
+
+.quiz-opt-btn.ok {
+  background: #d6ecd2;
+  border-color: #2f7a4c;
+  font-weight: 600;
+}
+
+.quiz-opt-btn.no {
+  background: #f4d4cc;
+  border-color: #b8322e;
+}
+
+.quiz-fb {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.quiz-fb.ok {
+  color: #215e38;
+}
+
+.quiz-fb.no {
+  color: #9e2724;
+}

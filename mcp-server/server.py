@@ -77,12 +77,14 @@ async def voicevox_synthesize_line(
 async def voicevox_generate_story_audio(
     story_json_path: str,
     force: bool = False,
+    audio_format: str = "mp3",
     base_url: str = DEFAULT_VOICEVOX_URL,
 ) -> str:
-    """Batch-generate all Japanese WAV voiceovers for a story.json file and automatically write durationSec back."""
+    """Batch-generate all Japanese VOICEVOX audio files (mp3 or wav) for a story.json file and automatically write durationSec back."""
     result = await generate_story_audio(
         story_json_path=story_json_path,
         force=force,
+        audio_format=audio_format,
         base_url=base_url,
     )
     return json.dumps(result, ensure_ascii=False, indent=2)

@@ -16,10 +16,12 @@ import type { DialogueLine, MiniGameChoice, StoryData } from "../types/story";
 import { CharacterCardModal } from "./CharacterCardModal";
 import { RubyText } from "./RubyText";
 import { resolveAssetUrl } from "../utils/assetUrl";
+import { rubySegmentsToRomaji } from "../utils/romaji";
 
 interface PixelStageProps {
   story: StoryData;
   showFurigana: boolean;
+  showRomaji: boolean;
   muted: boolean;
   autoplay: boolean;
   onOpenReading: () => void;
@@ -35,6 +37,7 @@ declare global {
 export function PixelStage({
   story,
   showFurigana,
+  showRomaji,
   muted,
   autoplay,
   onOpenReading,
@@ -551,6 +554,11 @@ export function PixelStage({
                 showFurigana={showFurigana}
               />
             </div>
+            {showRomaji && (
+              <div className="subtitle-romaji">
+                {activeLine.romaji ?? rubySegmentsToRomaji(activeLine.jaRuby)}
+              </div>
+            )}
             <div className="subtitle-vi">{activeLine.vi}</div>
           </div>
         )}

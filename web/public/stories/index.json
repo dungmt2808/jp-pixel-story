@@ -2,13 +2,34 @@
   "stories": [
     {
       "id": "konbini-onigiri",
+      "category": "situation",
+      "kind": "engine",
+      "thumbStyle": "konbini",
       "titleJa": "夜のコンビニ",
       "titleVi": "Lần đầu mua cơm nắm lúc nửa đêm",
       "level": "JLPT N5–N4",
-      "description": "Thực hành hội thoại kinh điển ở cửa hàng tiện lợi Nhật Bản: kéo thả cơm nắm vào máy quét và trả lời câu hỏi 「温めますか？」.",
+      "description": "Tình huống đời sống tại cửa hàng tiện lợi Nhật Bản: kéo thả cơm nắm vào máy quét, trả lời 「温めますか？」, học từ vựng + ngữ pháp và làm quiz.",
       "sceneCount": 6,
       "vocabCount": 6,
+      "grammarCount": 4,
+      "quizCount": 3,
       "theme": "midnight_tokyo"
+    },
+    {
+      "id": "hachiko",
+      "category": "story",
+      "kind": "standalone",
+      "href": "stories/hachiko/index.html",
+      "thumbStyle": "hachiko",
+      "titleJa": "ハチ公の話",
+      "titleVi": "Câu chuyện chú chó Hachikō ở ga Shibuya",
+      "level": "JLPT N4",
+      "description": "Câu chuyện cảm động có thật ở Shibuya (1924–1935) với 5 cảnh tương tác phong phú (kéo Hachi ra ga, bấm đồng hồ, xoay 4 mùa, mở báo, kéo vải khánh thành tượng) + giọng đọc VOICEVOX đầy đủ, từ vựng/ngữ pháp N4 và 4 câu hỏi đọc hiểu.",
+      "sceneCount": 5,
+      "vocabCount": 10,
+      "grammarCount": 8,
+      "quizCount": 4,
+      "theme": "shibuya_retro"
     }
   ]
 }

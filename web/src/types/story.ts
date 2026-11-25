@@ -12,6 +12,7 @@ export interface DialogueLine {
   jaPlain: string;
   ttsText?: string;
   jaRuby: RubySegment[];
+  romaji?: string;
   vi: string;
   audioUrl?: string;
   durationSec?: number;
@@ -66,10 +67,12 @@ export interface ReadingSentence {
   voice: string;
   jaPlain: string;
   jaRuby: RubySegment[];
+  romaji?: string;
   vi: string;
   audioUrl?: string;
   durationSec?: number;
   highlightVocabIds?: string[];
+  highlightGrammarIds?: string[];
 }
 
 export interface VocabItem {
@@ -81,6 +84,26 @@ export interface VocabItem {
   partOfSpeech: string;
   meaningVi: string;
   note: string;
+}
+
+export interface GrammarItem {
+  id: string;
+  pattern: string;
+  romaji?: string;
+  level: string;
+  meaningVi: string;
+  explanation: string;
+  exampleJa: string;
+  exampleVi: string;
+}
+
+export interface QuizQuestion {
+  id: string;
+  questionJa: RubySegment[];
+  questionVi: string;
+  options: { ja: RubySegment[]; text?: string }[];
+  correctIndex: number;
+  explanationVi: string;
 }
 
 export interface StoryData {
@@ -102,5 +125,7 @@ export interface StoryData {
     subtitle: string;
     sentences: ReadingSentence[];
     vocab: VocabItem[];
+    grammar?: GrammarItem[];
+    quiz?: QuizQuestion[];
   };
 }

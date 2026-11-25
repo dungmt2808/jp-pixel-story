@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
+import subprocess
+import tempfile
 import wave
 from pathlib import Path
 from typing import Any
@@ -11,6 +14,29 @@ from typing import Any
 import httpx
 
 DEFAULT_VOICEVOX_URL = os.environ.get("VOICEVOX_URL", "http://127.0.0.1:50021")
+
+
+def _convert_wav_to_mp3(wav_path: Path, mp3_path: Path, bitrate: str = "96k") -> None:
+    """Compress WAV to lightweight MP3 via FFmpeg (ideal for GitHub Pages static hosting)."""
+    ffmpeg_bin = shutil.which("ffmpeg")
+    if not ffmpeg_bin:
+        raise RuntimeError("ffmpeg not found; install ffmpeg or use audio_format='wav'.")
+    subprocess.run(
+        [
+            ffmpeg_bin,
+            "-v",
+            "error",
+            "-y",
+            "-i",
+            str(wav_path),
+            "-codec:a",
+            "libmp3lame",
+            "-b:a",
+            bitrate,
+            str(mp3_path),
+        ],
+        check=True,
+    )
 
 
 def get_wav_duration_sec(wav_path: Path) -> float:
@@ -117,9 +143,10 @@ async def generate_story_audio(
     story_json_path: str | Path,
     *,
     force: bool = False,
+    audio_format: str = "mp3",
     base_url: str = DEFAULT_VOICEVOX_URL,
 ) -> dict[str, Any]:
-    """Batch-generate VOICEVOX WAV files for all audio lines in a story.json and update durations."""
+    """Batch-generate VOICEVOX audio files (mp3 or wav) for all lines in story.json and update durations."""
     story_file = Path(story_json_path).expanduser().resolve()
     story = json.loads(story_file.read_text(encoding="utf-8"))
 
@@ -127,6 +154,7 @@ async def generate_story_audio(
     audio_dir = story_dir / "audio"
     audio_dir.mkdir(parents=True, exist_ok=True)
 
+    ext = "mp3" if (audio_format == "mp3" and shutil.which("ffmpeg")) else "wav"
     story_id = story.get("id", story_dir.name)
     voices: dict[str, dict[str, Any]] = story.get("voices", {})
     generated: list[dict[str, Any]] = []
@@ -144,33 +172,52 @@ async def generate_story_audio(
         pitch_scale = float(voice_cfg.get("pitchScale", 0.0))
         intonation_scale = float(voice_cfg.get("intonationScale", 1.05))
 
-        wav_name = f"{line_id}.wav"
-        wav_path = audio_dir / wav_name
+        out_name = f"{line_id}.{ext}"
+        out_path = audio_dir / out_name
 
-        if wav_path.exists() and not force:
-            duration_sec = get_wav_duration_sec(wav_path)
-            skipped.append(wav_name)
-        else:
-            res = await synthesize_line(
-                text=tts_text,
-                speaker_id=speaker_id,
-                output_path=wav_path,
-                speed_scale=speed_scale,
-                pitch_scale=pitch_scale,
-                intonation_scale=intonation_scale,
-                base_url=base_url,
+        if out_path.exists() and not force:
+            duration_sec = (
+                get_wav_duration_sec(out_path)
+                if ext == "wav"
+                else float(line.get("durationSec") or 0.0)
             )
-            duration_sec = res["duration_sec"]
+            skipped.append(out_name)
+        else:
+            if ext == "mp3":
+                with tempfile.TemporaryDirectory() as td:
+                    tmp_wav = Path(td) / f"{line_id}.wav"
+                    res = await synthesize_line(
+                        text=tts_text,
+                        speaker_id=speaker_id,
+                        output_path=tmp_wav,
+                        speed_scale=speed_scale,
+                        pitch_scale=pitch_scale,
+                        intonation_scale=intonation_scale,
+                        base_url=base_url,
+                    )
+                    _convert_wav_to_mp3(tmp_wav, out_path)
+                    duration_sec = res["duration_sec"]
+            else:
+                res = await synthesize_line(
+                    text=tts_text,
+                    speaker_id=speaker_id,
+                    output_path=out_path,
+                    speed_scale=speed_scale,
+                    pitch_scale=pitch_scale,
+                    intonation_scale=intonation_scale,
+                    base_url=base_url,
+                )
+                duration_sec = res["duration_sec"]
             generated.append(
                 {
-                    "file": wav_name,
+                    "file": out_name,
                     "speaker_id": speaker_id,
                     "duration_sec": duration_sec,
                     "text": tts_text,
                 }
             )
 
-        line["audioUrl"] = f"/stories/{story_id}/audio/{wav_name}"
+        line["audioUrl"] = f"/stories/{story_id}/audio/{out_name}"
         line["durationSec"] = duration_sec
 
     # 1. Process scene lines & branch responses

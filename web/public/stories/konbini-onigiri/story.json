@@ -639,6 +639,109 @@
         "meaningVi": "Tiện lợi",
         "note": "Ví dụ: 駅前のコンビニはとても便利です (Cửa hàng tiện lợi trước ga rất tiện)."
       }
+    ],
+    "grammar": [
+      {
+        "id": "g_nishimasu",
+        "pattern": "N + にする / にしよう",
+        "romaji": "N ni suru / ni shiyou",
+        "level": "N4",
+        "meaningVi": "Quyết định chọn N",
+        "explanation": "Dùng khi chọn món ăn, đồ uống hoặc quyết định lựa chọn giữa nhiều thứ. Thể ý chí 「〜にしよう」 mang sắc thái tự nhủ thân mật.",
+        "exampleJa": "鮭おにぎりにしよう！",
+        "exampleVi": "Chọn cơm nắm cá hồi vậy!"
+      },
+      {
+        "id": "g_ninarimasu",
+        "pattern": "Số tiền + になります",
+        "romaji": "... ni narimasu",
+        "level": "N5",
+        "meaningVi": "Tổng cộng hết ... yên",
+        "explanation": "Cách nhân viên thu ngân Nhật báo giá tiền lịch sự (tương đương 「〜です」 trong ngữ cảnh phục vụ khách hàng).",
+        "exampleJa": "160円になります。",
+        "exampleVi": "Của quý khách hết 160 yên ạ."
+      },
+      {
+        "id": "g_toki",
+        "pattern": "V (thể từ điển) + とき",
+        "romaji": "V-ru toki",
+        "level": "N5",
+        "meaningVi": "Khi làm V / Lúc làm V",
+        "explanation": "Nối 2 mệnh đề diễn tả thời điểm diễn ra hành động.",
+        "exampleJa": "おにぎりを買うとき、店員さんは「温めますか？」と聞きます。",
+        "exampleVi": "Khi mua cơm nắm, nhân viên hỏi \"Có hâm nóng không?\"."
+      },
+      {
+        "id": "g_tehoshii",
+        "pattern": "V-て + ほしい",
+        "romaji": "V-te hoshii",
+        "level": "N4",
+        "meaningVi": "Muốn ai đó làm V cho mình",
+        "explanation": "Khác với 「V-たい」 (tự mình muốn làm), 「V-てほしい」 diễn tả mong muốn người khác thực hiện hành động đó.",
+        "exampleJa": "温めてほしいときは「はい、お願いします」と言います。",
+        "exampleVi": "Khi muốn được hâm nóng hãy nói \"Hai, onegaishimasu\"."
+      }
+    ],
+    "quiz": [
+      {
+        "id": "q1",
+        "questionJa": [
+          { "t": "コンビニの" },
+          { "t": "店員", "r": "てんいん" },
+          { "t": "さんが「" },
+          { "t": "温", "r": "あたた" },
+          { "t": "めますか？」と" },
+          { "t": "聞", "r": "き" },
+          { "t": "いたら、" },
+          { "t": "何", "r": "なに" },
+          { "t": "の" },
+          { "t": "意味", "r": "いみ" },
+          { "t": "ですか。" }
+        ],
+        "questionVi": "Khi nhân viên konbini hỏi 「温めますか？」, câu đó có nghĩa là gì?",
+        "options": [
+          { "ja": [{ "t": "Bạn có cần túi nilon không?" }] },
+          { "ja": [{ "t": "Bạn có muốn hâm nóng không?" }] },
+          { "ja": [{ "t": "Bạn thanh toán bằng thẻ phải không?" }] }
+        ],
+        "correctIndex": 1,
+        "explanationVi": "「温める」(あたためる) nghĩa là hâm nóng đồ ăn/đồ uống."
+      },
+      {
+        "id": "q2",
+        "questionJa": [
+          { "t": "温", "r": "あたた" },
+          { "t": "めてほしいとき、どう" },
+          { "t": "答", "r": "こた" },
+          { "t": "えますか。" }
+        ],
+        "questionVi": "Khi muốn nhờ nhân viên hâm nóng giúp, bạn trả lời thế nào?",
+        "options": [
+          { "ja": [{ "t": "はい、お" }, { "t": "願", "r": "ねが" }, { "t": "いします！" }] },
+          { "ja": [{ "t": "いいえ、" }, { "t": "大丈夫", "r": "だいじょうぶ" }, { "t": "です。" }] },
+          { "ja": [{ "t": "いらっしゃいませ！" }] }
+        ],
+        "correctIndex": 0,
+        "explanationVi": "「はい、お願いします！」 là câu đồng ý lịch sự và tự nhiên nhất."
+      },
+      {
+        "id": "q3",
+        "questionJa": [
+          { "t": "「いいえ、" },
+          { "t": "大丈夫", "r": "だいじょうぶ" },
+          { "t": "です」はどんなときに" },
+          { "t": "使", "r": "つか" },
+          { "t": "いますか。" }
+        ],
+        "questionVi": "Câu 「いいえ、大丈夫です」 thường dùng trong tình huống nào ở cửa hàng?",
+        "options": [
+          { "ja": [{ "t": "Từ chối lịch sự (không cần hâm nóng / không cần túi)" }] },
+          { "ja": [{ "t": "Hỏi đường đi ra nhà ga" }] },
+          { "ja": [{ "t": "Chào tạm biệt khi ra về" }] }
+        ],
+        "correctIndex": 0,
+        "explanationVi": "Trong giao tiếp thực tế ở Nhật, 「大丈夫です」 dùng rất nhiều để từ chối nhẹ nhàng."
+      }
     ]
   }
 }

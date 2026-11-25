@@ -28,8 +28,8 @@ Create `web/public/stories/<story-id>/story.json` following the schema in [story
   - Fill `ttsText` (clean reading hints if a Kanji has tricky pronunciation so VOICEVOX reads it accurately).
   - Fill `jaRuby` with exact `{ "t": "...", "r": "..." }` Furigana segments.
   - Fill `vi` with natural Vietnamese translation.
-- Add a `characterCard` (cultural/character context popup) and a `reading` section (`sentences` + `vocab` with JLPT level tags).
-- Register the new story entry in `web/public/stories/index.json` so it appears automatically in the web Story Library (and on GitHub Pages after `git push`).
+- Add a `characterCard` (cultural/character context popup) and a `reading` section (`sentences` + `vocab` + `grammar` applied in the story + 3–4 `quiz` questions).
+- Register the new entry in `web/public/stories/index.json` under the appropriate `category`: `"situation"` (`💬 Tình huống`) or `"story"` (`📖 Câu chuyện`), so it appears automatically in the web Story Library (and on GitHub Pages after `git push`).
 
 ## Step 2: Synthesize Real VOICEVOX Audio & Sync Timestamps
 

@@ -18,11 +18,13 @@ Lấy cảm hứng từ phong cách kể chuyện pixel art tương tác (chuy�
      * `pixellab_list_palettes` — 4 bảng màu retro Nhật (`midnight_tokyo`, `konbini_warm`, `kyoto_autumn`, `snes_rpg`).
      * `pixellab_clean_sprite` — tách nền thông minh (border flood-fill), ép lưới pixel chuẩn (xóa *mixel* & viền mờ), khóa bảng màu.
      * `pixellab_slice_spritesheet` — cắt ảnh sprite sheet AI (VD 4 frame đi bộ) thành `spritesheet.png` đều nhau + `meta.json`.
-2. **Web 2D Pixel Art Tương Tác (`web/`):**
-   * Độ phân giải ảo `320×200` sắc nét (`image-rendering: pixelated`), chuyển cảnh **Bayer 4×4 dithering**.
-   * Nhạc nền 8-bit chiptune & hiệu ứng âm thanh (tiếng bấm nút, máy quét mã vạch `ピッ！`, lò vi sóng `チン！`, fanfare) tạo hoàn toàn bằng **Web Audio API**, tự giảm âm lượng khi VOICEVOX đọc (*auto-ducking*).
-   * **Bài demo chạy sẵn có giọng VOICEVOX thật:** `夜のコンビニ` (*Lần đầu mua cơm nắm lúc nửa đêm* — JLPT N5–N4), gồm 6 cảnh, mini-game kéo thả cơm nắm vào máy quét, chọn trả lời câu kinh điển **「温めますか？」**, thẻ nhân vật, và **Trang Bài đọc & Từ vựng** bấm nghe lại từng câu.
-   * **Chế độ Auto-play (`?autoplay=true`):** Con trỏ chuột pixel tự di chuyển, kéo thả và bấm nút theo đúng nhịp giọng đọc VOICEVOX.
+2. **Web 2D Pixel Art Tương Tác (`web/`) — chia 2 danh mục + giọng VOICEVOX thật:**
+   * **Thư viện chia 2 mục rõ ràng:** **`💬 Tình huống đời sống`** (`situation`) và **`📖 Câu chuyện & Đọc hiểu`** (`story`).
+   * **Nút bật/tắt `ふりがな ON/OFF` & `Romaji ON/OFF`** trực tiếp trên cả hoạt ảnh lẫn trang bài đọc.
+   * **Cuối mỗi bài đọc** đều có tổng hợp **📒 Từ vựng đã áp dụng**, **🧩 Ngữ pháp đã áp dụng** (kèm câu ví dụ) và **✅ 読解クイズ (Quiz đọc hiểu)**.
+   * **2 bài học hoàn chỉnh có giọng VOICEVOX thật đi kèm:**
+     * 💬 **`夜のコンビニ` (JLPT N5–N4):** Tình huống mua cơm nắm nửa đêm — kéo thả cơm nắm vào máy quét, chọn trả lời 「温めますか？」, 14 câu VOICEVOX, 6 từ vựng, 4 ngữ pháp, 3 câu quiz.
+     * 📖 **`ハチ公の話` (JLPT N4):** Câu chuyện Hachikō ở ga Shibuya (1924–1935) với 5 cảnh tương tác phong phú (thẻ nhân vật, kéo Hachi ra ga, bấm đồng hồ, xoay 4 mùa, mở báo, kéo vải khánh thành tượng) + **31 file giọng VOICEVOX MP3** (25 câu thoại + 6 đoạn bài đọc), 18 mục từ vựng & ngữ pháp, 4 câu quiz đọc hiểu.
 3. **Antigravity Plugin + Custom Skill & Claude Code Config:**
    * `.agents/plugins/jp-pixel-studio/` — tự động nạp Plugin, MCP Server, Rules và Skill `jp-pixel-story` khi mở project bằng **Antigravity**.
    * `.mcp.json` & `.claude/skills/jp-pixel-story/` — tự động nạp khi mở bằng **Claude Code**.
