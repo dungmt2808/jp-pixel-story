@@ -20,7 +20,10 @@ Lấy cảm hứng từ phong cách kể chuyện pixel art tương tác (chuy�
      * `pixellab_slice_spritesheet` — cắt ảnh sprite sheet AI (VD 4 frame đi bộ) thành `spritesheet.png` đều nhau + `meta.json`.
 2. **Web 2D Pixel Art Tương Tác (`web/`) — chia 2 danh mục + giọng VOICEVOX thật:**
    * **Thư viện chia 2 mục rõ ràng:** **`💬 Tình huống đời sống`** (`situation`) và **`📖 Câu chuyện & Đọc hiểu`** (`story`).
-   * **Nút ẩn/hiện `ふりがな ON/OFF`** trực tiếp trên cả hoạt ảnh lẫn trang bài đọc (không dùng Romaji để luyện đọc Kana/Kanji tự nhiên).
+   * **Chế độ 🎧 Daily Dictation (Luyện nghe chép chính tả):**
+     * Áp dụng tự động cho **tất cả các bài học** (tổng **39 câu VOICEVOX thật**: 14 câu `夜のコンビニ` + 25 câu `ハチ公の話`).
+     * Chỉnh tốc độ đọc (`0.7x / 0.85x / 1.0x / 1.15x`), tự lặp câu (Loop), gợi ý từng chữ (`Alt+H`), phát lại nhanh (`Ctrl+Space`).
+     * **2 kiểu luyện:** **⌨️ Gõ chép chính tả** (chấm thông minh chấp nhận cả Hiragana thuần lẫn Kanji + tô màu diff từng ký tự) và **🧩 Ghép cụm từ** (dùng mượt trên điện thoại), tự lưu tiến độ trên trình duyệt.
    * **Cuối mỗi bài đọc** đều có tổng hợp **📒 Từ vựng đã áp dụng**, **🧩 Ngữ pháp đã áp dụng** (kèm câu ví dụ) và **✅ 読解クイズ (Quiz đọc hiểu)**.
    * **2 bài học hoàn chỉnh có giọng VOICEVOX thật đi kèm:**
      * 💬 **`夜のコンビニ` (JLPT N5–N4):** Tình huống mua cơm nắm nửa đêm — kéo thả cơm nắm vào máy quét, chọn trả lời 「温めますか？」, 14 câu VOICEVOX, 6 từ vựng, 4 ngữ pháp, 3 câu quiz.

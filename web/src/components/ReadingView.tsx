@@ -11,6 +11,7 @@ interface ReadingViewProps {
   onToggleFurigana: () => void;
   onBackToStory: () => void;
   onOpenLibrary: () => void;
+  onOpenDictation: () => void;
 }
 
 export function ReadingView({
@@ -19,6 +20,7 @@ export function ReadingView({
   onToggleFurigana,
   onBackToStory,
   onOpenLibrary,
+  onOpenDictation,
 }: ReadingViewProps) {
   const [activeSentenceId, setActiveSentenceId] = useState<string>(
     story.reading.sentences[0]?.id ?? ""
@@ -71,6 +73,14 @@ export function ReadingView({
             onClick={onBackToStory}
           >
             ← Quay lại hoạt ảnh
+          </button>
+          <button
+            type="button"
+            className="reading-back-btn"
+            style={{ background: "#226e68" }}
+            onClick={onOpenDictation}
+          >
+            🎧 Luyện nghe chép
           </button>
         </div>
 

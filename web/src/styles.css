@@ -984,3 +984,359 @@ rt {
 .quiz-fb.no {
   color: #9e2724;
 }
+
+/* Daily Dictation Mode */
+.dict-shell {
+  width: 100%;
+  max-width: 960px;
+  background: #101422;
+  border: 2px solid #2b3556;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65);
+  overflow: hidden;
+}
+
+.dict-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #0b0e1a;
+  border-bottom: 1px solid #242d4a;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dict-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dict-progress-area {
+  padding: 16px 22px 14px;
+  background: #13182b;
+  border-bottom: 1px solid #242d4a;
+}
+
+.dict-stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  color: #b7c4e0;
+  margin-bottom: 10px;
+}
+
+.dict-streak {
+  color: var(--accent-amber);
+  font-weight: 700;
+}
+
+.dict-progress-track {
+  height: 8px;
+  background: #0b0e1a;
+  border: 1px solid #2b3556;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.dict-progress-fill {
+  height: 100%;
+  background: var(--accent-mint);
+  transition: width 0.25s ease;
+}
+
+.dict-step-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.dict-dot {
+  min-width: 28px;
+  height: 26px;
+  font-family: var(--font-jp);
+  font-size: 12px;
+  background: #19213b;
+  color: #9ab0d6;
+  border: 1px solid #2d3a60;
+  cursor: pointer;
+}
+
+.dict-dot.done {
+  background: #226e68;
+  color: #ffffff;
+  border-color: var(--accent-mint);
+}
+
+.dict-dot.current {
+  background: var(--accent-purple);
+  color: #ffffff;
+  border-color: #f5f1e6;
+  font-weight: 700;
+}
+
+.dict-card {
+  padding: 22px 24px 24px;
+}
+
+.dict-audio-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.dict-speed-group {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.dict-chip {
+  font-family: var(--font-vi);
+  font-size: 12px;
+  font-weight: 600;
+  background: #18203a;
+  color: #c5d1eb;
+  border: 1px solid #354572;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+
+.dict-chip:hover {
+  background: #233056;
+}
+
+.dict-chip.active {
+  background: var(--accent-amber);
+  color: #0b0e1a;
+  border-color: var(--accent-amber);
+}
+
+.dict-speaker-tag {
+  font-size: 13px;
+  color: #9ab0d6;
+  margin-bottom: 12px;
+}
+
+.dict-meaning-peek {
+  background: #1b223d;
+  border-left: 4px solid var(--accent-amber);
+  padding: 10px 14px;
+  font-size: 13.5px;
+  color: #f5f1e6;
+  margin-bottom: 14px;
+}
+
+.dict-mode-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.dict-mode-btn {
+  font-family: var(--font-vi);
+  font-size: 13px;
+  font-weight: 600;
+  background: #151b30;
+  color: #9ab0d6;
+  border: 2px solid #2b3556;
+  padding: 7px 14px;
+  cursor: pointer;
+}
+
+.dict-mode-btn.active {
+  background: #222c4a;
+  color: #ffffff;
+  border-color: var(--accent-mint);
+}
+
+.dict-form {
+  margin-bottom: 16px;
+}
+
+.dict-input {
+  width: 100%;
+  font-family: var(--font-jp);
+  font-size: clamp(18px, 2.4vw, 22px);
+  padding: 14px 16px;
+  background: #0b0e1a;
+  color: #ffffff;
+  border: 2px solid #4d6196;
+  outline: none;
+}
+
+.dict-input:focus {
+  border-color: var(--accent-mint);
+  box-shadow: 0 0 0 3px rgba(70, 184, 157, 0.2);
+}
+
+.dict-tiles-wrap {
+  margin-bottom: 16px;
+}
+
+.dict-tile-answer-box {
+  min-height: 68px;
+  padding: 12px;
+  background: #0b0e1a;
+  border: 2px dashed #4d6196;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.dict-tile-placeholder {
+  font-size: 13px;
+  color: #7d8fb8;
+}
+
+.dict-tile-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dict-tile {
+  font-family: var(--font-jp);
+  font-size: 18px;
+  line-height: 1.7;
+  background: #1b2442;
+  color: #f5f1e6;
+  border: 2px solid #4d6196;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: transform 0.08s ease, background 0.12s ease;
+}
+
+.dict-tile:hover:not(:disabled) {
+  background: #283660;
+  transform: translateY(-1px);
+}
+
+.dict-tile.placed {
+  background: var(--accent-purple);
+  border-color: #f5f1e6;
+}
+
+.dict-tile.used {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.dict-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.dict-actions .pixel-btn {
+  font-size: 14px;
+  padding: 8px 14px;
+}
+
+.dict-nav-right {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+.dict-feedback {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 2px solid #354572;
+  background: #151b30;
+}
+
+.dict-feedback.ok {
+  border-color: var(--accent-mint);
+  background: rgba(34, 110, 104, 0.22);
+}
+
+.dict-feedback.warn {
+  border-color: var(--accent-amber);
+}
+
+.dict-feedback-head {
+  font-size: 13.5px;
+  color: #f5f1e6;
+  margin-bottom: 10px;
+}
+
+.dict-diff-line {
+  font-family: var(--font-jp);
+  font-size: 22px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  word-break: break-all;
+}
+
+.diff-ch.diff-ok {
+  color: #70e0b8;
+}
+
+.diff-ch.diff-wrong {
+  color: #ff7b8a;
+  text-decoration: line-through;
+  background: rgba(232, 106, 130, 0.18);
+  padding: 0 2px;
+}
+
+.diff-ch.diff-missing {
+  color: #ffd875;
+  border-bottom: 2px solid #ffd875;
+  background: rgba(255, 216, 117, 0.14);
+  padding: 0 2px;
+}
+
+.dict-answer-card {
+  margin-top: 16px;
+  padding: 16px 18px;
+  background: #f6f2e9;
+  color: #1e2130;
+  border: 2px solid #d4cbb8;
+}
+
+.dict-answer-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #7c42a6;
+  margin-bottom: 6px;
+}
+
+.dict-answer-ja {
+  font-family: var(--font-jp);
+  font-size: 22px;
+  line-height: 1.9;
+  color: #151826;
+}
+
+.dict-answer-ja rt {
+  color: #7c42a6;
+}
+
+.dict-answer-vi {
+  font-size: 14px;
+  color: #5b554b;
+  margin-top: 6px;
+}
+
+.dict-shortcuts-footer {
+  padding: 12px 22px;
+  background: #0b0e1a;
+  border-top: 1px solid #242d4a;
+  font-size: 12px;
+  color: #8b9cc2;
+}
+
+.dict-shortcuts-footer code {
+  background: #1b233d;
+  color: var(--accent-amber);
+  padding: 1px 5px;
+}

@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { drawSkylineIntro, VIRTUAL_H, VIRTUAL_W } from "../engine/pixelRenderer";
 import type { StoryCatalogEntry, StoryCategory } from "../types/catalog";
 import { resolveAssetUrl } from "../utils/assetUrl";
+import { getSavedDictationCount } from "./DictationView";
 
 interface StoryLibraryProps {
   stories: StoryCatalogEntry[];
   onSelectStory: (storyId: string, autoplay: boolean) => void;
+  onSelectDictation: (storyId: string) => void;
 }
 
 /** Cute 320x200 pixel-art thumbnail preview for Hachikō at Shibuya Station */
@@ -122,7 +124,11 @@ const CATEGORY_META: Record<
   },
 };
 
-export function StoryLibrary({ stories, onSelectStory }: StoryLibraryProps) {
+export function StoryLibrary({
+  stories,
+  onSelectStory,
+  onSelectDictation,
+}: StoryLibraryProps) {
   const [filter, setFilter] = useState<"all" | StoryCategory>("all");
 
   const situationCount = stories.filter((s) => s.category === "situation").length;
@@ -146,8 +152,8 @@ export function StoryLibrary({ stories, onSelectStory }: StoryLibraryProps) {
           <div className="topbar-series">JP-PIXEL-STORY · INTERACTIVE JAPANESE</div>
           <h1 className="library-title">Thư viện học Tiếng Nhật 2D Pixel Art</h1>
           <p className="library-subtitle">
-            Học Tiếng Nhật qua hoạt ảnh tương tác có giọng đọc <b>VOICEVOX</b>, nút ẩn/hiện{" "}
-            <b>ふりがな (Furigana)</b>, tổng hợp từ vựng, ngữ pháp và quiz đọc hiểu cuối bài.
+            Học Tiếng Nhật 3 trong 1: <b>Hoạt ảnh 2D tương tác</b> + <b>Bài đọc có ふりがな &amp; ngữ pháp</b> +{" "}
+            <b>🎧 Daily Dictation (nghe chép chính tả VOICEVOX)</b>.
           </p>
         </div>
         <div className="library-badge-count">{stories.length} bài học</div>
@@ -180,6 +186,7 @@ export function StoryLibrary({ stories, onSelectStory }: StoryLibraryProps) {
       <div className="library-grid">
         {filtered.map((item) => {
           const cat = CATEGORY_META[item.category] ?? CATEGORY_META.story;
+          const dictDone = getSavedDictationCount(item.id);
           return (
             <article key={item.id} className="story-card">
               <div
@@ -204,6 +211,11 @@ export function StoryLibrary({ stories, onSelectStory }: StoryLibraryProps) {
                   {item.grammarCount ? <span>🧩 {item.grammarCount} ngữ pháp</span> : null}
                   {item.quizCount ? <span>✅ {item.quizCount} quiz</span> : null}
                   <span>🔊 VOICEVOX</span>
+                  {dictDone > 0 && (
+                    <span style={{ color: "#46b89d", fontWeight: 700 }}>
+                      🎧 Đã chép {dictDone} câu
+                    </span>
+                  )}
                 </div>
 
                 <div className="story-card-actions">
@@ -212,7 +224,14 @@ export function StoryLibrary({ stories, onSelectStory }: StoryLibraryProps) {
                     className="pixel-btn pixel-btn-purple"
                     onClick={() => openItem(item, false)}
                   >
-                    ▶ Vào học tương tác
+                    ▶ Học tương tác
+                  </button>
+                  <button
+                    type="button"
+                    className="pixel-btn pixel-btn-mint"
+                    onClick={() => onSelectDictation(item.id)}
+                  >
+                    🎧 Nghe chép
                   </button>
                   <button
                     type="button"

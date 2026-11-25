@@ -85,7 +85,7 @@ body.rec .wrap{padding:0;max-width:none}body.rec .top,body.rec .foot{display:non
 <div class="wrap">
   <div class="top">
     <div><div class="kicker">TIẾNG NHẬT N4 · BÀI ĐỌC TƯƠNG TÁC</div><h1>ハチ公の話 · Câu chuyện Hachikō</h1></div>
-    <div class="ctrl"><button id="bLib" class="lib">📚 Thư viện</button><button id="bFuri" class="on">ふりがな ON</button><button id="bAuto">▶ Tự chạy demo</button><button id="bRead">Mở bài đọc</button><button id="bRestart">↺ Chơi lại</button></div>
+    <div class="ctrl"><button id="bLib" class="lib">📚 Thư viện</button><button id="bDict" class="lib">🎧 Nghe chép</button><button id="bFuri" class="on">ふりがな ON</button><button id="bAuto">▶ Tự chạy demo</button><button id="bRead">Mở bài đọc</button><button id="bRestart">↺ Chơi lại</button></div>
   </div>
   <div class="stage" id="stage">
     <canvas id="c" width="960" height="720"></canvas>
@@ -569,7 +569,7 @@ function boot(){buildReader();if(RECORD)document.body.classList.add("rec");
  go(0,true);
  document.getElementById("bAuto").onclick=()=>{unlock();closeReader();AUTO=true;cur.x=760;cur.y=640;go(0);};
  document.getElementById("bRestart").onclick=()=>{unlock();closeReader();AUTO=false;go(0);};
- document.getElementById("bLib").onclick=()=>{stopVoice();location.href="../../";};
+ document.getElementById("bLib").onclick=()=>{stopVoice();location.href="../../";};document.getElementById("bDict").onclick=()=>{stopVoice();location.href="../../?story=hachiko&mode=dictation";};
  document.getElementById("bFuri").onclick=()=>{const el=$("tFuri");if(el)el.click();};
  document.getElementById("bRead").onclick=()=>{unlock();stopVoice();openReader();};
  window.__voiceEvents=voiceEvents;
