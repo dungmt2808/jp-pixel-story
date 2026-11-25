@@ -29,6 +29,7 @@ Create `web/public/stories/<story-id>/story.json` following the schema in [story
   - Fill `jaRuby` with exact `{ "t": "...", "r": "..." }` Furigana segments.
   - Fill `vi` with natural Vietnamese translation.
 - Add a `characterCard` (cultural/character context popup) and a `reading` section (`sentences` + `vocab` with JLPT level tags).
+- Register the new story entry in `web/public/stories/index.json` so it appears automatically in the web Story Library (and on GitHub Pages after `git push`).
 
 ## Step 2: Synthesize Real VOICEVOX Audio & Sync Timestamps
 

@@ -15,6 +15,7 @@ import {
 import type { DialogueLine, MiniGameChoice, StoryData } from "../types/story";
 import { CharacterCardModal } from "./CharacterCardModal";
 import { RubyText } from "./RubyText";
+import { resolveAssetUrl } from "../utils/assetUrl";
 
 interface PixelStageProps {
   story: StoryData;
@@ -107,7 +108,7 @@ export function PixelStage({
         }
 
         stopVoice();
-        const audio = new Audio(line.audioUrl);
+        const audio = new Audio(resolveAssetUrl(line.audioUrl));
         audio.muted = muted;
         audioElRef.current = audio;
         retroAudio.setDucked(true);

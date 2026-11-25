@@ -2,12 +2,14 @@ import { useRef, useState } from "react";
 import type { ReadingSentence, StoryData } from "../types/story";
 import { PortraitCanvas } from "./PortraitCanvas";
 import { RubyText } from "./RubyText";
+import { resolveAssetUrl } from "../utils/assetUrl";
 
 interface ReadingViewProps {
   story: StoryData;
   showFurigana: boolean;
   onToggleFurigana: () => void;
   onBackToStory: () => void;
+  onOpenLibrary: () => void;
 }
 
 export function ReadingView({
@@ -15,6 +17,7 @@ export function ReadingView({
   showFurigana,
   onToggleFurigana,
   onBackToStory,
+  onOpenLibrary,
 }: ReadingViewProps) {
   const [activeSentenceId, setActiveSentenceId] = useState<string>(
     story.reading.sentences[0]?.id ?? ""
@@ -32,7 +35,7 @@ export function ReadingView({
     if (audioRef.current) {
       audioRef.current.pause();
     }
-    const audio = new Audio(sent.audioUrl);
+    const audio = new Audio(resolveAssetUrl(sent.audioUrl));
     audioRef.current = audio;
     void audio.play();
   };
@@ -40,13 +43,22 @@ export function ReadingView({
   return (
     <div className="reading-shell">
       <div className="reading-topbar">
-        <button
-          type="button"
-          className="reading-back-btn"
-          onClick={onBackToStory}
-        >
-          ← Quay lại hoạt ảnh
-        </button>
+        <div style={{ display: "flex", gap: 8 }}>
+          <button
+            type="button"
+            className="reading-back-btn"
+            onClick={onOpenLibrary}
+          >
+            📚 Thư viện
+          </button>
+          <button
+            type="button"
+            className="reading-back-btn"
+            onClick={onBackToStory}
+          >
+            ← Quay lại hoạt ảnh
+          </button>
+        </div>
 
         <div style={{ fontWeight: 700, fontSize: 14 }}>
           {story.titleJa} · {story.level}

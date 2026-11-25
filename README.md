@@ -75,14 +75,21 @@ jp-pixel-story/
 * **Node.js 20+** & **`npm`**.
 * **FFmpeg** (nếu dùng `exporter/` để xuất MP4).
 
-### 1. Chạy thử Web 2D Pixel Art demo
+### 1. Xem trực tuyến trên GitHub Pages (Không cần mở Terminal!)
+Repo đã tích hợp sẵn GitHub Actions (`.github/workflows/deploy-pages.yml`) và **Thư viện truyện (`web/public/stories/index.json`)**:
+1. Vào **GitHub Repo → Settings → Pages → Build and deployment → Source** chọn **`GitHub Actions`** (chỉ cần bật 1 lần duy nhất).
+2. Đợi ~30 giây, mở web học trực tuyến trên điện thoại hoặc máy tính tại:
+   `https://dungmt2808.github.io/jp-pixel-story/`
+3. Từ giờ mỗi lần tạo thêm truyện mới (AI tự ghi vào `web/public/stories/index.json`) rồi `git push`, web tự động cập nhật thêm bài mới ngay trên thư viện!
+
+### 2. Hoặc chạy thử local trên máy
 ```bash
 cd web
 npm install
 npm run dev
 ```
-* Chơi tương tác bằng chuột: mở `http://127.0.0.1:5173`
-* Xem chế độ tự chạy (như video): mở `http://127.0.0.1:5173/?autoplay=true`
+* Xem thư viện tất cả bài học: mở `http://127.0.0.1:5173`
+* Mở thẳng 1 bài (hoặc chế độ tự chạy): `http://127.0.0.1:5173/?story=konbini-onigiri&autoplay=true`
 
 ### 2. Cài đặt & kiểm thử Local MCP Server (VOICEVOX + Mini-PixelLab)
 ```bash

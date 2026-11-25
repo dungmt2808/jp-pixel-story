@@ -1,0 +1,14 @@
+{
+  "stories": [
+    {
+      "id": "konbini-onigiri",
+      "titleJa": "夜のコンビニ",
+      "titleVi": "Lần đầu mua cơm nắm lúc nửa đêm",
+      "level": "JLPT N5–N4",
+      "description": "Thực hành hội thoại kinh điển ở cửa hàng tiện lợi Nhật Bản: kéo thả cơm nắm vào máy quét và trả lời câu hỏi 「温めますか？」.",
+      "sceneCount": 6,
+      "vocabCount": 6,
+      "theme": "midnight_tokyo"
+    }
+  ]
+}

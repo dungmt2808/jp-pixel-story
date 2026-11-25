@@ -12,7 +12,7 @@ Follow the complete workflow in `.agents/plugins/jp-pixel-studio/skills/jp-pixel
 
 ## Quick Checklist
 1. Check VOICEVOX with `voicevox_health` and pick speaker IDs via `voicevox_list_speakers`.
-2. Write `web/public/stories/<story-id>/story.json` with exact `jaRuby` Furigana segments, `ttsText`, Vietnamese translation, `characterCard`, and `reading` passage + JLPT vocab.
+2. Write `web/public/stories/<story-id>/story.json` with exact `jaRuby` Furigana segments, `ttsText`, Vietnamese translation, `characterCard`, and `reading` passage + JLPT vocab, then add its card metadata to `web/public/stories/index.json`.
 3. Run `voicevox_generate_story_audio` to synthesize real WAV voiceovers and update `durationSec`.
 4. Optional: Process custom AI sprite images using `pixellab_clean_sprite` or `pixellab_slice_spritesheet` locked to the story's palette.
 5. Preview at `http://127.0.0.1:5173/?story=<story-id>` (or `&autoplay=true`) and optionally export MP4 via `exporter/export_video.mjs`.
