@@ -1,0 +1,644 @@
+{
+  "id": "konbini-onigiri",
+  "series": "jp-pixel-story",
+  "titleJa": "夜のコンビニ",
+  "titleVi": "Lần đầu mua cơm nắm lúc nửa đêm",
+  "level": "JLPT N5–N4",
+  "author": "jp-pixel-studio",
+  "palette": "midnight_tokyo",
+  "voices": {
+    "narrator": {
+      "label": "ナレーター (青山龍星)",
+      "speakerId": 13,
+      "speedScale": 0.92
+    },
+    "minh": {
+      "label": "ミン (玄野武宏)",
+      "speakerId": 11,
+      "speedScale": 0.94
+    },
+    "clerk": {
+      "label": "店員 (春日部つむぎ)",
+      "speakerId": 8,
+      "speedScale": 0.95
+    }
+  },
+  "characterCard": {
+    "nameJa": "ミン (MINH)",
+    "subtitle": "VIETNAMESE STUDENT IN TOKYO · JLPT N5 → N4",
+    "facts": [
+      {
+        "label": "PLACE",
+        "value": "東京・高田馬場 (Takadanobaba, Tokyo)"
+      },
+      {
+        "label": "TIME",
+        "value": "23:45 — バイトが終わったばかり (Vừa tan ca làm thêm)"
+      },
+      {
+        "label": "MISSION",
+        "value": "コンビニで初めて一人でおにぎりを買う。店員さんの質問に答えられるかな？"
+      },
+      {
+        "label": "KEY PHRASE",
+        "value": "「温めますか？」(Atatamemasu ka?) — Câu hỏi kinh điển ở mọi cửa hàng tiện lợi Nhật!"
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "skyline_intro",
+      "type": "skyline_intro",
+      "bannerTitle": "TOKYO 23:45",
+      "actionLabel": "はじめる · BEGIN",
+      "lines": [
+        {
+          "id": "s01_l01",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "東京、夜十一時四十五分。",
+          "ttsText": "東京、夜十一時四十五分。",
+          "jaRuby": [
+            {
+              "t": "東京",
+              "r": "とうきょう"
+            },
+            {
+              "t": "、"
+            },
+            {
+              "t": "夜",
+              "r": "よる"
+            },
+            {
+              "t": "11"
+            },
+            {
+              "t": "時",
+              "r": "じ"
+            },
+            {
+              "t": "45"
+            },
+            {
+              "t": "分",
+              "r": "ふん"
+            },
+            {
+              "t": "。"
+            }
+          ],
+          "vi": "Tokyo, 11 giờ 45 phút đêm.",
+          "audioUrl": "/stories/konbini-onigiri/audio/s01_l01.wav",
+          "durationSec": 3.317
+        }
+      ]
+    },
+    {
+      "id": "exterior_zoom",
+      "type": "exterior_zoom",
+      "locationBadge": "EKIMAE KONBINI · 駅前のコンビニ",
+      "lines": [
+        {
+          "id": "s02_l01",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "静かな通りに、二十四時間あいているコンビニの明かりが光っています。",
+          "ttsText": "静かな通りに、二十四時間あいているコンビニの明かりが光っています。",
+          "jaRuby": [
+            {
+              "t": "静",
+              "r": "しず"
+            },
+            {
+              "t": "かな"
+            },
+            {
+              "t": "通",
+              "r": "とお"
+            },
+            {
+              "t": "りに、24"
+            },
+            {
+              "t": "時間",
+              "r": "じかん"
+            },
+            {
+              "t": "あいているコンビニの"
+            },
+            {
+              "t": "明",
+              "r": "あ"
+            },
+            {
+              "t": "かりが"
+            },
+            {
+              "t": "光",
+              "r": "ひか"
+            },
+            {
+              "t": "っています。"
+            }
+          ],
+          "vi": "Trên con phố yên tĩnh, ánh đèn cửa hàng tiện lợi mở cửa 24 giờ vẫn đang sáng rực.",
+          "audioUrl": "/stories/konbini-onigiri/audio/s02_l01.wav",
+          "durationSec": 5.216
+        }
+      ]
+    },
+    {
+      "id": "konbini_walkin",
+      "type": "konbini_walkin",
+      "whoButtonLabel": "? この人はだれ",
+      "actionLabel": "おにぎりを買う →",
+      "lines": [
+        {
+          "id": "s03_l01",
+          "voice": "clerk",
+          "speakerLabel": "店員",
+          "jaPlain": "いらっしゃいませ！",
+          "ttsText": "いらっしゃいませ！",
+          "jaRuby": [
+            {
+              "t": "いらっしゃいませ！"
+            }
+          ],
+          "vi": "Xin kính chào quý khách!",
+          "audioUrl": "/stories/konbini-onigiri/audio/s03_l01.wav",
+          "durationSec": 1.291
+        },
+        {
+          "id": "s03_l02",
+          "voice": "minh",
+          "speakerLabel": "ミン",
+          "jaPlain": "お腹がすいたなあ。鮭おにぎりにしよう！",
+          "ttsText": "おなかがすいたなあ。さけおにぎりにしよう！",
+          "jaRuby": [
+            {
+              "t": "お腹",
+              "r": "おなか"
+            },
+            {
+              "t": "がすいたなあ。"
+            },
+            {
+              "t": "鮭",
+              "r": "さけ"
+            },
+            {
+              "t": "おにぎりにしよう！"
+            }
+          ],
+          "vi": "Đói bụng quá đi. Chọn cơm nắm cá hồi vậy!",
+          "audioUrl": "/stories/konbini-onigiri/audio/s03_l02.wav",
+          "durationSec": 3.115
+        }
+      ]
+    },
+    {
+      "id": "drag_counter",
+      "type": "drag_counter",
+      "instruction": "DRAG ONIGIRI A TO REGISTER TRAY B · レジへ運ぼう",
+      "lines": [
+        {
+          "id": "s04_l01",
+          "voice": "clerk",
+          "speakerLabel": "店員",
+          "jaPlain": "おにぎりお一つですね。百六十円になります。",
+          "ttsText": "おにぎりおひとつですね。ひゃくろくじゅうえんになります。",
+          "jaRuby": [
+            {
+              "t": "おにぎりお"
+            },
+            {
+              "t": "一",
+              "r": "ひと"
+            },
+            {
+              "t": "つですね。160"
+            },
+            {
+              "t": "円",
+              "r": "えん"
+            },
+            {
+              "t": "になります。"
+            }
+          ],
+          "vi": "Một chiếc cơm nắm đúng không ạ. Của bạn hết 160 yên.",
+          "audioUrl": "/stories/konbini-onigiri/audio/s04_l01.wav",
+          "durationSec": 3.808
+        }
+      ]
+    },
+    {
+      "id": "closeup_choice",
+      "type": "closeup_choice",
+      "lines": [
+        {
+          "id": "s05_l01",
+          "voice": "clerk",
+          "speakerLabel": "店員",
+          "jaPlain": "おにぎり、温めますか？",
+          "ttsText": "おにぎり、あたためますか？",
+          "jaRuby": [
+            {
+              "t": "おにぎり、"
+            },
+            {
+              "t": "温",
+              "r": "あたた"
+            },
+            {
+              "t": "めますか？"
+            }
+          ],
+          "vi": "Cơm nắm này, bạn có muốn hâm nóng không ạ?",
+          "audioUrl": "/stories/konbini-onigiri/audio/s05_l01.wav",
+          "durationSec": 2.336
+        },
+        {
+          "id": "s05_l02",
+          "voice": "minh",
+          "speakerLabel": "ミン",
+          "jaPlain": "あ、「温める」だ！どう答えよう？",
+          "ttsText": "あ、あたためるだ！どうこたえよう？",
+          "jaRuby": [
+            {
+              "t": "あ、「"
+            },
+            {
+              "t": "温",
+              "r": "あたた"
+            },
+            {
+              "t": "める」だ！どう"
+            },
+            {
+              "t": "答",
+              "r": "こた"
+            },
+            {
+              "t": "えよう？"
+            }
+          ],
+          "vi": "À, là từ \"hâm nóng\"! Trả lời thế nào bây giờ nhỉ?",
+          "audioUrl": "/stories/konbini-onigiri/audio/s05_l02.wav",
+          "durationSec": 3.019
+        }
+      ],
+      "minigame": {
+        "prompt": "Chọn câu trả lời Tiếng Nhật của bạn:",
+        "choices": [
+          {
+            "id": "warm_yes",
+            "labelJa": "はい、お願いします！",
+            "labelVi": "Vâng, làm ơn hâm nóng giúp tôi!",
+            "effect": "microwave",
+            "responseLine": {
+              "id": "s05_c01",
+              "voice": "minh",
+              "speakerLabel": "ミン",
+              "jaPlain": "はい、お願いします！",
+              "ttsText": "はい、おねがいします！",
+              "jaRuby": [
+                {
+                  "t": "はい、お"
+                },
+                {
+                  "t": "願",
+                  "r": "ねが"
+                },
+                {
+                  "t": "いします！"
+                }
+              ],
+              "vi": "Vâng, nhờ anh/chị hâm nóng giúp em ạ!",
+              "audioUrl": "/stories/konbini-onigiri/audio/s05_c01.wav",
+              "durationSec": 1.984
+            }
+          },
+          {
+            "id": "warm_no",
+            "labelJa": "いいえ、大丈夫です。",
+            "labelVi": "Không, để nguyên là được rồi ạ.",
+            "effect": "polite_bow",
+            "responseLine": {
+              "id": "s05_c02",
+              "voice": "minh",
+              "speakerLabel": "ミン",
+              "jaPlain": "いいえ、大丈夫です。",
+              "ttsText": "いいえ、だいじょうぶです。",
+              "jaRuby": [
+                {
+                  "t": "いいえ、"
+                },
+                {
+                  "t": "大丈夫",
+                  "r": "だいじょうぶ"
+                },
+                {
+                  "t": "です。"
+                }
+              ],
+              "vi": "Không, như vậy là ổn rồi ạ.",
+              "audioUrl": "/stories/konbini-onigiri/audio/s05_c02.wav",
+              "durationSec": 2.165
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "outro_celebrate",
+      "type": "outro_celebrate",
+      "lines": [
+        {
+          "id": "s06_l01",
+          "voice": "clerk",
+          "speakerLabel": "店員",
+          "jaPlain": "はい、どうぞ！ありがとうございました！",
+          "ttsText": "はい、どうぞ！ありがとうございました！",
+          "jaRuby": [
+            {
+              "t": "はい、どうぞ！ありがとうございました！"
+            }
+          ],
+          "vi": "Vâng, gửi bạn ạ! Xin cảm ơn quý khách!",
+          "audioUrl": "/stories/konbini-onigiri/audio/s06_l01.wav",
+          "durationSec": 3.701
+        },
+        {
+          "id": "s06_l02",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "初めてのコンビニでの買い物、大成功！温かいおにぎりで、疲れも吹き飛びました。",
+          "ttsText": "はじめてのコンビニでのかいもの、だいせいこう！あたたかいおにぎりで、つかれもふきとびました。",
+          "jaRuby": [
+            {
+              "t": "初",
+              "r": "はじ"
+            },
+            {
+              "t": "めてのコンビニでの"
+            },
+            {
+              "t": "買",
+              "r": "か"
+            },
+            {
+              "t": "い"
+            },
+            {
+              "t": "物",
+              "r": "もの"
+            },
+            {
+              "t": "、"
+            },
+            {
+              "t": "大成功",
+              "r": "だいせいこう"
+            },
+            {
+              "t": "！"
+            },
+            {
+              "t": "温",
+              "r": "あたた"
+            },
+            {
+              "t": "かいおにぎりで、"
+            },
+            {
+              "t": "疲",
+              "r": "つか"
+            },
+            {
+              "t": "れも"
+            },
+            {
+              "t": "吹",
+              "r": "ふ"
+            },
+            {
+              "t": "き"
+            },
+            {
+              "t": "飛",
+              "r": "と"
+            },
+            {
+              "t": "びました。"
+            }
+          ],
+          "vi": "Lần đầu tự mua đồ ở cửa hàng tiện lợi đã thành công rực rỡ! Nhờ chiếc cơm nắm ấm nóng, bao mệt mỏi cũng tan biến.",
+          "audioUrl": "/stories/konbini-onigiri/audio/s06_l02.wav",
+          "durationSec": 6.731
+        }
+      ]
+    }
+  ],
+  "reading": {
+    "sectionTitle": "夜のコンビニ · Luyện đọc & Từ vựng thực chiến",
+    "subtitle": "Bấm vào từng câu để nghe lại giọng VOICEVOX, hoặc chọn từ vựng được tô sáng ở bên phải.",
+    "sentences": [
+      {
+        "id": "read_01",
+        "voice": "narrator",
+        "jaPlain": "日本のコンビニは二十四時間あいていて、とても便利です。",
+        "ttsText": "にほんのコンビニはにじゅうよじかんあいていて、とてもべんりです。",
+        "jaRuby": [
+          {
+            "t": "日本",
+            "r": "にほん"
+          },
+          {
+            "t": "のコンビニは24"
+          },
+          {
+            "t": "時間",
+            "r": "じかん"
+          },
+          {
+            "t": "あいていて、とても"
+          },
+          {
+            "t": "便利",
+            "r": "べんり"
+          },
+          {
+            "t": "です。"
+          }
+        ],
+        "vi": "Cửa hàng tiện lợi ở Nhật mở cửa 24 giờ nên rất tiện lợi.",
+        "highlightVocabIds": [
+          "konbini",
+          "benri"
+        ],
+        "audioUrl": "/stories/konbini-onigiri/audio/read_01.wav",
+        "durationSec": 4.544
+      },
+      {
+        "id": "read_02",
+        "voice": "narrator",
+        "jaPlain": "お弁当やおにぎりを買うとき、店員さんはよく「温めますか？」と聞きます。",
+        "ttsText": "おべんとうやおにぎりをかうとき、てんいんさんはよく、あたためますか、とききます。",
+        "jaRuby": [
+          {
+            "t": "お"
+          },
+          {
+            "t": "弁当",
+            "r": "べんとう"
+          },
+          {
+            "t": "やおにぎりを"
+          },
+          {
+            "t": "買",
+            "r": "か"
+          },
+          {
+            "t": "うとき、"
+          },
+          {
+            "t": "店員",
+            "r": "てんいん"
+          },
+          {
+            "t": "さんはよく「"
+          },
+          {
+            "t": "温",
+            "r": "あたた"
+          },
+          {
+            "t": "めますか？」と"
+          },
+          {
+            "t": "聞",
+            "r": "き"
+          },
+          {
+            "t": "きます。"
+          }
+        ],
+        "vi": "Khi mua cơm hộp hay cơm nắm, nhân viên thường hỏi \"Bạn có muốn hâm nóng không?\".",
+        "highlightVocabIds": [
+          "atatameru",
+          "tenin"
+        ],
+        "audioUrl": "/stories/konbini-onigiri/audio/read_02.wav",
+        "durationSec": 6.315
+      },
+      {
+        "id": "read_03",
+        "voice": "narrator",
+        "jaPlain": "温めてほしいときは「はい、お願いします」、いらないときは「いいえ、大丈夫です」と答えましょう。",
+        "ttsText": "あたためてほしいときは、はい、おねがいします、いらないときは、いいえ、だいじょうぶです、とこたえましょう。",
+        "jaRuby": [
+          {
+            "t": "温",
+            "r": "あたた"
+          },
+          {
+            "t": "めてほしいときは「はい、お"
+          },
+          {
+            "t": "願",
+            "r": "ねが"
+          },
+          {
+            "t": "いします」、いらないときは「いいえ、"
+          },
+          {
+            "t": "大丈夫",
+            "r": "だいじょうぶ"
+          },
+          {
+            "t": "です」と"
+          },
+          {
+            "t": "答",
+            "r": "こた"
+          },
+          {
+            "t": "えましょう。"
+          }
+        ],
+        "vi": "Khi muốn hâm nóng hãy trả lời \"Hai, onegaishimasu\", còn khi không cần hãy nói \"Iie, daijoubu desu\".",
+        "highlightVocabIds": [
+          "onegaishimasu",
+          "daijoubu"
+        ],
+        "audioUrl": "/stories/konbini-onigiri/audio/read_03.wav",
+        "durationSec": 10.315
+      }
+    ],
+    "vocab": [
+      {
+        "id": "atatameru",
+        "word": "温める",
+        "reading": "あたためる",
+        "romaji": "atatameru",
+        "level": "N4",
+        "partOfSpeech": "Động từ nhóm II (Tha động từ)",
+        "meaningVi": "Hâm nóng, làm ấm (đồ ăn, đồ uống)",
+        "note": "Trong konbini, nhân viên thường dùng dạng lịch sự 「温めますか？」 (Có hâm nóng không ạ?)."
+      },
+      {
+        "id": "tenin",
+        "word": "店員",
+        "reading": "てんいん",
+        "romaji": "ten'in",
+        "level": "N5",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Nhân viên cửa hàng",
+        "note": "Thường gọi kèm hậu tố lịch sự 「店員さん」."
+      },
+      {
+        "id": "onegaishimasu",
+        "word": "お願いします",
+        "reading": "おねがいします",
+        "romaji": "onegaishimasu",
+        "level": "N5",
+        "partOfSpeech": "Cụm giao tiếp",
+        "meaningVi": "Làm ơn / Nhờ anh chị giúp",
+        "note": "Câu đa năng cực kỳ lịch sự khi gọi món, đồng ý hâm nóng hoặc nhờ lấy túi."
+      },
+      {
+        "id": "daijoubu",
+        "word": "大丈夫です",
+        "reading": "だいじょうぶです",
+        "romaji": "daijoubu desu",
+        "level": "N5",
+        "partOfSpeech": "Tính từ đuôi な / Cụm từ chối lịch sự",
+        "meaningVi": "Không sao đâu / Không cần đâu ạ",
+        "note": "Trong giao tiếp thực tế ở Nhật, 「いいえ、大丈夫です」 là cách từ chối cực kỳ tự nhiên và lịch sự (khi không cần hâm nóng, không lấy túi nilon, không lấy đũa)."
+      },
+      {
+        "id": "konbini",
+        "word": "コンビニ",
+        "reading": "こんびに",
+        "romaji": "konbini",
+        "level": "N5",
+        "partOfSpeech": "Danh từ (Katakana)",
+        "meaningVi": "Cửa hàng tiện lợi (Convenience store)",
+        "note": "7-Eleven, Lawson, FamilyMart — mở cửa 24/7 ở hầu khắp Nhật Bản."
+      },
+      {
+        "id": "benri",
+        "word": "便利",
+        "reading": "べんり",
+        "romaji": "benri",
+        "level": "N5",
+        "partOfSpeech": "Tính từ đuôi な",
+        "meaningVi": "Tiện lợi",
+        "note": "Ví dụ: 駅前のコンビニはとても便利です (Cửa hàng tiện lợi trước ga rất tiện)."
+      }
+    ]
+  }
+}

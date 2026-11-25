@@ -1,0 +1,23 @@
+[project]
+name = "jp-pixel-studio-mcp"
+version = "0.1.0"
+description = "Local MCP Server combining VOICEVOX Japanese TTS + Mini-PixelLab pixel art sprite processor for interactive Japanese learning stories."
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.2.0",
+    "httpx>=0.27.0",
+    "pillow>=10.4.0",
+    "numpy>=1.26.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+addopts = "-p no:launch_testing"

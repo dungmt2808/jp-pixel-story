@@ -1,0 +1,20 @@
+# Python / uv
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Node / Vite
+node_modules/
+dist/
+.vite/
+
+# Exporter temporary & output videos
+exporter/out/
+exporter/.tmp_*/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+*.log

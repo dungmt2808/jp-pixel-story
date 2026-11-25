@@ -1,0 +1,12 @@
+{
+  "name": "jp-pixel-story-exporter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "export": "node export_video.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.49.0"
+  }
+}
