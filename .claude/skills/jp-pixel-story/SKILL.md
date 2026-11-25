@@ -1,18 +1,20 @@
 ---
 name: jp-pixel-story
 description: >-
-  Create a new interactive 2D pixel-art Japanese learning story (with Furigana,
-  bilingual subtitles, VOICEVOX Japanese voiceovers, pixel sprites, interactive
-  mini-games, and a reading study view) and optionally export it to MP4.
+  Create a new 3-in-1 interactive 2D pixel-art Japanese learning lesson
+  (Animated Story + Reading/Vocab/Grammar/Quiz + Daily Dictation) with
+  Furigana-only toggle and local VOICEVOX MP3 audio.
 ---
 
-# Creating a New Japanese Pixel Story
+# Creating a New 3-in-1 Japanese Learning Lesson
 
-Follow the complete workflow in `.agents/plugins/jp-pixel-studio/skills/jp-pixel-story/SKILL.md` and schema reference `.agents/plugins/jp-pixel-studio/skills/jp-pixel-story/references/story-schema.md`.
+Follow `.agents/plugins/jp-pixel-studio/skills/jp-pixel-story/SKILL.md` and `.agents/plugins/jp-pixel-studio/skills/jp-pixel-story/references/story-schema.md`.
 
 ## Quick Checklist
 1. Check VOICEVOX with `voicevox_health` and pick speaker IDs via `voicevox_list_speakers`.
-2. Write `web/public/stories/<story-id>/story.json` with exact `jaRuby` Furigana segments, `ttsText`, Vietnamese translation, `characterCard`, and `reading` passage + JLPT vocab, then add its card metadata to `web/public/stories/index.json`.
-3. Run `voicevox_generate_story_audio` to synthesize real WAV voiceovers and update `durationSec`.
-4. Optional: Process custom AI sprite images using `pixellab_clean_sprite` or `pixellab_slice_spritesheet` locked to the story's palette.
-5. Preview at `http://127.0.0.1:5173/?story=<story-id>` (or `&autoplay=true`) and optionally export MP4 via `exporter/export_video.mjs`.
+2. Choose category (`"situation"` or `"story"`) and format:
+   - **Standard Engine:** write `story.json` (no Romaji, exact Furigana on every Kanji, `vocab`, `grammar` with `exampleRuby`, `quiz`) → run `voicevox_generate_story_audio` (`audio_format="mp3"`). Daily Dictation works automatically!
+   - **Standalone Interactive HTML (Hachikō style):** write `index.html` with `ふりがな ON/OFF`, `📚 Thư viện`, `🎧 Nghe chép` → run `voicevox_generate_standalone_pack` to generate MP3s + `manifest.json` + `dictation.json`.
+3. Register the lesson in `web/public/stories/index.json`.
+4. Run `story_validate_content` to verify 0 missing Furigana, 100% audio presence, and catalog registration.
+5. Build (`cd web && npm run build`) and push to `main` for automatic GitHub Pages deploy.

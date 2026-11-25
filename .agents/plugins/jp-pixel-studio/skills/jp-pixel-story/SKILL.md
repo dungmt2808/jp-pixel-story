@@ -1,62 +1,64 @@
 ---
 name: jp-pixel-story
 description: >-
-  Create a new interactive 2D pixel-art Japanese learning story (with Furigana,
-  bilingual subtitles, VOICEVOX Japanese voiceovers, pixel sprites, interactive
-  mini-games, and a reading study view) and optionally export it to MP4. Use
-  this skill whenever the user asks to generate a new Japanese story, JLPT
-  reading intro, conversation animation, or process pixel sprites for this project.
+  Create a new 3-in-1 interactive 2D pixel-art Japanese learning lesson
+  (Animated Interactive Story + Reading/Vocab/Grammar/Quiz + Daily Dictation
+  listening practice) with Furigana-only toggle and local VOICEVOX MP3 audio,
+  validate content quality, and register it in the web library. Use this skill
+  whenever the user asks to generate a new Japanese situation or story lesson,
+  add Daily Dictation, process pixel sprites, or export a video.
 ---
 
-# Creating a New Japanese Pixel Story
+# Creating a New 3-in-1 Japanese Learning Lesson
 
-Follow this end-to-end procedure whenever creating a new story lesson in `web/public/stories/<story-id>/`.
+Every lesson in `web/public/stories/<story-id>/` automatically powers **3 modes**:
+1. **🎮 Interactive 2D Pixel Animation** (`?story=<id>`)
+2. **📖 Reading Study View** (Furigana toggle + Vocab + Grammar + Quiz)
+3. **🎧 Daily Dictation** (`?story=<id>&mode=dictation` — Type & Word-Tile listening practice)
 
 ## Prerequisites
 
-1. Verify that the local VOICEVOX engine is reachable via the MCP tool `voicevox_health`.
-   - If unreachable, remind the user to launch the VOICEVOX desktop app or engine on port `50021`.
-2. Inspect available speakers via `voicevox_list_speakers` to pick fitting character voices (e.g., narrator `13`, male learner `11`, female staff `8`).
+1. Verify local VOICEVOX is running with MCP tool `voicevox_health`.
+2. Inspect available speakers via `voicevox_list_speakers` (recommended: narrator `13`, young male `11`, bright female `8`).
 
-## Step 1: Write `story.json`
+## Step 1: Choose Category & Format
 
-Create `web/public/stories/<story-id>/story.json` following the schema in [story-schema.md](./references/story-schema.md):
+Decide the library category in `web/public/stories/index.json`:
+- `"situation"` (`💬 Tình huống đời sống`): everyday Japan interactions (konbini, train station, ramen shop, clinic...).
+- `"story"` (`📖 Câu chuyện & Đọc hiểu`): cultural stories, folktales, JLPT passages (Hachikō, Momotarō...).
 
-- Break the Japanese passage or dialogue into 5–6 crisp scenes (`skyline_intro`, `exterior_zoom`, `konbini_walkin`, `drag_counter`, `closeup_choice`, `outro_celebrate` — or extend `web/src/engine/pixelRenderer.ts` for new scene backdrops).
-- For every Japanese line:
-  - Fill `jaPlain` (natural Japanese with Kanji).
-  - Fill `ttsText` (clean reading hints if a Kanji has tricky pronunciation so VOICEVOX reads it accurately).
-  - Fill `jaRuby` with exact `{ "t": "...", "r": "..." }` Furigana segments.
-  - Fill `vi` with natural Vietnamese translation.
-- Add a `characterCard` (cultural/character context popup) and a `reading` section (`sentences` + `vocab` + `grammar` applied in the story + 3–4 `quiz` questions).
-- Register the new entry in `web/public/stories/index.json` under the appropriate `category`: `"situation"` (`💬 Tình huống`) or `"story"` (`📖 Câu chuyện`), so it appears automatically in the web Story Library (and on GitHub Pages after `git push`).
+And choose one of two formats:
+- **Format A — Standard Engine (`story.json`, fastest & auto-supports Daily Dictation):**
+  Create `web/public/stories/<story-id>/story.json` following [story-schema.md](./references/story-schema.md), including:
+  - 5–6 scenes with `jaPlain`, `ttsText`, exact `jaRuby` Furigana on every Kanji (no Romaji!), and natural Vietnamese `vi`.
+  - `characterCard` popup facts.
+  - `reading` with `sentences`, `vocab`, `grammar` (with `exampleRuby`), and 3–4 `quiz` questions.
+  - Run MCP tool `voicevox_generate_story_audio` (`audio_format="mp3"`).
+  - Daily Dictation automatically reads all voiced lines from `story.json`!
+- **Format B — Custom Standalone Interactive HTML (for richly bespoke interactions like Hachikō):**
+  Create `web/public/stories/<story-id>/index.html` using `{漢字|かんじ}` markup, `sayW(jp, vi)`, `PASSAGE`, `DICT`, `QUIZ`, a **`ふりがな ON/OFF`** toggle (no Romaji), a **`📚 Thư viện`** button (`../../`), and a **`🎧 Nghe chép`** button (`../../?story=<story-id>&mode=dictation`).
+  - Run MCP tool `voicevox_generate_standalone_pack` to synthesize all VOICEVOX `.mp3` clips, `audio/manifest.json`, and **`dictation.json`** for Daily Dictation in one step!
 
-## Step 2: Synthesize Real VOICEVOX Audio & Sync Timestamps
+## Step 2: Process Custom Pixel-Art Sprites (Optional)
 
-Run the MCP tool `voicevox_generate_story_audio` pointing at `web/public/stories/<story-id>/story.json`:
+If generating character/prop images via Gemini:
+1. Check palettes with `pixellab_list_palettes`.
+2. Clean single sprites with `pixellab_clean_sprite` or walk-cycle grids with `pixellab_slice_spritesheet`.
 
-- Generates `.wav` voiceovers into `web/public/stories/<story-id>/audio/`.
-- Automatically measures exact `durationSec` and updates `audioUrl` in `story.json`.
-- For beginner JLPT N5–N4 stories, keep `speedScale` around `0.90–0.95`.
+## Step 3: Register in Library Catalog
 
-## Step 3: Process Custom Pixel-Art Sprites (Optional)
+Add the lesson card to `web/public/stories/index.json` with:
+`id`, `category` (`"situation"` | `"story"`), `kind` (`"engine"` | `"standalone"`), `href` (if standalone), `titleJa`, `titleVi`, `level`, `description`, `sceneCount`, `vocabCount`, `grammarCount`, `quizCount`.
 
-If the user supplies AI-generated character or prop images (e.g. from Gemini):
+## Step 4: Mandatory Content QA Validation
 
-1. Check available palettes with `pixellab_list_palettes` and choose one matching `story.json`'s `palette`.
-2. For single portraits or props, call `pixellab_clean_sprite`.
-3. For 4-frame walk cycles or expression sheets, call `pixellab_slice_spritesheet` into `web/public/stories/<story-id>/sprites/`.
+Before finishing or pushing, ALWAYS run MCP tool `story_validate_content` on `web/public/stories/<story-id>`:
+- Confirms **0 missing Furigana** on any Kanji.
+- Confirms **all audio files exist** and are non-empty.
+- Confirms **quiz `correctIndex` bounds** and **`stories/index.json` registration**.
 
-## Step 4: Preview & Export Video
+## Step 5: Preview, Deploy, or Export MP4
 
-1. Preview interactively:
-   ```bash
-   cd web && npm run dev
-   ```
-   Open `http://127.0.0.1:5173/?story=<story-id>`.
-2. Test hands-free autoplay mode:
-   Open `http://127.0.0.1:5173/?story=<story-id>&autoplay=true`.
-3. Export an MP4 video with synced VOICEVOX audio:
-   ```bash
-   cd exporter && node export_video.mjs --story <story-id>
-   ```
+- Local preview: `cd web && npm run dev`
+- Deploy live to GitHub Pages: `git add . && git commit && git push origin main`
+- Optional MP4 video export: `cd exporter && node export_video.mjs --story <story-id>`

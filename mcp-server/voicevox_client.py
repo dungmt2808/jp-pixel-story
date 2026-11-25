@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -249,4 +250,145 @@ async def generate_story_audio(
         "generated_count": len(generated),
         "skipped_count": len(skipped),
         "generated": generated,
+    }
+
+
+_RUBY_BRACE_RE = re.compile(r"\{([^|}]+)\|([^}]+)\}")
+
+
+def _parse_braced_ruby(text: str) -> list[dict[str, str]]:
+    """Convert `{漢字|かんじ}` markup into RubySegment list for DictationView."""
+    segs: list[dict[str, str]] = []
+    pos = 0
+    for m in _RUBY_BRACE_RE.finditer(text):
+        if m.start() > pos:
+            segs.append({"t": text[pos : m.start()]})
+        segs.append({"t": m.group(1), "r": m.group(2)})
+        pos = m.end()
+    if pos < len(text):
+        segs.append({"t": text[pos:]})
+    return segs
+
+
+def _braced_to_tts_kana(text: str) -> str:
+    clean = re.sub(r"<<[a-z0-9]+:(.*?)>>", r"\1", text)
+    return _RUBY_BRACE_RE.sub(r"\2", clean)
+
+
+async def generate_standalone_pack(
+    html_path: str | Path,
+    *,
+    story_id: str,
+    title_ja: str,
+    title_vi: str,
+    level: str = "JLPT N4",
+    speaker_id: int = 13,
+    speed_scale: float = 0.91,
+    force: bool = False,
+    base_url: str = DEFAULT_VOICEVOX_URL,
+) -> dict[str, Any]:
+    """Scan a standalone interactive HTML story (using `sayW` & `PASSAGE` with `{漢字|かんじ}`),
+    synthesize VOICEVOX MP3 clips + `audio/manifest.json`, and generate `dictation.json` for Daily Dictation.
+    """
+    html_file = Path(html_path).expanduser().resolve()
+    story_dir = html_file.parent
+    audio_dir = story_dir / "audio"
+    audio_dir.mkdir(parents=True, exist_ok=True)
+    html = html_file.read_text(encoding="utf-8")
+
+    ext = "mp3" if shutil.which("ffmpeg") else "wav"
+    manifest: dict[str, dict[str, Any]] = {"lines": {}, "paragraphs": {}}
+    dictation_items: list[dict[str, Any]] = []
+    seen_lines: set[str] = set()
+
+    async def synth_one(fid: str, tts_text: str) -> tuple[str, float]:
+        out_name = f"{fid}.{ext}"
+        out_path = audio_dir / out_name
+        if out_path.exists() and not force and ext == "wav":
+            return f"audio/{out_name}", get_wav_duration_sec(out_path)
+
+        if ext == "mp3":
+            with tempfile.TemporaryDirectory() as td:
+                tmp_wav = Path(td) / f"{fid}.wav"
+                res = await synthesize_line(
+                    tts_text,
+                    speaker_id=speaker_id,
+                    output_path=tmp_wav,
+                    speed_scale=speed_scale,
+                    base_url=base_url,
+                )
+                _convert_wav_to_mp3(tmp_wav, out_path)
+                return f"audio/{out_name}", res["duration_sec"]
+
+        res = await synthesize_line(
+            tts_text,
+            speaker_id=speaker_id,
+            output_path=out_path,
+            speed_scale=speed_scale,
+            base_url=base_url,
+        )
+        return f"audio/{out_name}", res["duration_sec"]
+
+    # 1. Extract sayW("jp","vi") dialogue/narration lines
+    for m in re.finditer(r'sayW\("([^"]+)","([^"]+)"', html):
+        raw_jp, vi = m.group(1), m.group(2)
+        if raw_jp in seen_lines:
+            continue
+        seen_lines.add(raw_jp)
+        idx = len(dictation_items)
+        rel_file, dur = await synth_one(f"line_{idx:02d}", _braced_to_tts_kana(raw_jp))
+        manifest["lines"][raw_jp] = {
+            "file": rel_file,
+            "durationSec": dur,
+            "speakerId": speaker_id,
+        }
+        dictation_items.append(
+            {
+                "id": f"{story_id}_{idx+1:02d}",
+                "speakerLabel": "ナレーター",
+                "jaPlain": _RUBY_BRACE_RE.sub(r"\1", raw_jp),
+                "jaKana": _RUBY_BRACE_RE.sub(r"\2", raw_jp),
+                "jaRuby": _parse_braced_ruby(raw_jp),
+                "vi": vi,
+                "audioUrl": f"/stories/{story_id}/{rel_file}",
+                "durationSec": dur,
+            }
+        )
+
+    # 2. Extract PASSAGE paragraphs if present
+    m_pas = re.search(r"const PASSAGE=\[(.*?)\];", html, re.S)
+    if m_pas:
+        for p_idx, m in enumerate(re.finditer(r'\["([^"]+)","([^"]+)"\]', m_pas.group(1))):
+            raw_p = m.group(1)
+            rel_file, dur = await synth_one(f"para_{p_idx:02d}", _braced_to_tts_kana(raw_p))
+            manifest["paragraphs"][f"para_{p_idx}"] = {
+                "file": rel_file,
+                "durationSec": dur,
+                "speakerId": speaker_id,
+            }
+
+    manifest_path = audio_dir / "manifest.json"
+    manifest_path.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+    dictation_path = story_dir / "dictation.json"
+    dictation_pack = {
+        "id": story_id,
+        "titleJa": title_ja,
+        "titleVi": title_vi,
+        "level": level,
+        "items": dictation_items,
+    }
+    dictation_path.write_text(
+        json.dumps(dictation_pack, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    return {
+        "ok": True,
+        "manifest_path": str(manifest_path),
+        "dictation_json": str(dictation_path),
+        "line_count": len(manifest["lines"]),
+        "paragraph_count": len(manifest["paragraphs"]),
     }

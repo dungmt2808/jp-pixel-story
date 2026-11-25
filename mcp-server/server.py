@@ -15,6 +15,7 @@ try:
 except ImportError:
     from mcp.server.fastmcp import FastMCP  # type: ignore[no-redef]
 
+from content_validator import validate_story_folder
 from pixel_processor import (
     list_palettes_info,
     process_pixel_sprite,
@@ -23,6 +24,7 @@ from pixel_processor import (
 from voicevox_client import (
     DEFAULT_VOICEVOX_URL,
     check_voicevox_health,
+    generate_standalone_pack,
     generate_story_audio,
     list_speakers,
     synthesize_line,
@@ -87,6 +89,48 @@ async def voicevox_generate_story_audio(
         audio_format=audio_format,
         base_url=base_url,
     )
+    return json.dumps(result, ensure_ascii=False, indent=2)
+
+
+@mcp.tool()
+async def voicevox_generate_standalone_pack(
+    html_path: str,
+    story_id: str,
+    title_ja: str,
+    title_vi: str,
+    level: str = "JLPT N4",
+    speaker_id: int = 13,
+    speed_scale: float = 0.91,
+    force: bool = False,
+    base_url: str = DEFAULT_VOICEVOX_URL,
+) -> str:
+    """Scan a standalone interactive HTML story (like Hachiko), synthesize VOICEVOX MP3 audio + audio/manifest.json, and auto-generate dictation.json for Daily Dictation mode."""
+    result = await generate_standalone_pack(
+        html_path=html_path,
+        story_id=story_id,
+        title_ja=title_ja,
+        title_vi=title_vi,
+        level=level,
+        speaker_id=speaker_id,
+        speed_scale=speed_scale,
+        force=force,
+        base_url=base_url,
+    )
+    return json.dumps(result, ensure_ascii=False, indent=2)
+
+
+# ---------------------------------------------------------------------------
+# Content QA Tool
+# ---------------------------------------------------------------------------
+
+
+@mcp.tool()
+def story_validate_content(
+    story_dir: str,
+    web_public_dir: str | None = None,
+) -> str:
+    """Validate a story folder for 100% Furigana coverage on Kanji, existing audio files, valid quiz answers, and catalog registration in stories/index.json."""
+    result = validate_story_folder(story_dir=story_dir, web_public_dir=web_public_dir)
     return json.dumps(result, ensure_ascii=False, indent=2)
 
 

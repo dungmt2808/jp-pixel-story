@@ -1,39 +1,64 @@
-# Story JSON Schema Reference
+# Story, Catalog & Daily Dictation Schema Reference
 
-Location: `web/public/stories/<story-id>/story.json`
-
-## Top-Level Fields
-
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| `id` | `string` | Kebab-case folder ID (e.g., `konbini-onigiri`). |
-| `series` | `string` | Series label shown in the top-left header. |
-| `titleJa` | `string` | Japanese title (e.g., `夜のコンビニ`). |
-| `titleVi` | `string` | Vietnamese subtitle. |
-| `level` | `string` | Target level badge (e.g., `JLPT N5–N4`). |
-| `author` | `string` | Credit line shown on the intro screen. |
-| `palette` | `string` | Palette key from `mcp-server/palettes.py`. |
-| `voices` | `object` | Map of voice keys (`narrator`, `minh`, `clerk`) to `{ label, speakerId, speedScale }`. |
-| `characterCard` | `object` | `{ nameJa, subtitle, facts: [{ label, value }] }`. |
-| `scenes` | `array` | Ordered array of `StoryScene` objects. |
-| `reading` | `object` | `{ sectionTitle, subtitle, sentences, vocab }` for the study screen. |
-
-## DialogueLine Format
+## 1. Library Catalog (`web/public/stories/index.json`)
 
 ```json
 {
-  "id": "s05_l01",
-  "voice": "clerk",
-  "speakerLabel": "店員",
-  "jaPlain": "おにぎり、温めますか？",
-  "ttsText": "おにぎり、あたためますか？",
-  "jaRuby": [
-    { "t": "おにぎり、" },
-    { "t": "温", "r": "あたた" },
-    { "t": "めますか？" }
-  ],
-  "vi": "Cơm nắm này, bạn có muốn hâm nóng không ạ?"
+  "stories": [
+    {
+      "id": "konbini-onigiri",
+      "category": "situation",
+      "kind": "engine",
+      "thumbStyle": "konbini",
+      "titleJa": "夜のコンビニ",
+      "titleVi": "Lần đầu mua cơm nắm lúc nửa đêm",
+      "level": "JLPT N5–N4",
+      "description": "Tóm tắt ngắn gọn tình huống/câu chuyện.",
+      "sceneCount": 6,
+      "vocabCount": 6,
+      "grammarCount": 4,
+      "quizCount": 3
+    }
+  ]
 }
 ```
+- `category`: strictly `"situation"` (`💬 Tình huống`) or `"story"` (`📖 Câu chuyện`).
+- `kind`: `"engine"` (uses React `PixelStage` + `ReadingView` + auto `DictationView`) or `"standalone"` (requires `href`: `"stories/<id>/index.html"` + `dictation.json`).
 
-> `audioUrl` and `durationSec` are automatically populated by `voicevox_generate_story_audio`.
+## 2. Standard Story (`web/public/stories/<id>/story.json`)
+
+- **No Romaji UI**: keep every Kanji annotated via `jaRuby` (`{ "t": "漢字", "r": "かんじ" }`) so the **`ふりがな ON/OFF`** button works everywhere.
+- **`reading` object must include:**
+  - `sentences`: clickable reading sentences with VOICEVOX audio.
+  - `vocab`: `{ id, word, reading, level, partOfSpeech, meaningVi, note }`.
+  - `grammar`: `{ id, pattern, level, meaningVi, explanation, exampleJa, exampleRuby, exampleVi }`.
+  - `quiz`: `{ id, questionJa: RubySegment[], questionVi, options: [{ ja: RubySegment[] }], correctIndex, explanationVi }`.
+
+## 3. Standalone Daily Dictation Pack (`web/public/stories/<id>/dictation.json`)
+
+Automatically generated for standalone stories by MCP tool `voicevox_generate_standalone_pack`:
+
+```json
+{
+  "id": "hachiko",
+  "titleJa": "ハチ公の話",
+  "titleVi": "Câu chuyện chú chó Hachikō ở ga Shibuya",
+  "level": "JLPT N4",
+  "items": [
+    {
+      "id": "h_01",
+      "speakerLabel": "ナレーター",
+      "jaPlain": "東京の渋谷に、上野先生という大学の先生が住んでいました。",
+      "jaKana": "とうきょうのしぶやに、うえのせんせいというだいがくのせんせいがすんでいました。",
+      "jaRuby": [
+        { "t": "東京", "r": "とうきょう" },
+        { "t": "の" },
+        { "t": "渋谷", "r": "しぶや" }
+      ],
+      "vi": "Ở Shibuya, Tokyo, có một giáo sư đại học tên là Ueno.",
+      "audioUrl": "/stories/hachiko/audio/line_00.mp3",
+      "durationSec": 5.184
+    }
+  ]
+}
+```

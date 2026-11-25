@@ -107,3 +107,14 @@ def test_voicevox_live_if_running(tmp_path: Path) -> None:
     assert res["ok"] is True
     assert wav_out.exists()
     assert res["duration_sec"] > 0.3
+
+
+def test_validate_real_repo_stories() -> None:
+    from content_validator import validate_story_folder
+
+    stories_root = Path(__file__).resolve().parents[2] / "web" / "public" / "stories"
+    for story_id in ("konbini-onigiri", "hachiko"):
+        res = validate_story_folder(stories_root / story_id)
+        assert res["ok"] is True, f"Validation failed for {story_id}: {res['issues']}"
+        assert res["registered_in_catalog"] is True
+        assert res["stats"]["audio_checked"] >= 14
