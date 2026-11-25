@@ -2,16 +2,13 @@ import { useRef, useState } from "react";
 import { retroAudio } from "../audio/chiptune";
 import type { ReadingSentence, StoryData } from "../types/story";
 import { resolveAssetUrl } from "../utils/assetUrl";
-import { rubySegmentsToRomaji } from "../utils/romaji";
 import { PortraitCanvas } from "./PortraitCanvas";
 import { RubyText } from "./RubyText";
 
 interface ReadingViewProps {
   story: StoryData;
   showFurigana: boolean;
-  showRomaji: boolean;
   onToggleFurigana: () => void;
-  onToggleRomaji: () => void;
   onBackToStory: () => void;
   onOpenLibrary: () => void;
 }
@@ -19,9 +16,7 @@ interface ReadingViewProps {
 export function ReadingView({
   story,
   showFurigana,
-  showRomaji,
   onToggleFurigana,
-  onToggleRomaji,
   onBackToStory,
   onOpenLibrary,
 }: ReadingViewProps) {
@@ -83,22 +78,13 @@ export function ReadingView({
           {story.titleJa} · {story.level}
         </div>
 
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button
-            type="button"
-            className={`pixel-icon-btn ${showFurigana ? "active" : ""}`}
-            onClick={onToggleFurigana}
-          >
-            ふりがな {showFurigana ? "ON" : "OFF"}
-          </button>
-          <button
-            type="button"
-            className={`pixel-icon-btn ${showRomaji ? "active" : ""}`}
-            onClick={onToggleRomaji}
-          >
-            Romaji {showRomaji ? "ON" : "OFF"}
-          </button>
-        </div>
+        <button
+          type="button"
+          className={`pixel-icon-btn ${showFurigana ? "active" : ""}`}
+          onClick={onToggleFurigana}
+        >
+          ふりがな {showFurigana ? "ON" : "OFF"}
+        </button>
       </div>
 
       <div className="reading-grid">
@@ -127,11 +113,6 @@ export function ReadingView({
                     showFurigana={showFurigana}
                   />
                 </div>
-                {showRomaji && (
-                  <div className="sentence-romaji">
-                    {sent.romaji ?? rubySegmentsToRomaji(sent.jaRuby)}
-                  </div>
-                )}
                 <div className="sentence-vi">{sent.vi}</div>
                 <span className="sentence-play-hint">
                   ▶ Nghe giọng VOICEVOX ({sent.durationSec?.toFixed(1) ?? "—"}s)
@@ -143,7 +124,14 @@ export function ReadingView({
           {quizList.length > 0 && (
             <section className="reading-quiz-section">
               <h2 className="reading-quiz-title">
-                読解クイズ <span>· Kiểm tra hiểu bài</span>
+                <RubyText
+                  segments={[
+                    { t: "読解", r: "どっかい" },
+                    { t: "クイズ" },
+                  ]}
+                  showFurigana={showFurigana}
+                />{" "}
+                <span>· Kiểm tra hiểu bài</span>
               </h2>
               {quizList.map((q, qIdx) => {
                 const picked = quizAnswers[q.id];
@@ -245,10 +233,9 @@ export function ReadingView({
                     <div className="vocab-top">
                       <div>
                         <span className="vocab-word">{item.word}</span>
-                        <span className="vocab-reading">
-                          {item.reading}
-                          {showRomaji ? ` (${item.romaji})` : ""}
-                        </span>
+                        {showFurigana && (
+                          <span className="vocab-reading">{item.reading}</span>
+                        )}
                       </div>
                       <span className="vocab-level">{item.level}</span>
                     </div>
@@ -269,12 +256,7 @@ export function ReadingView({
                 {grammarList.map((g) => (
                   <div key={g.id} className="vocab-card grammar-type">
                     <div className="vocab-top">
-                      <div>
-                        <span className="vocab-word">{g.pattern}</span>
-                        {showRomaji && g.romaji && (
-                          <span className="vocab-reading">({g.romaji})</span>
-                        )}
-                      </div>
+                      <span className="vocab-word">{g.pattern}</span>
                       <span className="vocab-level grammar-badge">
                         {g.level}
                       </span>
@@ -282,7 +264,16 @@ export function ReadingView({
                     <div className="vocab-meaning">{g.meaningVi}</div>
                     <div className="vocab-note">{g.explanation}</div>
                     <div className="grammar-example">
-                      <div className="grammar-ex-ja">{g.exampleJa}</div>
+                      <div className="grammar-ex-ja">
+                        {g.exampleRuby ? (
+                          <RubyText
+                            segments={g.exampleRuby}
+                            showFurigana={showFurigana}
+                          />
+                        ) : (
+                          g.exampleJa
+                        )}
+                      </div>
                       <div className="grammar-ex-vi">{g.exampleVi}</div>
                     </div>
                   </div>

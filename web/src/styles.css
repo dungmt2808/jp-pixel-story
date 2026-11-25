@@ -841,24 +841,6 @@ rt {
   color: #f5f1e6;
 }
 
-/* Romaji lines */
-.subtitle-romaji {
-  font-family: var(--font-vi);
-  font-size: clamp(11px, 1.3vw, 13px);
-  color: #ffd875;
-  font-style: italic;
-  margin-top: 2px;
-  opacity: 0.92;
-}
-
-.sentence-romaji {
-  font-family: var(--font-vi);
-  font-size: 12.5px;
-  color: #7c42a6;
-  font-style: italic;
-  margin-top: 4px;
-}
-
 /* Reading sidebar tabs, Grammar cards & Quiz */
 .sidebar-tabs {
   display: flex;

@@ -146,8 +146,8 @@ export function StoryLibrary({ stories, onSelectStory }: StoryLibraryProps) {
           <div className="topbar-series">JP-PIXEL-STORY · INTERACTIVE JAPANESE</div>
           <h1 className="library-title">Thư viện học Tiếng Nhật 2D Pixel Art</h1>
           <p className="library-subtitle">
-            Học Tiếng Nhật qua hoạt ảnh tương tác có giọng đọc <b>VOICEVOX</b>, bật/tắt{" "}
-            <b>Furigana &amp; Romaji</b>, tổng hợp từ vựng, ngữ pháp và quiz đọc hiểu cuối bài.
+            Học Tiếng Nhật qua hoạt ảnh tương tác có giọng đọc <b>VOICEVOX</b>, nút ẩn/hiện{" "}
+            <b>ふりがな (Furigana)</b>, tổng hợp từ vựng, ngữ pháp và quiz đọc hiểu cuối bài.
           </p>
         </div>
         <div className="library-badge-count">{stories.length} bài học</div>

@@ -12,7 +12,6 @@ export interface DialogueLine {
   jaPlain: string;
   ttsText?: string;
   jaRuby: RubySegment[];
-  romaji?: string;
   vi: string;
   audioUrl?: string;
   durationSec?: number;
@@ -21,6 +20,7 @@ export interface DialogueLine {
 export interface MiniGameChoice {
   id: string;
   labelJa: string;
+  labelRuby?: RubySegment[];
   labelVi: string;
   effect: "microwave" | "polite_bow" | string;
   responseLine: DialogueLine;
@@ -67,7 +67,6 @@ export interface ReadingSentence {
   voice: string;
   jaPlain: string;
   jaRuby: RubySegment[];
-  romaji?: string;
   vi: string;
   audioUrl?: string;
   durationSec?: number;
@@ -79,7 +78,7 @@ export interface VocabItem {
   id: string;
   word: string;
   reading: string;
-  romaji: string;
+  romaji?: string;
   level: string;
   partOfSpeech: string;
   meaningVi: string;
@@ -89,11 +88,11 @@ export interface VocabItem {
 export interface GrammarItem {
   id: string;
   pattern: string;
-  romaji?: string;
   level: string;
   meaningVi: string;
   explanation: string;
   exampleJa: string;
+  exampleRuby?: RubySegment[];
   exampleVi: string;
 }
 

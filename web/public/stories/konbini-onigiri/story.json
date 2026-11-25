@@ -177,8 +177,11 @@
           "ttsText": "おなかがすいたなあ。さけおにぎりにしよう！",
           "jaRuby": [
             {
-              "t": "お腹",
-              "r": "おなか"
+              "t": "お"
+            },
+            {
+              "t": "腹",
+              "r": "なか"
             },
             {
               "t": "がすいたなあ。"
@@ -295,6 +298,11 @@
           {
             "id": "warm_yes",
             "labelJa": "はい、お願いします！",
+            "labelRuby": [
+              { "t": "はい、お" },
+              { "t": "願", "r": "ねが" },
+              { "t": "いします！" }
+            ],
             "labelVi": "Vâng, làm ơn hâm nóng giúp tôi!",
             "effect": "microwave",
             "responseLine": {
@@ -323,6 +331,11 @@
           {
             "id": "warm_no",
             "labelJa": "いいえ、大丈夫です。",
+            "labelRuby": [
+              { "t": "いいえ、" },
+              { "t": "大丈夫", "r": "だいじょうぶ" },
+              { "t": "です。" }
+            ],
             "labelVi": "Không, để nguyên là được rồi ạ.",
             "effect": "polite_bow",
             "responseLine": {
@@ -569,7 +582,7 @@
             "t": "えましょう。"
           }
         ],
-        "vi": "Khi muốn hâm nóng hãy trả lời \"Hai, onegaishimasu\", còn khi không cần hãy nói \"Iie, daijoubu desu\".",
+        "vi": "Khi muốn hâm nóng hãy trả lời 「はい、お願いします」, còn khi không cần hãy nói 「いいえ、大丈夫です」.",
         "highlightVocabIds": [
           "onegaishimasu",
           "daijoubu"
@@ -644,42 +657,66 @@
       {
         "id": "g_nishimasu",
         "pattern": "N + にする / にしよう",
-        "romaji": "N ni suru / ni shiyou",
         "level": "N4",
         "meaningVi": "Quyết định chọn N",
         "explanation": "Dùng khi chọn món ăn, đồ uống hoặc quyết định lựa chọn giữa nhiều thứ. Thể ý chí 「〜にしよう」 mang sắc thái tự nhủ thân mật.",
         "exampleJa": "鮭おにぎりにしよう！",
+        "exampleRuby": [
+          { "t": "鮭", "r": "さけ" },
+          { "t": "おにぎりにしよう！" }
+        ],
         "exampleVi": "Chọn cơm nắm cá hồi vậy!"
       },
       {
         "id": "g_ninarimasu",
         "pattern": "Số tiền + になります",
-        "romaji": "... ni narimasu",
         "level": "N5",
         "meaningVi": "Tổng cộng hết ... yên",
         "explanation": "Cách nhân viên thu ngân Nhật báo giá tiền lịch sự (tương đương 「〜です」 trong ngữ cảnh phục vụ khách hàng).",
         "exampleJa": "160円になります。",
+        "exampleRuby": [
+          { "t": "160" },
+          { "t": "円", "r": "えん" },
+          { "t": "になります。" }
+        ],
         "exampleVi": "Của quý khách hết 160 yên ạ."
       },
       {
         "id": "g_toki",
         "pattern": "V (thể từ điển) + とき",
-        "romaji": "V-ru toki",
         "level": "N5",
         "meaningVi": "Khi làm V / Lúc làm V",
         "explanation": "Nối 2 mệnh đề diễn tả thời điểm diễn ra hành động.",
         "exampleJa": "おにぎりを買うとき、店員さんは「温めますか？」と聞きます。",
+        "exampleRuby": [
+          { "t": "おにぎりを" },
+          { "t": "買", "r": "か" },
+          { "t": "うとき、" },
+          { "t": "店員", "r": "てんいん" },
+          { "t": "さんは「" },
+          { "t": "温", "r": "あたた" },
+          { "t": "めますか？」と" },
+          { "t": "聞", "r": "き" },
+          { "t": "きます。" }
+        ],
         "exampleVi": "Khi mua cơm nắm, nhân viên hỏi \"Có hâm nóng không?\"."
       },
       {
         "id": "g_tehoshii",
         "pattern": "V-て + ほしい",
-        "romaji": "V-te hoshii",
         "level": "N4",
         "meaningVi": "Muốn ai đó làm V cho mình",
         "explanation": "Khác với 「V-たい」 (tự mình muốn làm), 「V-てほしい」 diễn tả mong muốn người khác thực hiện hành động đó.",
         "exampleJa": "温めてほしいときは「はい、お願いします」と言います。",
-        "exampleVi": "Khi muốn được hâm nóng hãy nói \"Hai, onegaishimasu\"."
+        "exampleRuby": [
+          { "t": "温", "r": "あたた" },
+          { "t": "めてほしいときは「はい、お" },
+          { "t": "願", "r": "ねが" },
+          { "t": "いします」と" },
+          { "t": "言", "r": "い" },
+          { "t": "います。" }
+        ],
+        "exampleVi": "Khi muốn được hâm nóng hãy nói 「はい、お願いします」."
       }
     ],
     "quiz": [

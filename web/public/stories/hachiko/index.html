@@ -76,9 +76,6 @@ body.rec .wrap{padding:0;max-width:none}body.rec .top,body.rec .foot{display:non
 
 .ctrl button.on{background:#2f7a4c;color:#f6f1e4;border-color:#2f7a4c}
 .ctrl button.lib{background:#222c4a;color:#ffd875;border-color:#222c4a}
-.noromaji .rmj,.noromaji .head-rmj{display:none}
-.rmj{font:italic 13px/1.5 VSerif,Georgia,serif;color:#7a3fa0;margin:4px 0 0}
-.head-rmj{font:italic 13px/1.4 VSerif,Georgia,serif;color:#7a3fa0;margin:2px 0 6px}
 .pplay{margin-top:6px;font:700 12px VMono,monospace;background:#fffaf0;border:1.5px solid #2a1c12;color:#2a1c12;padding:3px 10px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .pplay:hover{background:#efe2c4}
 .pplay.playing{background:#7a3fa0;color:#fffaf0;border-color:#7a3fa0}
@@ -88,12 +85,12 @@ body.rec .wrap{padding:0;max-width:none}body.rec .top,body.rec .foot{display:non
 <div class="wrap">
   <div class="top">
     <div><div class="kicker">TIẾNG NHẬT N4 · BÀI ĐỌC TƯƠNG TÁC</div><h1>ハチ公の話 · Câu chuyện Hachikō</h1></div>
-    <div class="ctrl"><button id="bLib" class="lib">📚 Thư viện</button><button id="bFuri" class="on">ふりがな ON</button><button id="bRomaji" class="on">Romaji ON</button><button id="bAuto">▶ Tự chạy demo</button><button id="bRead">Mở bài đọc</button><button id="bRestart">↺ Chơi lại</button></div>
+    <div class="ctrl"><button id="bLib" class="lib">📚 Thư viện</button><button id="bFuri" class="on">ふりがな ON</button><button id="bAuto">▶ Tự chạy demo</button><button id="bRead">Mở bài đọc</button><button id="bRestart">↺ Chơi lại</button></div>
   </div>
   <div class="stage" id="stage">
     <canvas id="c" width="960" height="720"></canvas>
     <div id="reader" hidden>
-      <div class="rbar"><button id="rBack">← ゲーム</button><div class="rtitle">ハチ公の話 <span>· N4</span></div><div class="rtog"><button id="tFuri" aria-pressed="true">ふりがな</button><button id="tRomaji" aria-pressed="true">Romaji</button><button id="tVi" aria-pressed="false">Dịch</button></div></div>
+      <div class="rbar"><button id="rBack">← ゲーム</button><div class="rtitle">ハチ公の話 <span>· N4</span></div><div class="rtog"><button id="tFuri" aria-pressed="true">ふりがな</button><button id="tVi" aria-pressed="false">Dịch</button></div></div>
       <div class="rgrid">
         <article class="rmain">
           <img id="rImg" alt="Tượng Hachikō ở Shibuya ngày nay, hình pixel minh họa">
@@ -157,27 +154,10 @@ let autoO=null;const events=[];
 const wait=s=>({until:sT+s}),until=f=>({cond:f});
 function stepGen(o){let g=0;while(o&&o.gen&&!o.dead&&g++<80){const w=o.w;if(w){if(w.frame!==undefined){if(w.frame>=FRAME)return;}else if(w.until!==undefined){if(sT<w.until)return;}else if(w.cond&&!w.cond())return;}const r=o.gen.next();if(o.dead)return;if(r.done){o.gen=null;return;}o.w=r.value||{frame:FRAME};}}
 
-// ======================= VOICEVOX + ROMAJI EXTENSIONS =======================
+// ======================= VOICEVOX + FURIGANA EXTENSIONS =======================
 const VOICE_MANIFEST={"lines": {"{東京|とうきょう}の{渋谷|しぶや}に、{上野|うえの}{先生|せんせい}という{大学|だいがく}の{先生|せんせい}が{住|す}んでいました。": {"file": "audio/line_00.mp3", "durationSec": 5.184, "speakerId": 13}, "1924{年|ねん}、{先生|せんせい}の{家|いえ}に{秋田犬|あきたいぬ}の{子犬|こいぬ}が{来|き}ました。": {"file": "audio/line_01.mp3", "durationSec": 5.035, "speakerId": 13}, "{名前|なまえ}は「ハチ」。{先生|せんせい}はハチをとてもかわいがりました。": {"file": "audio/line_02.mp3", "durationSec": 4.608, "speakerId": 13}, "{毎朝|まいあさ}、ハチは{先生|せんせい}といっしょに{渋谷駅|しぶやえき}まで{歩|ある}きました。": {"file": "audio/line_03.mp3", "durationSec": 4.576, "speakerId": 13}, "{先生|せんせい}は{電車|でんしゃ}で{大学|だいがく}へ{行|い}きました。": {"file": "audio/line_04.mp3", "durationSec": 2.741, "speakerId": 13}, "{夕方|ゆうがた}になると、ハチは{駅|えき}の{前|まえ}で{先生|せんせい}を{待|ま}っていました。": {"file": "audio/line_05.mp3", "durationSec": 4.405, "speakerId": 13}, "「おかえりなさい!」{毎日|まいにち}、ハチはとてもうれしそうでした。": {"file": "audio/line_06.mp3", "durationSec": 4.597, "speakerId": 13}, "ところが、1925{年|ねん}5{月|がつ}、{先生|せんせい}は{大学|だいがく}で{急|きゅう}に{亡|な}くなってしまいました。": {"file": "audio/line_07.mp3", "durationSec": 6.645, "speakerId": 13}, "その{日|ひ}も、ハチは{駅|えき}で{先生|せんせい}を{待|ま}っていました。": {"file": "audio/line_08.mp3", "durationSec": 3.531, "speakerId": 13}, "いくら{待|ま}っても、{先生|せんせい}は{帰|かえ}ってきませんでした。": {"file": "audio/line_09.mp3", "durationSec": 3.669, "speakerId": 13}, "それから、ハチは{毎日|まいにち}{駅|えき}へ{行|い}って、{先生|せんせい}を{待|ま}つようになりました。": {"file": "audio/line_10.mp3", "durationSec": 5.205, "speakerId": 13}, "{雨|あめ}の{日|ひ}も、{雪|ゆき}の{日|ひ}も、ハチは{待|ま}ちつづけました。": {"file": "audio/line_11.mp3", "durationSec": 3.872, "speakerId": 13}, "はじめは、ハチをじゃまだと{思|おも}う{人|ひと}もいました。": {"file": "audio/line_12.mp3", "durationSec": 3.403, "speakerId": 13}, "1932{年|ねん}、{新聞|しんぶん}がハチの{話|はなし}を{書|か}くと、ハチは{日本中|にほんじゅう}で{有名|ゆうめい}になりました。": {"file": "audio/line_13.mp3", "durationSec": 7.125, "speakerId": 13}, "たくさんの{人|ひと}が、ハチに{会|あ}いに{来|き}ました。": {"file": "audio/line_14.mp3", "durationSec": 2.987, "speakerId": 13}, "1934{年|ねん}、{駅|えき}の{前|まえ}にハチの{銅像|どうぞう}が{作|つく}られました。": {"file": "audio/line_15.mp3", "durationSec": 5.003, "speakerId": 13}, "ハチも、そこにいました。": {"file": "audio/line_16.mp3", "durationSec": 2.112, "speakerId": 13}, "1935{年|ねん}3{月|がつ}、ハチは{死|し}にました。11さいでした。": {"file": "audio/line_17.mp3", "durationSec": 5.621, "speakerId": 13}, "{先生|せんせい}を10{年|ねん}{近|ちか}く{待|ま}ちつづけたのです。": {"file": "audio/line_18.mp3", "durationSec": 3.008, "speakerId": 13}, "{今|いま}、ハチ{公|こう}{像|ぞう}は{人気|にんき}の{待|ま}ち{合|あ}わせ{場所|ばしょ}です。": {"file": "audio/line_19.mp3", "durationSec": 3.701, "speakerId": 13}, "「ハチ{公|こう}{前|まえ}で{会|あ}おう!」": {"file": "audio/line_20.mp3", "durationSec": 1.557, "speakerId": 8}, "{先生|せんせい}は、{来|き}ません…": {"file": "audio/msg_21.mp3", "durationSec": 2.24, "speakerId": 13}, "まだ{来|き}ません…": {"file": "audio/msg_22.mp3", "durationSec": 1.195, "speakerId": 13}, "{夜|よる}になりました。": {"file": "audio/msg_23.mp3", "durationSec": 1.397, "speakerId": 13}, "ハチ、おつかれさま。{先生|せんせい}をずっと{待|ま}っていたね。": {"file": "audio/outro_end.mp3", "durationSec": 4.309, "speakerId": 13}}, "paragraphs": {"para_0": {"file": "audio/para_00.mp3", "durationSec": 16.0, "speakerId": 13}, "para_1": {"file": "audio/para_01.mp3", "durationSec": 10.347, "speakerId": 13}, "para_2": {"file": "audio/para_02.mp3", "durationSec": 11.157, "speakerId": 13}, "para_3": {"file": "audio/para_03.mp3", "durationSec": 11.84, "speakerId": 13}, "para_4": {"file": "audio/para_04.mp3", "durationSec": 12.587, "speakerId": 13}, "para_5": {"file": "audio/para_05.mp3", "durationSec": 12.171, "speakerId": 13}}};
-let showFuri=true,showRomaji=true,curVoice=null,curParaBtn=null;
+let showFuri=true,curVoice=null,curParaBtn=null;
 const voiceEvents=[];
-const RMJ_DI={きゃ:"kya",きゅ:"kyu",きょ:"kyo",しゃ:"sha",しゅ:"shu",しょ:"sho",ちゃ:"cha",ちゅ:"chu",ちょ:"cho",にゃ:"nya",にゅ:"nyu",にょ:"nyo",ひゃ:"hya",ひゅ:"hyu",ひょ:"hyo",みゃ:"mya",みゅ:"myu",みょ:"myo",りゃ:"rya",りゅ:"ryu",りょ:"ryo",ぎゃ:"gya",ぎゅ:"gyu",ぎょ:"gyo",じゃ:"ja",じゅ:"ju",じょ:"jo",びゃ:"bya",びゅ:"byu",びょ:"byo",ぴゃ:"pya",ぴゅ:"pyu",ぴょ:"pyo"};
-const RMJ_MO={あ:"a",い:"i",う:"u",え:"e",お:"o",か:"ka",き:"ki",く:"ku",け:"ke",こ:"ko",さ:"sa",し:"shi",す:"su",せ:"se",そ:"so",た:"ta",ち:"chi",つ:"tsu",て:"te",と:"to",な:"na",に:"ni",ぬ:"nu",ね:"ne",の:"no",は:"ha",ひ:"hi",ふ:"fu",へ:"he",ほ:"ho",ま:"ma",み:"mi",む:"mu",め:"me",も:"mo",や:"ya",ゆ:"yu",よ:"yo",ら:"ra",り:"ri",る:"ru",れ:"re",ろ:"ro",わ:"wa",を:"o",ん:"n",が:"ga",ぎ:"gi",ぐ:"gu",げ:"ge",ご:"go",ざ:"za",じ:"ji",ず:"zu",ぜ:"ze",ぞ:"zo",だ:"da",ぢ:"ji",づ:"zu",で:"de",ど:"do",ば:"ba",び:"bi",ぶ:"bu",べ:"be",ぼ:"bo",ぱ:"pa",ぴ:"pi",ぷ:"pu",ぺ:"pe",ぽ:"po",ぁ:"a",ぃ:"i",ぅ:"u",ぇ:"e",ぉ:"o","。":". ","、":", ","「":" “","」":"” ","！":"! ","？":"? ","!":"! ","・":" · ","…":"..."};
-function kanaToRomaji(raw){
-  let s="";for(const ch of raw){const c=ch.charCodeAt(0);s+=(c>=0x30a1&&c<=0x30f6)?String.fromCharCode(c-0x60):ch;}
-  let out="",i=0;
-  while(i<s.length){
-    const ch=s[i];
-    if(ch==="っ"&&i+1<s.length){const nr=RMJ_DI[s.slice(i+1,i+3)]||RMJ_MO[s[i+1]]||"";if(nr&&/^[bcdfghjklmnpqrstvwxyz]/.test(nr)){out+=nr.startsWith("ch")?"t":nr[0];i++;continue;}}
-    if(ch==="ー"&&out.length){const l=out[out.length-1];if("aeiou".includes(l))out+=l;i++;continue;}
-    const pr=s.slice(i,i+2);
-    if(RMJ_DI[pr]){out+=RMJ_DI[pr];i+=2;continue;}
-    if(RMJ_MO[ch]!==undefined){out+=RMJ_MO[ch];i++;continue;}
-    out+=ch;i++;
-  }
-  return out.replace(/\s+/g," ").trim();
-}
-function rubyToRomaji(s){return kanaToRomaji(s.replace(/<<[a-z0-9]+:(.*?)>>/g,"$1").replace(RUBY_RE,"$2"));}
 function duckBgm(on){if(master&&AC)try{master.gain.setTargetAtTime(sndOn?(on?0.28:1):0,AC.currentTime,0.06);}catch(_){}}
 function stopVoice(){if(curVoice){try{curVoice.pause();curVoice.currentTime=0;}catch(_){}curVoice=null;}if(curParaBtn){curParaBtn.classList.remove("playing");curParaBtn=null;}duckBgm(false);}
 function playVoice(rawKey){
@@ -211,9 +191,9 @@ function playParaAudio(idx,btn){
   au.play().catch(done);
 }
 
-function subDur(vi){const n=jlen(vi);const base=n/16+1.4+n/12;const e=VOICE_MANIFEST.lines&&VOICE_MANIFEST.lines[vi];return e?Math.max(base,e.durationSec+0.45):base;}
+function subDur(vi){const n=jlen(vi);const base=n/16+1.4+n/12;const e=VOICE_MANIFEST.lines&&VOICE_MANIFEST.lines[vi];return e?Math.max(base,e.durationSec+0.4):base;}
 function say(vi,en){subs={vi,en,t0:sT,sc:sceneIdx};playVoice(vi);}
-function* sayW(vi,en,extra=0){say(vi,en);yield wait(subDur(vi)+extra);}
+function* sayW(vi,en,extra=0){say(vi,en);const e=VOICE_MANIFEST.lines&&VOICE_MANIFEST.lines[vi];const dur=e?Math.max(e.durationSec+0.35,subDur(vi)+extra):subDur(vi)+extra;yield wait(dur);}
 function* subDone(){yield until(()=>!subs||sT>subs.t0+subDur(subs.vi));}
 function startTrans(d=0.9){oldCtx.clearRect(0,0,W,H);oldCtx.drawImage(clean,0,0);trans={t:0,dur:d};}
 let SCENES=[];
@@ -273,7 +253,7 @@ const BAYER=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
 function drawChip(){if(!scene.chip)return;ctx.font=F(13);const w=ctx.measureText(scene.chip).width+24;BOX(14,14,w,32,"#121925","#5d6b80",.35,2);TX(scene.chip,26,35,13,"#d7dde6");}
 function drawSnd(){const x=W-62,y=14;BOX(x,y,46,36,"#121925",C.paper,.35,2);const s=3;const spk=["....X..","...XX..","XXXXX.X","XXXXX..","XXXXX.X","...XX..","....X.."];for(let j=0;j<7;j++)for(let i=0;i<7;i++)if(spk[j][i]==="X"){ctx.fillStyle=sndOn?C.paper:"#6a7280";ctx.fillRect(x+12+i*s,y+8+j*s,s,s);}if(!sndOn){ctx.fillStyle=C.red2;ctx.fillRect(x+10,y+17,26,3);}hits.push({id:"snd",x,y,w:46,h:36});}
 function drawPrompt(){const p=scene.prompt;if(!p)return;const bob=Math.round(Math.sin(sT*3)*2);ctx.font=F(16);const w=ctx.measureText(p).width+40;BOX(W/2-w/2,60+bob,w,40,"#121925",C.paper,.4,2);TX(p,W/2,60+bob+21,16,C.paper,"center",700,"middle");}
-function drawSubs(){if(!subs||subs.sc!==sceneIdx)return;const el=sT-subs.t0;const total=jlen(subs.vi);const n=Math.min(total,Math.floor(el*16));const L=layoutJP(subs.vi,24,820);const rl=showRomaji?wrapLines(rubyToRomaji(subs.vi),820,13,400):[];const vl=wrapLines(subs.en,820,15,400);const bh=16+L.lines.length*L.lh+rl.length*18+vl.length*20+10;let bw=Math.max(...L.lines.map(l=>l.w));ctx.font=F(13,400);rl.forEach(l=>bw=Math.max(bw,ctx.measureText(l).width));ctx.font=F(15,400);vl.forEach(l=>bw=Math.max(bw,ctx.measureText(l).width));bw+=56;const by=(scene.subY||704)-bh,bx=W/2-bw/2;ctx.fillStyle="rgba(8,11,17,.9)";ctx.fillRect(bx,by,bw,bh);ctx.fillStyle="#7a3fa0";ctx.fillRect(bx,by,4,bh);drawJP(L,W/2,by+14+24*1.42,"#f3ead6","#c9d3e0",n,"center");let y=by+14+L.lines.length*L.lh+4;if(rl.length){for(const l of rl){TX(l,W/2,y,13,"#f2cf6b","center",400);y+=18;}}if(n>=total){const al=clamp((el-total/16)/0.35,0,1);ctx.globalAlpha=al;y+=2;for(const l of vl){TX(l,W/2,y,15,"#9fb0c4","center",400);y+=20;}ctx.globalAlpha=1;}}
+function drawSubs(){if(!subs||subs.sc!==sceneIdx)return;const el=sT-subs.t0;const total=jlen(subs.vi);const n=Math.min(total,Math.floor(el*16));const L=layoutJP(subs.vi,24,820);const vl=wrapLines(subs.en,820,15,400);const bh=16+L.lines.length*L.lh+vl.length*20+8;let bw=Math.max(...L.lines.map(l=>l.w));ctx.font=F(15,400);vl.forEach(l=>bw=Math.max(bw,ctx.measureText(l).width));bw+=56;const by=(scene.subY||704)-bh,bx=W/2-bw/2;ctx.fillStyle="rgba(8,11,17,.9)";ctx.fillRect(bx,by,bw,bh);ctx.fillStyle="#7a3fa0";ctx.fillRect(bx,by,4,bh);drawJP(L,W/2,by+14+24*1.42,"#f3ead6","#c9d3e0",n,"center");if(n>=total){const al=clamp((el-total/16)/0.35,0,1);ctx.globalAlpha=al;let y=by+14+L.lines.length*L.lh+6;for(const l of vl){TX(l,W/2,y,15,"#9fb0c4","center",400);y+=20;}ctx.globalAlpha=1;}}
 function render(){
   a.setTransform(1,0,0,1,0,0);a.clearRect(0,0,LW,LH);
   scene.draw(sT);
@@ -558,18 +538,16 @@ function rubyHTML(s){return s.replace(RUBY_RE,"<ruby>$1<rt>$2</rt></ruby>");}
 function markHTML(s){return rubyHTML(s.replace(/<<([a-z0-9]+):(.*?)>>/g,(m,k,inner)=>'<span class="w '+DICT[k].t+'" data-k="'+k+'" tabindex="0" role="button">'+rubyHTML(inner)+"</span>"));}
 const $=id=>document.getElementById(id);
 function buildReader(){
- $("rText").innerHTML=PASSAGE.map((p,i)=>{const pe=VOICE_MANIFEST.paragraphs&&VOICE_MANIFEST.paragraphs["para_"+i];const dur=pe?(" ("+pe.durationSec.toFixed(1)+"s)"):"";return '<div class="para"><span class="pn">'+(i+1)+'</span><p class="jp">'+markHTML(p[0])+'</p><p class="rmj">'+rubyToRomaji(p[0])+'</p><p class="vi">'+p[1]+'</p><button type="button" class="pplay" data-p="'+i+'">🔊 Nghe VOICEVOX'+dur+"</button></div>";}).join("");
+ $("rText").innerHTML=PASSAGE.map((p,i)=>{const pe=VOICE_MANIFEST.paragraphs&&VOICE_MANIFEST.paragraphs["para_"+i];const dur=pe?(" ("+pe.durationSec.toFixed(1)+"s)"):"";return '<div class="para"><span class="pn">'+(i+1)+'</span><p class="jp">'+markHTML(p[0])+'</p><p class="vi">'+p[1]+'</p><button type="button" class="pplay" data-p="'+i+'">🔊 Nghe VOICEVOX'+dur+"</button></div>";}).join("");
  $("rList").innerHTML='<div class="lh">Từ vựng</div>'+Object.keys(DICT).filter(k=>DICT[k].t==="v").map(k=>'<button class="chip v" data-k="'+k+'">'+rubyHTML(DICT[k].h)+"</button>").join("")+'<div class="lh">Ngữ pháp</div>'+Object.keys(DICT).filter(k=>DICT[k].t==="g").map(k=>'<button class="chip g" data-k="'+k+'">'+rubyHTML(DICT[k].h)+"</button>").join("");
  $("rQuiz").innerHTML=QUIZ.map((q,i)=>'<div class="q" data-i="'+i+'"><div class="qq"><b>'+(i+1)+'.</b> '+rubyHTML(q[0])+'<span class="qv">'+q[1]+'</span></div><div class="opts">'+q[2].map((o,j)=>'<button data-j="'+j+'">'+rubyHTML(o)+"</button>").join("")+'</div><div class="fb"></div></div>').join("");
  $("rNote").innerHTML='<div class="nh">ノート · Ghi chú</div><p class="hint">Bấm vào chữ được tô màu trong bài để xem nghĩa.<br><span class="sw v"></span> từ vựng &nbsp; <span class="sw g"></span> ngữ pháp</p>';
- const pick=k=>{document.querySelectorAll(".w.sel,.chip.sel").forEach(e=>e.classList.remove("sel"));document.querySelectorAll('[data-k="'+k+'"]').forEach(e=>e.classList.add("sel"));const d=DICT[k];$("rNote").innerHTML='<div class="nh">ノート · Ghi chú</div><div class="badge '+d.t+'">'+(d.t==="v"?"từ vựng":"ngữ pháp")+'</div><div class="head">'+rubyHTML(d.h)+'</div><div class="head-rmj">'+rubyToRomaji(d.h)+'</div><div class="mean">'+d.m+"</div>"+(d.n?'<p class="nn">'+d.n+"</p>":"")+'<div class="ex"><div class="exj">'+rubyHTML(d.ex)+'</div><div class="rmj">'+rubyToRomaji(d.ex)+'</div><div class="exv">'+d.exv+"</div></div>";if(!RECORD)sfx("click");};
+ const pick=k=>{document.querySelectorAll(".w.sel,.chip.sel").forEach(e=>e.classList.remove("sel"));document.querySelectorAll('[data-k="'+k+'"]').forEach(e=>e.classList.add("sel"));const d=DICT[k];$("rNote").innerHTML='<div class="nh">ノート · Ghi chú</div><div class="badge '+d.t+'">'+(d.t==="v"?"từ vựng":"ngữ pháp")+'</div><div class="head">'+rubyHTML(d.h)+'</div><div class="mean">'+d.m+"</div>"+(d.n?'<p class="nn">'+d.n+"</p>":"")+'<div class="ex"><div class="exj">'+rubyHTML(d.ex)+'</div><div class="exv">'+d.exv+"</div></div>";if(!RECORD)sfx("click");};
  $("reader").addEventListener("click",e=>{const pb=e.target.closest("[data-p]");if(pb){playParaAudio(+pb.dataset.p,pb);return;}const w=e.target.closest("[data-k]");if(w){pick(w.dataset.k);return;}const b=e.target.closest(".opts button");if(b){const q=b.closest(".q"),qi=+q.dataset.i,j=+b.dataset.j,Q=QUIZ[qi];q.querySelectorAll("button").forEach(x=>x.classList.remove("ok","no"));const ok=j===Q[3];b.classList.add(ok?"ok":"no");q.querySelector(".fb").innerHTML=(ok?"<b>せいかい!</b> ":"<b>ざんねん…</b> Thử lại nhé. ")+(ok?Q[4]:"");if(!RECORD)sfx(ok?"chime":"buzz");}});
  $("reader").addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.dataset.k){e.preventDefault();pick(e.target.dataset.k);}});
  const tog=(id,cls)=>{const b=$(id);b.onclick=()=>{const on=b.getAttribute("aria-pressed")!=="true";b.setAttribute("aria-pressed",on);$("reader").classList.toggle(cls,id==="tFuri"?!on:on);};};
  function syncFuri(on){showFuri=on;$("tFuri").setAttribute("aria-pressed",on);$("reader").classList.toggle("nofuri",!on);const bf=$("bFuri");if(bf){bf.textContent=on?"ふりがな ON":"ふりがな OFF";bf.classList.toggle("on",on);}}
- function syncRomaji(on){showRomaji=on;$("tRomaji").setAttribute("aria-pressed",on);$("reader").classList.toggle("noromaji",!on);const br=$("bRomaji");if(br){br.textContent=on?"Romaji ON":"Romaji OFF";br.classList.toggle("on",on);}}
  $("tFuri").onclick=()=>syncFuri(!showFuri);
- $("tRomaji").onclick=()=>syncRomaji(!showRomaji);
  tog("tVi","showvi");
  $("rBack").onclick=()=>closeReader();}
 const snapC=mk(480,360),snapX=snapC.getContext("2d");
@@ -593,7 +571,6 @@ function boot(){buildReader();if(RECORD)document.body.classList.add("rec");
  document.getElementById("bRestart").onclick=()=>{unlock();closeReader();AUTO=false;go(0);};
  document.getElementById("bLib").onclick=()=>{stopVoice();location.href="../../";};
  document.getElementById("bFuri").onclick=()=>{const el=$("tFuri");if(el)el.click();};
- document.getElementById("bRomaji").onclick=()=>{const el=$("tRomaji");if(el)el.click();};
  document.getElementById("bRead").onclick=()=>{unlock();stopVoice();openReader();};
  window.__voiceEvents=voiceEvents;
  window.__frames=n=>{const out=[];for(let i=0;i<n&&!window.__done&&window.__phase!=="reader";i++){tick(1/60);tick(1/60);render();out.push([sceneIdx,cv.toDataURL("image/jpeg",0.92)]);}return{frames:out,done:!!window.__done,phase:window.__phase||"game",t:T};};
