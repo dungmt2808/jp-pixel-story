@@ -270,7 +270,11 @@ export function DictationView({
                 onBackToStory();
               }}
             >
-              {pack.id.endsWith("-choukai") ? "🎧 Phòng nghe JLPT" : "🎮 Xem hoạt ảnh"}
+              {pack.id.endsWith("-choukai")
+                ? "🎧 Phòng nghe JLPT"
+                : pack.id.endsWith("-dokkai")
+                  ? "📖 Phòng đọc JLPT"
+                  : "🎮 Xem hoạt ảnh"}
             </button>
           ) : pack.backHref ? (
             <button
@@ -281,7 +285,11 @@ export function DictationView({
                 window.location.href = resolveAssetUrl(pack.backHref!);
               }}
             >
-              {pack.id.endsWith("-choukai") ? "🎧 Phòng nghe JLPT" : "🎮 Xem hoạt ảnh"}
+              {pack.id.endsWith("-choukai")
+                ? "🎧 Phòng nghe JLPT"
+                : pack.id.endsWith("-dokkai")
+                  ? "📖 Phòng đọc JLPT"
+                  : "🎮 Xem hoạt ảnh"}
             </button>
           ) : null}
         </div>

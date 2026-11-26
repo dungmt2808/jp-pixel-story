@@ -1,0 +1,824 @@
+{
+  "id": "jlpt-n4-2025-12-dokkai",
+  "examDate": "12/2025",
+  "level": "JLPT N4 · 12/2025",
+  "titleJa": "JLPT N4 読解 問題4・6 (12/2025)",
+  "titleVi": "Đọc hiểu 12/2025 (Câu 22–24, 28–29)",
+  "description": "Trọn bộ các bài Đọc hiểu ngắn (問題4: Quán ăn tự câu cá, Giấy nhắn công sở có sơ đồ mốc giờ, Khách sạn cho thú cưng) và Tra cứu thông tin (問題6: Lớp vẽ Nishiyama với 2 bảng lọc đồng bộ cực mượt) + giọng VOICEVOX từng câu + Daily Dictation.",
+  "mondai5StoryId": "jlpt-n4-2025-12-japan-life",
+  "mondai5TitleVi": "Xem hoạt ảnh 問題5: 日本の生活 (Câu 25–27)",
+  "passages": [
+    {
+      "id": "m4_1",
+      "tabLabel": "問題4 (1) · Q22",
+      "sectionBadge": "問題4 (1) · Giới thiệu quán ăn · Câu 22",
+      "docStyle": "essay",
+      "titleJa": "ちょっと{面白|おもしろ}い{魚料理|さかなりょうり}の{店|みせ}",
+      "titleVi": "Quán món cá thú vị trước nhà ga (tự câu cá trong hồ)",
+      "sentences": [
+        {
+          "id": "d12_m4_1_s1",
+          "jaPlain": "駅前にちょっと面白い魚料理の店ができました。",
+          "jaRuby": "{駅前|えきまえ}にちょっと{面白|おもしろ}い{魚料理|さかなりょうり}の{店|みせ}ができました。",
+          "vi": "Trước nhà ga vừa mở một quán món cá khá là thú vị.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_1_s1.mp3",
+          "durationSec": 3.55
+        },
+        {
+          "id": "d12_m4_1_s2",
+          "highlight": true,
+          "jaPlain": "客はまず、広い店の中に作られた池で魚を釣ります。",
+          "jaRuby": "{客|きゃく}はまず、{広|ひろ}い{店|みせ}の{中|なか}に{作|つく}られた{池|いけ}で{魚|さかな}を{釣|つ}ります。",
+          "vi": "Trước tiên, khách hàng sẽ câu cá tại cái hồ được xây ngay bên trong quán rộng lớn.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_1_s2.mp3",
+          "durationSec": 4.31
+        },
+        {
+          "id": "d12_m4_1_s3",
+          "highlight": true,
+          "jaPlain": "釣った魚は、さしみや天ぷらなど、好きな料理にしてもらえます。",
+          "jaRuby": "{釣|つ}った{魚|さかな}は、さしみや{天|てん}ぷらなど、{好|す}きな{料理|りょうり}にしてもらえます。",
+          "vi": "Con cá câu được sẽ được quán chế biến thành món mình thích như sashimi hay tempura, v.v.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_1_s3.mp3",
+          "durationSec": 4.92
+        },
+        {
+          "id": "d12_m4_1_s4",
+          "jaPlain": "魚を釣らないで、料理だけ頼むこともできますが、値段は自分で釣ったほうが安くなるそうです。",
+          "jaRuby": "{魚|さかな}を{釣|つ}らないで、{料理|りょうり}だけ{頼|たの}むこともできますが、{値段|ねだん}は{自分|じぶん}で{釣|つ}ったほうが{安|やす}くなるそうです。",
+          "vi": "Không câu cá mà chỉ gọi món thôi cũng được, nhưng nghe nói tự mình câu thì giá sẽ rẻ hơn đấy.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_1_s4.mp3",
+          "durationSec": 6.91
+        }
+      ],
+      "questions": [
+        {
+          "id": "q22",
+          "number": 22,
+          "questionJa": "「ちょっと{面白|おもしろ}い{魚料理|さかなりょうり}の{店|みせ}」について、{合|あ}っているものはどれですか。",
+          "questionVi": "Về 'quán món cá thú vị', câu nào sau đây đúng với nội dung bài?",
+          "options": [
+            {
+              "label": "1",
+              "ja": "{店|みせ}で{作|つく}ってもらえる{料理|りょうり}は、さしみと{天|てん}ぷらだけです。",
+              "vi": "Món được quán làm cho chỉ có sashimi và tempura thôi."
+            },
+            {
+              "label": "2",
+              "ja": "{店|みせ}で{料理|りょうり}を{頼|たの}みたい{人|ひと}は、{店|みせ}の{中|なか}の{池|いけ}で{魚|さかな}を{釣|つ}らなければなりません。",
+              "vi": "Người muốn gọi món ở quán bắt buộc phải câu cá trong hồ của quán."
+            },
+            {
+              "label": "3",
+              "ja": "{客|きゃく}は、{自分|じぶん}が{店|みせ}の{中|なか}の{池|いけ}で{釣|つ}った{魚|さかな}で、{好|す}きな{料理|りょうり}を{作|つく}ってもらえます。",
+              "vi": "Khách hàng có thể được quán chế biến món mình thích từ con cá tự câu trong hồ của quán."
+            },
+            {
+              "label": "4",
+              "ja": "{客|きゃく}は、{自分|じぶん}で{釣|つ}った{魚|さかな}を{持|も}って、{店|みせ}に{行|い}けば、{料理|りょうり}の{値段|ねだん}が{安|やす}くなります。",
+              "vi": "Nếu khách mang cá tự câu từ ngoài đến quán thì giá món ăn sẽ rẻ hơn."
+            }
+          ],
+          "correctIndex": 2,
+          "explanationVi": "So từng bẫy quen thuộc của JLPT: Đáp án 1 dùng 「だけ」 (chỉ có) là SAI vì bài viết 「さしみや天ぷらなど」 (như sashimi, tempura, v.v.). Đáp án 2 dùng 「〜なければなりません」 (bắt buộc phải câu) là SAI vì bài nói không câu vẫn gọi món được. Đáp án 4 bịa chi tiết 'mang cá từ ngoài vào quán' (持って店に行けば) là SAI vì câu cá ngay trong hồ của quán. → Đáp án 3 đúng tuyệt đối từng chữ!"
+        }
+      ],
+      "vocab": [
+        {
+          "word": "池",
+          "reading": "いけ",
+          "meaningVi": "ao, hồ"
+        },
+        {
+          "word": "釣る",
+          "reading": "つる",
+          "meaningVi": "câu (cá)"
+        },
+        {
+          "word": "頼む",
+          "reading": "たのむ",
+          "meaningVi": "gọi món, nhờ vả"
+        },
+        {
+          "word": "値段",
+          "reading": "ねだん",
+          "meaningVi": "giá cả"
+        },
+        {
+          "word": "客",
+          "reading": "きゃく",
+          "meaningVi": "khách hàng"
+        }
+      ],
+      "grammar": [
+        {
+          "id": "g12_22_1",
+          "pattern": "V(て) + もらえる",
+          "titleVi": "Có thể được người khác làm cho (khả năng của もらう)",
+          "explanationVi": "好きな料理にしてもらえます = có thể nhờ (quán) chế biến thành món mình thích.",
+          "exampleRuby": "{釣|つ}った{魚|さかな}は、{好|す}きな{料理|りょうり}にしてもらえます。"
+        },
+        {
+          "id": "g12_22_2",
+          "pattern": "V(ない)で / V(た)ほうが〜そうだ",
+          "titleVi": "Không làm A mà làm B / Nghe nói làm A thì ... hơn",
+          "explanationVi": "魚を釣らないで (không câu cá mà...) và 釣ったほうが安くなるそうです (nghe nói tự câu thì rẻ hơn).",
+          "exampleRuby": "{値段|ねだん}は{自分|じぶん}で{釣|つ}ったほうが{安|やす}くなるそうです。"
+        }
+      ]
+    },
+    {
+      "id": "m4_2",
+      "tabLabel": "問題4 (2) · Q23",
+      "sectionBadge": "問題4 (2) · Giấy nhắn công sở · Câu 23",
+      "docStyle": "memo",
+      "contextIntroJa": "{石山|いしやま}{部長|ぶちょう}が14{時|じ}に{席|せき}に{戻|もど}ったら、{机|つくえ}の{上|うえ}にこのメモがありました。",
+      "contextIntroVi": "Khi Trưởng phòng Ishiyama quay lại chỗ ngồi lúc 14:00, trên bàn có tờ giấy nhắn này.",
+      "titleJa": "{石山|いしやま}{部長|ぶちょう}への{伝言|でんごん}メモ",
+      "titleVi": "Giấy nhắn điện thoại gửi Trưởng phòng Ishiyama",
+      "headerMeta": [
+        {
+          "label": "宛先 (To)",
+          "valueJa": "{石山|いしやま}{部長|ぶちょう}"
+        },
+        {
+          "label": "日時 (Time)",
+          "valueJa": "6{月|がつ}29{日|にち} 13:10"
+        }
+      ],
+      "footerMeta": [
+        "リー",
+        "6{月|がつ}29{日|にち} 13:10"
+      ],
+      "sentences": [
+        {
+          "id": "d12_m4_2_s1",
+          "jaPlain": "13時に、あおた銀行の川野様から電話がありました。",
+          "jaRuby": "13{時|じ}に、あおた{銀行|ぎんこう}の{川野|かわの}{様|さま}から{電話|でんわ}がありました。",
+          "vi": "Lúc 13:00 có điện thoại từ ông Kawano bên ngân hàng Aota gọi đến ạ.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_2_s1.mp3",
+          "durationSec": 4.95
+        },
+        {
+          "id": "d12_m4_2_s2",
+          "jaPlain": "あしたの15時の会議について、相談したいことがあるそうです。",
+          "jaRuby": "あしたの15{時|じ}の{会議|かいぎ}について、{相談|そうだん}したいことがあるそうです。",
+          "vi": "Nghe nói ông ấy có việc muốn trao đổi về cuộc họp lúc 15:00 ngày mai.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_2_s2.mp3",
+          "durationSec": 5.11
+        },
+        {
+          "id": "d12_m4_2_s3",
+          "highlight": true,
+          "jaPlain": "川野様は、今日は16時から出かけるので、出かけるまでに電話がほしいとおっしゃっていました。",
+          "jaRuby": "{川野|かわの}{様|さま}は、{今日|きょう}は16{時|じ}から{出|で}かけるので、{出|で}かけるまでに{電話|でんわ}がほしいとおっしゃっていました。",
+          "vi": "Ông Kawano bảo rằng hôm nay từ 16:00 ông ấy sẽ ra ngoài, nên muốn nhận được điện thoại gọi lại trước khi ông ấy đi.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_2_s3.mp3",
+          "durationSec": 7.77
+        },
+        {
+          "id": "d12_m4_2_s4",
+          "jaPlain": "よろしくお願いします。",
+          "jaRuby": "よろしくお{願|ねが}いします。",
+          "vi": "Xin nhờ Trưởng phòng xử lý giúp ạ.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_2_s4.mp3",
+          "durationSec": 1.81
+        }
+      ],
+      "timeline": [
+        {
+          "time": "13:00",
+          "labelJa": "{川野|かわの}{様|さま}から{電話|でんわ}",
+          "labelVi": "Ông Kawano gọi đến"
+        },
+        {
+          "time": "13:10",
+          "labelJa": "リーさんがメモを{書|か}く",
+          "labelVi": "Lee để lại giấy nhắn"
+        },
+        {
+          "time": "14:00",
+          "labelJa": "{石山|いしやま}{部長|ぶちょう}が{席|せき}に{戻|もど}る",
+          "labelVi": "Trưởng phòng về chỗ & đọc memo"
+        },
+        {
+          "time": "⏰ 〜16:00",
+          "labelJa": "{川野|かわの}さんに{電話|でんわ}する！",
+          "labelVi": "Hạn chót gọi lại trước khi ông Kawano ra ngoài",
+          "emphasis": true
+        },
+        {
+          "time": "明日 15:00",
+          "labelJa": "{会議|かいぎ}（{相談|そうだん}のテーマ）",
+          "labelVi": "Cuộc họp ngày mai (chỉ là nội dung cần bàn)"
+        }
+      ],
+      "questions": [
+        {
+          "id": "q23",
+          "number": 23,
+          "questionJa": "このメモを{見|み}て、{石山|いしやま}{部長|ぶちょう}は{何|なに}をしなければなりませんか。",
+          "questionVi": "Xem tờ giấy nhắn này, Trưởng phòng Ishiyama phải làm gì?",
+          "options": [
+            {
+              "label": "1",
+              "ja": "{今日|きょう}の16{時|じ}までに、{川野|かわの}さんに{電話|でんわ}します",
+              "vi": "Gọi điện cho ông Kawano trước 16:00 hôm nay."
+            },
+            {
+              "label": "2",
+              "ja": "{今日|きょう}の16{時|じ}から、{川野|かわの}さんと{出|で}かけます",
+              "vi": "Đi ra ngoài cùng ông Kawano từ 16:00 hôm nay."
+            },
+            {
+              "label": "3",
+              "ja": "あしたの15{時|じ}までに、{川野|かわの}さんに{電話|でんわ}します",
+              "vi": "Gọi điện cho ông Kawano trước 15:00 ngày mai."
+            },
+            {
+              "label": "4",
+              "ja": "あしたの15{時|じ}から、{川野|かわの}さんと{会議|かいぎ}に{出|で}ます",
+              "vi": "Tham gia cuộc họp với ông Kawano từ 15:00 ngày mai."
+            }
+          ],
+          "correctIndex": 0,
+          "explanationVi": "Tách rõ 2 mốc giờ để không sập bẫy: ① 'あしたの15時の会議' chỉ là CHỦ ĐỀ cần bàn qua điện thoại (相談したいことがある). ② Yêu cầu hành động thực sự nằm ở câu: '今日は16時から出かけるので、出かけるまでに電話がほしい' (Hôm nay ông Kawano đi ra ngoài từ 16:00, muốn nhận cuộc gọi TRƯỚC lúc đó) → Phải gọi cho ông Kawano trước 16:00 hôm nay = Đáp án 1!"
+        }
+      ],
+      "vocab": [
+        {
+          "word": "部長",
+          "reading": "ぶちょう",
+          "meaningVi": "trưởng phòng"
+        },
+        {
+          "word": "席に戻る",
+          "reading": "せきにもどる",
+          "meaningVi": "quay lại chỗ ngồi"
+        },
+        {
+          "word": "相談する",
+          "reading": "そうだんする",
+          "meaningVi": "bàn bạc, trao đổi"
+        },
+        {
+          "word": "出かける",
+          "reading": "でかける",
+          "meaningVi": "ra ngoài"
+        },
+        {
+          "word": "おっしゃる",
+          "reading": "おっしゃる",
+          "meaningVi": "nói (tôn kính ngữ của 言う)"
+        }
+      ],
+      "grammar": [
+        {
+          "id": "g12_23_1",
+          "pattern": "V(る) + までに",
+          "titleVi": "Trước khi làm hành động nào đó",
+          "explanationVi": "出かけるまでに = trước khi (ông Kawano) ra ngoài (tức trước 16:00).",
+          "exampleRuby": "{出|で}かけるまでに{電話|でんわ}がほしいとおっしゃっていました。"
+        },
+        {
+          "id": "g12_23_2",
+          "pattern": "おっしゃっていました [Kính ngữ N4]",
+          "titleVi": "(Ngài ấy) đã nói rằng...",
+          "explanationVi": "Thể tôn kính của 言っていました, cực hay xuất hiện trong đề đọc/nghe công sở N4.",
+          "exampleRuby": "{川野|かわの}{様|さま}は{電話|でんわ}がほしいとおっしゃっていました。"
+        }
+      ]
+    },
+    {
+      "id": "m4_3",
+      "tabLabel": "問題4 (3) · Q24",
+      "sectionBadge": "問題4 (3) · Tản văn ngắn · Câu 24",
+      "docStyle": "essay",
+      "titleJa": "ペットと{一緒|いっしょ}に{泊|と}まれるホテル",
+      "titleVi": "Khách sạn có thể ở cùng thú cưng",
+      "sentences": [
+        {
+          "id": "d12_m4_3_s1",
+          "jaPlain": "犬や猫を飼っている人は、なかなか旅行に行けないと言います。",
+          "jaRuby": "{犬|いぬ}や{猫|ねこ}を{飼|か}っている{人|ひと}は、なかなか{旅行|りょこう}に{行|い}けないと{言|い}います。",
+          "vi": "Những người nuôi chó hoặc mèo thường nói rằng rất khó đi du lịch được.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_3_s1.mp3",
+          "durationSec": 4.58
+        },
+        {
+          "id": "d12_m4_3_s2",
+          "jaPlain": "ペットを連れていくのも、家にペットだけ置いていくのも難しいからです。",
+          "jaRuby": "ペットを{連|つ}れていくのも、{家|いえ}にペットだけ{置|お}いていくのも{難|むずか}しいからです。",
+          "vi": "Bởi vì dẫn thú cưng đi theo cũng khó, mà bỏ mỗi thú cưng ở nhà lại cũng khó.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_3_s2.mp3",
+          "durationSec": 5.29
+        },
+        {
+          "id": "d12_m4_3_s3",
+          "highlight": true,
+          "jaPlain": "でも最近、ペットと一緒に泊まれるホテルが増えています。",
+          "jaRuby": "でも{最近|さいきん}、ペットと{一緒|いっしょ}に{泊|と}まれるホテルが{増|ふ}えています。",
+          "vi": "Nhưng gần đây, số khách sạn có thể ở trọ cùng thú cưng đang tăng lên.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_3_s3.mp3",
+          "durationSec": 4.7
+        },
+        {
+          "id": "d12_m4_3_s4",
+          "jaPlain": "犬を飼っている友達は、旅行に行きやすくなったと喜んでいます。",
+          "jaRuby": "{犬|いぬ}を{飼|か}っている{友達|ともだち}は、{旅行|りょこう}に{行|い}きやすくなったと{喜|よろこ}んでいます。",
+          "vi": "Người bạn nuôi chó của tôi đang rất vui vì đã dễ đi du lịch hơn.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_3_s4.mp3",
+          "durationSec": 4.94
+        }
+      ],
+      "questions": [
+        {
+          "id": "q24",
+          "number": 24,
+          "questionJa": "「{旅行|りょこう}に{行|い}きやすくなった」とありますが、どうしてですか。",
+          "questionVi": "Trong bài viết 'đã trở nên dễ đi du lịch hơn', tại sao lại vậy?",
+          "options": [
+            {
+              "label": "1",
+              "ja": "ペットの{犬|いぬ}を{連|つ}れていくのをやめたから",
+              "vi": "Vì đã từ bỏ việc dẫn chú chó cưng đi cùng."
+            },
+            {
+              "label": "2",
+              "ja": "ペットの{犬|いぬ}を{家|いえ}に{置|お}いていきやすくなったから",
+              "vi": "Vì đã dễ để chú chó cưng ở nhà hơn."
+            },
+            {
+              "label": "3",
+              "ja": "ペットの{犬|いぬ}を{連|つ}れていけるようになったから",
+              "vi": "Vì đã có thể dẫn chú chó cưng đi cùng được rồi."
+            },
+            {
+              "label": "4",
+              "ja": "ペットの{犬|いぬ}がホテルに{泊|と}まることに{慣|な}れたから",
+              "vi": "Vì chú chó cưng đã quen với việc ở khách sạn."
+            }
+          ],
+          "correctIndex": 2,
+          "explanationVi": "Chú ý mạch chuyển ý ở câu 3: 'でも最近、ペットと一緒に泊まれるホテルが増えています' (nhưng gần đây khách sạn cho ở cùng thú cưng đang tăng) → giải quyết vế 'dẫn thú cưng đi theo vốn khó' thành 'đã có thể dẫn chú chó cưng đi cùng được' (連れていけるようになった) → Đáp án 3 chính xác!"
+        }
+      ],
+      "vocab": [
+        {
+          "word": "飼う",
+          "reading": "かう",
+          "meaningVi": "nuôi (thú cưng)"
+        },
+        {
+          "word": "連れていく",
+          "reading": "つれていく",
+          "meaningVi": "dẫn đi theo"
+        },
+        {
+          "word": "置いていく",
+          "reading": "おいていく",
+          "meaningVi": "để lại (ở nhà)"
+        },
+        {
+          "word": "泊まる",
+          "reading": "とまる",
+          "meaningVi": "ở trọ, lưu trú"
+        },
+        {
+          "word": "増える",
+          "reading": "ふえる",
+          "meaningVi": "tăng lên"
+        },
+        {
+          "word": "喜ぶ",
+          "reading": "よろこぶ",
+          "meaningVi": "vui mừng"
+        }
+      ],
+      "grammar": [
+        {
+          "id": "g12_24_1",
+          "pattern": "なかなか + Thể phủ định",
+          "titleVi": "Mãi mà không... / Rất khó để...",
+          "explanationVi": "なかなか旅行に行けない = rất khó mà đi du lịch được.",
+          "exampleRuby": "{犬|いぬ}を{飼|か}っている{人|ひと}は、なかなか{旅行|りょこう}に{行|い}けません。"
+        },
+        {
+          "id": "g12_24_2",
+          "pattern": "V(ます) + やすい / V(khả năng) + ようになる",
+          "titleVi": "Dễ làm... / Trở nên có thể làm...",
+          "explanationVi": "行きやすくなった (trở nên dễ đi hơn) và 連れていけるようになった (đã có thể dẫn đi cùng).",
+          "exampleRuby": "ペットの{犬|いぬ}を{連|つ}れていけるようになりました。"
+        }
+      ]
+    },
+    {
+      "id": "m6",
+      "tabLabel": "問題6 · Q28–29",
+      "sectionBadge": "問題6 · Tra cứu thông tin · Câu 28 & 29",
+      "docStyle": "info_table",
+      "titleJa": "{絵|え}の{教室|きょうしつ}「ニシヤマ」のご{案内|あんない}",
+      "titleVi": "Thông báo chiêu sinh Lớp học vẽ 'Nishiyama'",
+      "footerMeta": [
+        "{絵|え}の{教室|きょうしつ}「ニシヤマ」",
+        "{北糸市|きたいとし}{白田|しろた} 18-6 ／ {電話|でんわ}：012-245-6621"
+      ],
+      "tables": [
+        {
+          "captionJa": "＜クラス＞",
+          "columns": [
+            "クラス",
+            "{先生|せんせい}",
+            "クラスについて",
+            "{人数|にんずう}",
+            "1か{月|げつ}の{料金|りょうきん}"
+          ],
+          "rows": [
+            {
+              "id": "cls_a",
+              "cells": [
+                "Aクラス",
+                "{西山|にしやま}{京子|きょうこ}",
+                "{人|ひと}や{物|もの}の{絵|え}をかきます。",
+                "グループ（〜10{人|にん}）",
+                "12,000{円|えん}"
+              ],
+              "tags": [
+                "t_nishiyama",
+                "g_group",
+                "sub_person",
+                "price_le15k",
+                "sat_am"
+              ]
+            },
+            {
+              "id": "cls_b",
+              "cells": [
+                "Bクラス",
+                "{青田|あおた}{英一|えいいち}",
+                "{人|ひと}や{物|もの}の{絵|え}をかきます。",
+                "グループ（〜10{人|にん}）",
+                "12,000{円|えん}"
+              ],
+              "tags": [
+                "t_aota",
+                "g_group",
+                "sub_person",
+                "price_le15k",
+                "sat_pm"
+              ]
+            },
+            {
+              "id": "cls_c",
+              "cells": [
+                "Cクラス",
+                "{西山|にしやま}{京子|きょうこ}",
+                "{景色|けしき}の{絵|え}をかきます。",
+                "グループ（〜10{人|にん}）",
+                "12,000{円|えん}"
+              ],
+              "tags": [
+                "t_nishiyama",
+                "g_group",
+                "sub_scenery",
+                "price_le15k",
+                "sat_pm"
+              ]
+            },
+            {
+              "id": "cls_d",
+              "cells": [
+                "Dクラス",
+                "{青田|あおた}{英一|えいいち}",
+                "{景色|けしき}の{絵|え}をかきます。",
+                "グループ（〜10{人|にん}）",
+                "12,000{円|えん}"
+              ],
+              "tags": [
+                "t_aota",
+                "g_group",
+                "sub_scenery",
+                "price_le15k",
+                "sat_am"
+              ]
+            },
+            {
+              "id": "cls_e",
+              "cells": [
+                "Eクラス",
+                "{西山|にしやま}{京子|きょうこ}",
+                "{人|ひと}や{物|もの}、{景色|けしき}などから、かくものを{選|えら}べます。",
+                "1{人|ひとり}",
+                "20,000{円|えん}"
+              ],
+              "tags": [
+                "t_nishiyama",
+                "g_solo",
+                "sub_scenery",
+                "sub_person"
+              ]
+            },
+            {
+              "id": "cls_f",
+              "cells": [
+                "Fクラス",
+                "{今村|いまむら}ゆり",
+                "{人|ひと}や{物|もの}、{景色|けしき}などから、かくものを{選|えら}べます。",
+                "1{人|ひとり}",
+                "20,000{円|えん}"
+              ],
+              "tags": [
+                "t_imamura",
+                "g_solo",
+                "sub_scenery",
+                "sub_person",
+                "sat_am"
+              ]
+            }
+          ],
+          "filters": [
+            {
+              "id": "f_nishi",
+              "labelJa": "{西山|にしやま}{先生|せんせい}",
+              "labelVi": "Cô Nishiyama",
+              "tag": "t_nishiyama"
+            },
+            {
+              "id": "f_group",
+              "labelJa": "グループ",
+              "labelVi": "Lớp nhóm",
+              "tag": "g_group"
+            },
+            {
+              "id": "f_solo",
+              "labelJa": "1{人|ひとり}",
+              "labelVi": "Kèm 1-1",
+              "tag": "g_solo"
+            },
+            {
+              "id": "f_scenery",
+              "labelJa": "{景色|けしき}の{絵|え}",
+              "labelVi": "Vẽ phong cảnh",
+              "tag": "sub_scenery"
+            },
+            {
+              "id": "f_sat_am",
+              "labelJa": "{土曜日|どようび}の{午前|ごぜん}",
+              "labelVi": "Sáng thứ 7 (10–12h)",
+              "tag": "sat_am"
+            },
+            {
+              "id": "f_price",
+              "labelJa": "15,000{円|えん}{以下|いか}",
+              "labelVi": "≤ 15,000 yên",
+              "tag": "price_le15k"
+            }
+          ],
+          "presets": [
+            {
+              "id": "p28",
+              "label": "🎯 Lọc điều kiện Câu 28 (Pores)",
+              "tags": [
+                "t_nishiyama",
+                "g_group",
+                "sub_scenery"
+              ]
+            },
+            {
+              "id": "p29",
+              "label": "🎯 Lọc điều kiện Câu 29 (Foe)",
+              "tags": [
+                "sat_am",
+                "price_le15k"
+              ]
+            }
+          ]
+        },
+        {
+          "captionJa": "＜クラスの{曜日|ようび}・{時間|じかん}＞",
+          "columns": [
+            "クラス",
+            "{曜日|ようび}と{時間|じかん}"
+          ],
+          "rows": [
+            {
+              "id": "sch_a",
+              "cells": [
+                "Aクラス",
+                "{月|げつ} 13{時|じ}〜15{時|じ} ／ {土|ど} 10{時|じ}〜12{時|じ}"
+              ],
+              "tags": [
+                "t_nishiyama",
+                "g_group",
+                "sub_person",
+                "price_le15k",
+                "sat_am"
+              ]
+            },
+            {
+              "id": "sch_b",
+              "cells": [
+                "Bクラス",
+                "{火|か} 18{時|じ}〜20{時|じ} ／ {土|ど} 13{時|じ}〜15{時|じ}"
+              ],
+              "tags": [
+                "t_aota",
+                "g_group",
+                "sub_person",
+                "price_le15k",
+                "sat_pm"
+              ]
+            },
+            {
+              "id": "sch_c",
+              "cells": [
+                "Cクラス",
+                "{水|すい} 18{時|じ}〜20{時|じ} ／ {土|ど} 13{時|じ}〜15{時|じ}"
+              ],
+              "tags": [
+                "t_nishiyama",
+                "g_group",
+                "sub_scenery",
+                "price_le15k",
+                "sat_pm"
+              ]
+            },
+            {
+              "id": "sch_d",
+              "cells": [
+                "Dクラス",
+                "{月|げつ} 18{時|じ}〜20{時|じ} ／ {土|ど} 10{時|じ}〜12{時|じ}"
+              ],
+              "tags": [
+                "t_aota",
+                "g_group",
+                "sub_scenery",
+                "price_le15k",
+                "sat_am"
+              ]
+            },
+            {
+              "id": "sch_e",
+              "cells": [
+                "Eクラス",
+                "{火|か} 15{時|じ}〜17{時|じ}"
+              ],
+              "tags": [
+                "t_nishiyama",
+                "g_solo",
+                "sub_scenery",
+                "sub_person"
+              ]
+            },
+            {
+              "id": "sch_f",
+              "cells": [
+                "Fクラス",
+                "{土|ど} 10{時|じ}〜12{時|じ}"
+              ],
+              "tags": [
+                "t_imamura",
+                "g_solo",
+                "sub_scenery",
+                "sub_person",
+                "sat_am"
+              ]
+            }
+          ],
+          "filters": []
+        }
+      ],
+      "sentences": [
+        {
+          "id": "d12_m6_s1",
+          "jaPlain": "「ニシヤマ」で楽しく絵を習ってみませんか。",
+          "jaRuby": "「ニシヤマ」で{楽|たの}しく{絵|え}を{習|なら}ってみませんか。",
+          "vi": "Bạn có muốn thử học vẽ thật vui vẻ tại lớp vẽ 'Nishiyama' không?",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m6_s1.mp3",
+          "durationSec": 3.26
+        },
+        {
+          "id": "d12_m6_s2",
+          "jaPlain": "※1週間に2回あるクラスは、どちらの曜日に来るか決めてください。曜日はあとで変えることができます。",
+          "jaRuby": "※1{週間|しゅうかん}に2{回|かい}あるクラスは、どちらの{曜日|ようび}に{来|く}るか{決|き}めてください。{曜日|ようび}はあとで{変|か}えることができます。",
+          "vi": "※ Với các lớp có 2 buổi/tuần, hãy chọn xem bạn sẽ đến vào thứ mấy. Sau này bạn có thể đổi ngày học.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m6_s2.mp3",
+          "durationSec": 6.98
+        },
+        {
+          "id": "d12_m6_s3",
+          "jaPlain": "※教室に入るかどうか決める前に、クラスの見学ができます。",
+          "jaRuby": "※{教室|きょうしつ}に{入|はい}るかどうか{決|き}める{前|まえ}に、クラスの{見学|けんがく}ができます。",
+          "vi": "※ Trước khi quyết định có đăng ký học hay không, bạn có thể đến tham quan lớp học trước.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m6_s3.mp3",
+          "durationSec": 4.36
+        }
+      ],
+      "questions": [
+        {
+          "id": "q28",
+          "number": 28,
+          "questionJa": "ポレスさんは{西山|にしやま}{先生|せんせい}のクラスに{行|い}きたいです。グループで、{景色|けしき}の{絵|え}が{習|なら}えるクラスがいいです。ポレスさんはどのクラスに{行|い}きますか。",
+          "questionVi": "Bạn Pores muốn học lớp của cô Nishiyama, học theo nhóm và được học vẽ phong cảnh. Pores sẽ vào lớp nào?",
+          "options": [
+            {
+              "label": "1",
+              "ja": "Aクラス",
+              "vi": "Lớp A (Cô Nishiyama · Nhóm · Người & đồ vật)"
+            },
+            {
+              "label": "2",
+              "ja": "Cクラス",
+              "vi": "Lớp C (Cô Nishiyama · Nhóm · Phong cảnh)"
+            },
+            {
+              "label": "3",
+              "ja": "Dクラス",
+              "vi": "Lớp D (Thầy Aota · Nhóm · Phong cảnh)"
+            },
+            {
+              "label": "4",
+              "ja": "Eクラス",
+              "vi": "Lớp E (Cô Nishiyama · 1 người · Tự chọn)"
+            }
+          ],
+          "correctIndex": 1,
+          "explanationVi": "Bấm thử preset Câu 28 trên bộ lọc bảng để thấy cả 2 bảng tự sáng lên lớp duy nhất khớp cả 3 điều kiện: ① GV 西山京子 (A, C, E) → loại D. ② Lớp nhóm グループ (A, C) → loại E (1 người). ③ Vẽ phong cảnh 景色の絵 → loại A (vẽ người & đồ vật). → Chỉ còn duy nhất Cクラス (Đáp án 2)!"
+        },
+        {
+          "id": "q29",
+          "number": 29,
+          "questionJa": "フォエさんは{土曜日|どようび}の{午前|ごぜん}のクラスに{行|い}きたいです。{料金|りょうきん}は15,000{円|えん}{以下|いか}のクラスがいいです。フォエさんが{選|えら}べるクラスはどれですか。",
+          "questionVi": "Bạn Foe muốn học lớp vào sáng thứ Bảy, với học phí từ 15,000 yên trở xuống. Foe có thể chọn những lớp nào?",
+          "options": [
+            {
+              "label": "1",
+              "ja": "Aクラス、Bクラス、Cクラス、Dクラス",
+              "vi": "Lớp A, B, C, D"
+            },
+            {
+              "label": "2",
+              "ja": "Aクラス、Dクラス",
+              "vi": "Lớp A, D"
+            },
+            {
+              "label": "3",
+              "ja": "Bクラス、Cクラス",
+              "vi": "Lớp B, C"
+            },
+            {
+              "label": "4",
+              "ja": "Aクラス、Dクラス、Fクラス",
+              "vi": "Lớp A, D, F"
+            }
+          ],
+          "correctIndex": 1,
+          "explanationVi": "Kết hợp đối chiếu cả 2 bảng: ① Sáng thứ Bảy (土 10時〜12時) ở bảng dưới gồm: A, D, F (loại B và C vì 13–15h là buổi chiều 午後!). ② Học phí ≤ 15,000 yên (15,000円以下) ở bảng trên: A và D đều 12,000 yên, còn F là 20,000 yên → loại F (bẫy ở đáp án 4!). → Chỉ còn Aクラス và Dクラス = Đáp án 2!"
+        }
+      ],
+      "vocab": [
+        {
+          "word": "景色",
+          "reading": "けしき",
+          "meaningVi": "phong cảnh"
+        },
+        {
+          "word": "〜以下",
+          "reading": "〜いか",
+          "meaningVi": "từ ... trở xuống (≤)"
+        },
+        {
+          "word": "午前 / 午後",
+          "reading": "ごぜん / ごご",
+          "meaningVi": "buổi sáng / buổi chiều"
+        },
+        {
+          "word": "見学",
+          "reading": "けんがく",
+          "meaningVi": "tham quan, dự giờ"
+        },
+        {
+          "word": "習う",
+          "reading": "ならう",
+          "meaningVi": "học (có người dạy)"
+        }
+      ],
+      "grammar": [
+        {
+          "id": "g12_m6_1",
+          "pattern": "V(て) + みませんか",
+          "titleVi": "Bạn có muốn thử làm... không?",
+          "explanationVi": "Câu mở đầu poster quảng cáo / chiêu sinh cực phổ biến ở Nhật.",
+          "exampleRuby": "「ニシヤマ」で{楽|たの}しく{絵|え}を{習|なら}ってみませんか。"
+        },
+        {
+          "id": "g12_m6_2",
+          "pattern": "V(る) + かどうか",
+          "titleVi": "Có làm... hay không",
+          "explanationVi": "教室に入るかどうか決める前に = Trước khi quyết định có vào học hay không.",
+          "exampleRuby": "{教室|きょうしつ}に{入|はい}るかどうか{決|き}める{前|まえ}に、{見学|けんがく}ができます。"
+        }
+      ]
+    }
+  ]
+}

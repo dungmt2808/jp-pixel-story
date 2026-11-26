@@ -58,6 +58,7 @@ def validate_story_folder(
     story_json = sdir / "story.json"
     dictation_json = sdir / "dictation.json"
     choukai_json = sdir / "choukai.json"
+    dokkai_json = sdir / "dokkai.json"
     standalone_html = sdir / "index.html"
 
     if story_json.exists():
@@ -123,6 +124,65 @@ def validate_story_folder(
             for li, ln in enumerate(q.get("script", [])):
                 stats["kanji_blocks_checked"] += 1
                 _check_ruby_segments(f"choukai/{qid}.script[{li}]", ln.get("ja", ""), issues)
+
+    if dokkai_json.exists():
+        dkdata = json.loads(dokkai_json.read_text(encoding="utf-8"))
+        for p in dkdata.get("passages", []):
+            pid = p["id"]
+            stats["kanji_blocks_checked"] += 1
+            _check_ruby_segments(f"dokkai/{pid}.titleJa", p.get("titleJa", ""), issues)
+            if p.get("contextIntroJa"):
+                _check_ruby_segments(f"dokkai/{pid}.contextIntroJa", p["contextIntroJa"], issues)
+            for mi, meta in enumerate(p.get("headerMeta", [])):
+                _check_ruby_segments(f"dokkai/{pid}.headerMeta[{mi}]", meta.get("valueJa", ""), issues)
+            for fi, fline in enumerate(p.get("footerMeta", [])):
+                _check_ruby_segments(f"dokkai/{pid}.footerMeta[{fi}]", fline, issues)
+            for sent in p.get("sentences", []):
+                stats["kanji_blocks_checked"] += 1
+                _check_ruby_segments(f"dokkai/{pid}/{sent['id']}", sent.get("jaRuby", ""), issues)
+                if sent.get("sectionTagJa"):
+                    _check_ruby_segments(
+                        f"dokkai/{pid}/{sent['id']}.sectionTag", sent["sectionTagJa"], issues
+                    )
+                check_audio_ref(f"dokkai/{pid}/{sent['id']}", sent.get("audioUrl"))
+            sim = p.get("conditionSimulator")
+            if isinstance(sim, dict):
+                for oi, opt in enumerate(sim.get("options", [])):
+                    _check_ruby_segments(f"dokkai/{pid}.sim[{oi}]", opt.get("summaryJa", ""), issues)
+            for tli, step in enumerate(p.get("timeline", [])):
+                _check_ruby_segments(f"dokkai/{pid}.timeline[{tli}]", step.get("labelJa", ""), issues)
+            for ti, tbl in enumerate(p.get("tables", [])):
+                if tbl.get("captionJa"):
+                    _check_ruby_segments(f"dokkai/{pid}.tbl[{ti}].caption", tbl["captionJa"], issues)
+                for ci, col in enumerate(tbl.get("columns", [])):
+                    _check_ruby_segments(f"dokkai/{pid}.tbl[{ti}].col[{ci}]", col, issues)
+                for ri, row in enumerate(tbl.get("rows", [])):
+                    for ci, cell in enumerate(row.get("cells", [])):
+                        stats["kanji_blocks_checked"] += 1
+                        _check_ruby_segments(
+                            f"dokkai/{pid}.tbl[{ti}].row[{ri}].c[{ci}]", cell, issues
+                        )
+                for fi, flt in enumerate(tbl.get("filters", [])):
+                    _check_ruby_segments(
+                        f"dokkai/{pid}.tbl[{ti}].filter[{fi}]", flt.get("labelJa", ""), issues
+                    )
+                if tbl.get("footnoteJa"):
+                    _check_ruby_segments(
+                        f"dokkai/{pid}.tbl[{ti}].footnote", tbl["footnoteJa"], issues
+                    )
+            for q in p.get("questions", []):
+                qid = q["id"]
+                stats["kanji_blocks_checked"] += 1
+                _check_ruby_segments(f"dokkai/{pid}/{qid}.q", q.get("questionJa", ""), issues)
+                opts = q.get("options", [])
+                for oi, opt in enumerate(opts):
+                    _check_ruby_segments(f"dokkai/{pid}/{qid}.opt{oi}", opt.get("ja", ""), issues)
+                cidx = q.get("correctIndex", -1)
+                if not (0 <= cidx < len(opts)):
+                    issues.append(f"[Invalid dokkai correctIndex] {pid}/{qid}: {cidx}")
+            for g in p.get("grammar", []):
+                if g.get("exampleRuby"):
+                    _check_ruby_segments(f"dokkai/{pid}/grammar/{g['id']}", g["exampleRuby"], issues)
 
     if standalone_html.exists():
         html = standalone_html.read_text(encoding="utf-8")

@@ -5,6 +5,7 @@ import { DepatoStage } from "./components/DepatoStage";
 import { DictationView } from "./components/DictationView";
 import { HybridStage } from "./components/HybridStage";
 import { JlptChoukaiView } from "./components/JlptChoukaiView";
+import { JlptDokkaiView } from "./components/JlptDokkaiView";
 import { PixelStage } from "./components/PixelStage";
 import { ReadingView } from "./components/ReadingView";
 import { StoryLibrary } from "./components/StoryLibrary";
@@ -12,6 +13,7 @@ import { TsuruStage } from "./components/TsuruStage";
 import type { StoryCatalog, StoryCatalogEntry } from "./types/catalog";
 import type { ChoukaiExamData } from "./types/choukai";
 import type { DictationItem, DictationPack } from "./types/dictation";
+import type { DokkaiExamData } from "./types/dokkai";
 import type { StoryData } from "./types/story";
 import { resolveAssetUrl } from "./utils/assetUrl";
 import { parseRuby, rubyToKana } from "./utils/ruby";
@@ -65,31 +67,60 @@ function buildDictationPackFromStory(story: StoryData): DictationPack {
   };
 }
 
+function buildDictationPackFromDokkai(dokkai: DokkaiExamData): DictationPack {
+  const items: DictationItem[] = [];
+  const seen = new Set<string>();
+  for (const passage of dokkai.passages) {
+    for (const sent of passage.sentences) {
+      if (!sent.audioUrl || seen.has(sent.id)) continue;
+      seen.add(sent.id);
+      items.push({
+        id: sent.id,
+        speakerLabel: passage.tabLabel,
+        jaPlain: sent.jaPlain,
+        jaKana: rubyToKana(sent.jaRuby),
+        jaRuby: parseRuby(sent.jaRuby),
+        vi: sent.vi,
+        audioUrl: sent.audioUrl,
+        durationSec: sent.durationSec,
+      });
+    }
+  }
+  return {
+    id: dokkai.id,
+    titleJa: dokkai.titleJa,
+    titleVi: dokkai.titleVi,
+    level: dokkai.level,
+    items,
+  };
+}
+
+type AppMode = "stage" | "reading" | "dictation" | "choukai" | "dokkai";
+
+function parseAppMode(m: string | null): AppMode {
+  if (m === "choukai") return "choukai";
+  if (m === "dokkai") return "dokkai";
+  if (m === "dictation") return "dictation";
+  if (m === "reading") return "reading";
+  return "stage";
+}
+
 export function App() {
   const initialParams = new URLSearchParams(window.location.search);
   const initialStoryId = initialParams.get("story");
   const initialAutoplay = initialParams.get("autoplay") === "true";
-  const initialModeParam = initialParams.get("mode");
-  const initialMode: "stage" | "reading" | "dictation" | "choukai" =
-    initialModeParam === "choukai"
-      ? "choukai"
-      : initialModeParam === "dictation"
-        ? "dictation"
-        : initialModeParam === "reading"
-          ? "reading"
-          : "stage";
+  const initialMode: AppMode = parseAppMode(initialParams.get("mode"));
 
   const [catalog, setCatalog] = useState<StoryCatalogEntry[]>([]);
   const [selectedStoryId, setSelectedStoryId] = useState<string | null>(
     initialStoryId
   );
   const [autoplay, setAutoplay] = useState<boolean>(initialAutoplay);
-  const [mode, setMode] = useState<"stage" | "reading" | "dictation" | "choukai">(
-    initialMode
-  );
+  const [mode, setMode] = useState<AppMode>(initialMode);
   const [story, setStory] = useState<StoryData | null>(null);
   const [dictationPack, setDictationPack] = useState<DictationPack | null>(null);
   const [choukaiExam, setChoukaiExam] = useState<ChoukaiExamData | null>(null);
+  const [dokkaiExam, setDokkaiExam] = useState<DokkaiExamData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showFurigana, setShowFurigana] = useState(true);
   const [muted, setMuted] = useState(false);
@@ -134,6 +165,7 @@ export function App() {
       setStory(null);
       setDictationPack(null);
       setChoukaiExam(null);
+      setDokkaiExam(null);
       setError(null);
       retroAudio.stopBgm();
       return;
@@ -165,9 +197,31 @@ export function App() {
         return;
       }
 
+      if (mode === "dokkai" || (selectedStoryId.endsWith("-dokkai") && mode !== "dictation")) {
+        setDokkaiExam(null);
+        try {
+          const dRes = await fetch(
+            resolveAssetUrl(`stories/${selectedStoryId}/dokkai.json`)
+          );
+          if (!dRes.ok) {
+            throw new Error(`Không tìm thấy đề đọc JLPT "${selectedStoryId}"`);
+          }
+          const dData = (await dRes.json()) as DokkaiExamData;
+          if (!cancelled) {
+            setDokkaiExam(dData);
+            if (mode !== "dokkai") setMode("dokkai");
+          }
+        } catch (err: unknown) {
+          if (!cancelled) {
+            setError(err instanceof Error ? err.message : String(err));
+          }
+        }
+        return;
+      }
+
       if (mode === "dictation") {
         setDictationPack(null);
-        // 1. Prefer dedicated dictation.json (used by standalone stories like Hachiko)
+        // 1. Prefer dedicated dictation.json (used by standalone stories & JLPT choukai)
         try {
           const dRes = await fetch(
             resolveAssetUrl(`stories/${selectedStoryId}/dictation.json`)
@@ -182,10 +236,32 @@ export function App() {
             return;
           }
         } catch {
-          // fallback to story.json
+          // fallback
         }
 
-        // 2. Otherwise build DictationPack automatically from story.json
+        // 2. If it's a JLPT Dokkai pack, auto-build DictationPack from dokkai.json
+        if (selectedStoryId.endsWith("-dokkai")) {
+          try {
+            const dkRes = await fetch(
+              resolveAssetUrl(`stories/${selectedStoryId}/dokkai.json`)
+            );
+            if (!dkRes.ok) {
+              throw new Error(`Không tìm thấy dữ liệu đọc hiểu cho "${selectedStoryId}"`);
+            }
+            const dkData = (await dkRes.json()) as DokkaiExamData;
+            if (!cancelled) {
+              setDokkaiExam(dkData);
+              setDictationPack(buildDictationPackFromDokkai(dkData));
+            }
+          } catch (err: unknown) {
+            if (!cancelled) {
+              setError(err instanceof Error ? err.message : String(err));
+            }
+          }
+          return;
+        }
+
+        // 3. Otherwise build DictationPack automatically from story.json
         try {
           const sRes = await fetch(
             resolveAssetUrl(`stories/${selectedStoryId}/story.json`)
@@ -234,16 +310,7 @@ export function App() {
       const p = new URLSearchParams(window.location.search);
       setSelectedStoryId(p.get("story"));
       setAutoplay(p.get("autoplay") === "true");
-      const m = p.get("mode");
-      setMode(
-        m === "choukai"
-          ? "choukai"
-          : m === "dictation"
-            ? "dictation"
-            : m === "reading"
-              ? "reading"
-              : "stage"
-      );
+      setMode(parseAppMode(p.get("mode")));
     };
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
@@ -251,7 +318,7 @@ export function App() {
 
   const updateUrl = (
     storyId: string | null,
-    nextMode: "stage" | "reading" | "dictation" | "choukai",
+    nextMode: AppMode,
     isAutoplay = false
   ) => {
     const url = new URL(window.location.href);
@@ -260,7 +327,12 @@ export function App() {
     } else {
       url.searchParams.delete("story");
     }
-    if (nextMode === "dictation" || nextMode === "reading" || nextMode === "choukai") {
+    if (
+      nextMode === "dictation" ||
+      nextMode === "reading" ||
+      nextMode === "choukai" ||
+      nextMode === "dokkai"
+    ) {
       url.searchParams.set("mode", nextMode);
     } else {
       url.searchParams.delete("mode");
@@ -296,6 +368,14 @@ export function App() {
     setSelectedStoryId(examId);
   }, []);
 
+  const handleOpenDokkai = useCallback((examId: string) => {
+    retroAudio.stopBgm();
+    updateUrl(examId, "dokkai", false);
+    setAutoplay(false);
+    setMode("dokkai");
+    setSelectedStoryId(examId);
+  }, []);
+
   const handleOpenLibrary = useCallback(() => {
     retroAudio.stopBgm();
     updateUrl(null, "stage", false);
@@ -312,6 +392,7 @@ export function App() {
           onSelectStory={handleSelectStory}
           onSelectDictation={handleOpenDictation}
           onSelectChoukai={handleOpenChoukai}
+          onSelectDokkai={handleOpenDokkai}
         />
       </div>
     );
@@ -359,6 +440,30 @@ export function App() {
     );
   }
 
+  if (mode === "dokkai") {
+    if (!dokkaiExam) {
+      return (
+        <div className="app-shell">
+          <div className="subtitle-box">
+            <div className="subtitle-ja">読み込み中... (Đang tải đề đọc hiểu JLPT...)</div>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="app-shell">
+        <JlptDokkaiView
+          exam={dokkaiExam}
+          showFurigana={showFurigana}
+          onToggleFurigana={() => setShowFurigana((v) => !v)}
+          onOpenLibrary={handleOpenLibrary}
+          onOpenDictation={() => handleOpenDictation(dokkaiExam.id)}
+          onOpenMondai5={(storyId) => handleSelectStory(storyId, false)}
+        />
+      </div>
+    );
+  }
+
   if (mode === "dictation") {
     if (!dictationPack) {
       return (
@@ -372,7 +477,9 @@ export function App() {
 
     const catEntry = catalog.find((c) => c.id === selectedStoryId);
     const isChoukaiPack = catEntry?.kind === "jlpt-choukai" || selectedStoryId.endsWith("-choukai");
-    const isEngineStory = !catEntry || (catEntry.kind !== "standalone" && !isChoukaiPack);
+    const isDokkaiPack = catEntry?.kind === "jlpt-dokkai" || selectedStoryId.endsWith("-dokkai");
+    const isEngineStory =
+      !catEntry || (catEntry.kind !== "standalone" && !isChoukaiPack && !isDokkaiPack);
 
     return (
       <div className="app-shell">
@@ -384,12 +491,14 @@ export function App() {
           onBackToStory={
             isChoukaiPack
               ? () => handleOpenChoukai(selectedStoryId)
-              : isEngineStory
-                ? () => {
-                    updateUrl(selectedStoryId, "stage", false);
-                    setMode("stage");
-                  }
-                : undefined
+              : isDokkaiPack
+                ? () => handleOpenDokkai(selectedStoryId)
+                : isEngineStory
+                  ? () => {
+                      updateUrl(selectedStoryId, "stage", false);
+                      setMode("stage");
+                    }
+                  : undefined
           }
         />
       </div>

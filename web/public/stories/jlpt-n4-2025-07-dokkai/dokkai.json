@@ -1,0 +1,680 @@
+{
+  "id": "jlpt-n4-2025-07-dokkai",
+  "examDate": "07/2025",
+  "level": "JLPT N4 · 07/2025",
+  "titleJa": "JLPT N4 読解 問題4・6 (07/2025)",
+  "titleVi": "Đọc hiểu 07/2025 (Câu 22–24, 28–29)",
+  "description": "Trọn bộ các bài Đọc hiểu ngắn (問題4: Email nhóm đại học, Tản văn xem phim, Thông báo siêu thị có mô phỏng trời mưa/nắng) và Tra cứu thông tin (問題6: Bảo tàng Thủy tinh Maeyama có bảng lọc điều kiện trực tiếp) + giọng VOICEVOX từng câu + Daily Dictation.",
+  "mondai5StoryId": "jlpt-n4-2025-07-rain-bgm",
+  "mondai5TitleVi": "Xem hoạt ảnh 問題5: デパートの雨の音楽 (Câu 25–27)",
+  "passages": [
+    {
+      "id": "m4_1",
+      "tabLabel": "問題4 (1) · Q22",
+      "sectionBadge": "問題4 (1) · Email đại học · Câu 22",
+      "docStyle": "email",
+      "contextIntroJa": "これはリサさんが{大学|だいがく}のクラスメートに{書|か}いたメールです。",
+      "contextIntroVi": "Đây là email mà bạn Lisa đã viết gửi cho các bạn cùng lớp đại học.",
+      "titleJa": "グループ{研究|けんきゅう}についてのメール",
+      "titleVi": "Email về đề tài nghiên cứu nhóm của Lisa",
+      "headerMeta": [
+        {
+          "label": "宛先 (To)",
+          "valueJa": "Aグループのみなさん"
+        },
+        {
+          "label": "差出人 (From)",
+          "valueJa": "リサ"
+        },
+        {
+          "label": "件名 (Subj)",
+          "valueJa": "グループ{研究|けんきゅう}のアイデアについて"
+        }
+      ],
+      "footerMeta": [
+        "リサ"
+      ],
+      "sentences": [
+        {
+          "id": "d07_m4_1_s1",
+          "jaPlain": "今日、先生に「グループ研究で何をするか決めましたか。明日の3時までですよ。」と言われました。",
+          "jaRuby": "{今日|きょう}、{先生|せんせい}に「グループ{研究|けんきゅう}で{何|なに}をするか{決|き}めましたか。{明日|あした}の3{時|じ}までですよ。」と{言|い}われました。",
+          "vi": "Hôm nay thầy giáo có nói với mình: 'Các em đã quyết định sẽ làm gì cho bài nghiên cứu nhóm chưa? Hạn chót là 3 giờ ngày mai đấy nhé.'",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_1_s1.mp3",
+          "durationSec": 9.1
+        },
+        {
+          "id": "d07_m4_1_s2",
+          "highlight": true,
+          "jaPlain": "先週考えた二つのアイデアのどちらにするか、明日の昼休みに、学生食堂で食べながら決めませんか。",
+          "jaRuby": "{先週|せんしゅう}{考|かんが}えた{二|ふた}つのアイデアのどちらにするか、{明日|あした}の{昼休|ひるやす}みに、{学生|がくせい}{食堂|しょくどう}で{食|た}べながら{決|き}めませんか。",
+          "vi": "Giờ nghỉ trưa ngày mai, chúng ta vừa ăn ở căn-tin sinh viên vừa quyết định xem chọn ý tưởng nào trong hai ý tưởng đã nghĩ tuần trước nhé?",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_1_s2.mp3",
+          "durationSec": 9.02
+        },
+        {
+          "id": "d07_m4_1_s3",
+          "jaPlain": "来られない人は、メールで意見を知らせてください。",
+          "jaRuby": "{来|こ}られない{人|ひと}は、メールで{意見|いけん}を{知|し}らせてください。",
+          "vi": "Bạn nào không đến được thì hãy nhắn ý kiến qua email giúp mình nhé.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_1_s3.mp3",
+          "durationSec": 4.01
+        }
+      ],
+      "questions": [
+        {
+          "id": "q22",
+          "number": 22,
+          "questionJa": "グループ{研究|けんきゅう}について、リサさんがこのメールで{言|い}いたいことはどれですか。",
+          "questionVi": "Về bài nghiên cứu nhóm, điều Lisa muốn nói trong email này là gì?",
+          "options": [
+            {
+              "label": "1",
+              "ja": "{何|なに}をするか、{先生|せんせい}にメールで{知|し}らせてください。",
+              "vi": "Hãy gửi email báo cho thầy giáo biết sẽ làm gì."
+            },
+            {
+              "label": "2",
+              "ja": "{何|なに}をするか、{新|あたら}しいアイデアを{私|わたし}にメールで{知|し}らせてください。",
+              "vi": "Hãy gửi email báo cho tôi ý tưởng mới xem sẽ làm gì."
+            },
+            {
+              "label": "3",
+              "ja": "{何|なに}をするか、{明日|あした}の{昼休|ひるやす}みに{集|あつ}まって{決|き}めましょう。",
+              "vi": "Giờ nghỉ trưa ngày mai hãy tụ họp lại để quyết định sẽ làm gì."
+            },
+            {
+              "label": "4",
+              "ja": "{何|なに}をするか、{相談|そうだん}する{時間|じかん}を{決|き}めましょう。",
+              "vi": "Hãy quyết định thời gian để bàn bạc xem sẽ làm gì."
+            }
+          ],
+          "correctIndex": 2,
+          "explanationVi": "Trọng tâm của email là lời rủ rê bằng mẫu 「〜ませんか」: '明日の昼休みに、学生食堂で食べながら決めませんか' (Trưa mai gặp ở căn-tin vừa ăn vừa quyết định nhé) → khớp hoàn toàn với đáp án 3 (集まって決めましょう). Bẫy ở đáp án 1 (nhắn email cho thầy — sai, email chỉ dành cho người không đến được gửi cho Lisa), đáp án 2 (ý tưởng mới — sai, đã có sẵn 2 ý tưởng từ tuần trước), đáp án 4 (chọn giờ bàn — sai, đã ấn định trưa mai)."
+        }
+      ],
+      "vocab": [
+        {
+          "word": "グループ研究",
+          "reading": "ぐるーぷけんきゅう",
+          "meaningVi": "nghiên cứu nhóm"
+        },
+        {
+          "word": "学生食堂",
+          "reading": "がくせいしょくどう",
+          "meaningVi": "căn-tin sinh viên"
+        },
+        {
+          "word": "意見",
+          "reading": "いけん",
+          "meaningVi": "ý kiến"
+        },
+        {
+          "word": "知らせる",
+          "reading": "しらせる",
+          "meaningVi": "thông báo, cho biết"
+        },
+        {
+          "word": "集まる",
+          "reading": "あつまる",
+          "meaningVi": "tập trung, tụ họp"
+        }
+      ],
+      "grammar": [
+        {
+          "id": "g07_22_1",
+          "pattern": "Câu nghi vấn + か + 決める",
+          "titleVi": "Quyết định xem (làm gì / chọn cái nào)",
+          "explanationVi": "Lồng câu hỏi có từ để hỏi (何をするか, どちらにするか) làm tân ngữ cho động từ 決める.",
+          "exampleRuby": "{二|ふた}つのアイデアのどちらにするか{決|き}めませんか。"
+        },
+        {
+          "id": "g07_22_2",
+          "pattern": "V(ます) + ながら / V + ませんか",
+          "titleVi": "Vừa làm A vừa làm B / Rủ rê lịch sự",
+          "explanationVi": "食べながら決めませんか = vừa ăn vừa quyết định cùng nhau nhé?",
+          "exampleRuby": "{食堂|しょくどう}で{食|た}べながら{決|き}めませんか。"
+        }
+      ]
+    },
+    {
+      "id": "m4_2",
+      "tabLabel": "問題4 (2) · Q23",
+      "sectionBadge": "問題4 (2) · Tản văn ngắn · Câu 23",
+      "docStyle": "essay",
+      "titleJa": "{映画館|えいがかん}へはいつも{一人|ひとり}で",
+      "titleVi": "Lý do luôn đi rạp chiếu phim một mình",
+      "sentences": [
+        {
+          "id": "d07_m4_2_s1",
+          "jaPlain": "映画を見てよく泣く私は、だれかと一緒に映画を見に行ったことがありません。",
+          "jaRuby": "{映画|えいが}を{見|み}てよく{泣|な}く{私|わたし}は、だれかと{一緒|いっしょ}に{映画|えいが}を{見|み}に{行|い}ったことがありません。",
+          "vi": "Tôi là người hay khóc khi xem phim, nên chưa từng đi xem phim cùng ai bao giờ.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_2_s1.mp3",
+          "durationSec": 5.7
+        },
+        {
+          "id": "d07_m4_2_s2",
+          "highlight": true,
+          "jaPlain": "知っている人に泣いている自分を見られるのが嫌なので、いつも映画館へは一人で行きます。",
+          "jaRuby": "{知|し}っている{人|ひと}に{泣|な}いている{自分|じぶん}を{見|み}られるのが{嫌|いや}なので、いつも{映画館|えいがかん}へは{一人|ひとり}で{行|い}きます。",
+          "vi": "Vì tôi ghét bị người quen nhìn thấy bộ dạng đang khóc của mình, nên tôi luôn đến rạp chiếu phim một mình.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_2_s2.mp3",
+          "durationSec": 6.52
+        },
+        {
+          "id": "d07_m4_2_s3",
+          "jaPlain": "ですから、もし好きな人に映画に誘われても、一緒に行かないかもしれません。",
+          "jaRuby": "ですから、もし{好|す}きな{人|ひと}に{映画|えいが}に{誘|さそ}われても、{一緒|いっしょ}に{行|い}かないかもしれません。",
+          "vi": "Chính vì thế, giả sử có được người mình thích rủ đi xem phim đi chăng nữa, có lẽ tôi cũng sẽ không đi cùng đâu.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_2_s3.mp3",
+          "durationSec": 6.11
+        }
+      ],
+      "questions": [
+        {
+          "id": "q23",
+          "number": 23,
+          "questionJa": "「{一緒|いっしょ}に{行|い}かないかもしれません」とありますが、どうしてですか。",
+          "questionVi": "Trong bài có viết 'có lẽ sẽ không đi cùng', tại sao lại vậy?",
+          "options": [
+            {
+              "label": "1",
+              "ja": "{好|す}きな{人|ひと}と{一緒|いっしょ}にいる{自分|じぶん}を、だれかに{見|み}られるのが{嫌|いや}だから",
+              "vi": "Vì ghét bị ai đó nhìn thấy mình ở cạnh người mình thích."
+            },
+            {
+              "label": "2",
+              "ja": "だれかと{一緒|いっしょ}に{映画|えいが}を{見|み}に{行|い}ったことがないから",
+              "vi": "Vì chưa từng đi xem phim với ai bao giờ."
+            },
+            {
+              "label": "3",
+              "ja": "{好|す}きな{人|ひと}が{泣|な}いているところを、{見|み}たくないから",
+              "vi": "Vì không muốn nhìn thấy cảnh người mình thích đang khóc."
+            },
+            {
+              "label": "4",
+              "ja": "{泣|な}いているところを、{好|す}きな{人|ひと}に{見|み}られたくないから",
+              "vi": "Vì không muốn bị người mình thích nhìn thấy lúc mình đang khóc."
+            }
+          ],
+          "correctIndex": 3,
+          "explanationVi": "Câu trước từ nối 「ですから」 nêu trực tiếp lý do: '知っている人に泣いている自分を見られるのが嫌なので' (vì ghét bị người quen thấy mình đang khóc). Đáp án 4 diễn đạt lại cực chuẩn bằng thể bị động phủ định mong muốn 「見られたくない」(không muốn bị nhìn thấy). Cẩn thận bẫy đảo chủ ngữ ở đáp án 3: 'không muốn thấy người kia khóc' là sai ngược hoàn toàn!"
+        }
+      ],
+      "vocab": [
+        {
+          "word": "泣く",
+          "reading": "なく",
+          "meaningVi": "khóc"
+        },
+        {
+          "word": "嫌（な）",
+          "reading": "いや",
+          "meaningVi": "ghét, khó chịu"
+        },
+        {
+          "word": "誘う",
+          "reading": "さそう",
+          "meaningVi": "rủ rê, mời"
+        },
+        {
+          "word": "映画館",
+          "reading": "えいがかん",
+          "meaningVi": "rạp chiếu phim"
+        }
+      ],
+      "grammar": [
+        {
+          "id": "g07_23_1",
+          "pattern": "Aに + V(られる) [Thể bị động N4]",
+          "titleVi": "Bị ai đó làm gì (見られる / 誘われる)",
+          "explanationVi": "Bài dùng liền 2 thể bị động: 見られる (bị nhìn thấy) và 誘われる (được/bị rủ).",
+          "exampleRuby": "{知|し}っている{人|ひと}に{泣|な}いている{自分|じぶん}を{見|み}られるのが{嫌|いや}です。"
+        },
+        {
+          "id": "g07_23_2",
+          "pattern": "もし〜ても / 〜かもしれません",
+          "titleVi": "Cho dù... đi nữa / Có lẽ...",
+          "explanationVi": "Biểu thị giả định nhượng bộ kèm phán đoán không chắc chắn.",
+          "exampleRuby": "もし{好|す}きな{人|ひと}に{誘|さそ}われても、{行|い}かないかもしれません。"
+        }
+      ]
+    },
+    {
+      "id": "m4_3",
+      "tabLabel": "問題4 (3) · Q24",
+      "sectionBadge": "問題4 (3) · Thông báo siêu thị · Câu 24",
+      "docStyle": "notice",
+      "contextIntroJa": "このお{知|し}らせが、スーパーの{入口|いりぐち}にはってあります。",
+      "contextIntroVi": "Thông báo này được dán ở lối vào của siêu thị.",
+      "titleJa": "スーパーたかだや「お{知|し}らせ」",
+      "titleVi": "Thông báo thay đổi giờ mở cửa siêu thị Takadaya",
+      "footerMeta": [
+        "スーパーたかだや"
+      ],
+      "sentences": [
+        {
+          "id": "d07_m4_3_s1",
+          "jaPlain": "水道工事を行いますので、7月11日（水）は営業時間が変わります。",
+          "jaRuby": "{水道|すいどう}{工事|こうじ}を{行|おこな}いますので、7{月|がつ}11{日|にち}（{水|すい}）は{営業|えいぎょう}{時間|じかん}が{変|か}わります。",
+          "vi": "Do tiến hành thi công đường ống nước, giờ mở cửa ngày thứ Tư 11/7 sẽ thay đổi.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_3_s1.mp3",
+          "durationSec": 6.67
+        },
+        {
+          "id": "d07_m4_3_s2",
+          "highlight": true,
+          "jaPlain": "営業時間：午前9時〜午後10時 → 午後1時〜午後10時",
+          "jaRuby": "{営業|えいぎょう}{時間|じかん}：{午前|ごぜん}9{時|じ}〜{午後|ごご}10{時|じ} → {午後|ごご}1{時|じ}〜{午後|ごご}10{時|じ}",
+          "vi": "Giờ mở cửa: 9:00 sáng ~ 10:00 tối → Đổi thành 1:00 chiều ~ 10:00 tối.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_3_s2.mp3",
+          "durationSec": 5.82
+        },
+        {
+          "id": "d07_m4_3_s3",
+          "highlight": true,
+          "jaPlain": "※雨のときは工事を行いませんので、営業時間は変わりません。",
+          "jaRuby": "※{雨|あめ}のときは{工事|こうじ}を{行|おこな}いませんので、{営業|えいぎょう}{時間|じかん}は{変|か}わりません。",
+          "vi": "※ Khi trời mưa sẽ không thi công, nên giờ mở cửa không thay đổi.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_3_s3.mp3",
+          "durationSec": 4.71
+        },
+        {
+          "id": "d07_m4_3_s4",
+          "jaPlain": "よろしくお願いします。",
+          "jaRuby": "よろしくお{願|ねが}いします。",
+          "vi": "Xin cảm ơn quý khách đã thông cảm.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_3_s4.mp3",
+          "durationSec": 1.7
+        }
+      ],
+      "conditionSimulator": {
+        "promptVi": "Thử bấm đổi thời tiết ngày 11/7 để xem siêu thị mở cửa mấy giờ nhé!",
+        "options": [
+          {
+            "id": "no_rain",
+            "label": "☀️ 11/7 Không mưa (雨が降らない)",
+            "badge": "13:00 〜 22:00",
+            "accent": "sunny",
+            "summaryJa": "{工事|こうじ}を{行|おこな}います → {店|みせ}が{開|あ}くのは{午後|ごご}1{時|じ}（いつもより4{時間|じかん}{遅|おそ}い！）",
+            "summaryVi": "Tiến hành thi công nước → Siêu thị mở cửa lúc 13:00 (MUỘN hơn 9:00 thường lệ!)."
+          },
+          {
+            "id": "rain",
+            "label": "☔ 11/7 Trời mưa (雨が降る)",
+            "badge": "09:00 〜 22:00",
+            "accent": "rain",
+            "summaryJa": "{工事|こうじ}を{行|おこな}いません → {営業|えいぎょう}{時間|じかん}は{変|か}わらず{午前|ごぜん}9{時|じ}から",
+            "summaryVi": "Hủy thi công → Giờ mở cửa giữ nguyên 9:00 sáng như bình thường (không sớm hơn, không muộn hơn)."
+          }
+        ]
+      },
+      "questions": [
+        {
+          "id": "q24",
+          "number": 24,
+          "questionJa": "7{月|がつ}11{日|にち}の{営業|えいぎょう}{時間|じかん}について、このポスターからわかることは、どれですか。",
+          "questionVi": "Về giờ mở cửa ngày 11/7, điều có thể biết từ tấm áp-phích này là gì?",
+          "options": [
+            {
+              "label": "1",
+              "ja": "{雨|あめ}が{降|ふ}ったら、{店|みせ}が{開|あ}く{時間|じかん}がいつもより{早|はや}くなります。",
+              "vi": "Nếu trời mưa, giờ mở cửa của quán sẽ sớm hơn mọi khi."
+            },
+            {
+              "label": "2",
+              "ja": "{雨|あめ}が{降|ふ}ったら、{店|みせ}が{開|あ}く{時間|じかん}がいつもより{遅|おそ}くなります。",
+              "vi": "Nếu trời mưa, giờ mở cửa của quán sẽ muộn hơn mọi khi."
+            },
+            {
+              "label": "3",
+              "ja": "{雨|あめ}が{降|ふ}らなかったら、{店|みせ}が{開|あ}く{時間|じかん}がいつもより{早|はや}くなります。",
+              "vi": "Nếu trời không mưa, giờ mở cửa của quán sẽ sớm hơn mọi khi."
+            },
+            {
+              "label": "4",
+              "ja": "{雨|あめ}が{降|ふ}らなかったら、{店|みせ}が{開|あ}く{時間|じかん}がいつもより{遅|おそ}くなります。",
+              "vi": "Nếu trời không mưa, giờ mở cửa của quán sẽ muộn hơn mọi khi."
+            }
+          ],
+          "correctIndex": 3,
+          "explanationVi": "Bẫy kinh điển của JLPT kết hợp điều kiện phủ định + đổi mốc giờ: ① Mưa thì KHÔNG đổi giờ (loại ngay 1 & 2). ② KHÔNG mưa (雨が降らなかったら) → thi công → giờ mở cửa chuyển từ 9 giờ sáng sang 1 giờ chiều = MUỘN hơn thường lệ (遅くなります) → Đáp án 4 chuẩn 100%!"
+        }
+      ],
+      "vocab": [
+        {
+          "word": "水道工事",
+          "reading": "すいどうこうじ",
+          "meaningVi": "thi công đường nước"
+        },
+        {
+          "word": "行う",
+          "reading": "おこなう",
+          "meaningVi": "tiến hành, tổ chức"
+        },
+        {
+          "word": "営業時間",
+          "reading": "えいぎょうじかん",
+          "meaningVi": "giờ mở cửa / kinh doanh"
+        },
+        {
+          "word": "開く",
+          "reading": "あく",
+          "meaningVi": "mở cửa (tự động từ)"
+        },
+        {
+          "word": "遅い / 早い",
+          "reading": "おそい / はやい",
+          "meaningVi": "muộn / sớm"
+        }
+      ],
+      "grammar": [
+        {
+          "id": "g07_24_1",
+          "pattern": "V(なかった) + ら",
+          "titleVi": "Nếu không làm... (điều kiện phủ định)",
+          "explanationVi": "雨が降らなかったら = Nếu trời không mưa.",
+          "exampleRuby": "{雨|あめ}が{降|ふ}らなかったら、{午後|ごご}1{時|じ}に{開|あ}きます。"
+        },
+        {
+          "id": "g07_24_2",
+          "pattern": "いつもより + Adj + なる",
+          "titleVi": "Trở nên ... hơn mọi khi",
+          "explanationVi": "いつもより遅くなります = trở nên muộn hơn bình thường.",
+          "exampleRuby": "{店|みせ}が{開|あ}く{時間|じかん}がいつもより{遅|おそ}くなります。"
+        }
+      ]
+    },
+    {
+      "id": "m6",
+      "tabLabel": "問題6 · Q28–29",
+      "sectionBadge": "問題6 · Tra cứu thông tin · Câu 28 & 29",
+      "docStyle": "info_table",
+      "titleJa": "{前山|まえやま}ガラス{美術館|びじゅつかん}・ガラス{教室|きょうしつ}のご{案内|あんない}",
+      "titleVi": "Thông báo lớp làm đồ thủy tinh — Bảo tàng Thủy tinh Maeyama",
+      "footerMeta": [
+        "{前山|まえやま}ガラス{美術館|びじゅつかん}",
+        "{営業|えいぎょう}{時間|じかん}：8{時|じ}30{分|ぷん}〜18{時|じ} ／ {電話|でんわ}：036-665-4998"
+      ],
+      "tables": [
+        {
+          "captionJa": "＜クラス{一覧|いちらん}＞",
+          "columns": [
+            "クラス",
+            "{曜日|ようび}",
+            "{時間|じかん}",
+            "{料金|りょうきん}※"
+          ],
+          "rows": [
+            {
+              "id": "c1",
+              "cells": [
+                "① お{皿|さら}",
+                "{土曜日|どようび}",
+                "10{時|じ}〜10{時|じ}30{分|ぷん}",
+                "1,500{円|えん}"
+              ],
+              "tags": [
+                "sat",
+                "u1h",
+                "u2000"
+              ]
+            },
+            {
+              "id": "c2",
+              "cells": [
+                "② グラス",
+                "{日曜日|にちようび}",
+                "11{時|じ}〜11{時|じ}40{分|ぷん}",
+                "1,800{円|えん}"
+              ],
+              "tags": [
+                "sun",
+                "u1h",
+                "u2000"
+              ]
+            },
+            {
+              "id": "c3",
+              "cells": [
+                "③ アクセサリー",
+                "{土曜日|どようび}",
+                "10{時|じ}〜10{時|じ}30{分|ぷん}",
+                "2,500{円|えん}"
+              ],
+              "tags": [
+                "sat",
+                "u1h",
+                "c3"
+              ]
+            },
+            {
+              "id": "c4",
+              "cells": [
+                "④ {花瓶|かびん}",
+                "{土曜日|どようび}",
+                "11{時|じ}〜12{時|じ}30{分|ぷん}",
+                "1,800{円|えん}"
+              ],
+              "tags": [
+                "sat",
+                "u2000"
+              ]
+            }
+          ],
+          "filters": [
+            {
+              "id": "f_sat",
+              "labelJa": "{土曜日|どようび}",
+              "labelVi": "Thứ 7",
+              "tag": "sat"
+            },
+            {
+              "id": "f_sun",
+              "labelJa": "{日曜日|にちようび}",
+              "labelVi": "Chủ nhật",
+              "tag": "sun"
+            },
+            {
+              "id": "f_u1h",
+              "labelJa": "1{時間|じかん}{以内|いない}",
+              "labelVi": "Trong vòng 1 tiếng",
+              "tag": "u1h"
+            },
+            {
+              "id": "f_u2000",
+              "labelJa": "2,000{円|えん}より{安|やす}い",
+              "labelVi": "Rẻ hơn 2,000 yên",
+              "tag": "u2000"
+            },
+            {
+              "id": "f_c3",
+              "labelJa": "③ クラス",
+              "labelVi": "Lớp ③ (Câu 29)",
+              "tag": "c3"
+            }
+          ],
+          "presets": [
+            {
+              "id": "p28",
+              "label": "🎯 Lọc điều kiện Câu 28 (Hanna)",
+              "tags": [
+                "sat",
+                "u1h",
+                "u2000"
+              ]
+            },
+            {
+              "id": "p29",
+              "label": "🎯 Soi lớp ③ cho Câu 29 (Johan)",
+              "tags": [
+                "c3"
+              ]
+            }
+          ],
+          "footnoteJa": "※クラスを{受|う}ける{人|ひと}は、{前山|まえやま}ガラス{美術館|びじゅつかん}に{入|はい}る{料金|りょうきん}はかかりません。",
+          "footnoteVi": "※ Người tham gia lớp học không mất phí vào cửa Bảo tàng Thủy tinh Maeyama."
+        }
+      ],
+      "sentences": [
+        {
+          "id": "d07_m6_s1",
+          "jaPlain": "前山ガラス美術館では、お皿やアクセサリーを作る教室を開いています。",
+          "jaRuby": "{前山|まえやま}ガラス{美術館|びじゅつかん}では、お{皿|さら}やアクセサリーを{作|つく}る{教室|きょうしつ}を{開|ひら}いています。",
+          "vi": "Tại Bảo tàng Thủy tinh Maeyama, chúng tôi có mở các lớp học làm đĩa và trang sức.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m6_s1.mp3",
+          "durationSec": 5.49
+        },
+        {
+          "id": "d07_m6_s2",
+          "sectionTagJa": "＜{予約|よやく}＞",
+          "highlight": true,
+          "jaPlain": "受けたいクラスがある日の2日前の12時までに、電話で予約してください。",
+          "jaRuby": "{受|う}けたいクラスがある{日|ひ}の2{日前|かまえ}の12{時|じ}までに、{電話|でんわ}で{予約|よやく}してください。",
+          "vi": "Hãy đặt chỗ qua điện thoại trước 12 giờ trưa của ngày cách buổi học 2 ngày.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m6_s2.mp3",
+          "durationSec": 5.05
+        },
+        {
+          "id": "d07_m6_s3",
+          "jaPlain": "電話は美術館の営業時間にお願いします。",
+          "jaRuby": "{電話|でんわ}は{美術館|びじゅつかん}の{営業|えいぎょう}{時間|じかん}にお{願|ねが}いします。",
+          "vi": "Vui lòng gọi điện trong giờ mở cửa của bảo tàng (8:30〜18:00).",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m6_s3.mp3",
+          "durationSec": 3.2
+        },
+        {
+          "id": "d07_m6_s4",
+          "sectionTagJa": "＜{集|あつ}まる{場所|ばしょ}＞",
+          "highlight": true,
+          "jaPlain": "クラスが始まる時間の10分前までに、美術館の受付に来てください。",
+          "jaRuby": "クラスが{始|はじ}まる{時間|じかん}の10{分前|ぷんまえ}までに、{美術館|びじゅつかん}の{受付|うけつけ}に{来|き}てください。",
+          "vi": "Hãy có mặt tại quầy lễ tân bảo tàng chậm nhất 10 phút trước giờ bắt đầu lớp học.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m6_s4.mp3",
+          "durationSec": 5.07
+        },
+        {
+          "id": "d07_m6_s5",
+          "sectionTagJa": "＜{注意|ちゅうい}＞",
+          "jaPlain": "クラスで作った物は、ガラスの温度が下がるまで一晩かかるので、持って帰ることができるのは、次の日からです。別料金で、家に送ることもできます。",
+          "jaRuby": "クラスで{作|つく}った{物|もの}は、ガラスの{温度|おんど}が{下|さ}がるまで{一晩|ひとばん}かかるので、{持|も}って{帰|かえ}ることができるのは、{次|つぎ}の{日|ひ}からです。{別|べつ}{料金|りょうきん}で、{家|いえ}に{送|おく}ることもできます。",
+          "vi": "Đồ làm trong lớp cần qua một đêm để thủy tinh nguội xuống, nên bạn chỉ có thể mang về từ ngày hôm sau. Cũng có thể gửi về nhà (tính phí riêng).",
+          "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m6_s5.mp3",
+          "durationSec": 11.32
+        }
+      ],
+      "questions": [
+        {
+          "id": "q28",
+          "number": 28,
+          "questionJa": "ハンナさんは、{土曜日|どようび}にガラス{教室|きょうしつ}のクラスを{受|う}けたいと{思|おも}っています。1{時間|じかん}{以内|いない}に{終|お}わって、クラスの{料金|りょうきん}が2,000{円|えん}より{安|やす}いものがいいです。ハンナさんが{選|えら}べるクラスはどれですか。",
+          "questionVi": "Bạn Hanna muốn tham gia lớp làm thủy tinh vào thứ Bảy, kết thúc trong vòng 1 tiếng và học phí rẻ hơn 2,000 yên. Hanna có thể chọn lớp nào?",
+          "options": [
+            {
+              "label": "1",
+              "ja": "①（お{皿|さら}）",
+              "vi": "Lớp ① Đĩa (Thứ 7 · 30 phút · 1,500 yên)"
+            },
+            {
+              "label": "2",
+              "ja": "②（グラス）",
+              "vi": "Lớp ② Cốc thủy tinh (Chủ nhật · 40 phút · 1,800 yên)"
+            },
+            {
+              "label": "3",
+              "ja": "③（アクセサリー）",
+              "vi": "Lớp ③ Trang sức (Thứ 7 · 30 phút · 2,500 yên)"
+            },
+            {
+              "label": "4",
+              "ja": "④（{花瓶|かびん}）",
+              "vi": "Lớp ④ Bình hoa (Thứ 7 · 1 tiếng 30 phút · 1,800 yên)"
+            }
+          ],
+          "correctIndex": 0,
+          "explanationVi": "Dùng bộ lọc 3 điều kiện ngay trên bảng: ① Thứ 7 → loại ② (Chủ nhật). ② Trong vòng 1 tiếng (1時間以内) → loại ④ (11:00–12:30 = 1 tiếng 30 phút). ③ Rẻ hơn 2,000 yên → loại ③ (2,500 yên). Chỉ còn duy nhất ① お皿 (Thứ 7 · 30 phút · 1,500 yên) → Đáp án 1!"
+        },
+        {
+          "id": "q29",
+          "number": 29,
+          "questionJa": "ヨハンさんは、10{月|がつ}15{日|にち}（{土|ど}）の③のクラスを{受|う}けたいと{思|おも}っています。ヨハンさんは、いつまでに{予約|よやく}しなければなりませんか。そして、15{日|にち}は{何時|なんじ}までに{受付|うけつけ}に{行|い}かなければなりませんか。",
+          "questionVi": "Bạn Johan muốn học lớp ③ vào thứ Bảy 15/10. Johan phải đặt chỗ trước khi nào, và ngày 15 phải có mặt ở quầy lễ tân trước mấy giờ?",
+          "options": [
+            {
+              "label": "1",
+              "ja": "13{日|にち}の12{時|じ}までに{予約|よやく}します。15{日|にち}は10{時|じ}までに{行|い}きます。",
+              "vi": "Đặt trước 12:00 ngày 13. Ngày 15 đến trước 10:00."
+            },
+            {
+              "label": "2",
+              "ja": "13{日|にち}の12{時|じ}までに{予約|よやく}します。15{日|にち}は10{時|じ}の10{分前|ぷんまえ}までに{行|い}きます。",
+              "vi": "Đặt trước 12:00 ngày 13. Ngày 15 đến trước 10 giờ kém 10 phút (9:50)."
+            },
+            {
+              "label": "3",
+              "ja": "14{日|にち}の12{時|じ}までに{予約|よやく}します。15{日|にち}は10{時|じ}までに{行|い}きます。",
+              "vi": "Đặt trước 12:00 ngày 14. Ngày 15 đến trước 10:00."
+            },
+            {
+              "label": "4",
+              "ja": "14{日|にち}の12{時|じ}までに{予約|よやく}します。15{日|にち}は10{時|じ}の10{分前|ぷんまえ}までに{行|い}きます。",
+              "vi": "Đặt trước 12:00 ngày 14. Ngày 15 đến trước 10 giờ kém 10 phút."
+            }
+          ],
+          "correctIndex": 1,
+          "explanationVi": "Tra mục ＜予約＞ và ＜集まる場所＞: ① Ngày học là 15/10 → '2日前の12時まで' (trước 12:00 của 2 ngày trước đó) = 15 − 2 = ngày 13 lúc 12:00! (loại 3 & 4). ② Lớp ③ bắt đầu lúc 10:00 → '始まる時間の10分前まで' (trước giờ bắt đầu 10 phút) = 10時の10分前! → Đáp án 2 chính xác tuyệt đối!"
+        }
+      ],
+      "vocab": [
+        {
+          "word": "花瓶",
+          "reading": "かびん",
+          "meaningVi": "bình hoa"
+        },
+        {
+          "word": "〜以内",
+          "reading": "〜いない",
+          "meaningVi": "trong vòng (giới hạn)"
+        },
+        {
+          "word": "予約",
+          "reading": "よやく",
+          "meaningVi": "đặt chỗ trước"
+        },
+        {
+          "word": "受付",
+          "reading": "うけつけ",
+          "meaningVi": "quầy lễ tân / tiếp tân"
+        },
+        {
+          "word": "一晩",
+          "reading": "ひとばん",
+          "meaningVi": "một đêm"
+        },
+        {
+          "word": "別料金",
+          "reading": "べつりょうきん",
+          "meaningVi": "tính phí riêng"
+        }
+      ],
+      "grammar": [
+        {
+          "id": "g07_m6_1",
+          "pattern": "Thời điểm + までに",
+          "titleVi": "Hạn chót trước mốc thời gian",
+          "explanationVi": "Phân biệt 「までに」 (chậm nhất trước thời điểm đó phải xong hành động) với 「まで」 (kéo dài liên tục tới lúc đó).",
+          "exampleRuby": "2{日前|かまえ}の12{時|じ}までに、{電話|でんわ}で{予約|よやく}してください。"
+        },
+        {
+          "id": "g07_m6_2",
+          "pattern": "料金がかかる / かからない",
+          "titleVi": "Tốn phí / Không tốn phí",
+          "explanationVi": "Cụm từ siêu hay gặp trong JLPT N4 問題6 về vé vào cửa & học phí.",
+          "exampleRuby": "{美術館|びじゅつかん}に{入|はい}る{料金|りょうきん}はかかりません。"
+        }
+      ]
+    }
+  ]
+}

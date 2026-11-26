@@ -33,6 +33,22 @@
       "theme": "ramen_midnight"
     },
     {
+      "id": "jlpt-n4-2025-12-dokkai",
+      "category": "jlpt",
+      "kind": "jlpt-dokkai",
+      "thumbStyle": "jlpt-dokkai",
+      "artBadge": "📖 ĐỌC HIỂU 12/2025",
+      "titleJa": "JLPT N4 読解 問題4・6 (12/2025)",
+      "titleVi": "Đề Đọc hiểu thật JLPT N4 12/2025 (問題4 & 問題6 · Câu 22–24, 28–29)",
+      "level": "JLPT N4 · 12/2025",
+      "description": "Trọn bộ các bài Đọc hiểu còn lại của đề 12/2025: Quán tự câu cá, Giấy nhắn công sở (có sơ đồ mốc giờ), Khách sạn thú cưng & Bảng lọc tra cứu đồng bộ Lớp vẽ Nishiyama + VOICEVOX từng câu + Daily Dictation.",
+      "sceneCount": 4,
+      "vocabCount": 21,
+      "grammarCount": 8,
+      "questionCount": 5,
+      "theme": "jlpt_exam"
+    },
+    {
       "id": "jlpt-n4-2025-07-choukai",
       "category": "jlpt",
       "kind": "jlpt-choukai",
@@ -63,6 +79,22 @@
       "grammarCount": 5,
       "quizCount": 3,
       "theme": "ramen_midnight"
+    },
+    {
+      "id": "jlpt-n4-2025-07-dokkai",
+      "category": "jlpt",
+      "kind": "jlpt-dokkai",
+      "thumbStyle": "jlpt-dokkai",
+      "artBadge": "📖 ĐỌC HIỂU 07/2025",
+      "titleJa": "JLPT N4 読解 問題4・6 (07/2025)",
+      "titleVi": "Đề Đọc hiểu thật JLPT N4 07/2025 (問題4 & 問題6 · Câu 22–24, 28–29)",
+      "level": "JLPT N4 · 07/2025",
+      "description": "Trọn bộ các bài Đọc hiểu còn lại của đề 07/2025: Email nhóm đại học, Tản văn xem phim, Thông báo siêu thị (có mô phỏng trời nắng/mưa trực tiếp) & Bảng lọc tra cứu Bảo tàng Thủy tinh Maeyama + VOICEVOX từng câu + Daily Dictation.",
+      "sceneCount": 4,
+      "vocabCount": 20,
+      "grammarCount": 8,
+      "questionCount": 5,
+      "theme": "jlpt_exam"
     },
     {
       "id": "tsuru-ongaeshi",

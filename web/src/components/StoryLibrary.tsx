@@ -4,12 +4,14 @@ import type { StoryCatalogEntry, StoryCategory } from "../types/catalog";
 import { resolveAssetUrl } from "../utils/assetUrl";
 import { getSavedDictationCount } from "./DictationView";
 import { getSavedChoukaiScore } from "./JlptChoukaiView";
+import { getSavedDokkaiScore } from "./JlptDokkaiView";
 
 interface StoryLibraryProps {
   stories: StoryCatalogEntry[];
   onSelectStory: (storyId: string, autoplay: boolean) => void;
   onSelectDictation: (storyId: string) => void;
   onSelectChoukai: (examId: string) => void;
+  onSelectDokkai: (examId: string) => void;
 }
 
 /** Cute 320x200 pixel-art thumbnail preview for Hachikō at Shibuya Station */
@@ -124,12 +126,75 @@ function drawJlptThumb(ctx: CanvasRenderingContext2D, title: string): void {
   ctx.fillText("ORIGINAL AUDIO · 28 QUESTIONS", VIRTUAL_W / 2, 77);
 }
 
+/** Crisp pixel-art JLPT Reading sheet, info table & magnifying glass thumbnail */
+function drawDokkaiThumb(ctx: CanvasRenderingContext2D, title: string): void {
+  const px = (x: number, y: number, w: number, h: number, c: string) => {
+    ctx.fillStyle = c;
+    ctx.fillRect(x, y, w, h);
+  };
+  // Deep teal-slate desk backdrop
+  px(0, 0, VIRTUAL_W, VIRTUAL_H, "#13212c");
+  px(0, 146, VIRTUAL_W, 54, "#1c3242");
+  px(0, 146, VIRTUAL_W, 3, "#3c6882");
+  for (let gx = 16; gx < VIRTUAL_W; gx += 20) {
+    for (let gy = 20; gy < 140; gy += 18) {
+      px(gx, gy, 1, 1, "rgba(128, 224, 198, 0.2)");
+    }
+  }
+
+  // Left card: retro Japanese email / notice sheet
+  px(52, 86, 102, 88, "#0b141b");
+  px(56, 90, 94, 80, "#f5efe0");
+  px(56, 90, 94, 14, "#2d5a7b");
+  px(62, 95, 36, 4, "#ffd875");
+  // Text lines on sheet
+  px(64, 112, 74, 4, "#4b5568");
+  px(64, 121, 62, 4, "#7a8496");
+  px(64, 130, 78, 6, "#d9f4ea");
+  px(64, 130, 3, 6, "#2aa384");
+  px(64, 142, 68, 4, "#4b5568");
+  px(64, 151, 52, 4, "#7a8496");
+
+  // Right card: 問題6 interactive lookup table
+  px(164, 86, 106, 88, "#0b141b");
+  px(168, 90, 98, 80, "#f5efe0");
+  px(168, 90, 98, 14, "#3b8f7a");
+  px(174, 95, 44, 4, "#ffffff");
+  // Table grid rows (middle row highlighted mint!)
+  for (let r = 0; r < 4; r++) {
+    const ry = 109 + r * 14;
+    px(174, ry, 86, 11, r === 1 ? "#b6f0dc" : "#e6decb");
+    px(178, ry + 4, 20, 3, r === 1 ? "#0f5140" : "#5a6270");
+    px(206, ry + 4, 22, 3, r === 1 ? "#0f5140" : "#5a6270");
+    px(236, ry + 4, 18, 3, r === 1 ? "#0f5140" : "#5a6270");
+  }
+
+  // Pixel magnifying glass overlapping bottom right of table
+  px(244, 138, 22, 22, "#20283d");
+  px(247, 141, 16, 16, "#8de5ff");
+  px(250, 144, 5, 5, "#ffffff");
+  px(262, 156, 6, 6, "#d99b43");
+  px(266, 160, 6, 6, "#b47427");
+  px(270, 164, 6, 6, "#8c5319");
+
+  // Crisp Japanese title
+  ctx.font = 'bold 16px "DotGothic16", monospace';
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#091017";
+  ctx.fillText(title, VIRTUAL_W / 2 + 2, 60);
+  ctx.fillStyle = "#ffd875";
+  ctx.fillText(title, VIRTUAL_W / 2, 58);
+  ctx.font = 'bold 10px "DotGothic16", monospace';
+  ctx.fillStyle = "#79e6c9";
+  ctx.fillText("問題4 + 問題6 · VOICEVOX & FILTER TABLE", VIRTUAL_W / 2, 75);
+}
+
 function MiniPreviewCanvas({
   title,
   style,
 }: {
   title: string;
-  style?: "konbini" | "hachiko" | "jlpt";
+  style?: "konbini" | "hachiko" | "jlpt" | "jlpt-dokkai";
 }) {
   const ref = useRef<HTMLCanvasElement | null>(null);
 
@@ -143,6 +208,8 @@ function MiniPreviewCanvas({
       drawHachikoThumb(ctx, title);
     } else if (style === "jlpt") {
       drawJlptThumb(ctx, title);
+    } else if (style === "jlpt-dokkai") {
+      drawDokkaiThumb(ctx, title);
     } else {
       drawSkylineIntro(ctx, 1.2, title);
     }
@@ -184,6 +251,7 @@ export function StoryLibrary({
   onSelectStory,
   onSelectDictation,
   onSelectChoukai,
+  onSelectDokkai,
 }: StoryLibraryProps) {
   const [filter, setFilter] = useState<"all" | StoryCategory>("all");
 
@@ -196,6 +264,10 @@ export function StoryLibrary({
   const openItem = (item: StoryCatalogEntry, autoplay: boolean) => {
     if (item.kind === "jlpt-choukai") {
       onSelectChoukai(item.id);
+      return;
+    }
+    if (item.kind === "jlpt-dokkai") {
+      onSelectDokkai(item.id);
       return;
     }
     if (item.kind === "standalone" && item.href) {
@@ -255,8 +327,10 @@ export function StoryLibrary({
         {filtered.map((item) => {
           const cat = CATEGORY_META[item.category] ?? CATEGORY_META.story;
           const isChoukai = item.kind === "jlpt-choukai";
-          const dictDone = isChoukai ? 0 : getSavedDictationCount(item.id);
+          const isDokkai = item.kind === "jlpt-dokkai";
+          const dictDone = getSavedDictationCount(item.id);
           const choukaiDone = isChoukai ? getSavedChoukaiScore(item.id).answered : 0;
+          const dokkaiDone = isDokkai ? getSavedDokkaiScore(item.id).answered : 0;
           return (
             <article key={item.id} className="story-card">
               <div
@@ -277,7 +351,9 @@ export function StoryLibrary({
                         ? "hachiko"
                         : item.thumbStyle === "jlpt"
                           ? "jlpt"
-                          : "konbini"
+                          : item.thumbStyle === "jlpt-dokkai"
+                            ? "jlpt-dokkai"
+                            : "konbini"
                     }
                   />
                 )}
@@ -306,6 +382,28 @@ export function StoryLibrary({
                           ✅ Đã làm {choukaiDone}/{item.questionCount ?? 28}
                         </span>
                       )}
+                      {dictDone > 0 && (
+                        <span style={{ color: "#46b89d", fontWeight: 700 }}>
+                          ⌨️ Đã chép {dictDone} câu
+                        </span>
+                      )}
+                    </>
+                  ) : isDokkai ? (
+                    <>
+                      <span>📖 {item.sceneCount} bài (問題4 &amp; 6)</span>
+                      <span>✅ {item.questionCount ?? 5} câu thi thật</span>
+                      <span>🔍 Bảng lọc tra cứu</span>
+                      <span>🔊 VOICEVOX</span>
+                      {dokkaiDone > 0 && (
+                        <span style={{ color: "#46b89d", fontWeight: 700 }}>
+                          ✅ Đã làm {dokkaiDone}/{item.questionCount ?? 5}
+                        </span>
+                      )}
+                      {dictDone > 0 && (
+                        <span style={{ color: "#46b89d", fontWeight: 700 }}>
+                          ⌨️ Đã chép {dictDone} câu
+                        </span>
+                      )}
                     </>
                   ) : (
                     <>
@@ -332,6 +430,23 @@ export function StoryLibrary({
                         onClick={() => onSelectChoukai(item.id)}
                       >
                         🎧 Luyện nghe JLPT
+                      </button>
+                      <button
+                        type="button"
+                        className="pixel-btn pixel-btn-mint"
+                        onClick={() => onSelectDictation(item.id)}
+                      >
+                        ⌨️ Nghe chép
+                      </button>
+                    </>
+                  ) : isDokkai ? (
+                    <>
+                      <button
+                        type="button"
+                        className="pixel-btn pixel-btn-purple"
+                        onClick={() => onSelectDokkai(item.id)}
+                      >
+                        📖 Luyện Đọc JLPT
                       </button>
                       <button
                         type="button"
