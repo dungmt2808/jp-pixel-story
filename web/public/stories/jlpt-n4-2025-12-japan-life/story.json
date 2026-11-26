@@ -62,7 +62,6 @@
       "id": "dream_anime",
       "type": "cinema_intro",
       "bannerTitle": "日本の生活",
-      "locationBadge": "bg:washoku_table",
       "actionLabel": "はじめる · BẮT ĐẦU",
       "lines": [
         {
@@ -76,12 +75,13 @@
           "durationSec": 13.845,
           "ttsHash": "98aa077fb9e5"
         }
-      ]
+      ],
+      "backdrop": "proc:washoku_table",
+      "bannerSubtitle": "JLPT N4 12/2025 · 問題５"
     },
     {
       "id": "haruko_home_experience",
       "type": "cinema_checklist",
-      "locationBadge": "bg:ofuro",
       "whoButtonLabel": "? Đề thi JLPT",
       "instruction": "Bấm thử 2 trải nghiệm tại nhà Haruko!",
       "actionLabel": "最後の日、空港へ向かう電車へ →",
@@ -127,7 +127,8 @@
               "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l02_c01.mp3",
               "durationSec": 3.979,
               "ttsHash": "8e86fe55d3cf"
-            }
+            },
+            "backdrop": "proc:washoku_table"
           },
           {
             "id": "exp_ofuro",
@@ -147,12 +148,13 @@
             }
           }
         ]
-      }
+      },
+      "backdrop": "bg:ofuro",
+      "overlay": "bath_steam"
     },
     {
       "id": "airport_train_twist",
       "type": "cinema_reveal",
-      "locationBadge": "bg:airport_train",
       "instruction": "So sánh cuộc sống thường ngày của nhà Haruko với tuần Lisa sang chơi!",
       "actionLabel": "春子さんたちの気持ちを知る →",
       "lines": [
@@ -178,12 +180,24 @@
           "durationSec": 12.416,
           "ttsHash": "5e4566947055"
         }
+      ],
+      "backdrop": "proc:airport_train",
+      "revealNote": [
+        {
+          "label": "Thường ngày nhà Haruko:",
+          "text": "Ít ăn washoku · Chủ yếu tắm vòi sen 🚿",
+          "color": "#ffd875"
+        },
+        {
+          "label": "Tuần Lisa sang chơi:",
+          "text": "Ngày nào cũng ăn washoku 🥢 & pha bồn nước nóng ♨️ (Để Lisa vui!)",
+          "color": "#63d9b4"
+        }
       ]
     },
     {
       "id": "warm_ending",
       "type": "cinema_outro",
-      "locationBadge": "bg:airport_train",
       "lines": [
         {
           "id": "l04_l01",
@@ -196,7 +210,12 @@
           "durationSec": 16.224,
           "ttsHash": "c4ed29fe51fd"
         }
-      ]
+      ],
+      "backdrop": "proc:airport_train",
+      "outroLabels": {
+        "reading": "📖 ĐỌC BÀI & LÀM CÂU 25–27 →",
+        "card": "THẺ ĐỀ THI"
+      }
     }
   ],
   "reading": {
@@ -483,5 +502,16 @@
         "explanationVi": "Đáp án chuẩn JLPT: 4. Câu cuối bài giải thích rõ: 「私を喜ばせるために、いつもはしていない日本の生活をしてくれたのです」 (họ đã làm điều đặc biệt để khiến mình vui)."
       }
     ]
+  },
+  "bgm": "depato_sunny",
+  "cast": {
+    "left": {
+      "voice": "lisa",
+      "portrait": "lisa"
+    },
+    "right": {
+      "voice": "haruko",
+      "portrait": "haruko"
+    }
   }
 }

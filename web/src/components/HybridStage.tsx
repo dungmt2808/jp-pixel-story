@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { retroAudio } from "../audio/chiptune";
-import { drawBayerDitherOverlay } from "../engine/bayerDither";
 import { VIRTUAL_H, VIRTUAL_W } from "../engine/pixelRenderer";
-import type { DialogueLine, MiniGameChoice, StoryData } from "../types/story";
-import { resolveAssetUrl } from "../utils/assetUrl";
+import { drawPixelImage, drawPixelZoom } from "../engine/pixelScale";
+import { useStageRuntime } from "../engine/useStageRuntime";
+import type { MiniGameChoice, StoryData } from "../types/story";
 import { CharacterCardModal } from "./CharacterCardModal";
 import { RubyText } from "./RubyText";
 
@@ -138,13 +138,21 @@ export function HybridStage({
   onOpenReading,
   onOpenDictation,
 }: HybridStageProps) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const audioElRef = useRef<HTMLAudioElement | null>(null);
-  const imagesRef = useRef<Record<string, HTMLImageElement>>({});
-
-  const [assetsReady, setAssetsReady] = useState(false);
-  const [sceneIdx, setSceneIdx] = useState(0);
-  const [activeLine, setActiveLine] = useState<DialogueLine | null>(null);
+  const {
+    canvasRef,
+    imagesRef,
+    assetsReady,
+    sceneIdx,
+    activeLine,
+    setActiveLine,
+    sceneStartRef,
+    speakingRef,
+    playVoiceLine,
+    stopVoice,
+    goToScene,
+    markDone,
+    startLoop,
+  } = useStageRuntime({ story, muted });
   const [lineFinished, setLineFinished] = useState(false);
   const [showCard, setShowCard] = useState(false);
   const [choiceTaken, setChoiceTaken] = useState<string | null>(null);
@@ -155,146 +163,9 @@ export function HybridStage({
   const [placedCount, setPlacedCount] = useState(0);
   const [allToppingsDone, setAllToppingsDone] = useState(false);
 
-  // Bayer dither transition state
-  const transitionRef = useRef<{
-    active: boolean;
-    phase: "out" | "in";
-    amount: number;
-    nextIdx: number;
-  }>({ active: false, phase: "out", amount: 0, nextIdx: 0 });
-
-  const sceneStartRef = useRef<number>(performance.now());
-  const stageStartRef = useRef<number>(performance.now());
-  const speakingRef = useRef<string | null>(null);
   const [cursorPos, setCursorPos] = useState({ x: 50, y: 55, clicking: false });
 
   const currentScene = story.scenes[sceneIdx];
-
-  // Preload all PNG art assets declared in story.assets
-  useEffect(() => {
-    let cancelled = false;
-    const entries: Array<[string, string]> = [];
-    if (story.assets) {
-      for (const [k, v] of Object.entries(story.assets.backgrounds)) {
-        entries.push([`bg:${k}`, resolveAssetUrl(v)]);
-      }
-      for (const [k, v] of Object.entries(story.assets.portraits)) {
-        entries.push([`p:${k}`, resolveAssetUrl(v)]);
-      }
-      for (const [k, v] of Object.entries(story.assets.items)) {
-        entries.push([`i:${k}`, resolveAssetUrl(v)]);
-      }
-    }
-
-    let loaded = 0;
-    const map: Record<string, HTMLImageElement> = {};
-    if (entries.length === 0) {
-      setAssetsReady(true);
-      return;
-    }
-
-    entries.forEach(([key, url]) => {
-      const im = new Image();
-      im.onload = () => {
-        map[key] = im;
-        loaded += 1;
-        if (!cancelled && loaded === entries.length) {
-          imagesRef.current = map;
-          setAssetsReady(true);
-        }
-      };
-      im.onerror = () => {
-        loaded += 1;
-        if (!cancelled && loaded === entries.length) {
-          imagesRef.current = map;
-          setAssetsReady(true);
-        }
-      };
-      im.src = url;
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [story]);
-
-  const stopVoice = useCallback(() => {
-    if (audioElRef.current) {
-      audioElRef.current.pause();
-      audioElRef.current.currentTime = 0;
-    }
-    speakingRef.current = null;
-    retroAudio.setDucked(false);
-  }, []);
-
-  const playVoiceLine = useCallback(
-    (line: DialogueLine): Promise<void> => {
-      return new Promise((resolve) => {
-        setActiveLine(line);
-        speakingRef.current = line.voice;
-
-        if (!window.__JP_STORY_EVENTS__) window.__JP_STORY_EVENTS__ = [];
-        window.__JP_STORY_EVENTS__.push({
-          timeMs: Math.round(performance.now() - stageStartRef.current),
-          type: "voice",
-          audioUrl: line.audioUrl,
-        });
-
-        if (!line.audioUrl) {
-          window.setTimeout(() => {
-            speakingRef.current = null;
-            resolve();
-          }, Math.max(1800, (line.durationSec ?? 2.5) * 1000));
-          return;
-        }
-
-        stopVoice();
-        speakingRef.current = line.voice;
-        const audio = new Audio(resolveAssetUrl(line.audioUrl));
-        audio.muted = muted;
-        audioElRef.current = audio;
-        retroAudio.setDucked(true);
-
-        let settled = false;
-        const done = () => {
-          if (settled) return;
-          settled = true;
-          speakingRef.current = null;
-          retroAudio.setDucked(false);
-          resolve();
-        };
-
-        audio.addEventListener("ended", done, { once: true });
-        audio.addEventListener("error", () => {
-          window.setTimeout(done, Math.max(1500, (line.durationSec ?? 2.4) * 1000));
-        });
-        audio.play().catch(() => {
-          window.setTimeout(done, Math.max(1500, (line.durationSec ?? 2.5) * 1000));
-        });
-      });
-    },
-    [muted, stopVoice]
-  );
-
-  useEffect(() => {
-    if (audioElRef.current) audioElRef.current.muted = muted;
-    retroAudio.setMuted(muted);
-  }, [muted]);
-
-  const goToScene = useCallback(
-    (targetIdx: number) => {
-      if (transitionRef.current.active) return;
-      stopVoice();
-      retroAudio.playTransition();
-      transitionRef.current = {
-        active: true,
-        phase: "out",
-        amount: 0,
-        nextIdx: targetIdx,
-      };
-    },
-    [stopVoice]
-  );
 
   // Scene script runner
   useEffect(() => {
@@ -343,7 +214,7 @@ export function HybridStage({
       cancelled = true;
       stopVoice();
     };
-  }, [assetsReady, currentScene, goToScene, playVoiceLine, sceneIdx, stopVoice]);
+  }, [assetsReady, currentScene, goToScene, playVoiceLine, sceneIdx, sceneStartRef, setActiveLine, stopVoice]);
 
   // Complete Drag Toppings mini-game (Scene 5)
   const triggerToppingsComplete = useCallback(async () => {
@@ -468,9 +339,7 @@ export function HybridStage({
         }
       } else if (currentScene.type === "hybrid_outro_ramen" && lineFinished) {
         await sleep(1400);
-        if (!cancelled) {
-          window.__JP_STORY_DONE__ = true;
-        }
+        if (!cancelled) markDone();
       }
     };
 
@@ -487,14 +356,13 @@ export function HybridStage({
     goToScene,
     handleSelectChoice,
     lineFinished,
+    markDone,
     placeTopping,
   ]);
 
   // Main 60fps Hybrid Render Loop (AI/Mini-PixelLab PNGs + Live Canvas Atmospheric FX!)
   useEffect(() => {
     if (!assetsReady) return;
-    let rafId = 0;
-    let lastTime = performance.now();
 
     const drawPortrait = (
       ctx: CanvasRenderingContext2D,
@@ -508,7 +376,7 @@ export function HybridStage({
       const im = imagesRef.current[`p:${key}`];
       if (!im) return;
       const bounce = talking ? Math.round(Math.abs(Math.sin(t * 11)) * -2) : 0;
-      ctx.drawImage(im, Math.round(x), Math.round(y + bounce), size, size);
+      drawPixelImage(ctx, im, Math.round(x), Math.round(y + bounce), size, size);
     };
 
     const drawChefBehindCounter = (
@@ -528,7 +396,7 @@ export function HybridStage({
       const chefIm = imagesRef.current[`p:${chefKey}`];
       if (chefIm) {
         const bounce = talking ? Math.round(Math.abs(Math.sin(t * 10)) * -2) : 0;
-        ctx.drawImage(chefIm, 134, 48 + bounce, 86, 86);
+        drawPixelImage(ctx, chefIm, 134, 48 + bounce, 86, 86);
       }
 
       // Re-draw foreground oak counter strip over Chef's lower torso so he sits naturally BEHIND it!
@@ -547,14 +415,7 @@ export function HybridStage({
       }
     };
 
-    const render = (now: number) => {
-      const dt = Math.min((now - lastTime) / 1000, 0.1);
-      lastTime = now;
-
-      const canvas = canvasRef.current;
-      const ctx = canvas?.getContext("2d");
-      if (canvas && ctx) {
-        ctx.imageSmoothingEnabled = false;
+    return startLoop((ctx, now) => {
         const t = now / 1000;
         const elapsed = (now - sceneStartRef.current) / 1000;
         const imgs = imagesRef.current;
@@ -585,15 +446,9 @@ export function HybridStage({
           }
 
           case "hybrid_alley_zoom": {
+            // Pixel-perfect push-in: holds 1x, then snaps to a crisp 2x close-up of the shop.
             const zoom = 1 + Math.min(elapsed / 4.2, 1) * 0.55;
-            ctx.save();
-            ctx.translate(VIRTUAL_W * 0.52, VIRTUAL_H * 0.6);
-            ctx.scale(zoom, zoom);
-            ctx.translate(-VIRTUAL_W * 0.52, -VIRTUAL_H * 0.6);
-            if (imgs["bg:alley"]) {
-              ctx.drawImage(imgs["bg:alley"], 0, 0, VIRTUAL_W, VIRTUAL_H);
-            }
-            ctx.restore();
+            drawPixelZoom(ctx, imgs["bg:alley"], zoom, 0.52, 0.6, VIRTUAL_W, VIRTUAL_H);
             drawRainOverlay(ctx, t);
             break;
           }
@@ -644,7 +499,7 @@ export function HybridStage({
             // Center steaming ramen bowl on red lacquer tray
             const bowl = imgs["i:ramen_base"];
             if (bowl) {
-              ctx.drawImage(bowl, 118, 76, 84, 84);
+              drawPixelImage(ctx, bowl, 118, 76, 84, 84);
             }
 
             // Dotted guide curves for unplaced toppings
@@ -671,13 +526,7 @@ export function HybridStage({
               const tim = imgs[`i:${tp.id}`];
               if (!tim) continue;
               const sz = tp.placed ? 30 : 34;
-              ctx.drawImage(
-                tim,
-                Math.round(tp.x - sz / 2),
-                Math.round(tp.y - sz / 2),
-                sz,
-                sz
-              );
+              drawPixelImage(ctx, tim, Math.round(tp.x - sz / 2), Math.round(tp.y - sz / 2), sz, sz);
               if (!tp.placed && draggingIdRef.current !== tp.id) {
                 ctx.fillStyle = "#101322";
                 ctx.fillRect(Math.round(tp.x - 24), Math.round(tp.y + 16), 48, 11);
@@ -718,10 +567,10 @@ export function HybridStage({
             // Completed Deluxe Ramen Bowl (base + all 3 toppings!) steaming right on oak counter!
             const bx = 138;
             const by = 92;
-            if (imgs["i:ramen_base"]) ctx.drawImage(imgs["i:ramen_base"], bx, by, 70, 70);
-            if (imgs["i:nori"]) ctx.drawImage(imgs["i:nori"], bx + 24, by + 4, 24, 24);
-            if (imgs["i:chashu"]) ctx.drawImage(imgs["i:chashu"], bx + 10, by + 16, 24, 24);
-            if (imgs["i:egg"]) ctx.drawImage(imgs["i:egg"], bx + 35, by + 17, 24, 24);
+            drawPixelImage(ctx, imgs["i:ramen_base"], bx, by, 70, 70);
+            drawPixelImage(ctx, imgs["i:nori"], bx + 24, by + 4, 24, 24);
+            drawPixelImage(ctx, imgs["i:chashu"], bx + 10, by + 16, 24, 24);
+            drawPixelImage(ctx, imgs["i:egg"], bx + 35, by + 17, 24, 24);
             drawSteamWisps(ctx, bx + 35, by + 12, t, 5, 28);
             drawSparkle(ctx, bx - 4, by + 6, t, 0.1);
             drawSparkle(ctx, bx + 72, by + 10, t, 1.5);
@@ -730,33 +579,8 @@ export function HybridStage({
           }
         }
 
-        // Bayer 4x4 dithering scene transition
-        const tr = transitionRef.current;
-        if (tr.active) {
-          if (tr.phase === "out") {
-            tr.amount += dt * 3.0;
-            if (tr.amount >= 1) {
-              tr.amount = 1;
-              tr.phase = "in";
-              setSceneIdx(tr.nextIdx);
-            }
-          } else {
-            tr.amount -= dt * 3.0;
-            if (tr.amount <= 0) {
-              tr.amount = 0;
-              tr.active = false;
-            }
-          }
-          drawBayerDitherOverlay(ctx, tr.amount, "#101322");
-        }
-      }
-
-      rafId = window.requestAnimationFrame(render);
-    };
-
-    rafId = window.requestAnimationFrame(render);
-    return () => window.cancelAnimationFrame(rafId);
-  }, [allToppingsDone, assetsReady, choiceTaken, currentScene]);
+    }, "#101322", 3.0);
+  }, [allToppingsDone, assetsReady, choiceTaken, currentScene, imagesRef, sceneStartRef, speakingRef, startLoop]);
 
   // Pointer handlers for Scene 5 Drag & Drop Toppings (supports drag OR tap-to-drop!)
   const toVirtual = (e: React.PointerEvent<HTMLCanvasElement>) => {

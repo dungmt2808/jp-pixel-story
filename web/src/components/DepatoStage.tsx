@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { retroAudio } from "../audio/chiptune";
-import { drawBayerDitherOverlay } from "../engine/bayerDither";
 import { VIRTUAL_H, VIRTUAL_W } from "../engine/pixelRenderer";
-import type { DialogueLine, MiniGameChoice, StoryData } from "../types/story";
-import { resolveAssetUrl } from "../utils/assetUrl";
+import { drawPixelImage } from "../engine/pixelScale";
+import { useStageRuntime } from "../engine/useStageRuntime";
+import type { MiniGameChoice, StoryData } from "../types/story";
 import { CharacterCardModal } from "./CharacterCardModal";
 import { RubyText } from "./RubyText";
 
@@ -121,11 +121,11 @@ function drawFramelessCharacter(
   }
 ): void {
   if (!im) return;
-  const { talking, active, enterProgress, t, size = 122 } = options;
+  const { talking, active, enterProgress, t, size = im.naturalWidth } = options;
   const ease = easeOutCubic(enterProgress);
   const slideDist = 28 * (1 - ease);
   const focusShift = active ? 0 : side === "left" ? -5 : 5;
-  const baseX = side === "left" ? 4 : VIRTUAL_W - size - 4;
+  const baseX = side === "left" ? 58 - Math.floor(size / 2) : 262 - Math.floor(size / 2);
   const x = Math.round(baseX + (side === "left" ? -slideDist : slideDist) + focusShift);
   const breath = Math.round(Math.sin(t * 2.2 + (side === "left" ? 0 : 1.7)) * 0.8);
   const talkBob = talking ? Math.round(Math.abs(Math.sin(t * 9.5)) * -1.8) : 0;
@@ -136,7 +136,7 @@ function drawFramelessCharacter(
     ctx.filter = "brightness(0.64) saturate(0.86)";
   }
   ctx.globalAlpha = clamp01(ease);
-  ctx.drawImage(im, x, y, size, size);
+  drawPixelImage(ctx, im, x, y, size, size);
   ctx.restore();
 }
 
@@ -148,13 +148,23 @@ export function DepatoStage({
   onOpenReading,
   onOpenDictation,
 }: DepatoStageProps) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const audioElRef = useRef<HTMLAudioElement | null>(null);
-  const imagesRef = useRef<Record<string, HTMLImageElement>>({});
+  const rt = useStageRuntime({ story, muted });
+  const {
+    canvasRef,
+    imagesRef,
+    assetsReady,
+    sceneIdx,
+    activeLine,
+    setActiveLine,
+    sceneStartRef,
+    speakingRef,
+    stopVoice,
+    goToScene,
+    markDone,
+    startLoop,
+  } = rt;
+  const { playVoiceLine } = rt;
 
-  const [assetsReady, setAssetsReady] = useState(false);
-  const [sceneIdx, setSceneIdx] = useState(0);
-  const [activeLine, setActiveLine] = useState<DialogueLine | null>(null);
   const [lineIndex, setLineIndex] = useState(0);
   const [lineFinished, setLineFinished] = useState(false);
   const [showCard, setShowCard] = useState(false);
@@ -166,144 +176,16 @@ export function DepatoStage({
   const [checkedWindow, setCheckedWindow] = useState(false);
   const [checkedUmbrella, setCheckedUmbrella] = useState(false);
 
-  const transitionRef = useRef<{
-    active: boolean;
-    phase: "out" | "in";
-    amount: number;
-    nextIdx: number;
-  }>({ active: false, phase: "out", amount: 0, nextIdx: 0 });
 
-  const sceneStartRef = useRef<number>(performance.now());
-  const stageStartRef = useRef<number>(performance.now());
-  const speakingRef = useRef<string | null>(null);
   const [cursorPos, setCursorPos] = useState({ x: 50, y: 55, clicking: false });
 
   const currentScene = story.scenes[sceneIdx];
-
-  // Preload AI pixel art
-  useEffect(() => {
-    let cancelled = false;
-    const entries: Array<[string, string]> = [];
-    if (story.assets) {
-      for (const [k, v] of Object.entries(story.assets.backgrounds)) {
-        entries.push([`bg:${k}`, resolveAssetUrl(v)]);
-      }
-      for (const [k, v] of Object.entries(story.assets.portraits)) {
-        entries.push([`p:${k}`, resolveAssetUrl(v)]);
-      }
-    }
-    if (entries.length === 0) {
-      setAssetsReady(true);
-      return;
-    }
-    let loaded = 0;
-    const map: Record<string, HTMLImageElement> = {};
-    entries.forEach(([key, url]) => {
-      const im = new Image();
-      im.onload = () => {
-        map[key] = im;
-        loaded += 1;
-        if (!cancelled && loaded === entries.length) {
-          imagesRef.current = map;
-          setAssetsReady(true);
-        }
-      };
-      im.onerror = () => {
-        loaded += 1;
-        if (!cancelled && loaded === entries.length) {
-          imagesRef.current = map;
-          setAssetsReady(true);
-        }
-      };
-      im.src = url;
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [story]);
-
-  const stopVoice = useCallback(() => {
-    if (audioElRef.current) {
-      audioElRef.current.pause();
-      audioElRef.current.currentTime = 0;
-    }
-    speakingRef.current = null;
-    retroAudio.setDucked(false);
-  }, []);
-
-  const playVoiceLine = useCallback(
-    (line: DialogueLine): Promise<void> => {
-      return new Promise((resolve) => {
-        setActiveLine(line);
-        speakingRef.current = line.voice;
-        if (!window.__JP_STORY_EVENTS__) window.__JP_STORY_EVENTS__ = [];
-        window.__JP_STORY_EVENTS__.push({
-          timeMs: Math.round(performance.now() - stageStartRef.current),
-          type: "voice",
-          audioUrl: line.audioUrl,
-        });
-
-        if (!line.audioUrl) {
-          window.setTimeout(() => {
-            speakingRef.current = null;
-            resolve();
-          }, Math.max(1800, (line.durationSec ?? 2.5) * 1000));
-          return;
-        }
-
-        stopVoice();
-        speakingRef.current = line.voice;
-        const audio = new Audio(resolveAssetUrl(line.audioUrl));
-        audio.muted = muted;
-        audioElRef.current = audio;
-        retroAudio.setDucked(true);
-
-        let settled = false;
-        const done = () => {
-          if (settled) return;
-          settled = true;
-          speakingRef.current = null;
-          retroAudio.setDucked(false);
-          resolve();
-        };
-
-        audio.addEventListener("ended", done, { once: true });
-        audio.addEventListener("error", () => {
-          window.setTimeout(done, Math.max(1600, (line.durationSec ?? 2.5) * 1000));
-        });
-        audio.play().catch(() => {
-          window.setTimeout(done, Math.max(1600, (line.durationSec ?? 2.6) * 1000));
-        });
-      });
-    },
-    [muted, stopVoice]
-  );
-
-  useEffect(() => {
-    if (audioElRef.current) audioElRef.current.muted = muted;
-    retroAudio.setMuted(muted);
-  }, [muted]);
 
   const switchStoreBgm = useCallback((nextMode: "sunny" | "rain") => {
     setBgmMode(nextMode);
     retroAudio.setBgmTheme(nextMode === "rain" ? "depato_rain" : "depato_sunny");
     retroAudio.startBgm(nextMode === "rain" ? "depato_rain" : "depato_sunny");
   }, []);
-
-  const goToScene = useCallback(
-    (targetIdx: number) => {
-      if (transitionRef.current.active) return;
-      stopVoice();
-      retroAudio.playTransition();
-      transitionRef.current = {
-        active: true,
-        phase: "out",
-        amount: 0,
-        nextIdx: targetIdx,
-      };
-    },
-    [stopVoice]
-  );
 
   // Scene script runner
   useEffect(() => {
@@ -422,7 +304,7 @@ export function DepatoStage({
         if (!cancelled) goToScene(sceneIdx + 1);
       } else if (currentScene.type === "depato_outro" && lineFinished) {
         await sleep(1200);
-        if (!cancelled) window.__JP_STORY_DONE__ = true;
+        if (!cancelled) markDone();
       }
     };
     void direct();
@@ -445,28 +327,17 @@ export function DepatoStage({
   // Main 60fps Canvas Render Loop
   useEffect(() => {
     if (!assetsReady) return;
-    let rafId = 0;
-    let lastTime = performance.now();
+    return startLoop((ctx, now) => {
 
-    const render = (now: number) => {
-      const dt = Math.min((now - lastTime) / 1000, 0.1);
-      lastTime = now;
-
-      const canvas = canvasRef.current;
-      const ctx = canvas?.getContext("2d");
-      if (canvas && ctx) {
-        ctx.imageSmoothingEnabled = false;
+      {
         const t = now / 1000;
         const elapsed = (now - sceneStartRef.current) / 1000;
         const imgs = imagesRef.current;
 
         switch (currentScene.type) {
           case "depato_intro": {
-            const zoom = 1 + Math.min(elapsed * 0.007, 0.05);
+            // Static 1x backdrop: sub-pixel Ken Burns zooms smeared the pixel grid.
             ctx.save();
-            ctx.translate(VIRTUAL_W * 0.5, VIRTUAL_H * 0.45);
-            ctx.scale(zoom, zoom);
-            ctx.translate(-VIRTUAL_W * 0.5, -VIRTUAL_H * 0.45);
             if (imgs["bg:counter"]) ctx.drawImage(imgs["bg:counter"], 0, 0, VIRTUAL_W, VIRTUAL_H);
             ctx.restore();
 
@@ -515,11 +386,8 @@ export function DepatoStage({
           }
 
           case "depato_step_rain": {
-            const zoom = 1 + Math.min(elapsed * 0.008, 0.05);
+            // Static 1x backdrop: sub-pixel Ken Burns zooms smeared the pixel grid.
             ctx.save();
-            ctx.translate(VIRTUAL_W * 0.48, VIRTUAL_H * 0.5);
-            ctx.scale(zoom, zoom);
-            ctx.translate(-VIRTUAL_W * 0.48, -VIRTUAL_H * 0.5);
             if (imgs["bg:rain"]) ctx.drawImage(imgs["bg:rain"], 0, 0, VIRTUAL_W, VIRTUAL_H);
             ctx.restore();
 
@@ -556,11 +424,8 @@ export function DepatoStage({
           }
 
           case "depato_outro": {
-            const zoom = 1 + Math.min(elapsed * 0.005, 0.04);
+            // Static 1x backdrop: sub-pixel Ken Burns zooms smeared the pixel grid.
             ctx.save();
-            ctx.translate(VIRTUAL_W * 0.52, VIRTUAL_H * 0.45);
-            ctx.scale(zoom, zoom);
-            ctx.translate(-VIRTUAL_W * 0.52, -VIRTUAL_H * 0.45);
             if (imgs["bg:campus"]) ctx.drawImage(imgs["bg:campus"], 0, 0, VIRTUAL_W, VIRTUAL_H);
             ctx.restore();
 
@@ -570,33 +435,8 @@ export function DepatoStage({
             break;
           }
         }
-
-        // Bayer 4x4 transition
-        const tr = transitionRef.current;
-        if (tr.active) {
-          if (tr.phase === "out") {
-            tr.amount += dt * 2.8;
-            if (tr.amount >= 1) {
-              tr.amount = 1;
-              tr.phase = "in";
-              setSceneIdx(tr.nextIdx);
-            }
-          } else {
-            tr.amount -= dt * 2.8;
-            if (tr.amount <= 0) {
-              tr.amount = 0;
-              tr.active = false;
-            }
-          }
-          drawBayerDitherOverlay(ctx, tr.amount, "#101322");
-        }
       }
-
-      rafId = window.requestAnimationFrame(render);
-    };
-
-    rafId = window.requestAnimationFrame(render);
-    return () => window.cancelAnimationFrame(rafId);
+    }, "#101322", 2.8);
   }, [assetsReady, bgmMode, currentScene]);
 
   const cluesDone = checkedWindow && checkedUmbrella;
