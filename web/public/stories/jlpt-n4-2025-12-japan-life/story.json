@@ -10,7 +10,9 @@
   "assets": {
     "backgrounds": {
       "ofuro": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_ofuro.png",
-      "washitsu": "/stories/tsuru-ongaeshi/assets/bg_hearth.png"
+      "dining": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_dining.png",
+      "train": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_train.png",
+      "airport": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_airport.png"
     },
     "portraits": {
       "lisa": "/stories/jlpt-n4-2025-12-japan-life/assets/portrait_lisa.png",
@@ -36,12 +38,12 @@
     }
   },
   "characterCard": {
-    "nameJa": "JLPT N4 12/2025 · 問題５",
+    "nameJa": "JLPT N4 12/2025 · {問題|もんだい}５",
     "subtitle": "NGUYÊN VĂN ĐỀ THI THẬT + 3 CÂU HỎI CHÍNH THỨC (25–27)",
     "facts": [
       {
         "label": "SOURCE",
-        "value": "Đề thi chính thức JLPT N4 kỳ tháng 12/2025 — Đọc hiểu Trung văn (問題５「日本の生活」)"
+        "value": "Đề thi chính thức JLPT N4 kỳ tháng 12/2025 — Đọc hiểu Trung văn ({問題|もんだい}５「{日本|にほん}の{生活|せいかつ}」)"
       },
       {
         "label": "HEARTWARMING",
@@ -53,7 +55,7 @@
       },
       {
         "label": "GRAMMAR",
-        "value": "〜てみたい / 〜てくれる / 〜より〜のほうが多い / 〜ために / 〜てうれしくなる"
+        "value": "〜てみたい / 〜てくれる / 〜より〜のほうが{多|おお}い / 〜ために / 〜てうれしくなる"
       }
     ]
   },
@@ -78,7 +80,7 @@
           "emote": "sparkle"
         }
       ],
-      "backdrop": "proc:washoku_table",
+      "backdrop": "bg:dining",
       "bannerSubtitle": "JLPT N4 12/2025 · 問題５",
       "light": "warm",
       "bgm": "calm"
@@ -147,7 +149,7 @@
                 "color": "gold"
               }
             },
-            "backdrop": "proc:washoku_table"
+            "backdrop": "bg:dining"
           },
           {
             "id": "exp_ofuro",
@@ -217,7 +219,7 @@
           }
         }
       ],
-      "backdrop": "proc:airport_train",
+      "backdrop": "bg:train",
       "revealNote": [
         {
           "label": "Thường ngày nhà Haruko:",
@@ -251,7 +253,7 @@
           "camera": "push"
         }
       ],
-      "backdrop": "proc:airport_train",
+      "backdrop": "bg:airport",
       "outroLabels": {
         "reading": "📖 ĐỌC BÀI & LÀM CÂU 25–27 →",
         "card": "THẺ ĐỀ THI"
@@ -566,8 +568,7 @@
           "lr_01",
           "lr_02"
         ],
-        "scene": "dream_anime",
-        "image": "/stories/tsuru-ongaeshi/assets/bg_hearth.png"
+        "scene": "dream_anime"
       },
       {
         "id": "ch2",

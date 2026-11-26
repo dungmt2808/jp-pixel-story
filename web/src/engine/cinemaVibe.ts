@@ -212,7 +212,7 @@ export const LIGHTS: Record<string, Grade> = {
   day: {},
   morning: { screen: ["#fff1d6", 0.1], multiply: ["#f3f0ff", 0.25] },
   golden: { multiply: ["#ffd49a", 0.38], screen: ["#ff9a4d", 0.07] },
-  dusk: { multiply: ["#b48ed0", 0.48], screen: ["#ff8a5c", 0.06] },
+  dusk: { multiply: ["#b48ed0", 0.34], screen: ["#ff8a5c", 0.07] },
   night: { multiply: ["#3d4f94", 0.58], screen: ["#1b2550", 0.05] },
   rain: { multiply: ["#93a6bd", 0.4] },
   warm: { multiply: ["#ffc98f", 0.28], screen: ["#ffb070", 0.04] },
