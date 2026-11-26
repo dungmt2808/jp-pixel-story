@@ -12,10 +12,29 @@ from PIL import Image
 
 from palettes import PALETTES, get_palette_rgb
 from pixel_quality import quality_metrics
-from tts_spec import dokkai_sentence_spec, iter_story_lines, standalone_spec, story_line_spec
+from tts_spec import braced_to_plain, dokkai_sentence_spec, iter_story_lines, standalone_spec, story_line_spec
 
 KANJI_RE = re.compile(r"[\u4e00-\u9faf]")
 RUBY_BRACE_RE = re.compile(r"\{([^|}]+)\|([^}]+)\}")
+
+
+# Names the cinema "vibe kit" understands (keep in sync with cinemaVibe.ts / audio/themes.ts).
+VIBE_EMOTES = {"sweat", "anger", "heart", "sparkle", "shock", "question", "note", "dots", "gloom"}
+VIBE_CAMERAS = {"push", "punch", "close", "shake", "pan_left", "pan_right"}
+VIBE_SFX = {"pop", "ding", "whoosh", "boing", "shock", "sparkle", "thud", "gloom", "heart"}
+VIBE_LIGHTS = {"day", "morning", "golden", "dusk", "night", "rain", "warm"}
+VIBE_BGM = {"default", "depato_sunny", "depato_rain", "calm", "night", "happy", "bright", "sad", "tender", "rain", "none"}
+
+
+def vocab_needles(v: dict[str, Any]) -> list[str]:
+    """Spellings the reading page looks for (mirror of web/src/utils/readingText.ts vocabNeedles)."""
+    base = re.sub(r"\s*[(（][^)）]*[)）]\s*", "", str(v.get("word", "")))
+    base = re.split(r"[〜~]", base)[0].strip()
+    out: list[str] = []
+    for n in [*(v.get("forms") or []), base]:
+        if n and n not in out:
+            out.append(n)
+    return out
 
 
 def _check_ruby_segments(label: str, segs: str | list[dict[str, Any]], issues: list[str]) -> None:
@@ -321,6 +340,44 @@ def validate_story_folder(
                         _check_ruby_segments(f"{sc['id']}/{ch['id']}.resp", rl.get("jaRuby", []), issues)
                         check_audio_ref(f"{sc['id']}/{ch['id']}.resp", rl.get("audioUrl"))
 
+        # vibe kit (web/src/engine/cinemaVibe.ts + web/src/audio/themes.ts)
+        for line, default_id in iter_story_lines(data):
+            lid = line.get("id", default_id)
+            if line.get("emote") and line["emote"] not in VIBE_EMOTES:
+                issues.append(f"[Unknown Emote] {lid}: '{line['emote']}' (use one of {sorted(VIBE_EMOTES)})")
+            if line.get("camera") and line["camera"] not in VIBE_CAMERAS:
+                issues.append(f"[Unknown Camera] {lid}: '{line['camera']}' (use one of {sorted(VIBE_CAMERAS)})")
+            if line.get("sfx") and line["sfx"] not in VIBE_SFX | {"none"}:
+                issues.append(f"[Unknown SFX] {lid}: '{line['sfx']}' (use one of {sorted(VIBE_SFX)} or 'none')")
+            telop = line.get("telop")
+            if telop:
+                text = telop if isinstance(telop, str) else telop.get("text", "")
+                _check_ruby_segments(f"{lid}/telop", text, issues)
+        # style consistency: painted pixel backgrounds and code-drawn (proc:) backdrops look like
+        # two different worlds in one video, so mixing them is flagged
+        if data.get("engine") == "cinema":
+            refs: list[tuple[str, str]] = []
+            for sc in data.get("scenes", []):
+                if sc.get("backdrop"):
+                    refs.append((sc.get("id", "?"), sc["backdrop"]))
+                for ch in (sc.get("minigame") or {}).get("choices", []) or []:
+                    if ch.get("backdrop"):
+                        refs.append((f"{sc.get('id', '?')}/{ch.get('id', '?')}", ch["backdrop"]))
+            painted = [r for r in refs if r[1].startswith("bg:")]
+            coded = [r for r in refs if r[1].startswith("proc:")]
+            if painted and coded and not (data.get("look") or {}).get("allowMixedBackdrops"):
+                warnings.append(
+                    "[Style Mix] painted backgrounds (" + ", ".join(sorted({r[1] for r in painted})) + ") and code-drawn "
+                    "backdrops (" + ", ".join(f"{sid}: {ref}" for sid, ref in coded) + ") in one story; replace the proc: "
+                    "scenes with pixel backgrounds from the same art source (see art-src/<story>/PROMPTS.md)"
+                )
+
+        for sc in data.get("scenes", []):
+            if sc.get("light") and sc["light"] not in VIBE_LIGHTS:
+                issues.append(f"[Unknown Light] {sc.get('id')}: '{sc['light']}' (use one of {sorted(VIBE_LIGHTS)})")
+            if sc.get("bgm") and sc["bgm"] not in VIBE_BGM:
+                warnings.append(f"[Unknown BGM] {sc.get('id')}: '{sc['bgm']}' falls back to 'default'")
+
         card = data.get("characterCard") or {}
         card_issues: list[str] = []
         for key in ("nameJa", "subtitle"):
@@ -347,6 +404,29 @@ def validate_story_folder(
             cidx = q.get("correctIndex", -1)
             if not (0 <= cidx < len(opts)):
                 issues.append(f"[Invalid quiz correctIndex] {q['id']}: {cidx}")
+
+        # reading page v2: chapters + tappable vocab
+        sent_ids = {sent.get("id") for sent in reading.get("sentences", [])}
+        scene_ids = {sc.get("id") for sc in data.get("scenes", [])}
+        for ch in reading.get("chapters", []) or []:
+            cid = ch.get("id", "?")
+            _check_ruby_segments(f"reading.chapter/{cid}", ch.get("title", ""), issues)
+            unknown = [sid for sid in ch.get("sentenceIds", []) if sid not in sent_ids]
+            if unknown or not ch.get("sentenceIds"):
+                issues.append(f"[Bad Reading Chapter] {cid}: unknown/empty sentenceIds {unknown}")
+            if ch.get("scene") and ch["scene"] not in scene_ids:
+                issues.append(f"[Bad Reading Chapter] {cid}: unknown scene '{ch['scene']}'")
+            if ch.get("image") and not (public_root / ch["image"].lstrip("/")).exists():
+                issues.append(f"[Missing Asset] reading.chapter/{cid}: {ch['image']}")
+        def _plain(ruby: Any) -> str:
+            if isinstance(ruby, list):
+                return "".join(str(seg.get("t", "")) for seg in ruby if isinstance(seg, dict))
+            return braced_to_plain(str(ruby or ""))
+
+        plain_text = "".join(_plain(sent.get("jaRuby")) for sent in reading.get("sentences", []))
+        for v in reading.get("vocab", []):
+            if not any(n in plain_text for n in vocab_needles(v)):
+                warnings.append(f"[Vocab Not In Text] {v.get('id')}: '{v.get('word')}' is never found in the reading, so it cannot be tapped (add `forms`)")
 
     if dictation_json.exists():
         ddata = json.loads(dictation_json.read_text(encoding="utf-8"))

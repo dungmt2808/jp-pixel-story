@@ -359,3 +359,50 @@ def test_validator_catches_choukai_issues(tmp_path: Path) -> None:
     assert "Missing/Empty Image" in joined
     assert "Invalid choukai correctIndex" in joined
     assert "Missing Furigana" in joined
+
+
+def test_vibe_names_match_the_web_engine() -> None:
+    """The validator's vibe-kit name sets must mirror the TypeScript sources."""
+    import re
+
+    import content_validator as cv
+
+    web = Path(__file__).resolve().parents[2] / "web" / "src"
+    vibe = (web / "engine" / "cinemaVibe.ts").read_text(encoding="utf-8")
+    themes = (web / "audio" / "themes.ts").read_text(encoding="utf-8")
+
+    def quoted(block: str) -> set[str]:
+        return set(re.findall(r'"([a-z_]+)"', block))
+
+    emotes = quoted(re.search(r"EMOTE_NAMES = \[(.*?)\]", vibe, re.S).group(1))
+    cameras = quoted(re.search(r"export type CameraMove = (.*?);", vibe, re.S).group(1))
+    lights = set(re.findall(r"^\s{2}([a-z_]+): \{", re.search(r"LIGHTS: Record<string, Grade> = \{(.*?)\n\};", vibe, re.S).group(1), re.M))
+    sfx = quoted(re.search(r"SFX_NAMES = \[(.*?)\]", themes, re.S).group(1))
+    assert emotes == cv.VIBE_EMOTES
+    assert cameras == cv.VIBE_CAMERAS
+    assert lights == cv.VIBE_LIGHTS
+    assert sfx == cv.VIBE_SFX
+
+
+def test_validator_flags_unknown_vibe_names_and_telop_furigana(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "vibe-bad", category="story")
+    story = {
+        "id": "vibe-bad",
+        "engine": "cinema",
+        "scenes": [
+            {
+                "id": "sc1",
+                "light": "neon",
+                "lines": [
+                    {"id": "l1", "voice": "narrator", "jaPlain": "あ", "jaRuby": "あ", "vi": "a",
+                     "emote": "facepalm", "camera": "dolly", "sfx": "boom", "telop": "約束"},
+                ],
+            }
+        ],
+        "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []},
+    }
+    (sdir / "story.json").write_text(json.dumps(story, ensure_ascii=False), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    joined = " | ".join(res["issues"])
+    for tag in ("[Unknown Emote]", "[Unknown Camera]", "[Unknown SFX]", "[Unknown Light]", "l1/telop"):
+        assert tag in joined, tag

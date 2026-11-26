@@ -28,6 +28,8 @@ const px = await loadTsModule("src/engine/pixelScale.ts");
 const sprite = await loadTsModule("src/engine/spriteAnimator.ts");
 const cinema = await loadTsModule("src/engine/cinemaModel.ts");
 const engines = await loadTsModule("src/engine/stageEngines.ts");
+const vibe = await loadTsModule("src/engine/cinemaVibe.ts");
+const themes = await loadTsModule("src/audio/themes.ts");
 const rig = await loadTsModule("src/engine/rigAnimator.ts");
 const ui = await loadTsModule("src/engine/cinemaUi.ts");
 
@@ -345,6 +347,46 @@ test("resolveStageEngine routes by story.engine, not by hard-coded story ids", (
   assert.equal(engines.resolveStageEngine({ scenes: [{ type: "depato_intro" }] }), "depato");
   assert.equal(engines.resolveStageEngine({ scenes: [{ type: "cinema_intro" }] }), "cinema");
   assert.equal(engines.resolveStageEngine({ scenes: [{ type: "skyline_intro" }] }), "pixel");
+});
+
+
+test("camera: identity by default, push eases in toward the speaker, crops stay inside the frame", () => {
+  assert.deepEqual(vibe.cameraAt(undefined, 1, [60, 80]), vibe.IDENTITY_VIEW);
+  const start = vibe.cameraAt("push", 0, [60, 80]);
+  const end = vibe.cameraAt("push", 5, [60, 80]);
+  assert.equal(start.zoom, 1);
+  assert.ok(end.zoom > 1.15 && end.zoom <= 1.2);
+  assert.ok(end.cx < 160, "moves toward the left speaker");
+  for (const view of [end, vibe.cameraAt("close", 0, [2, 2]), vibe.cameraAt("punch", 0.05, [318, 198])]) {
+    const r = vibe.cameraSourceRect(view);
+    assert.ok(r.sx >= 0 && r.sy >= 0 && r.sx + r.sw <= 320.0001 && r.sy + r.sh <= 200.0001, JSON.stringify(r));
+  }
+  // shake settles back to the centre with whole-pixel offsets
+  const shaking = vibe.cameraAt("shake", 0.1, [0, 0]);
+  assert.ok(Number.isInteger(shaking.cx - 160) && Number.isInteger(shaking.cy - 100));
+  assert.deepEqual([vibe.cameraAt("shake", 2, [0, 0]).cx, vibe.cameraAt("shake", 2, [0, 0]).cy], [160, 100]);
+});
+
+test("lineSfx: explicit sfx wins, 'none' silences, emotes bring a default sound", () => {
+  assert.equal(vibe.lineSfx({ emote: "shock" }), "shock");
+  assert.equal(vibe.lineSfx({ emote: "shock", sfx: "ding" }), "ding");
+  assert.equal(vibe.lineSfx({ emote: "shock", sfx: "none" }), null);
+  assert.equal(vibe.lineSfx({ emote: "dots" }), null);
+  assert.equal(vibe.lineSfx(null), null);
+  // every default sound exists in the shared SFX set
+  for (const e of vibe.EMOTE_NAMES) {
+    const name = vibe.lineSfx({ emote: e });
+    if (name) assert.ok(themes.sfxUrl(name), `${e} -> ${name}`);
+  }
+});
+
+test("BGM moods resolve to real themes; unknown names fall back to default", () => {
+  assert.equal(themes.resolveBgmTheme("happy"), "depato_sunny");
+  assert.equal(themes.resolveBgmTheme("tender"), "depato_rain");
+  assert.equal(themes.resolveBgmTheme("none"), "none");
+  assert.equal(themes.resolveBgmTheme("polka"), "default");
+  assert.equal(themes.resolveBgmTheme(undefined), "default");
+  for (const th of Object.values(themes.BGM_THEMES)) assert.equal(th.melody.length, th.bass.length);
 });
 
 console.log(`\nALL ${passed} ENGINE TESTS PASSED!`);

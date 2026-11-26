@@ -144,6 +144,48 @@ interaction hint / outro buttons). All coordinates below are in the 320x200 virt
 - Furigana rule: every kanji in `titleCard.title`, `labels[].text`, interaction labels, `summary` and `characterCard` must use
   `{漢字|かな}` — the validator fails stories with `artQuality` (warning for legacy stories).
 
+### Vibe kit (acting, camera, light, sound)
+
+Per line (scene lines, `doneLine`, choice `responseLine`):
+
+```json
+{ "id": "l03_l02", "voice": "haruko", "jaRuby": "...", "vi": "...",
+  "emote": "shock", "emoteSide": "left", "camera": "punch", "sfx": "shock",
+  "telop": { "text": "いつもはちょっと{違|ちが}う！？", "sub": "Bình thường… khác cơ á!?", "color": "ai" } }
+```
+
+- `emote`: `sweat`, `anger`, `heart`, `sparkle`, `shock`, `question`, `note`, `dots`, `gloom` — pixel manga symbol over
+  the speaker (or `emoteSide`), pops in and animates while the line plays; brings a default sound effect.
+- `camera`: `push` (slow zoom toward the speaker), `punch` (comedic snap zoom), `close`, `shake`, `pan_left`, `pan_right`.
+  With `emoteSide` the camera frames the actor who reacts. The 320x200 frame is cropped at presentation, never resampled.
+- `telop`: big variety-show caption (string or `{ text, sub?, color?: "shu"|"gold"|"ai"|"white", x?, y? }`, % of stage).
+- `sfx`: `pop`, `ding`, `whoosh`, `boing`, `shock`, `sparkle`, `thud`, `gloom`, `heart` (`"none"` silences the emote sound).
+  Files live in `web/public/audio/sfx/` (regenerate with `cd web && npm run render:audio`).
+
+Per scene: `light` (`day`, `morning`, `golden`, `dusk`, `night`, `rain`, `warm`) — one grade over backdrop, actors and
+items; `bgm` (`calm`, `happy`, `tender`/`sad`, `none`, or a theme name) — switches the music from this scene on.
+The MP4 exporter renders the same BGM themes and SFX into the video, with the music ducked under the voices.
+
+### Reading page (`reading.chapters`, vocab `hanViet` / `forms`)
+
+```json
+"reading": {
+  "chapters": [
+    { "id": "ch1", "title": "{春|はる}の{公園|こうえん}", "titleVi": "Công viên mùa xuân",
+      "sentenceIds": ["hr1", "hr2"], "scene": "tea_time" }
+  ],
+  "vocab": [ { "id": "yakusoku", "word": "約束", "reading": "やくそく", "hanViet": "ƯỚC THÚC",
+               "forms": ["約束します"], "level": "N4", "partOfSpeech": "Danh từ", "meaningVi": "Lời hứa", "note": "..." } ]
+}
+```
+
+- The reader shows a table of contents (第一章…, then 確認テスト), the chapter's scene backdrop (or `image`) with
+  "▶ Xem lại cảnh này" (opens the animation at that scene), read-along of the whole chapter, and tappable vocab.
+- Every vocab word found in the text (its `word`, or any of `forms` for conjugations) is underlined; tapping it opens a
+  word card (reading, Hán Việt, level, meaning, note, the sentence that uses it). The validator warns
+  `[Vocab Not In Text]` when a word can never be tapped.
+- Reader settings (per device): text size, paper (和紙 / 古書 / 夜), 横書き / 縦書き, and 素読み (no underlines).
+
 ### Sprite `meta.json` (written by `pixellab_slice_spritesheet`)
 
 ```json

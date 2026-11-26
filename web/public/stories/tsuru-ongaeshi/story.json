@@ -351,7 +351,10 @@
         "level": "N4",
         "partOfSpeech": "Động từ nhóm II",
         "meaningVi": "Cứu giúp, giải cứu",
-        "note": "Ví dụ: 助けてくれてありがとう (Cảm ơn đã cứu giúp)."
+        "note": "Ví dụ: 助けてくれてありがとう (Cảm ơn đã cứu giúp).",
+        "forms": [
+          "助けました"
+        ]
       },
       {
         "id": "yakusoku",
@@ -369,7 +372,10 @@
         "level": "N4",
         "partOfSpeech": "Động từ nhóm I",
         "meaningVi": "Nhìn trộm, ghé mắt nhìn qua khe cửa",
-        "note": "Ví dụ: 部屋の中をのぞく (nhìn lén vào trong phòng)."
+        "note": "Ví dụ: 部屋の中をのぞく (nhìn lén vào trong phòng).",
+        "forms": [
+          "のぞいて"
+        ]
       },
       {
         "id": "oru",
@@ -378,7 +384,11 @@
         "level": "N4",
         "partOfSpeech": "Động từ nhóm I",
         "meaningVi": "Dệt (vải)",
-        "note": "Cẩn thận phân biệt với 折る (bẻ gãy / gấp giấy origami) — cùng đọc là おる!"
+        "note": "Cẩn thận phân biệt với 折る (bẻ gãy / gấp giấy origami) — cùng đọc là おる!",
+        "forms": [
+          "織ります",
+          "織って"
+        ]
       },
       {
         "id": "utsukushii",

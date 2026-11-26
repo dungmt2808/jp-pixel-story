@@ -16,6 +16,7 @@ except ImportError:
     from mcp.server.fastmcp import FastMCP  # type: ignore[no-redef]
 
 import provenance
+from art_manifest import apply_art_manifest
 from content_validator import validate_catalog, validate_story_folder
 from pixel_rig import add_expression, build_rig, lock_expressions
 from pixel_tools import cleanup_sprite, depixelize, detect_grid, extract_palette_tool, sprite_quality
@@ -384,6 +385,14 @@ def pixellab_extract_palette(
     """Pick real representative colours from images (optionally extending a base palette) and save them as a new palette."""
     res = extract_palette_tool(image_paths, n_colors, base_palette=base_palette, save_as=save_as, description=description)
     return json.dumps(res, ensure_ascii=False, indent=2)
+
+
+@mcp.tool()
+def pixellab_apply_art_manifest(manifest_path: str, dry_run: bool = False) -> str:
+    """Process every raw image listed in `art-src/<story>/art.json` that exists (grid detection,
+    320x200, palette lock, provenance) and point the listed scenes/choices at the new `bg:<key>`
+    backgrounds in story.json. Missing raw files are listed under `waiting_for_art`."""
+    return json.dumps(apply_art_manifest(manifest_path, dry_run=dry_run), ensure_ascii=False, indent=2)
 
 
 @mcp.tool()

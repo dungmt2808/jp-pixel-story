@@ -52,6 +52,9 @@ Every lesson lives in `web/public/stories/<id>/` and is registered in `web/publi
 look, add ONE reusable entry to `web/src/engine/cinemaBackdrops.ts` (`PROCEDURAL_BACKDROPS` / `OVERLAYS`).
 Make scenes feel like a cinematic lesson, not a slideshow: give most scenes a `stamp` or `labels`, and add one
 `interaction` (drag / tap / hold) every 2–3 scenes with a voiced `doneLine` (see story-schema.md "Cinematic player v2").
+Vibe over detail: keep ONE art source per story (never mix `bg:` and `proc:` backdrops — `[Style Mix]`), set `light`
+and `bgm` per scene, and give key lines an `emote` / `camera` / `telop` (story-schema.md "Vibe kit"; art-style.md §5).
+Missing art: write `art-src/<story>/art.json` + `PROMPTS.md`, then `pixellab_apply_art_manifest`.
 Stages are routed by `story.engine` (`web/src/engine/stageEngines.ts`), never by story id.
 
 Read schema references before creating files:

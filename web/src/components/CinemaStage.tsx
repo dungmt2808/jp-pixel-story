@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { retroAudio } from "../audio/chiptune";
+import { resolveBgmTheme, sfxUrl } from "../audio/themes";
 import { LEGACY_BADGE_OVERLAY, OVERLAYS, drawBackdrop } from "../engine/cinemaBackdrops";
 import {
   drawArcHint,
@@ -38,7 +39,9 @@ import { VIRTUAL_H, VIRTUAL_W } from "../engine/pixelRenderer";
 import { drawRig, rigHeadFrame, rigPose } from "../engine/rigAnimator";
 import { drawSpriteFrame, frameAt } from "../engine/spriteAnimator";
 import { useStageRuntime } from "../engine/useStageRuntime";
-import type { CinemaActor, MiniGameChoice, SceneStamp, StoryData } from "../types/story";
+import { cameraAt, drawEmote, drawLightGrade, IDENTITY_VIEW, lineSfx } from "../engine/cinemaVibe";
+import { logStoryEvent } from "../engine/stageRuntime";
+import type { CinemaActor, DialogueLine, LineTelop, MiniGameChoice, SceneStamp, StoryData } from "../types/story";
 import { InfoCard } from "./cinema/InfoCard";
 import { RubyText } from "./RubyText";
 
@@ -54,6 +57,8 @@ interface CinemaStageProps {
   onClose: () => void;
   onOpenReading: () => void;
   onOpenDictation: () => void;
+  /** Scene index to start from (reading page "watch this scene again"). */
+  startScene?: number;
 }
 
 type Phase = "lines" | "interact" | "doneLine" | "ready";
@@ -143,8 +148,9 @@ export function CinemaStage({
   onClose,
   onOpenReading,
   onOpenDictation,
+  startScene = 0,
 }: CinemaStageProps) {
-  const rt = useStageRuntime({ story, muted });
+  const rt = useStageRuntime({ story, muted, initialScene: startScene });
   const {
     canvasRef,
     imagesRef,
@@ -161,6 +167,9 @@ export function CinemaStage({
     goToScene,
     markDone,
     startLoop,
+    cameraRef,
+    stageStartRef,
+    recordMode,
   } = rt;
 
   const [phase, setPhase] = useState<Phase>("lines");
@@ -242,6 +251,34 @@ export function CinemaStage({
       stopVoice();
     };
   }, [assetsReady, currentScene, kind, playVoiceLine, sceneIdx, sceneStartRef, setActiveLine, stopVoice, story.scenes.length]);
+
+  // Vibe kit: remember when each line starts and play its sound effect (logged for the MP4).
+  const vibeRef = useRef<{ line: DialogueLine | null; start: number }>({ line: null, start: 0 });
+  useEffect(() => {
+    vibeRef.current = { line: activeLine, start: performance.now() };
+    const name = lineSfx(activeLine);
+    const url = name ? sfxUrl(name) : null;
+    if (!name || !url) return;
+    logStoryEvent({ type: "sfx", audioUrl: url, lineId: activeLine?.id }, stageStartRef.current);
+    if (!recordMode) retroAudio.playSfx(name);
+  }, [activeLine, recordMode, stageStartRef]);
+
+  // BGM mood per scene (scene.bgm > story.bgm); the exporter renders the same themes into the MP4.
+  const bgmThemeRef = useRef<string | null>(null);
+  const bgmStartedRef = useRef(false);
+  useEffect(() => {
+    if (!assetsReady) return;
+    const theme = resolveBgmTheme(currentScene.bgm ?? story.bgm ?? "default");
+    if (theme === bgmThemeRef.current) return;
+    bgmThemeRef.current = theme;
+    logStoryEvent({ type: "bgm", theme }, stageStartRef.current);
+    if (bgmStartedRef.current && !recordMode) retroAudio.startBgm(theme);
+  }, [assetsReady, currentScene, recordMode, stageStartRef, story.bgm]);
+  /** First user gesture (BEGIN) starts the music of the current scene. */
+  const startMusic = useCallback(() => {
+    bgmStartedRef.current = true;
+    if (!recordMode) retroAudio.startBgm(bgmThemeRef.current ?? story.bgm ?? "default");
+  }, [recordMode, story.bgm]);
 
   const completeInteraction = useCallback(async () => {
     if (completingRef.current) return;
@@ -414,7 +451,7 @@ export function CinemaStage({
       await sleep(1100);
       if (cancelled) return;
       if (sceneIdx + 1 < story.scenes.length) {
-        if (kind === "intro") retroAudio.startBgm(story.bgm ?? "default");
+        if (kind === "intro") startMusic();
         go(sceneIdx + 1);
       } else {
         markDone();
@@ -426,7 +463,7 @@ export function CinemaStage({
     };
     // checklistChoices/interaction derive from currentScene (covered by sceneIdx)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [assetsReady, autoplay, go, kind, markDone, phase, sceneIdx, selectChoice, story]);
+  }, [assetsReady, autoplay, go, kind, markDone, phase, sceneIdx, selectChoice, startMusic, story]);
 
   // --- render loop ------------------------------------------------------------------------------
   // refs mirrored for the render loop (it must not restart on every state change)
@@ -446,10 +483,36 @@ export function CinemaStage({
     const sides = visibleActors(currentScene);
     const inter = currentScene.interaction;
 
+    const actorBox = (side: Side) => {
+      const actor = cast[side];
+      if (!actor) return null;
+      const scale = Math.max(1, Math.floor(actor.scale ?? 1));
+      const rig = actor.rig ? rigsRef.current[actor.rig] : undefined;
+      const sheet = actor.sprite ? spritesRef.current[actor.sprite] : undefined;
+      const im = actor.portrait ? imagesRef.current[`p:${actor.portrait}`] : undefined;
+      const w = (rig?.data.frameWidth ?? sheet?.meta.frameWidth ?? im?.naturalWidth ?? 64) * scale;
+      const h = (rig?.data.frameHeight ?? sheet?.meta.frameHeight ?? im?.naturalHeight ?? 96) * scale;
+      return { side, x: actorX(side, actor), top: VIRTUAL_H - h, w, h };
+    };
+
     return startLoop((ctx, now, dt) => {
       const t = now / 1000;
       const elapsed = (now - sceneStartRef.current) / 1000;
       const imgs = imagesRef.current;
+
+      // vibe kit: who is speaking, how long into the line
+      const vibe = vibeRef.current;
+      const vLine = speakingRef.current !== null ? vibe.line : null;
+      const vAge = (now - vibe.start) / 1000;
+      const onStage = kind === "intro" ? [] : sides;
+      const speakerSide = vLine ? onStage.find((sd) => cast[sd]?.voice === vLine.voice) : undefined;
+      // the camera frames whoever reacts (emoteSide) or else the speaker
+      const focusSide = vLine?.emoteSide && onStage.includes(vLine.emoteSide) ? vLine.emoteSide : speakerSide;
+      const focusBox = focusSide ? actorBox(focusSide) : null;
+      const focus: [number, number] = focusBox
+        ? [focusBox.x, focusBox.top + focusBox.h * 0.3]
+        : [VIRTUAL_W / 2, VIRTUAL_H / 2];
+      cameraRef.current = vLine?.camera ? cameraAt(vLine.camera, vAge, focus, vLine.durationSec ?? 3) : IDENTITY_VIEW;
 
       if (!drawBackdrop(ctx, backdropRef, t, imgs)) {
         ctx.fillStyle = "#101322";
@@ -524,6 +587,21 @@ export function CinemaStage({
         drawMeter(ctx, h.x, h.y, 64, hr.progress);
       }
 
+      // one light grade over the whole world layer (backdrop, actors, items) = one time of day
+      drawLightGrade(ctx, currentScene.light);
+      if (vLine?.emote) {
+        const emoteSide = vLine.emoteSide ?? speakerSide ?? onStage[0];
+        const b = emoteSide ? actorBox(emoteSide) : null;
+        if (b) {
+          const dir = b.side === "left" ? 1 : -1;
+          // big portraits get pixel-doubled symbols so they read at the same visual weight
+          const k = b.h >= 64 ? 2 : 1;
+          drawEmote(ctx, vLine.emote, b.x + dir * Math.round(b.w * 0.3), b.top + Math.round(b.h * 0.22), vAge, k);
+        } else {
+          drawEmote(ctx, vLine.emote, VIRTUAL_W / 2, 60, vAge, 2);
+        }
+      }
+
       for (const l of labelsRef.current) {
         if (l.to) drawLeaderLine(ctx, [l.x, l.y + 6], l.to);
       }
@@ -550,6 +628,11 @@ export function CinemaStage({
 
   // --- UI ------------------------------------------------------------------------------------
   const stamp = stampOf(currentScene.stamp);
+  const telop: LineTelop | null = activeLine?.telop
+    ? typeof activeLine.telop === "string"
+      ? { text: activeLine.telop }
+      : activeLine.telop
+    : null;
   const title = currentScene.titleCard?.title ?? currentScene.bannerTitle ?? story.titleJa;
   const subtitle = currentScene.titleCard?.subtitle ?? currentScene.bannerSubtitle ?? story.level;
   const labels = currentScene.outroLabels ?? {};
@@ -676,6 +759,18 @@ export function CinemaStage({
             <RubyText segments={interaction.hold.label} showFurigana={showFurigana} />
           </div>
         )}
+        {telop && (phase === "lines" || phase === "doneLine") && (
+          <div
+            key={activeLine?.id}
+            className={`cine-telop ${telop.color ?? "shu"}`}
+            style={{ left: `${telop.x ?? 50}%`, top: `${telop.y ?? 24}%` }}
+          >
+            <div className="cine-telop-t">
+              <RubyText segments={telop.text} showFurigana={showFurigana} />
+            </div>
+            {telop.sub && showVi && <div className="cine-telop-s">{telop.sub}</div>}
+          </div>
+        )}
         {interaction && phase === "interact" && total > 1 && (
           <div className="cine-counter">
             {progress} / {total}
@@ -692,7 +787,7 @@ export function CinemaStage({
               type="button"
               className="cine-btn"
               onClick={() => {
-                retroAudio.startBgm(story.bgm ?? "default");
+                startMusic();
                 retroAudio.playClick();
                 go(1);
               }}

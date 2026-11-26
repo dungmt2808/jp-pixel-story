@@ -8,8 +8,10 @@ export interface StoryEvent {
   timeMs: number;
   /** Raw `performance.now()` when the event happened (the exporter aligns audio with this). */
   perfMs: number;
-  type: "voice" | "scene" | "done";
+  type: "voice" | "scene" | "done" | "sfx" | "bgm";
   audioUrl?: string;
+  /** "bgm" events: theme that plays from now on (exporter renders it into the MP4). */
+  theme?: string;
   durationSec?: number;
   lineId?: string;
   sceneIdx?: number;

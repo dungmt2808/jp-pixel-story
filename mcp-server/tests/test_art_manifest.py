@@ -1,0 +1,63 @@
+"""Art manifest: raw images in -> palette-locked backgrounds + story.json scenes switched to bg:<key>."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+from PIL import Image, ImageDraw
+
+from art_manifest import apply_art_manifest
+
+
+def _scene_png(path: Path) -> None:
+    im = Image.new("RGB", (640, 400), (120, 170, 220))
+    d = ImageDraw.Draw(im)
+    d.rectangle((0, 260, 640, 400), fill=(140, 100, 60))
+    d.rectangle((80, 120, 260, 260), fill=(200, 60, 50), outline=(30, 20, 10), width=4)
+    im.save(path)
+
+
+def test_apply_art_manifest_processes_existing_art_and_switches_scenes(tmp_path: Path) -> None:
+    public = tmp_path / "public"
+    sdir = public / "stories" / "demo"
+    sdir.mkdir(parents=True)
+    story = {
+        "id": "demo",
+        "engine": "cinema",
+        "palette": "jp_story_master",
+        "assets": {"backgrounds": {}, "portraits": {}},
+        "scenes": [
+            {"id": "s1", "backdrop": "proc:airport_train", "lines": []},
+            {"id": "s2", "backdrop": "proc:washoku_table", "lines": [],
+             "minigame": {"choices": [{"id": "c1", "backdrop": "proc:washoku_table"}]}},
+        ],
+    }
+    (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
+    art = tmp_path / "art"
+    art.mkdir()
+    _scene_png(art / "raw_bg_train.png")
+    (art / "art.json").write_text(json.dumps({
+        "story": "demo",
+        "backgrounds": [
+            {"key": "train", "raw": "raw_bg_train.png", "use": ["s1", "s2/c1", "nope"]},
+            {"key": "dining", "raw": "raw_bg_dining.png", "use": ["s2"]},
+        ],
+    }), encoding="utf-8")
+
+    dry = apply_art_manifest(art / "art.json", public_root=public, dry_run=True)
+    assert not (sdir / "assets" / "bg_train.png").exists()
+    assert json.loads((sdir / "story.json").read_text())["scenes"][0]["backdrop"] == "proc:airport_train"
+    assert [a["key"] for a in dry["applied"]] == ["train"]
+
+    res = apply_art_manifest(art / "art.json", public_root=public)
+    out = sdir / "assets" / "bg_train.png"
+    assert out.exists() and Image.open(out).size == (320, 200)
+    assert (sdir / "assets" / "provenance.json").exists()
+    saved = json.loads((sdir / "story.json").read_text())
+    assert saved["assets"]["backgrounds"]["train"] == "/stories/demo/assets/bg_train.png"
+    assert saved["scenes"][0]["backdrop"] == "bg:train"
+    assert saved["scenes"][1]["minigame"]["choices"][0]["backdrop"] == "bg:train"
+    assert saved["scenes"][1]["backdrop"] == "proc:washoku_table"  # its art has not arrived yet
+    assert [w["key"] for w in res["waiting_for_art"]] == ["dining"]
+    assert res["problems"] == ["train: no scene/choice 'nope' in demo"]

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { cameraSourceRect, IDENTITY_VIEW, type CameraView } from "./cinemaVibe";
 import { retroAudio } from "../audio/chiptune";
 import type { DialogueLine, StoryData } from "../types/story";
 import { resolveAssetUrl } from "../utils/assetUrl";
@@ -24,7 +25,7 @@ export type StageDrawFn = (ctx: CanvasRenderingContext2D, now: number, dt: numbe
  * The browser then only has to shrink that slightly (smoothly) to the CSS size, so every
  * virtual pixel ends up the same size on screen (no 3px/4px column banding at odd widths).
  */
-function present(canvas: HTMLCanvasElement, buffer: HTMLCanvasElement): void {
+function present(canvas: HTMLCanvasElement, buffer: HTMLCanvasElement, view: CameraView = IDENTITY_VIEW): void {
   const cssW = canvas.getBoundingClientRect().width || VIRTUAL_W;
   const k = backingScale(cssW, VIRTUAL_W, window.devicePixelRatio || 1);
   if (canvas.width !== VIRTUAL_W * k || canvas.height !== VIRTUAL_H * k) {
@@ -35,7 +36,13 @@ function present(canvas: HTMLCanvasElement, buffer: HTMLCanvasElement): void {
   const out = canvas.getContext("2d");
   if (!out) return;
   out.imageSmoothingEnabled = false;
-  out.drawImage(buffer, 0, 0, canvas.width, canvas.height);
+  if (view.zoom <= 1 && view.cx === VIRTUAL_W / 2 && view.cy === VIRTUAL_H / 2) {
+    out.drawImage(buffer, 0, 0, canvas.width, canvas.height);
+    return;
+  }
+  // camera move: present a crop of the frame (the virtual frame itself is never resampled)
+  const { sx, sy, sw, sh } = cameraSourceRect(view);
+  out.drawImage(buffer, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
 }
 
 /**
@@ -43,9 +50,20 @@ function present(canvas: HTMLCanvasElement, buffer: HTMLCanvasElement): void {
  * line playback (with autoplay-safe timing and deterministic record mode), Bayer scene
  * transitions, the render loop with integer-scaled presentation, and exporter signals.
  */
-export function useStageRuntime({ story, muted }: { story: StoryData; muted: boolean }) {
+export function useStageRuntime({
+  story,
+  muted,
+  initialScene = 0,
+}: {
+  story: StoryData;
+  muted: boolean;
+  /** Start at this scene (e.g. "watch this scene again" from the reading page). */
+  initialScene?: number;
+}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const bufferRef = useRef<HTMLCanvasElement | null>(null);
+  /** Camera view the stage sets every frame (vibe kit); identity = whole frame. */
+  const cameraRef = useRef<CameraView>(IDENTITY_VIEW);
   const audioElRef = useRef<HTMLAudioElement | null>(null);
   const voiceTimerRef = useRef<number | null>(null);
   const imagesRef = useRef<Record<string, HTMLImageElement>>({});
@@ -54,7 +72,9 @@ export function useStageRuntime({ story, muted }: { story: StoryData; muted: boo
   const mutedRef = useRef(muted);
 
   const [assetsReady, setAssetsReady] = useState(false);
-  const [sceneIdx, setSceneIdx] = useState(0);
+  const [sceneIdx, setSceneIdx] = useState(() =>
+    Math.max(0, Math.min(initialScene, story.scenes.length - 1))
+  );
   const [activeLine, setActiveLine] = useState<DialogueLine | null>(null);
 
   const transitionRef = useRef<TransitionState>(idleTransition());
@@ -277,7 +297,7 @@ export function useStageRuntime({ story, muted }: { story: StoryData; muted: boo
             dz.amount = Math.max(0, dz.amount - dt * 1.7);
             if (dz.amount === 0) dz.snapshot = null;
           }
-          present(canvas, buffer);
+          present(canvas, buffer, cameraRef.current);
         }
       }
       rafId = window.requestAnimationFrame(frame);
@@ -291,6 +311,7 @@ export function useStageRuntime({ story, muted }: { story: StoryData; muted: boo
 
   return {
     canvasRef,
+    cameraRef,
     imagesRef,
     spritesRef,
     rigsRef,

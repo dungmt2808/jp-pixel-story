@@ -12,7 +12,7 @@
     "minOutlineCompliance": 0.98,
     "maxOrphanRatio": 0.1
   },
-  "bgm": "default",
+  "bgm": "happy",
   "assets": {
     "backgrounds": {
       "park": "/stories/hanami-first/assets/bg_park.png",
@@ -116,7 +116,8 @@
           "durationSec": 7.44,
           "ttsHash": "8ad470bf16c9"
         }
-      ]
+      ],
+      "light": "morning"
     },
     {
       "id": "under_sakura",
@@ -150,7 +151,9 @@
           "vi": "Minh ơi, nhìn kìa! Hoa anh đào đẹp quá nhỉ.",
           "audioUrl": "/stories/hanami-first/audio/h02.mp3",
           "durationSec": 4.68,
-          "ttsHash": "d0ed61219a95"
+          "ttsHash": "d0ed61219a95",
+          "emote": "sparkle",
+          "camera": "push"
         },
         {
           "id": "h03",
@@ -161,9 +164,11 @@
           "vi": "Đẹp thật đấy. Ở Việt Nam mình chưa từng được ngắm hoa anh đào.",
           "audioUrl": "/stories/hanami-first/audio/h03.mp3",
           "durationSec": 5.72,
-          "ttsHash": "0584d973f404"
+          "ttsHash": "0584d973f404",
+          "emote": "dots"
         }
-      ]
+      ],
+      "light": "morning"
     },
     {
       "id": "bento_time",
@@ -185,7 +190,8 @@
           "vi": "Mình có làm cơm hộp mang theo đấy. Cùng ăn nhé.",
           "audioUrl": "/stories/hanami-first/audio/h04.mp3",
           "durationSec": 3.33,
-          "ttsHash": "3967ccf8469b"
+          "ttsHash": "3967ccf8469b",
+          "emote": "note"
         }
       ],
       "interaction": {
@@ -216,7 +222,14 @@
           "vi": "Món trứng cuộn này ngọt và ngon quá!",
           "audioUrl": "/stories/hanami-first/audio/h05.mp3",
           "durationSec": 3.8,
-          "ttsHash": "bf04f9ec9837"
+          "ttsHash": "bf04f9ec9837",
+          "emote": "heart",
+          "camera": "punch",
+          "telop": {
+            "text": "おいしい！",
+            "sub": "Ngon quá!",
+            "color": "gold"
+          }
         }
       },
       "actionLabel": "UỐNG TRÀ →"
@@ -330,7 +343,14 @@
           "vi": "Yui này, năm sau mình lại cùng đi ngắm hoa nhé?",
           "audioUrl": "/stories/hanami-first/audio/h07.mp3",
           "durationSec": 3.96,
-          "ttsHash": "a82bba7e4bca"
+          "ttsHash": "a82bba7e4bca",
+          "emote": "sweat",
+          "camera": "push",
+          "telop": {
+            "text": "〜しませんか",
+            "sub": "Rủ rê lịch sự: cùng … nhé?",
+            "color": "shu"
+          }
         },
         {
           "id": "h08",
@@ -341,10 +361,19 @@
           "vi": "Ừ, nhất định rồi! Hứa đấy nhé.",
           "audioUrl": "/stories/hanami-first/audio/h08.mp3",
           "durationSec": 2.86,
-          "ttsHash": "0fdf7e03af46"
+          "ttsHash": "0fdf7e03af46",
+          "emote": "heart",
+          "sfx": "ding",
+          "telop": {
+            "text": "{約束|やくそく}！",
+            "sub": "Hứa rồi nhé!",
+            "color": "shu"
+          }
         }
       ],
-      "actionLabel": "→"
+      "actionLabel": "→",
+      "light": "golden",
+      "bgm": "tender"
     },
     {
       "id": "hanami_outro",
@@ -374,7 +403,9 @@
           "durationSec": 4.56,
           "ttsHash": "221c97afe044"
         }
-      ]
+      ],
+      "light": "golden",
+      "bgm": "happy"
     }
   ],
   "reading": {
@@ -436,7 +467,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ",
         "meaningVi": "Hoa anh đào",
-        "note": "Biểu tượng mùa xuân Nhật Bản, nở khoảng cuối tháng 3 – đầu tháng 4."
+        "note": "Biểu tượng mùa xuân Nhật Bản, nở khoảng cuối tháng 3 – đầu tháng 4.",
+        "hanViet": "ANH"
       },
       {
         "id": "hanami",
@@ -445,7 +477,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ",
         "meaningVi": "Ngắm hoa (anh đào)",
-        "note": "「お花見をする」: đi ngắm hoa, thường ngồi picnic dưới gốc cây."
+        "note": "「お花見をする」: đi ngắm hoa, thường ngồi picnic dưới gốc cây.",
+        "hanViet": "HOA KIẾN"
       },
       {
         "id": "bento",
@@ -454,7 +487,8 @@
         "level": "N5",
         "partOfSpeech": "Danh từ",
         "meaningVi": "Cơm hộp",
-        "note": "「お弁当を作る」: làm cơm hộp."
+        "note": "「お弁当を作る」: làm cơm hộp.",
+        "hanViet": "BIỆN ĐƯƠNG"
       },
       {
         "id": "rainen",
@@ -463,7 +497,8 @@
         "level": "N5",
         "partOfSpeech": "Danh từ",
         "meaningVi": "Năm sau",
-        "note": "今年 (năm nay) → 来年 (năm sau)."
+        "note": "今年 (năm nay) → 来年 (năm sau).",
+        "hanViet": "LAI NIÊN"
       },
       {
         "id": "yakusoku",
@@ -472,7 +507,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ / する",
         "meaningVi": "Lời hứa",
-        "note": "「約束ですよ」: Hứa rồi nhé!"
+        "note": "「約束ですよ」: Hứa rồi nhé!",
+        "hanViet": "ƯỚC THÚC"
       }
     ],
     "grammar": [
@@ -543,6 +579,27 @@
         ],
         "correctIndex": 0,
         "explanationVi": "Minh rủ 「来年もいっしょにお花見をしませんか」 và Yui đáp 「約束ですよ」."
+      }
+    ],
+    "chapters": [
+      {
+        "id": "ch1",
+        "title": "{春|はる}の{公園|こうえん}",
+        "titleVi": "Công viên mùa xuân",
+        "sentenceIds": [
+          "hr1",
+          "hr2"
+        ],
+        "scene": "tea_time"
+      },
+      {
+        "id": "ch2",
+        "title": "{来年|らいねん}の{約束|やくそく}",
+        "titleVi": "Lời hẹn năm sau",
+        "sentenceIds": [
+          "hr3"
+        ],
+        "scene": "promise"
       }
     ]
   },

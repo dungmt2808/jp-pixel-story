@@ -23,6 +23,26 @@ export interface DialogueLine {
   durationSec?: number;
   /** Fingerprint of text + voice settings written by the VOICEVOX tools (stale-audio check). */
   ttsHash?: string;
+  /** Vibe kit: manga symbol over the speaker ("sweat", "anger", "heart", "sparkle", "shock", "question", "note", "dots", "gloom"). */
+  emote?: string;
+  /** Which actor the emote belongs to (default: the speaker). */
+  emoteSide?: "left" | "right";
+  /** Vibe kit: camera move while the line plays ("push", "punch", "close", "shake", "pan_left", "pan_right"). */
+  camera?: string;
+  /** Vibe kit: big variety-show caption over the stage (ruby allowed). */
+  telop?: string | LineTelop;
+  /** Vibe kit: sound effect at the start of the line (default comes from the emote; "none" = silent). */
+  sfx?: string;
+}
+
+export interface LineTelop {
+  text: string;
+  /** Vietnamese under the telop (hidden when VI is off). */
+  sub?: string;
+  color?: "shu" | "gold" | "ai" | "white";
+  /** Position in % of the stage (default 50 / 24). */
+  x?: number;
+  y?: number;
 }
 
 export interface MiniGameChoice {
@@ -215,6 +235,10 @@ export interface StoryScene {
   overlays?: string[];
   /** Outro: one-line recap shown above the end buttons in the caption bar. */
   summary?: string;
+  /** Vibe kit: light grade over the whole frame ("day", "morning", "golden", "dusk", "night", "rain", "warm"). */
+  light?: string;
+  /** Vibe kit: BGM mood from this scene on ("calm", "happy", "sad", "none" or a theme name). */
+  bgm?: string;
   outroLabels?: CinemaOutroLabels;
   whoButtonLabel?: string;
   actionLabel?: string;
@@ -257,6 +281,23 @@ export interface VocabItem {
   partOfSpeech: string;
   meaningVi: string;
   note: string;
+  /** Sino-Vietnamese reading of the kanji, e.g. 約束 -> "ƯỚC THÚC". */
+  hanViet?: string;
+  /** Spellings to find in the text when it differs from `word` (conjugations, kana spelling...). */
+  forms?: string[];
+}
+
+/** One chapter of the reading page: a run of sentences + the stage scene it retells. */
+export interface ReadingChapter {
+  id: string;
+  /** Ruby allowed: "{桜|さくら}の{公園|こうえん}". */
+  title: string;
+  titleVi?: string;
+  sentenceIds: string[];
+  /** Scene id from `scenes[]`; its `bg:` backdrop becomes the chapter illustration. */
+  scene?: string;
+  /** Explicit illustration (overrides the scene backdrop). */
+  image?: string;
 }
 
 export interface GrammarItem {
@@ -318,6 +359,8 @@ export interface StoryData {
     sectionTitle: string;
     subtitle: string;
     sentences: ReadingSentence[];
+    /** Optional chapters (TOC + illustration); default: one chapter with every sentence. */
+    chapters?: ReadingChapter[];
     vocab: VocabItem[];
     grammar?: GrammarItem[];
     quiz?: QuizQuestion[];
