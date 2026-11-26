@@ -15,8 +15,9 @@ try:
 except ImportError:
     from mcp.server.fastmcp import FastMCP  # type: ignore[no-redef]
 
-from content_validator import validate_story_folder
+from content_validator import validate_catalog, validate_story_folder
 from pixel_processor import (
+    clean_exam_image,
     list_palettes_info,
     process_pixel_background,
     process_pixel_sprite,
@@ -25,6 +26,7 @@ from pixel_processor import (
 from voicevox_client import (
     DEFAULT_VOICEVOX_URL,
     check_voicevox_health,
+    generate_dokkai_audio,
     generate_standalone_pack,
     generate_story_audio,
     list_speakers,
@@ -120,6 +122,23 @@ async def voicevox_generate_standalone_pack(
     return json.dumps(result, ensure_ascii=False, indent=2)
 
 
+@mcp.tool()
+async def voicevox_generate_dokkai_audio(
+    dokkai_json_path: str,
+    force: bool = False,
+    audio_format: str = "mp3",
+    base_url: str = DEFAULT_VOICEVOX_URL,
+) -> str:
+    """Batch-generate Japanese VOICEVOX MP3/WAV audio for every sentence in a JLPT dokkai.json file and write audioUrl + durationSec back."""
+    result = await generate_dokkai_audio(
+        dokkai_json_path=dokkai_json_path,
+        force=force,
+        audio_format=audio_format,
+        base_url=base_url,
+    )
+    return json.dumps(result, ensure_ascii=False, indent=2)
+
+
 # ---------------------------------------------------------------------------
 # Content QA Tool
 # ---------------------------------------------------------------------------
@@ -130,14 +149,41 @@ def story_validate_content(
     story_dir: str,
     web_public_dir: str | None = None,
 ) -> str:
-    """Validate a story folder for 100% Furigana coverage on Kanji, existing audio files, valid quiz answers, and catalog registration in stories/index.json."""
+    """Validate a story folder for 100% Furigana coverage on Kanji, existing audio files, valid quiz/gengo answers, and catalog registration in stories/index.json."""
     result = validate_story_folder(story_dir=story_dir, web_public_dir=web_public_dir)
     return json.dumps(result, ensure_ascii=False, indent=2)
 
 
+@mcp.tool()
+def story_validate_catalog(
+    stories_root: str,
+    web_public_dir: str | None = None,
+) -> str:
+    """Validate EVERY lesson registered in stories/index.json and report any orphan folders, missing Furigana, missing audio, or invalid quiz indices."""
+    result = validate_catalog(stories_root=stories_root, web_public_dir=web_public_dir)
+    return json.dumps(result, ensure_ascii=False, indent=2)
+
+
 # ---------------------------------------------------------------------------
-# Mini-PixelLab Tools
+# Mini-PixelLab & JLPT Image Tools
 # ---------------------------------------------------------------------------
+
+
+@mcp.tool()
+def jlpt_clean_exam_image(
+    input_path: str,
+    output_path: str,
+    saturation_threshold: int = 18,
+    min_brightness: int = 145,
+) -> str:
+    """Strip colored watermarks (e.g., green/blue/yellow academy overlays) from black-and-white JLPT exam illustration cards while preserving crisp black line art."""
+    result = clean_exam_image(
+        input_path=input_path,
+        output_path=output_path,
+        saturation_threshold=saturation_threshold,
+        min_brightness=min_brightness,
+    )
+    return json.dumps(result, ensure_ascii=False, indent=2)
 
 
 @mcp.tool()

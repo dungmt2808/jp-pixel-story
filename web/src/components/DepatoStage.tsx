@@ -236,6 +236,12 @@ export function DepatoStage({
       return new Promise((resolve) => {
         setActiveLine(line);
         speakingRef.current = line.voice;
+        if (!window.__JP_STORY_EVENTS__) window.__JP_STORY_EVENTS__ = [];
+        window.__JP_STORY_EVENTS__.push({
+          timeMs: Math.round(performance.now() - stageStartRef.current),
+          type: "voice",
+          audioUrl: line.audioUrl,
+        });
 
         if (!line.audioUrl) {
           window.setTimeout(() => {

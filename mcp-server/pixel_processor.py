@@ -407,3 +407,47 @@ def process_pixel_background(
         "dither_strength": dither_strength,
         "unique_colors": int(len(used)),
     }
+
+
+def clean_exam_image(
+    input_path: str | Path,
+    output_path: str | Path,
+    *,
+    saturation_threshold: int = 18,
+    min_brightness: int = 145,
+) -> dict[str, Any]:
+    """Strip colored academy watermarks (e.g., light green/blue/yellow DUNGMORI or YUUKI overlays)
+    from black-and-white JLPT exam illustration cards while preserving crisp black ink line art.
+    """
+    inp = Path(input_path).expanduser().resolve()
+    out = Path(output_path).expanduser().resolve()
+    out.parent.mkdir(parents=True, exist_ok=True)
+
+    img = Image.open(inp).convert("RGB")
+    arr = np.array(img, dtype=np.int16)
+    r, g, b = arr[:, :, 0], arr[:, :, 1], arr[:, :, 2]
+
+    max_c = np.maximum(np.maximum(r, g), b)
+    min_c = np.minimum(np.minimum(r, g), b)
+    chroma = max_c - min_c
+    luma = (r + g + b) // 3
+
+    # Pixels with noticeable color saturation that aren't dark ink -> pure paper white
+    watermark_mask = (chroma >= saturation_threshold) & (luma >= min_brightness)
+    cleaned = arr.copy()
+    cleaned[watermark_mask] = 255
+
+    # Convert faint tinted greys near white cleanly to white paper
+    near_white = (cleaned[:, :, 0] > 236) & (cleaned[:, :, 1] > 236) & (cleaned[:, :, 2] > 236)
+    cleaned[near_white] = 255
+
+    out_img = Image.fromarray(cleaned.astype(np.uint8), mode="RGB")
+    out_img.save(out, format="PNG", optimize=True)
+
+    return {
+        "ok": True,
+        "input_path": str(inp),
+        "output_path": str(out),
+        "size": list(out_img.size),
+        "watermark_pixels_cleaned": int(np.sum(watermark_mask)),
+    }

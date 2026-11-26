@@ -264,3 +264,64 @@ def validate_story_folder(
         "issue_count": len(issues),
         "issues": issues,
     }
+
+
+def validate_catalog(
+    stories_root: str | Path,
+    *,
+    web_public_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    """Validate EVERY story listed in `stories/index.json` and check for unregistered folders."""
+    sroot = Path(stories_root).expanduser().resolve()
+    public_root = (
+        Path(web_public_dir).expanduser().resolve()
+        if web_public_dir
+        else sroot.parent
+    )
+    index_file = sroot / "index.json"
+    if not index_file.exists():
+        return {
+            "ok": False,
+            "stories_root": str(sroot),
+            "error": f"Missing catalog file: {index_file}",
+            "results": [],
+        }
+
+    cat = json.loads(index_file.read_text(encoding="utf-8"))
+    entries = cat.get("stories", [])
+    registered_ids = {e["id"] for e in entries if "id" in e}
+
+    results: list[dict[str, Any]] = []
+    failed: list[str] = []
+    total_issues = 0
+    total_audio = 0
+    total_kanji = 0
+
+    for entry in entries:
+        sid = entry["id"]
+        res = validate_story_folder(sroot / sid, web_public_dir=public_root)
+        res["id"] = sid
+        results.append(res)
+        total_issues += res["issue_count"]
+        total_audio += res["stats"]["audio_checked"]
+        total_kanji += res["stats"]["kanji_blocks_checked"]
+        if not res["ok"]:
+            failed.append(sid)
+
+    orphan_folders = sorted(
+        p.name
+        for p in sroot.iterdir()
+        if p.is_dir() and not p.name.startswith(".") and p.name not in registered_ids
+    )
+
+    return {
+        "ok": len(failed) == 0 and len(orphan_folders) == 0,
+        "stories_root": str(sroot),
+        "story_count": len(entries),
+        "failed_stories": failed,
+        "orphan_folders": orphan_folders,
+        "total_issues": total_issues,
+        "total_audio_checked": total_audio,
+        "total_kanji_blocks_checked": total_kanji,
+        "results": results,
+    }

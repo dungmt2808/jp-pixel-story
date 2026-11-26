@@ -1,71 +1,70 @@
 ---
 name: jp-pixel-story
 description: >-
-  Create a new 3-in-1 interactive 2D pixel-art Japanese learning lesson
-  (Animated Interactive Story + Reading/Vocab/Grammar/Quiz + Daily Dictation
-  listening practice) with Furigana-only toggle and local VOICEVOX MP3 audio,
-  validate content quality, and register it in the web library. Use this skill
-  whenever the user asks to generate a new Japanese situation or story lesson,
-  add Daily Dictation, process pixel sprites, or export a video.
+  Create interactive 2D pixel-art Japanese lessons and full JLPT N5-N1 exam suites
+  (Animated Cinema Story, JLPT Listening with real MP3 + Daily Dictation, JLPT
+  Reading with interactive filter tables/simulators, and JLPT Vocab & Grammar
+  with anti-spoiler Kanji & star-order puzzles), process pixel art & clean exam
+  illustrations, synthesize local VOICEVOX MP3s, validate the full catalog, and
+  deploy to GitHub Pages.
 ---
 
-# Creating a New 3-in-1 Japanese Learning Lesson
+# Creating Japanese Learning Lessons & JLPT Exam Suites (v2.0)
 
-Every lesson in `web/public/stories/<story-id>/` automatically powers **3 modes**:
-1. **🎮 Interactive 2D Pixel Animation** (`?story=<id>`)
-2. **📖 Reading Study View** (Furigana toggle + Vocab + Grammar + Quiz)
-3. **🎧 Daily Dictation** (`?story=<id>&mode=dictation` — Type & Word-Tile listening practice)
+Every lesson lives in `web/public/stories/<id>/` and is registered in `web/public/stories/index.json` under one of **3 categories**:
+- `"jlpt"` (`📝 Đề thi JLPT`): Official JLPT exams (`聴解`, `読解 問題4・6`, `読解 問題5` animated cinema, `文字・語彙・文法`)
+- `"situation"` (`💬 Tình huống đời sống`): Everyday Japan interactions (konbini, ramen shop, train station, clinic...)
+- `"story"` (`📖 Câu chuyện & Đọc hiểu`): Cultural stories & Japanese folktales (Hachikō, Tsuru no Ongaeshi...)
 
-## Prerequisites
+## Core Pedagogical & UX Rules
 
-1. Verify local VOICEVOX is running with MCP tool `voicevox_health`.
-2. Inspect available speakers via `voicevox_list_speakers`. Recommended expressive voice cast (always pass real Kanji `jaPlain` so OpenJTalk preserves native Japanese pitch accent — NEVER pass all-Hiragana `ttsText` unless fixing a specific misread word!):
-   - Warm storyteller narrator: `青山龍星 (しっとり=84)` or `(ノーマル=13)`
-   - Gentle/emotional female: `WhiteCUL (ノーマル=23 / かなしい=25)` or `小夜/SAYO (46)`
-   - Earnest young male: `玄野武宏 (ノーマル=11 / 悲しみ=41)`
-   - Bright female: `春日部つむぎ (8)`
+1. **NO Romaji anywhere** — every Kanji uses compact `{漢字|かんじ}` Furigana notation with the global **`ふりがな ON/OFF`** toggle (and never place ruby on pure Kana).
+2. **Global Vietnamese Toggle (`🇻🇳 Dịch ON/OFF`):**
+   - Video stages (`TsuruStage`, `CinemaStage`, `DepatoStage`, `HybridStage`, `PixelStage`, `hachiko/index.html`) default `Dịch ON` so learners can hide `.subtitle-vi` / `.choice-vi` in 1 click.
+   - Exam views (`JlptDokkaiView`, `JlptGengoView`) default `Dịch OFF` so meaning hints never spoil exam answers before selection.
+3. **Natural VOICEVOX Prosody:**
+   - Verify engine via `voicevox_health` and inspect casts via `voicevox_list_speakers`.
+   - **Always send real Japanese Kanji** (`jaPlain`) so OpenJTalk preserves native Japanese pitch accent — NEVER pass all-Hiragana unless overriding a single misread word via `ttsText`.
+   - **Verified natural cast:**
+     - `青山龍星` (`しっとり=84` storyteller / `ノーマル=13` notices & announcements)
+     - `小夜/SAYO` (`ノーマル=46` warm natural female — email, office memo, friends)
+     - `WhiteCUL` (`ノーマル=23` / `かなしい=25` clear expressive female)
+     - `玄野武宏` (`ノーマル=11` / `悲しみ=41` earnest young male)
+   - **Common TTS gotchas to override via `ttsText`:**
+     - Weekday parens like `7月11日（水）` → `7月11日、水曜日` (avoids reading 水 as *mizu*).
+     - Range tilde `午前9時〜午後10時` → `午前9時から午後10時`.
+     - Strip leading `※` symbols (avoids reading *komejirushi*).
+     - Laughter `"はは、"` → `"ああ、"` (avoids OpenJTalk reading *wawa*).
+   - Always audition 2–3 synthesized MP3s before pushing!
 
-## Step 1: Choose Category & Format
+## Choose the Right Reusable Engine (Zero Boilerplate!)
 
-Decide the library category in `web/public/stories/index.json`:
-- `"situation"` (`💬 Tình huống đời sống`): everyday Japan interactions (konbini, train station, ramen shop, clinic, JLPT Listening).
-- `"story"` (`📖 Câu chuyện & Đọc hiểu`): cultural stories, folktales, JLPT Reading passages (Hachikō, Tsuru no Ongaeshi...).
+| Content Type | `kind` in `index.json` | Data File | Engine Component | Audio / Image MCP Tools |
+| :--- | :--- | :--- | :--- | :--- |
+| **Animated Story / JLPT 問題5** | `"engine"` (`engine: "cinema"`) | `story.json` | `CinemaStage` + `ReadingView` + auto `DictationView` | `voicevox_generate_story_audio`, `pixellab_clean_background`, `pixellab_clean_sprite` |
+| **JLPT Listening (`聴解`)** | `"jlpt-choukai"` | `choukai.json` + `dictation.json` | `JlptChoukaiView` + native `DictationView` | `jlpt_clean_exam_image` + FFmpeg slice |
+| **JLPT Reading (`読解 問題4・6`)** | `"jlpt-dokkai"` | `dokkai.json` | `JlptDokkaiView` + auto `DictationView` | `voicevox_generate_dokkai_audio` |
+| **JLPT Vocab & Grammar (`言語知識`)** | `"jlpt-gengo"` | `gengo.json` | `JlptGengoView` | (text + interactive `★` scramble & cloze essay) |
+| **Custom Bespoke HTML** | `"standalone"` | `index.html` + `dictation.json` | Standalone Canvas + `DictationView` | `voicevox_generate_standalone_pack` |
 
-And choose one of two formats:
-- **Format A — Standard Engine (`story.json`, fastest, token-efficient & auto-supports Daily Dictation):**
-  Create `web/public/stories/<story-id>/story.json` following [story-schema.md](./references/story-schema.md), using **compact `{漢字|かんじ}` string notation** for `jaRuby`, `labelRuby`, `exampleRuby`, `questionJa`, and `options[].ja` (~75% fewer tokens than segment arrays!):
-  - 5–6 scenes with `jaPlain` (with natural `、` breath commas for VOICEVOX), compact `{漢字|かんじ}` `jaRuby` on every Kanji (no Romaji!), and natural Vietnamese `vi`.
-  - `characterCard` popup facts.
-  - `reading` with `sentences`, `vocab`, `grammar` (with compact `exampleRuby`), and 3–4 `quiz` questions.
-  - Run MCP tool `voicevox_generate_story_audio` (`audio_format="mp3"`), and audition key lines to confirm natural prosody.
-  - Daily Dictation automatically reads all voiced lines from `story.json`!
-- **Format B — Custom Standalone Interactive HTML (for richly bespoke interactions like Hachikō):**
-  Create `web/public/stories/<story-id>/index.html` using `{漢字|かんじ}` markup, `sayW(jp, vi)`, `PASSAGE`, `DICT`, `QUIZ`, a **`ふりがな ON/OFF`** toggle (no Romaji), a **`📚 Thư viện`** button (`../../`), and a **`🎧 Nghe chép`** button (`../../?story=<story-id>&mode=dictation`).
-  - Run MCP tool `voicevox_generate_standalone_pack` to synthesize all VOICEVOX `.mp3` clips, `audio/manifest.json`, and **`dictation.json`** for Daily Dictation in one step!
+Read schema references before creating files:
+- Stories & Cinema format: [references/story-schema.md](./references/story-schema.md)
+- JLPT `choukai.json`, `dokkai.json`, `gengo.json`: [references/jlpt-schemas.md](./references/jlpt-schemas.md)
+- Unified 16-bit Pixel Art Style Bible: [references/art-style.md](./references/art-style.md)
 
-## Step 2: Generate & Lock Unified Pixel Art Assets (Hybrid Upgrade)
+## Workflow Steps
 
-Follow the Art Style Bible in [art-style.md](./references/art-style.md) strictly so every lesson matches the exact same retro Japanese 16-bit style:
-1. Always pass style anchor images from `web/public/assets/style-ref/` (`ref_background.png`, `ref_minh.png`) when generating new artwork.
-2. Lock backgrounds (`320×200`) with MCP tool `pixellab_clean_background(..., palette_name="ramen_midnight")`.
-3. Lock character portraits (`96×96`) and interactive items (`36×36`–`80×80`) with `pixellab_clean_sprite` or `pixellab_slice_spritesheet(..., palette_name="ramen_midnight", bg_mode="chroma_green")`.
-4. Stage portraits **frameless** flush to the bottom edge (`bottomY = VIRTUAL_H`) with `ctx.filter = "brightness(0.64)"` for listening characters — never paste floating square portrait boxes on top of scenes!
-5. Declare `"engine": "hybrid"` and `"assets": { ... }` in `story.json` so the stage renders crisp PNG art + live Canvas FX (snow/rain, steam, hearth embers, radial candlelight, Bayer dithering).
-
-## Step 3: Register in Library Catalog
-
-Add the lesson card to `web/public/stories/index.json` with:
-`id`, `category` (`"situation"` | `"story"`), `kind` (`"engine"` | `"standalone"`), `href` (if standalone), `titleJa`, `titleVi`, `level`, `description`, `sceneCount`, `vocabCount`, `grammarCount`, `quizCount`.
-
-## Step 4: Mandatory Content QA Validation
-
-Before finishing or pushing, ALWAYS run MCP tool `story_validate_content` on `web/public/stories/<story-id>`:
-- Confirms **0 missing Furigana** on any Kanji.
-- Confirms **all audio files exist** and are non-empty.
-- Confirms **quiz `correctIndex` bounds** and **`stories/index.json` registration**.
-
-## Step 5: Preview, Deploy, or Export MP4
-
-- Local preview: `cd web && npm run dev`
-- Deploy live to GitHub Pages: `git add . && git commit && git push origin main`
-- Optional MP4 video export: `cd exporter && node export_video.mjs --story <story-id>`
+1. **Author compact JSON** using `{漢字|かんじ}` strings (~75% fewer tokens than segment arrays).
+2. **Process Art & Exam Cards:**
+   - Stories: lock `320×200` backgrounds with `pixellab_clean_background(..., palette_name="ramen_midnight")` and `96×96` portraits with `pixellab_clean_sprite` / `pixellab_slice_spritesheet(..., bg_mode="chroma_green")`. Stage portraits frameless flush-bottom (`bottomY = VIRTUAL_H`).
+   - JLPT Listening/Reading cards: strip colored watermarks with `jlpt_clean_exam_image`.
+3. **Generate VOICEVOX MP3 Audio:**
+   - `story.json` → `voicevox_generate_story_audio(audio_format="mp3")`
+   - `dokkai.json` → `voicevox_generate_dokkai_audio(audio_format="mp3")`
+   - Standalone HTML → `voicevox_generate_standalone_pack`
+4. **Register in `web/public/stories/index.json`** with accurate counts and `category`.
+5. **Mandatory Verification Gate (Before Commit / Push):**
+   - Run MCP tool **`story_validate_catalog`** on `web/public/stories` (must return `ok: true`, `total_issues: 0`, `orphan_folders: []`).
+   - Run backend tests: `cd mcp-server && PYTHONPATH=. uv run pytest -v`
+   - Run frontend tests & build: `cd web && npm test && npm run build`
+   - Deploy live to GitHub Pages via `git push origin main` (CI automatically re-runs frontend tests, Python validator/pytest, and Vite build before deploying!).

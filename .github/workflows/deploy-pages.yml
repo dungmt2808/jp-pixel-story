@@ -1,7 +1,9 @@
-name: Deploy jp-pixel-story to GitHub Pages
+name: Validate & Deploy jp-pixel-story to GitHub Pages
 
 on:
   push:
+    branches: ["main"]
+  pull_request:
     branches: ["main"]
   workflow_dispatch:
 
@@ -28,23 +30,41 @@ jobs:
           cache: "npm"
           cache-dependency-path: web/package-lock.json
 
+      - name: Setup Python & uv (for Automated Content QA)
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Python MCP tests & validate all lessons in catalog
+        working-directory: mcp-server
+        run: |
+          uv sync --extra dev
+          PYTHONPATH=. uv run pytest -v
+
       - name: Setup GitHub Pages
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
 
       - name: Install web dependencies
         working-directory: web
         run: npm ci
 
+      - name: Run frontend unit tests (ruby & dictation)
+        working-directory: web
+        run: npm test
+
       - name: Build static site
         working-directory: web
         run: npm run build
 
       - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: web/dist
 
   deploy:
+    if: github.event_name != 'pull_request'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

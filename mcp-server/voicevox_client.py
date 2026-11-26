@@ -280,9 +280,111 @@ def _parse_braced_ruby(text: str) -> list[dict[str, str]]:
     return segs
 
 
-def _braced_to_tts_kana(text: str) -> str:
+def _braced_to_tts_kanji(text: str) -> str:
+    """Strip inline highlight tags and `{漢字|かんじ}` ruby to natural Kanji for authentic pitch accent."""
     clean = re.sub(r"<<[a-z0-9]+:(.*?)>>", r"\1", text)
-    return _RUBY_BRACE_RE.sub(r"\2", clean)
+    return _RUBY_BRACE_RE.sub(r"\1", clean)
+
+
+async def generate_dokkai_audio(
+    dokkai_json_path: str | Path,
+    *,
+    force: bool = False,
+    audio_format: str = "mp3",
+    base_url: str = DEFAULT_VOICEVOX_URL,
+) -> dict[str, Any]:
+    """Batch-generate VOICEVOX MP3/WAV audio for every sentence in a JLPT dokkai.json file
+    and write `audioUrl` + `durationSec` back automatically.
+    """
+    dokkai_file = Path(dokkai_json_path).expanduser().resolve()
+    data = json.loads(dokkai_file.read_text(encoding="utf-8"))
+    pack_id = data["id"]
+    audio_dir = dokkai_file.parent / "audio"
+    audio_dir.mkdir(parents=True, exist_ok=True)
+
+    ext = "mp3" if audio_format == "mp3" and shutil.which("ffmpeg") else "wav"
+    doc_default_speaker = {
+        "email": 46,      # 小夜/SAYO
+        "memo": 46,       # 小夜/SAYO
+        "essay": 23,      # WhiteCUL ノーマル
+        "notice": 13,     # 青山龍星 ノーマル
+        "info_table": 13, # 青山龍星 ノーマル
+    }
+
+    generated: list[dict[str, Any]] = []
+    skipped: list[str] = []
+
+    for passage in data.get("passages", []):
+        default_spk = doc_default_speaker.get(passage.get("docStyle", ""), 13)
+        for s_idx, sent in enumerate(passage.get("sentences", [])):
+            sid = sent.get("id") or f"{passage['id']}_s{s_idx+1}"
+            raw_text = sent.get("ttsText") or sent.get("jaPlain") or ""
+            if not raw_text and isinstance(sent.get("jaRuby"), str):
+                raw_text = _braced_to_tts_kanji(sent["jaRuby"])
+            tts_text = raw_text.lstrip("※").strip()
+            if not tts_text:
+                continue
+
+            speaker_id = int(sent.get("speakerId", default_spk))
+            speed_scale = float(sent.get("speedScale", 0.98))
+            intonation_scale = float(sent.get("intonationScale", 1.08))
+            out_name = f"{sid}.{ext}"
+            out_path = audio_dir / out_name
+
+            if out_path.exists() and not force:
+                duration_sec = (
+                    get_wav_duration_sec(out_path)
+                    if ext == "wav"
+                    else float(sent.get("durationSec") or 0.0)
+                )
+                skipped.append(out_name)
+            else:
+                if ext == "mp3":
+                    with tempfile.TemporaryDirectory() as td:
+                        tmp_wav = Path(td) / f"{sid}.wav"
+                        res = await synthesize_line(
+                            text=tts_text,
+                            speaker_id=speaker_id,
+                            output_path=tmp_wav,
+                            speed_scale=speed_scale,
+                            intonation_scale=intonation_scale,
+                            base_url=base_url,
+                        )
+                        _convert_wav_to_mp3(tmp_wav, out_path)
+                        duration_sec = res["duration_sec"]
+                else:
+                    res = await synthesize_line(
+                        text=tts_text,
+                        speaker_id=speaker_id,
+                        output_path=out_path,
+                        speed_scale=speed_scale,
+                        intonation_scale=intonation_scale,
+                        base_url=base_url,
+                    )
+                    duration_sec = res["duration_sec"]
+                generated.append(
+                    {
+                        "file": out_name,
+                        "speaker_id": speaker_id,
+                        "duration_sec": duration_sec,
+                        "text": tts_text,
+                    }
+                )
+
+            sent["audioUrl"] = f"/stories/{pack_id}/audio/{out_name}"
+            sent["durationSec"] = round(duration_sec, 2)
+
+    dokkai_file.write_text(
+        json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    return {
+        "ok": True,
+        "dokkai_json": str(dokkai_file),
+        "audio_dir": str(audio_dir),
+        "generated_count": len(generated),
+        "skipped_count": len(skipped),
+        "generated": generated,
+    }
 
 
 async def generate_standalone_pack(
@@ -346,7 +448,7 @@ async def generate_standalone_pack(
             continue
         seen_lines.add(raw_jp)
         idx = len(dictation_items)
-        rel_file, dur = await synth_one(f"line_{idx:02d}", _braced_to_tts_kana(raw_jp))
+        rel_file, dur = await synth_one(f"line_{idx:02d}", _braced_to_tts_kanji(raw_jp))
         manifest["lines"][raw_jp] = {
             "file": rel_file,
             "durationSec": dur,
@@ -370,7 +472,7 @@ async def generate_standalone_pack(
     if m_pas:
         for p_idx, m in enumerate(re.finditer(r'\["([^"]+)","([^"]+)"\]', m_pas.group(1))):
             raw_p = m.group(1)
-            rel_file, dur = await synth_one(f"para_{p_idx:02d}", _braced_to_tts_kana(raw_p))
+            rel_file, dur = await synth_one(f"para_{p_idx:02d}", _braced_to_tts_kanji(raw_p))
             manifest["paragraphs"][f"para_{p_idx}"] = {
                 "file": rel_file,
                 "durationSec": dur,

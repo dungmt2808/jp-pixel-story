@@ -1,9 +1,9 @@
 # jp-pixel-studio Rules
 
-- Always keep Japanese text authentic and natural for the requested JLPT level (N5–N1).
-- **No Romaji**: Use Furigana (`jaRuby` or `{漢字|かんじ}`) with the `ふりがな ON/OFF` toggle instead of Romaji.
-- Every single Kanji must have accurate Furigana; never place ruby on pure Kana characters.
-- Always include **Vocab (`vocab`)**, **Applied Grammar (`grammar` with `exampleRuby`)**, and **Reading Quiz (`quiz`)** at the end of every lesson.
-- Always categorize lessons in `web/public/stories/index.json` as `"situation"` (Tình huống) or `"story"` (Câu chuyện).
-- Prefer lightweight `.mp3` VOICEVOX audio (`audio_format="mp3"`) for fast GitHub Pages loading.
-- Always run `story_validate_content` MCP tool before committing a new lesson.
+- Keep Japanese authentic and natural for the target JLPT level (N5–N1).
+- **No Romaji anywhere**: use compact `{漢字|かんじ}` Furigana notation with the `ふりがな ON/OFF` toggle.
+- Every Kanji must have accurate Furigana; never place ruby on pure Kana characters.
+- Respect **`🇻🇳 Dịch ON/OFF`**: default `ON` on interactive video stages (so learners can toggle subtitles off in 1 click) and default `OFF` on JLPT exam rooms (`JlptDokkaiView`, `JlptGengoView`) to prevent spoiling answers.
+- Always categorize entries in `web/public/stories/index.json` strictly as `"jlpt"`, `"situation"`, or `"story"`.
+- Always pass natural Japanese Kanji (not all-Hiragana) to VOICEVOX for authentic pitch accent; override tricky readings (`（水）→水曜日`, `※` strip, `はは→ああ`) only via `ttsText`, prefer `.mp3` audio, and audition samples before pushing.
+- Always run `story_validate_catalog` (or `cd mcp-server && PYTHONPATH=. uv run pytest -v`) and `cd web && npm test && npm run build` before committing or pushing.
