@@ -1,6 +1,23 @@
 {
   "stories": [
     {
+      "id": "tsuru-ongaeshi",
+      "category": "story",
+      "kind": "engine",
+      "thumbStyle": "image",
+      "thumbImage": "stories/tsuru-ongaeshi/assets/bg_snow.png",
+      "artBadge": "🎨 AI PIXEL ART",
+      "titleJa": "鶴の恩返し",
+      "titleVi": "Chim Hạc Trả Ơn",
+      "level": "JLPT N4",
+      "description": "Truyện cổ tích Nhật Bản kinh điển với trọn bộ đồ họa AI Pixel Art khóa style thống nhất (rừng tuyết, bếp lửa irori, khung cửi dưới ánh nến, chân dung biểu cảm), gỡ bẫy cứu hạc, kéo cửa fusuma + 15 giọng VOICEVOX + Daily Dictation.",
+      "sceneCount": 6,
+      "vocabCount": 6,
+      "grammarCount": 4,
+      "quizCount": 4,
+      "theme": "ramen_midnight"
+    },
+    {
       "id": "ramen-midnight",
       "category": "situation",
       "kind": "engine",
@@ -10,7 +27,7 @@
       "titleJa": "深夜のラーメン屋",
       "titleVi": "Gọi mì Ramen lúc đêm muộn",
       "level": "JLPT N4",
-      "description": "Phiên bản nâng cấp đồ họa Hybrid (bảng màu Master 24 màu, ngoại cảnh đèn lồng mưa đêm, chân dung biểu cảm & mini-game kéo 3 topping vào bát mì) + 17 giọng VOICEVOX + Daily Dictation.",
+      "description": "Tình huống gọi mì Ramen đêm mưa (bảng màu Master 24 màu, ngoại cảnh đèn lồng, chọn độ cứng sợi mì & kéo 3 topping vào bát mì) + 17 giọng VOICEVOX + Daily Dictation.",
       "sceneCount": 6,
       "vocabCount": 6,
       "grammarCount": 4,

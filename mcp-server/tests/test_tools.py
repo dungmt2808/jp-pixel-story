@@ -113,7 +113,7 @@ def test_validate_real_repo_stories() -> None:
     from content_validator import validate_story_folder
 
     stories_root = Path(__file__).resolve().parents[2] / "web" / "public" / "stories"
-    for story_id in ("konbini-onigiri", "hachiko", "ramen-midnight"):
+    for story_id in ("konbini-onigiri", "hachiko", "ramen-midnight", "tsuru-ongaeshi"):
         res = validate_story_folder(stories_root / story_id)
         assert res["ok"] is True, f"Validation failed for {story_id}: {res['issues']}"
         assert res["registered_in_catalog"] is True

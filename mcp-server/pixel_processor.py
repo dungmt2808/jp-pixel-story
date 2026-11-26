@@ -92,6 +92,19 @@ def remove_background(
 
     out = arr.copy()
     out[:, :, 3] = alpha
+
+    # Despill any faint greenish JPEG compression halo along 1px silhouette edges
+    if mode == "chroma_green":
+        rgb_i = out[:, :, :3].astype(np.int32)
+        g_dom = rgb_i[:, :, 1] - np.maximum(rgb_i[:, :, 0], rgb_i[:, :, 2])
+        strong_green = (rgb_i[:, :, 1] > 110) & (g_dom > 32)
+        out[strong_green, 3] = 0
+        fringe = (out[:, :, 3] > 0) & (g_dom > 14)
+        if np.any(fringe):
+            out[fringe, 0] = np.minimum(out[fringe, 0], 42)
+            out[fringe, 1] = np.minimum(out[fringe, 1], 28)
+            out[fringe, 2] = np.minimum(out[fringe, 2], 24)
+
     return Image.fromarray(out, mode="RGBA")
 
 

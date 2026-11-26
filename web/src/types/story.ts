@@ -43,7 +43,13 @@ export type SceneType =
   | "hybrid_counter_order"
   | "hybrid_noodle_firmness"
   | "hybrid_drag_toppings"
-  | "hybrid_outro_ramen";
+  | "hybrid_outro_ramen"
+  | "tsuru_snow_intro"
+  | "tsuru_rescue_crane"
+  | "tsuru_visitor_promise"
+  | "tsuru_weaving_choice"
+  | "tsuru_slide_fusuma"
+  | "tsuru_farewell_sky";
 
 export interface StoryArtAssets {
   backgrounds: Record<string, string>;

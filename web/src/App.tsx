@@ -5,6 +5,7 @@ import { HybridStage } from "./components/HybridStage";
 import { PixelStage } from "./components/PixelStage";
 import { ReadingView } from "./components/ReadingView";
 import { StoryLibrary } from "./components/StoryLibrary";
+import { TsuruStage } from "./components/TsuruStage";
 import type { StoryCatalog, StoryCatalogEntry } from "./types/catalog";
 import type { DictationItem, DictationPack } from "./types/dictation";
 import type { StoryData } from "./types/story";
@@ -382,7 +383,20 @@ export function App() {
             </div>
           </div>
 
-          {story.engine === "hybrid" ? (
+          {story.id === "tsuru-ongaeshi" ? (
+            <TsuruStage
+              key={`${story.id}-${autoplay ? "auto" : "play"}`}
+              story={story}
+              showFurigana={showFurigana}
+              muted={muted}
+              autoplay={autoplay}
+              onOpenReading={() => {
+                updateUrl(story.id, "reading", false);
+                setMode("reading");
+              }}
+              onOpenDictation={() => handleOpenDictation(story.id)}
+            />
+          ) : story.engine === "hybrid" ? (
             <HybridStage
               key={`${story.id}-${autoplay ? "auto" : "play"}`}
               story={story}
