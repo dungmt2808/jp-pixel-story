@@ -59,6 +59,7 @@ def validate_story_folder(
     dictation_json = sdir / "dictation.json"
     choukai_json = sdir / "choukai.json"
     dokkai_json = sdir / "dokkai.json"
+    gengo_json = sdir / "gengo.json"
     standalone_html = sdir / "index.html"
 
     if story_json.exists():
@@ -183,6 +184,44 @@ def validate_story_folder(
             for g in p.get("grammar", []):
                 if g.get("exampleRuby"):
                     _check_ruby_segments(f"dokkai/{pid}/grammar/{g['id']}", g["exampleRuby"], issues)
+
+    if gengo_json.exists():
+        gdata = json.loads(gengo_json.read_text(encoding="utf-8"))
+        for p in gdata.get("passages", []):
+            pid = p["id"]
+            stats["kanji_blocks_checked"] += 1
+            _check_ruby_segments(f"gengo/{pid}.intro", p.get("contextIntroJa", ""), issues)
+            _check_ruby_segments(f"gengo/{pid}.title", p.get("titleJa", ""), issues)
+            for pi, para in enumerate(p.get("paragraphs", [])):
+                stats["kanji_blocks_checked"] += 1
+                clean_para = re.sub(r"\[\[\d+\]\]", "", para)
+                _check_ruby_segments(f"gengo/{pid}.para[{pi}]", clean_para, issues)
+        for q in gdata.get("questions", []):
+            qid = q["id"]
+            stats["kanji_blocks_checked"] += 1
+            clean_prompt = q.get("promptJa", "").replace("[[STAR_SLOTS]]", "")
+            clean_prompt = re.sub(r"\[\[([^\]]+)\]\]", r"\1", clean_prompt)
+            _check_ruby_segments(f"gengo/{qid}.prompt", clean_prompt, issues)
+            opts = q.get("options", [])
+            for oi, opt in enumerate(opts):
+                raw_opt = opt.get("ja", "")
+                if isinstance(raw_opt, str):
+                    raw_opt = re.sub(r"\[\[([^\]]+)\]\]", r"\1", raw_opt)
+                # For kanji_write (問題2), options intentionally test Kanji writing so we allow ruby or plain
+                if q.get("kind") != "kanji_write":
+                    _check_ruby_segments(f"gengo/{qid}.opt{oi}", raw_opt, issues)
+            cidx = q.get("correctIndex", -1)
+            if not (0 <= cidx < len(opts)):
+                issues.append(f"[Invalid gengo correctIndex] {qid}: {cidx}")
+            if q.get("kind") == "star_order":
+                order = q.get("starOrder", [])
+                star_pos = q.get("starSlotIndex", 2)
+                if sorted(order) != [0, 1, 2, 3]:
+                    issues.append(f"[Invalid starOrder] {qid}: {order}")
+                elif order[star_pos] != cidx:
+                    issues.append(
+                        f"[Mismatch starOrder vs correctIndex] {qid}: order[{star_pos}]={order[star_pos]} != {cidx}"
+                    )
 
     if standalone_html.exists():
         html = standalone_html.read_text(encoding="utf-8")

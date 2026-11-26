@@ -1642,6 +1642,11 @@ rt {
  * JLPT DOKKAI (READING 問題4 & 問題6) INTERACTIVE TRAINER
  * ===================================================================== */
 
+.stage-frame.hide-vi .subtitle-vi,
+.stage-frame.hide-vi .choice-vi {
+  display: none;
+}
+
 .dokkai-m5-btn {
   border-color: var(--accent-amber) !important;
   color: var(--accent-amber) !important;
@@ -2363,4 +2368,326 @@ rt {
 
 .dokkai-grammar-ex rt {
   color: #ffd875;
+}
+
+/* =====================================================================
+ * JLPT GENGO CHISHIKI (文字・語彙 & 文法) INTERACTIVE TRAINER
+ * ===================================================================== */
+
+.gengo-subsec-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.gengo-sub-chip {
+  background: #141c33;
+  color: #b7c8eb;
+  border: 1.5px solid #30416e;
+  padding: 4px 9px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.gengo-sub-chip:hover {
+  border-color: var(--accent-amber);
+  color: #ffffff;
+}
+
+.gengo-sub-chip.active {
+  background: #2f2354;
+  border-color: #b98eff;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.gengo-prompt-panel {
+  background: #141c34;
+  border: 2px solid #334575;
+  border-left: 4px solid var(--accent-amber);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+}
+
+.gengo-headword-pill {
+  display: inline-block;
+  background: #2b1d4a;
+  border: 1.5px solid #9b6be8;
+  color: #e9d9ff;
+  font-size: 13.5px;
+  padding: 4px 11px;
+  margin-bottom: 10px;
+}
+
+.gengo-headword-pill b {
+  font-family: var(--font-jp);
+  font-size: 17px;
+  color: #ffd875;
+  margin-left: 4px;
+}
+
+.gengo-prompt-ja,
+.gengo-star-sentence {
+  font-family: var(--font-jp);
+  font-size: 18px;
+  line-height: 2.15;
+  color: #ffffff;
+  white-space: pre-line;
+}
+
+.gengo-prompt-ja rt,
+.gengo-star-sentence rt {
+  color: #ffd875;
+  font-size: 0.58em;
+}
+
+.gengo-underline {
+  display: inline;
+  padding: 0 3px 2px;
+  border-bottom: 3px solid var(--accent-amber);
+  background: rgba(255, 216, 117, 0.14);
+  color: #fff6d1;
+  font-weight: 700;
+}
+
+.gengo-blank {
+  display: inline-block;
+  min-width: 58px;
+  text-align: center;
+  padding: 0 8px;
+  margin: 0 3px;
+  border-bottom: 3px solid #79e6c9;
+  background: rgba(70, 184, 157, 0.15);
+  color: #9bf7de;
+  font-weight: 700;
+}
+
+.gengo-blank.filled {
+  background: #174038;
+  border-color: #79e6c9;
+  color: #ffffff;
+}
+
+.gengo-prompt-vi {
+  font-family: var(--font-vi);
+  font-size: 13.5px;
+  color: #bdd0f2;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #2e3e6b;
+}
+
+/* Star Scramble Slots (問題2 ★) */
+.gengo-star-slots-inline {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  vertical-align: baseline;
+  margin: 0 6px;
+}
+
+.gengo-star-slot {
+  display: inline-block;
+  min-width: 52px;
+  text-align: center;
+  padding: 1px 8px;
+  border-bottom: 3px solid #7aa2f7;
+  background: rgba(122, 162, 247, 0.14);
+  color: #d9e6ff;
+}
+
+.gengo-star-slot.is-star {
+  border-bottom-color: var(--accent-amber);
+  background: rgba(255, 216, 117, 0.22);
+  color: var(--accent-amber);
+  font-weight: 700;
+}
+
+.gengo-star-slot.filled {
+  color: #ffffff;
+}
+
+.gengo-scramble-helper {
+  background: #10172b;
+  border: 2px dashed #3e5285;
+  padding: 11px 14px;
+  margin-bottom: 14px;
+}
+
+.gengo-scramble-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: #c2d3f2;
+  margin-bottom: 9px;
+}
+
+.gengo-scramble-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.gengo-scramble-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #1b2645;
+  color: #ffffff;
+  border: 2px solid #485e96;
+  padding: 6px 11px;
+  font-family: var(--font-jp);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.gengo-scramble-chip.placed {
+  background: #23473e;
+  border-color: var(--accent-mint);
+}
+
+.gengo-sc-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 21px;
+  height: 21px;
+  background: #0d1224;
+  color: var(--accent-amber);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.gengo-sc-badge {
+  background: var(--accent-amber);
+  color: #131829;
+  font-family: var(--font-vi);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 6px;
+}
+
+.gengo-star-solution {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  font-size: 13.5px;
+}
+
+.gengo-sol-chip {
+  display: inline-block;
+  background: #192442;
+  border: 1.5px solid #4d649e;
+  padding: 2px 8px;
+  font-family: var(--font-jp);
+  font-size: 14.5px;
+  color: #f4f1e8;
+}
+
+.gengo-sol-chip.star {
+  background: #473510;
+  border-color: var(--accent-amber);
+  color: var(--accent-amber);
+  font-weight: 700;
+}
+
+.gengo-options-single {
+  grid-template-columns: 1fr !important;
+}
+
+/* Cloze Passage Card (問題3) */
+.gengo-passage-doc {
+  margin-bottom: 16px;
+}
+
+.gengo-passage-intro {
+  font-family: var(--font-jp);
+  font-size: 14.5px;
+  color: #464d63;
+  margin-bottom: 10px;
+}
+
+.gengo-passage-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  border-bottom: 2px solid #c9c0ac;
+  padding-bottom: 7px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.gengo-passage-title {
+  font-family: var(--font-jp);
+  font-size: 19px;
+  font-weight: 700;
+  color: #151929;
+}
+
+.gengo-passage-author {
+  font-family: var(--font-jp);
+  font-size: 14px;
+  color: #4f556b;
+}
+
+.gengo-passage-para {
+  margin-bottom: 10px;
+}
+
+.gengo-passage-ja {
+  font-family: var(--font-jp);
+  font-size: 16.5px;
+  line-height: 2.15;
+  color: #171b2a;
+  margin: 0;
+}
+
+.gengo-inline-blank {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 8px;
+  margin: 0 3px;
+  border: 2px solid #3c547a;
+  background: #eef4ff;
+  color: #14223d;
+  font-family: var(--font-jp);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  vertical-align: baseline;
+}
+
+.gengo-inline-blank.current {
+  background: #ffe99e;
+  border-color: #c2780a;
+  box-shadow: 0 0 0 2px rgba(255, 198, 64, 0.45);
+}
+
+.gengo-inline-blank.ok {
+  background: #c8f5e5;
+  border-color: #1b8c6f;
+  color: #0d4f3d;
+}
+
+.gengo-inline-blank.no {
+  background: #ffd8de;
+  border-color: #b83b52;
+  color: #6b1526;
+}
+
+.gengo-inline-num {
+  display: inline-block;
+  background: #23304f;
+  color: #ffd875;
+  font-size: 11px;
+  padding: 0 5px;
+  line-height: 1.5;
 }

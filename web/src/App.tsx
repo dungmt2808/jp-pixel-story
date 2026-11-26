@@ -6,6 +6,7 @@ import { DictationView } from "./components/DictationView";
 import { HybridStage } from "./components/HybridStage";
 import { JlptChoukaiView } from "./components/JlptChoukaiView";
 import { JlptDokkaiView } from "./components/JlptDokkaiView";
+import { JlptGengoView } from "./components/JlptGengoView";
 import { PixelStage } from "./components/PixelStage";
 import { ReadingView } from "./components/ReadingView";
 import { StoryLibrary } from "./components/StoryLibrary";
@@ -14,6 +15,7 @@ import type { StoryCatalog, StoryCatalogEntry } from "./types/catalog";
 import type { ChoukaiExamData } from "./types/choukai";
 import type { DictationItem, DictationPack } from "./types/dictation";
 import type { DokkaiExamData } from "./types/dokkai";
+import type { GengoExamData } from "./types/gengo";
 import type { StoryData } from "./types/story";
 import { resolveAssetUrl } from "./utils/assetUrl";
 import { parseRuby, rubyToKana } from "./utils/ruby";
@@ -95,11 +97,12 @@ function buildDictationPackFromDokkai(dokkai: DokkaiExamData): DictationPack {
   };
 }
 
-type AppMode = "stage" | "reading" | "dictation" | "choukai" | "dokkai";
+type AppMode = "stage" | "reading" | "dictation" | "choukai" | "dokkai" | "gengo";
 
 function parseAppMode(m: string | null): AppMode {
   if (m === "choukai") return "choukai";
   if (m === "dokkai") return "dokkai";
+  if (m === "gengo") return "gengo";
   if (m === "dictation") return "dictation";
   if (m === "reading") return "reading";
   return "stage";
@@ -121,8 +124,11 @@ export function App() {
   const [dictationPack, setDictationPack] = useState<DictationPack | null>(null);
   const [choukaiExam, setChoukaiExam] = useState<ChoukaiExamData | null>(null);
   const [dokkaiExam, setDokkaiExam] = useState<DokkaiExamData | null>(null);
+  const [gengoExam, setGengoExam] = useState<GengoExamData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showFurigana, setShowFurigana] = useState(true);
+  const [showVi, setShowVi] = useState(true);
+  const [showGengoVi, setShowGengoVi] = useState(false);
   const [muted, setMuted] = useState(false);
 
   // Load story catalog for the Library screen
@@ -166,6 +172,7 @@ export function App() {
       setDictationPack(null);
       setChoukaiExam(null);
       setDokkaiExam(null);
+      setGengoExam(null);
       setError(null);
       retroAudio.stopBgm();
       return;
@@ -210,6 +217,28 @@ export function App() {
           if (!cancelled) {
             setDokkaiExam(dData);
             if (mode !== "dokkai") setMode("dokkai");
+          }
+        } catch (err: unknown) {
+          if (!cancelled) {
+            setError(err instanceof Error ? err.message : String(err));
+          }
+        }
+        return;
+      }
+
+      if (mode === "gengo" || selectedStoryId.endsWith("-gengo")) {
+        setGengoExam(null);
+        try {
+          const gRes = await fetch(
+            resolveAssetUrl(`stories/${selectedStoryId}/gengo.json`)
+          );
+          if (!gRes.ok) {
+            throw new Error(`Không tìm thấy đề Từ vựng & Ngữ pháp "${selectedStoryId}"`);
+          }
+          const gData = (await gRes.json()) as GengoExamData;
+          if (!cancelled) {
+            setGengoExam(gData);
+            if (mode !== "gengo") setMode("gengo");
           }
         } catch (err: unknown) {
           if (!cancelled) {
@@ -331,7 +360,8 @@ export function App() {
       nextMode === "dictation" ||
       nextMode === "reading" ||
       nextMode === "choukai" ||
-      nextMode === "dokkai"
+      nextMode === "dokkai" ||
+      nextMode === "gengo"
     ) {
       url.searchParams.set("mode", nextMode);
     } else {
@@ -376,6 +406,14 @@ export function App() {
     setSelectedStoryId(examId);
   }, []);
 
+  const handleOpenGengo = useCallback((examId: string) => {
+    retroAudio.stopBgm();
+    updateUrl(examId, "gengo", false);
+    setAutoplay(false);
+    setMode("gengo");
+    setSelectedStoryId(examId);
+  }, []);
+
   const handleOpenLibrary = useCallback(() => {
     retroAudio.stopBgm();
     updateUrl(null, "stage", false);
@@ -393,6 +431,7 @@ export function App() {
           onSelectDictation={handleOpenDictation}
           onSelectChoukai={handleOpenChoukai}
           onSelectDokkai={handleOpenDokkai}
+          onSelectGengo={handleOpenGengo}
         />
       </div>
     );
@@ -464,6 +503,32 @@ export function App() {
     );
   }
 
+  if (mode === "gengo") {
+    if (!gengoExam) {
+      return (
+        <div className="app-shell">
+          <div className="subtitle-box">
+            <div className="subtitle-ja">読み込み中... (Đang tải đề Từ vựng &amp; Ngữ pháp JLPT...)</div>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="app-shell">
+        <JlptGengoView
+          exam={gengoExam}
+          showFurigana={showFurigana}
+          showVi={showGengoVi}
+          onToggleFurigana={() => setShowFurigana((v) => !v)}
+          onToggleVi={() => setShowGengoVi((v) => !v)}
+          onOpenLibrary={handleOpenLibrary}
+          onOpenDokkai={handleOpenDokkai}
+          onOpenChoukai={handleOpenChoukai}
+        />
+      </div>
+    );
+  }
+
   if (mode === "dictation") {
     if (!dictationPack) {
       return (
@@ -518,7 +583,7 @@ export function App() {
   return (
     <div className="app-shell">
       {mode === "stage" ? (
-        <div className="stage-frame">
+        <div className={`stage-frame ${showVi ? "" : "hide-vi"}`}>
           <div className="stage-topbar">
             <div className="topbar-meta">
               <span className="topbar-series">{story.series}</span>
@@ -554,6 +619,14 @@ export function App() {
                 title="Bật / Tắt Furigana"
               >
                 ふりがな {showFurigana ? "ON" : "OFF"}
+              </button>
+              <button
+                type="button"
+                className={`pixel-icon-btn ${showVi ? "active" : ""}`}
+                onClick={() => setShowVi((v) => !v)}
+                title="Hiện / Ẩn phụ đề dịch tiếng Việt"
+              >
+                🇻🇳 Dịch {showVi ? "ON" : "OFF"}
               </button>
               <button
                 type="button"
@@ -636,7 +709,9 @@ export function App() {
         <ReadingView
           story={story}
           showFurigana={showFurigana}
+          showVi={showVi}
           onToggleFurigana={() => setShowFurigana((v) => !v)}
+          onToggleVi={() => setShowVi((v) => !v)}
           onBackToStory={() => {
             updateUrl(story.id, "stage", false);
             setMode("stage");

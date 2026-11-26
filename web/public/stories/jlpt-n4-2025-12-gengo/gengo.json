@@ -1,0 +1,1650 @@
+{
+  "id": "jlpt-n4-2025-12-gengo",
+  "examDate": "12/2025",
+  "level": "JLPT N4 · 12/2025",
+  "titleJa": "JLPT N4 文字・語彙・文法 (12/2025)",
+  "titleVi": "Từ vựng & Ngữ pháp thật 12/2025 (49 câu)",
+  "description": "Trọn bộ 28 câu Từ vựng/Kanji và 21 câu Ngữ pháp đề thi thật JLPT N4 kỳ 12/2025 kèm nháp ghép câu ★, đoạn văn đục lỗ tương tác và giải thích chi tiết từng câu.",
+  "dokkaiId": "jlpt-n4-2025-12-dokkai",
+  "choukaiId": "jlpt-n4-2025-12-choukai",
+  "sections": [
+    {
+      "id": "v_m1",
+      "part": "vocab",
+      "shortLabel": "語彙 問題1 · Đọc Kanji",
+      "titleJa": "問題1（漢字読み）",
+      "instructionVi": "Chọn cách đọc Hiragana đúng cho từ gạch chân.",
+      "kind": "kanji_read"
+    },
+    {
+      "id": "v_m2",
+      "part": "vocab",
+      "shortLabel": "語彙 問題2 · Viết Kanji",
+      "titleJa": "問題2（表記）",
+      "instructionVi": "Chọn chữ Hán (Kanji) viết đúng cho từ gạch chân.",
+      "kind": "kanji_write"
+    },
+    {
+      "id": "v_m3",
+      "part": "vocab",
+      "shortLabel": "語彙 問題3 · Ngữ cảnh",
+      "titleJa": "問題3（文脈規定）",
+      "instructionVi": "Chọn từ vựng phù hợp nhất điền vào chỗ trống （　）.",
+      "kind": "cloze"
+    },
+    {
+      "id": "v_m4",
+      "part": "vocab",
+      "shortLabel": "語彙 問題4 · Đồng nghĩa",
+      "titleJa": "問題4（言い換え類義）",
+      "instructionVi": "Chọn câu có nghĩa gần giống nhất với câu gạch chân.",
+      "kind": "synonym"
+    },
+    {
+      "id": "v_m5",
+      "part": "vocab",
+      "shortLabel": "語彙 問題5 · Cách dùng",
+      "titleJa": "問題5（用法）",
+      "instructionVi": "Chọn câu sử dụng từ cho sẵn đúng ngữ cảnh nhất.",
+      "kind": "usage"
+    },
+    {
+      "id": "g_m1",
+      "part": "grammar",
+      "shortLabel": "文法 問題1 · Ngữ pháp",
+      "titleJa": "問題1（文の文法1）",
+      "instructionVi": "Chọn trợ từ / mẫu ngữ pháp đúng nhất điền vào （　）.",
+      "kind": "cloze"
+    },
+    {
+      "id": "g_m2",
+      "part": "grammar",
+      "shortLabel": "文法 問題2 · Sắp xếp ★",
+      "titleJa": "問題2（文の文法2・★）",
+      "instructionVi": "Sắp xếp 4 mảnh thành câu đúng và chọn mảnh nằm ở vị trí ★.",
+      "kind": "star_order"
+    },
+    {
+      "id": "g_m3",
+      "part": "grammar",
+      "shortLabel": "文法 問題3 · Đục lỗ",
+      "titleJa": "問題3（文章の文法）",
+      "instructionVi": "Đọc toàn bài văn và chọn ngữ pháp phù hợp nhất điền vào chỗ trống (18)–(21).",
+      "kind": "passage_cloze"
+    }
+  ],
+  "passages": [
+    {
+      "id": "g12_m3_juice",
+      "sectionId": "g_m3",
+      "contextIntroJa": "{留学生|りゅうがくせい}のエマさんは{作文|さくぶん}を{書|か}いて、クラスのみんなの{前|まえ}で{読|よ}みました。",
+      "contextIntroVi": "Du học sinh Emma đã viết bài văn này và đọc trước cả lớp.",
+      "titleJa": "{野菜|やさい}ジュース",
+      "authorJa": "オニール エマ",
+      "paragraphs": [
+        "{私|わたし}は{毎朝|まいあさ}、{野菜|やさい}ジュースを{作|つく}って{飲|の}んでいます。{作|つく}り{方|かた}はともだちに{習|なら}いました。",
+        "{先月|せんげつ}、ともだちの{家|いえ}に{遊|あそ}びに{行|い}ったとき、ともだちが{野菜|やさい}ジュースを{作|つく}ってくれました。ともだちは{毎日|まいにち}{野菜|やさい}ジュースを{作|つく}って[[18]]。いろいろな{野菜|やさい}を{使|つか}ったジュースはおいしかったです。{私|わたし}は{毎日|まいにち}の{食事|しょくじ}であまり{野菜|やさい}を{食|た}べていないことが{気|き}になっていたので、{家|いえ}で{野菜|やさい}ジュースを{作|つく}って{飲|の}むことにしました。それで、ともだちに{作|つく}り{方|かた}を[[19]]。",
+        "{家|いえ}で{作|つく}るジュースはとてもおいしいです。はじめは、ともだち[[20]]{同|おな}じジュースを{作|つく}っていました。でも、{最近|さいきん}は{野菜|やさい}を{変|か}えたり、くだものを{使|つか}ったりして、いろいろな{味|あじ}のジュースを{作|つく}っています。かんたんに{作|つく}れるので、みなさんも[[21]]。"
+      ],
+      "paragraphsVi": [
+        "Mỗi sáng tôi đều tự làm nước ép rau củ để uống. Cách làm là tôi học từ người bạn.",
+        "Tháng trước, khi đến nhà bạn chơi, bạn đã làm nước ép rau củ mời tôi. Nghe nói bạn ấy ngày nào cũng làm nước ép rau củ rồi (18). Ly nước ép dùng đủ loại rau rất ngon. Vì tôi đang bận tâm chuyện bữa ăn hằng ngày mình ăn ít rau, nên tôi quyết định sẽ tự làm nước ép rau uống ở nhà. Thế nên tôi đã (19) cách làm từ bạn.",
+        "Nước ép làm ở nhà ngon lắm. Ban đầu tôi làm loại nước ép giống (20) bạn. Nhưng gần đây tôi thay đổi rau, thêm cả hoa quả vào để làm ra nhiều hương vị khác nhau. Vì làm rất đơn giản nên mọi người cũng (21)."
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "v1",
+      "sectionId": "v_m1",
+      "part": "vocab",
+      "kind": "kanji_read",
+      "number": 1,
+      "maskTargetRuby": true,
+      "promptJa": "[[{紙|かみ}]]は そこに ありますから、つかって ください。",
+      "promptVi": "Giấy ở chỗ kia nên bạn cứ dùng nhé.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "つくえ"
+        },
+        {
+          "label": "2",
+          "ja": "かみ"
+        },
+        {
+          "label": "3",
+          "ja": "さら"
+        },
+        {
+          "label": "4",
+          "ja": "はし"
+        }
+      ],
+      "correctIndex": 1,
+      "explanationVi": "紙（かみ）= giấy. Bẫy: 机（つくえ）, 皿（さら）, 箸/橋（はし）."
+    },
+    {
+      "id": "v2",
+      "sectionId": "v_m1",
+      "part": "vocab",
+      "kind": "kanji_read",
+      "number": 2,
+      "maskTargetRuby": true,
+      "promptJa": "やまださんは にほんの [[{地理|ちり}]]に ついて よく しって います。",
+      "promptVi": "Anh Yamada biết rất rõ về địa lý Nhật Bản.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "ちり"
+        },
+        {
+          "label": "2",
+          "ja": "じり"
+        },
+        {
+          "label": "3",
+          "ja": "ちりい"
+        },
+        {
+          "label": "4",
+          "ja": "じりい"
+        }
+      ],
+      "correctIndex": 0,
+      "explanationVi": "地理（ちり）= địa lý (âm ngắn, không biến âm đục thành じり)."
+    },
+    {
+      "id": "v3",
+      "sectionId": "v_m1",
+      "part": "vocab",
+      "kind": "kanji_read",
+      "number": 3,
+      "maskTargetRuby": true,
+      "promptJa": "ここで [[{泳|およ}がないで]] ください。",
+      "promptVi": "Xin đừng bơi ở đây.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "ぬがないで"
+        },
+        {
+          "label": "2",
+          "ja": "さわがないで"
+        },
+        {
+          "label": "3",
+          "ja": "いそがないで"
+        },
+        {
+          "label": "4",
+          "ja": "およがないで"
+        }
+      ],
+      "correctIndex": 3,
+      "explanationVi": "泳ぐ（およぐ）= bơi (có bộ Thủy 氵). Bẫy: 脱ぐ（ぬぐ）, 騒ぐ（さわぐ）, 急ぐ（いそぐ）."
+    },
+    {
+      "id": "v4",
+      "sectionId": "v_m1",
+      "part": "vocab",
+      "kind": "kanji_read",
+      "number": 4,
+      "maskTargetRuby": true,
+      "promptJa": "たなかさんが にもつを [[{運|はこ}んで]] いました。",
+      "promptVi": "Anh Tanaka đã đang khuân vác / vận chuyển hành lý.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "えらんで"
+        },
+        {
+          "label": "2",
+          "ja": "ふんで"
+        },
+        {
+          "label": "3",
+          "ja": "はこんで"
+        },
+        {
+          "label": "4",
+          "ja": "つつんで"
+        }
+      ],
+      "correctIndex": 2,
+      "explanationVi": "運ぶ（はこぶ）= mang vác, vận chuyển. Bẫy: 選ぶ（えらぶ）, 踏む（ふむ）, 包む（つつむ）."
+    },
+    {
+      "id": "v5",
+      "sectionId": "v_m1",
+      "part": "vocab",
+      "kind": "kanji_read",
+      "number": 5,
+      "maskTargetRuby": true,
+      "promptJa": "これは [[{特別|とくべつ}]]な しなものです。",
+      "promptVi": "Đây là một món hàng đặc biệt.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "とくべつ"
+        },
+        {
+          "label": "2",
+          "ja": "とくぶつ"
+        },
+        {
+          "label": "3",
+          "ja": "どくべつ"
+        },
+        {
+          "label": "4",
+          "ja": "どくぶつ"
+        }
+      ],
+      "correctIndex": 0,
+      "explanationVi": "特別（とくべつ）= đặc biệt (特 đọc とく không đục, 別 đọc べつ)."
+    },
+    {
+      "id": "v6",
+      "sectionId": "v_m1",
+      "part": "vocab",
+      "kind": "kanji_read",
+      "number": 6,
+      "maskTargetRuby": true,
+      "promptJa": "もっと [[{軽|かる}い]]のを ください。",
+      "promptVi": "Cho tôi cái nhẹ hơn đi.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "まるい"
+        },
+        {
+          "label": "2",
+          "ja": "ほそい"
+        },
+        {
+          "label": "3",
+          "ja": "かるい"
+        },
+        {
+          "label": "4",
+          "ja": "やわらかい"
+        }
+      ],
+      "correctIndex": 2,
+      "explanationVi": "軽い（かるい）= nhẹ (trái nghĩa với 重い おもい = nặng)."
+    },
+    {
+      "id": "v7",
+      "sectionId": "v_m1",
+      "part": "vocab",
+      "kind": "kanji_read",
+      "number": 7,
+      "maskTargetRuby": true,
+      "promptJa": "きれいな [[{色|いろ}]]ですね。",
+      "promptVi": "Màu sắc đẹp quá nhỉ!",
+      "options": [
+        {
+          "label": "1",
+          "ja": "うた"
+        },
+        {
+          "label": "2",
+          "ja": "いろ"
+        },
+        {
+          "label": "3",
+          "ja": "おと"
+        },
+        {
+          "label": "4",
+          "ja": "とり"
+        }
+      ],
+      "correctIndex": 1,
+      "explanationVi": "色（いろ）= màu sắc. Bẫy: 歌（うた）, 音（おと）, 鳥（とり）."
+    },
+    {
+      "id": "v8",
+      "sectionId": "v_m2",
+      "part": "vocab",
+      "kind": "kanji_write",
+      "number": 8,
+      "promptJa": "{車|くるま}が こわれて、[[うごきません]]。",
+      "promptVi": "Xe bị hỏng nên không chạy / không nhúc nhích được.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "勤きません",
+          "vi": "sai — 勤める = làm việc công sở"
+        },
+        {
+          "label": "2",
+          "ja": "働きません",
+          "vi": "sai — 働く = lao động"
+        },
+        {
+          "label": "3",
+          "ja": "助きません",
+          "vi": "sai — 助ける = giúp đỡ"
+        },
+        {
+          "label": "4",
+          "ja": "動きません",
+          "vi": "đúng — うごく = chuyển động"
+        }
+      ],
+      "correctIndex": 3,
+      "explanationVi": "動く（うごく）= di chuyển, hoạt động (gồm 重 + 力). Tránh nhầm với 働く (có thêm nhân đứng 亻)."
+    },
+    {
+      "id": "v9",
+      "sectionId": "v_m2",
+      "part": "vocab",
+      "kind": "kanji_write",
+      "number": 9,
+      "promptJa": "いっしょに [[ゆうはん]]を {買|か}いに {行|い}きましょう。",
+      "promptVi": "Chúng ta cùng đi mua bữa tối nhé.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "夜飲",
+          "vi": "sai"
+        },
+        {
+          "label": "2",
+          "ja": "夜飯",
+          "vi": "sai — 夜 = よる/や"
+        },
+        {
+          "label": "3",
+          "ja": "夕飲",
+          "vi": "sai — 飲 = uống"
+        },
+        {
+          "label": "4",
+          "ja": "夕飯",
+          "vi": "đúng — ゆうはん = cơm tối"
+        }
+      ],
+      "correctIndex": 3,
+      "explanationVi": "夕飯（ゆうはん）= bữa tối (夕 = chiều tối, 飯 = cơm/bữa ăn; đừng nhầm với 飲 = uống!)."
+    },
+    {
+      "id": "v10",
+      "sectionId": "v_m2",
+      "part": "vocab",
+      "kind": "kanji_write",
+      "number": 10,
+      "promptJa": "この もんだいを [[かんがえて]] います。",
+      "promptVi": "Tôi đang suy nghĩ về vấn đề này.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "勉えて",
+          "vi": "sai — 勉強"
+        },
+        {
+          "label": "2",
+          "ja": "思えて",
+          "vi": "sai — 思う = nghĩ cảm tính"
+        },
+        {
+          "label": "3",
+          "ja": "考えて",
+          "vi": "đúng — かんがえる = suy nghĩ"
+        },
+        {
+          "label": "4",
+          "ja": "答えて",
+          "vi": "sai — こたえる = trả lời"
+        }
+      ],
+      "correctIndex": 2,
+      "explanationVi": "考える（かんがえる）= suy nghĩ, cân nhắc kỹ lưỡng."
+    },
+    {
+      "id": "v11",
+      "sectionId": "v_m2",
+      "part": "vocab",
+      "kind": "kanji_write",
+      "number": 11,
+      "promptJa": "あす [[こうじょう]]を {見学|けんがく}します。",
+      "promptVi": "Ngày mai tôi sẽ đi tham quan nhà máy.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "工事",
+          "vi": "こうじ = thi công"
+        },
+        {
+          "label": "2",
+          "ja": "工場",
+          "vi": "こうじょう = nhà máy"
+        },
+        {
+          "label": "3",
+          "ja": "公場",
+          "vi": "sai"
+        },
+        {
+          "label": "4",
+          "ja": "公事",
+          "vi": "sai"
+        }
+      ],
+      "correctIndex": 1,
+      "explanationVi": "工場（こうじょう）= nhà máy, công xưởng. Tránh nhầm 工事（こうじ = công trình thi công）và chữ 公!"
+    },
+    {
+      "id": "v12",
+      "sectionId": "v_m2",
+      "part": "vocab",
+      "kind": "kanji_write",
+      "number": 12,
+      "promptJa": "わたしの いえは ここから [[とおい]]です。",
+      "promptVi": "Nhà tôi ở xa chỗ này.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "遠い",
+          "vi": "đúng — とおい = xa"
+        },
+        {
+          "label": "2",
+          "ja": "通い",
+          "vi": "sai — 通う = đi lại"
+        },
+        {
+          "label": "3",
+          "ja": "近い",
+          "vi": "sai — ちかい = gần"
+        },
+        {
+          "label": "4",
+          "ja": "逆い",
+          "vi": "sai — 逆 = ngược"
+        }
+      ],
+      "correctIndex": 0,
+      "explanationVi": "遠い（とおい）= xa (bẫy cực hay gặp vì cả 4 chữ đều có bộ Sước 辶!)."
+    },
+    {
+      "id": "v13",
+      "sectionId": "v_m3",
+      "part": "vocab",
+      "kind": "cloze",
+      "number": 13,
+      "promptJa": "{先月|せんげつ} りょこうを した とき、とても いい ホテルに（　）。",
+      "promptVi": "Tháng trước khi đi du lịch, tôi đã (ở trọ) tại một khách sạn rất tuyệt.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "のこりました",
+          "vi": "còn lại"
+        },
+        {
+          "label": "2",
+          "ja": "とまりました",
+          "vi": "ở trọ / lưu trú (泊まる)"
+        },
+        {
+          "label": "3",
+          "ja": "つづきました",
+          "vi": "tiếp tục"
+        },
+        {
+          "label": "4",
+          "ja": "かえりました",
+          "vi": "trở về"
+        }
+      ],
+      "correctIndex": 1,
+      "explanationVi": "ホテルに泊まる（とまる）= nghỉ qua đêm / lưu trú tại khách sạn."
+    },
+    {
+      "id": "v14",
+      "sectionId": "v_m3",
+      "part": "vocab",
+      "kind": "cloze",
+      "number": 14,
+      "promptJa": "これは そふから もらった（　）とけいですから、かす ことは できません。",
+      "promptVi": "Vì đây là chiếc đồng hồ (quý giá / quan trọng) tôi được ông tặng nên không thể cho mượn được.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "たいへんな",
+          "vi": "vất vả, nghiêm trọng"
+        },
+        {
+          "label": "2",
+          "ja": "じゅうぶんな",
+          "vi": "đầy đủ"
+        },
+        {
+          "label": "3",
+          "ja": "だいじな",
+          "vi": "quan trọng, quý giá"
+        },
+        {
+          "label": "4",
+          "ja": "ねっしんな",
+          "vi": "nhiệt tình"
+        }
+      ],
+      "correctIndex": 2,
+      "explanationVi": "大事な（だいじな）= quý giá, quan trọng (kỷ vật của ông nên không cho mượn được)."
+    },
+    {
+      "id": "v15",
+      "sectionId": "v_m3",
+      "part": "vocab",
+      "kind": "cloze",
+      "number": 15,
+      "promptJa": "{雨|あめ}で うでや {足|あし}が ぬれたので、（　）を かして ください。",
+      "promptVi": "Vì tay và chân tôi bị ướt mưa nên làm ơn cho tôi mượn (khăn tắm / khăn lau).",
+      "options": [
+        {
+          "label": "1",
+          "ja": "レンジ",
+          "vi": "lò vi sóng"
+        },
+        {
+          "label": "2",
+          "ja": "アイロン",
+          "vi": "bàn là"
+        },
+        {
+          "label": "3",
+          "ja": "シャンプー",
+          "vi": "dầu gội"
+        },
+        {
+          "label": "4",
+          "ja": "タオル",
+          "vi": "khăn lau"
+        }
+      ],
+      "correctIndex": 3,
+      "explanationVi": "Bị ướt mưa (雨でぬれた) → cần タオル (khăn lau) để lau khô!"
+    },
+    {
+      "id": "v16",
+      "sectionId": "v_m3",
+      "part": "vocab",
+      "kind": "cloze",
+      "number": 16,
+      "promptJa": "{子|こ}どもの びょうきが なおったので、（　）しました。",
+      "promptVi": "Vì bệnh của con đã khỏi nên tôi đã (yên tâm).",
+      "options": [
+        {
+          "label": "1",
+          "ja": "あんしん",
+          "vi": "yên tâm (安心)"
+        },
+        {
+          "label": "2",
+          "ja": "しんぱい",
+          "vi": "lo lắng (心配)"
+        },
+        {
+          "label": "3",
+          "ja": "しょうち",
+          "vi": "chấp thuận (承知)"
+        },
+        {
+          "label": "4",
+          "ja": "せわ",
+          "vi": "chăm sóc (世話)"
+        }
+      ],
+      "correctIndex": 0,
+      "explanationVi": "病気が治る (khỏi bệnh) → 安心（あんしん）する = yên tâm, nhẹ nhõm."
+    },
+    {
+      "id": "v17",
+      "sectionId": "v_m3",
+      "part": "vocab",
+      "kind": "cloze",
+      "number": 17,
+      "promptJa": "こくばんの じが うすくて、（　）{見|み}えません。",
+      "promptVi": "Chữ trên bảng đen mờ quá nên tôi không nhìn thấy (rõ ràng).",
+      "options": [
+        {
+          "label": "1",
+          "ja": "ゆっくり",
+          "vi": "chậm rãi"
+        },
+        {
+          "label": "2",
+          "ja": "はっきり",
+          "vi": "rõ ràng"
+        },
+        {
+          "label": "3",
+          "ja": "ていねいに",
+          "vi": "cẩn thận, lịch sự"
+        },
+        {
+          "label": "4",
+          "ja": "じゆうに",
+          "vi": "tự do"
+        }
+      ],
+      "correctIndex": 1,
+      "explanationVi": "Chữ mờ (字がうすい) → はっきり見えません = không nhìn thấy rõ ràng."
+    },
+    {
+      "id": "v18",
+      "sectionId": "v_m3",
+      "part": "vocab",
+      "kind": "cloze",
+      "number": 18,
+      "promptJa": "ひとの {多|おお}い ばしょは すきじゃ ないので、（　）に すみたいです。",
+      "promptVi": "Vì tôi không thích những nơi đông người nên tôi muốn sống ở (vùng quê).",
+      "options": [
+        {
+          "label": "1",
+          "ja": "とかい",
+          "vi": "đô thị, thành phố lớn"
+        },
+        {
+          "label": "2",
+          "ja": "いなか",
+          "vi": "nông thôn, vùng quê"
+        },
+        {
+          "label": "3",
+          "ja": "じゅうしょ",
+          "vi": "địa chỉ"
+        },
+        {
+          "label": "4",
+          "ja": "あたり",
+          "vi": "vùng lân cận"
+        }
+      ],
+      "correctIndex": 1,
+      "explanationVi": "Không thích chỗ đông người → muốn sống ở 田舎（いなか）= vùng quê (trái nghĩa với 都会 とかい)."
+    },
+    {
+      "id": "v19",
+      "sectionId": "v_m3",
+      "part": "vocab",
+      "kind": "cloze",
+      "number": 19,
+      "promptJa": "おゆが（　）ので、おちゃを {入|い}れましょう。",
+      "promptVi": "Vì nước nóng đã (sôi) rồi nên hãy pha trà nào.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "うまれた",
+          "vi": "được sinh ra"
+        },
+        {
+          "label": "2",
+          "ja": "やけた",
+          "vi": "chín nướng / cháy"
+        },
+        {
+          "label": "3",
+          "ja": "わいた",
+          "vi": "đã sôi (沸く)"
+        },
+        {
+          "label": "4",
+          "ja": "まわった",
+          "vi": "quay vòng"
+        }
+      ],
+      "correctIndex": 2,
+      "explanationVi": "お湯が沸く（おゆがわく）= nước sôi (cặp cụm từ cố định hay gặp nhất ở N4!)."
+    },
+    {
+      "id": "v20",
+      "sectionId": "v_m3",
+      "part": "vocab",
+      "kind": "cloze",
+      "number": 20,
+      "promptJa": "そふには あさ さんぽを する（　）が あります。",
+      "promptVi": "Ông tôi có (thói quen) đi dạo vào buổi sáng.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "きょうみ",
+          "vi": "hứng thú"
+        },
+        {
+          "label": "2",
+          "ja": "にんき",
+          "vi": "được yêu thích"
+        },
+        {
+          "label": "3",
+          "ja": "けいけん",
+          "vi": "kinh nghiệm"
+        },
+        {
+          "label": "4",
+          "ja": "しゅうかん",
+          "vi": "thói quen (習慣)"
+        }
+      ],
+      "correctIndex": 3,
+      "explanationVi": "朝散歩をする習慣（しゅうかん）がある = có thói quen đi dạo buổi sáng."
+    },
+    {
+      "id": "v21",
+      "sectionId": "v_m4",
+      "part": "vocab",
+      "kind": "synonym",
+      "number": 21,
+      "promptJa": "[[かぐの うりばは 2かいです。]]",
+      "promptVi": "Quầy bán đồ nội thất ở tầng 2.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "いすや テーブルの うりばは 2かいです。",
+          "vi": "Quầy bán ghế và bàn ở tầng 2."
+        },
+        {
+          "label": "2",
+          "ja": "かばんや さいふの うりばは 2かいです。",
+          "vi": "Quầy bán túi xách và ví ở tầng 2."
+        },
+        {
+          "label": "3",
+          "ja": "テレビや れいぞうこの うりばは 2かいです。",
+          "vi": "Quầy bán TV và tủ lạnh ở tầng 2."
+        },
+        {
+          "label": "4",
+          "ja": "ノートや ペンの うりばは 2かいです。",
+          "vi": "Quầy bán vở và bút ở tầng 2."
+        }
+      ],
+      "correctIndex": 0,
+      "explanationVi": "家具（かぐ）= đồ nội thất (bàn, ghế, tủ...). Còn TV/tủ lạnh là đồ điện gia dụng (電化製品), vở/bút là văn phòng phẩm."
+    },
+    {
+      "id": "v22",
+      "sectionId": "v_m4",
+      "part": "vocab",
+      "kind": "synonym",
+      "number": 22,
+      "promptJa": "[[たなかさんは さとうさんに あやまりました。]]",
+      "promptVi": "Anh Tanaka đã xin lỗi anh Sato.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "たなかさんは さとうさんに「おめでとう」と {言|い}いました。",
+          "vi": "Đã nói 'Chúc mừng'."
+        },
+        {
+          "label": "2",
+          "ja": "たなかさんは さとうさんに「さようなら」と {言|い}いました。",
+          "vi": "Đã nói 'Tạm biệt'."
+        },
+        {
+          "label": "3",
+          "ja": "たなかさんは さとうさんに「ごめんなさい」と {言|い}いました。",
+          "vi": "Đã nói 'Xin lỗi'."
+        },
+        {
+          "label": "4",
+          "ja": "たなかさんは さとうさんに「ごくろうさま」と {言|い}いました。",
+          "vi": "Đã nói 'Vất vả rồi'."
+        }
+      ],
+      "correctIndex": 2,
+      "explanationVi": "謝る（あやまる）= xin lỗi → đồng nghĩa với 「ごめんなさい」と言う."
+    },
+    {
+      "id": "v23",
+      "sectionId": "v_m4",
+      "part": "vocab",
+      "kind": "synonym",
+      "number": 23,
+      "promptJa": "[[すずきさんは どくしんです。]]",
+      "promptVi": "Anh Suzuki đang độc thân.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "すずきさんは けっこんして いません。",
+          "vi": "Anh Suzuki chưa kết hôn."
+        },
+        {
+          "label": "2",
+          "ja": "すずきさんは けっこんして います。",
+          "vi": "Anh Suzuki đã kết hôn."
+        },
+        {
+          "label": "3",
+          "ja": "すずきさんは {一人|ひとり}で すんで います。",
+          "vi": "Anh Suzuki đang sống một mình."
+        },
+        {
+          "label": "4",
+          "ja": "すずきさんは かぞくと すんで います。",
+          "vi": "Anh Suzuki đang sống cùng gia đình."
+        }
+      ],
+      "correctIndex": 0,
+      "explanationVi": "独身（どくしん）= độc thân = chưa kết hôn (結婚していません). Cẩn thận bẫy đáp án 3: độc thân không nhất thiết sống một mình!"
+    },
+    {
+      "id": "v24",
+      "sectionId": "v_m4",
+      "part": "vocab",
+      "kind": "synonym",
+      "number": 24,
+      "promptJa": "[[うちの {犬|いぬ}は とても おとなしいです。]]",
+      "promptVi": "Chú chó nhà tôi rất hiền lành / ngoan ngoãn, ít sủa.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "うちの {犬|いぬ}は とても {元気|げんき}です。",
+          "vi": "Chó nhà tôi rất năng động."
+        },
+        {
+          "label": "2",
+          "ja": "うちの {犬|いぬ}は とても うるさいです。",
+          "vi": "Chó nhà tôi rất ồn ào."
+        },
+        {
+          "label": "3",
+          "ja": "うちの {犬|いぬ}は とても かわいいです。",
+          "vi": "Chó nhà tôi rất dễ thương."
+        },
+        {
+          "label": "4",
+          "ja": "うちの {犬|いぬ}は とても しずかです。",
+          "vi": "Chó nhà tôi rất hiền/yên tĩnh."
+        }
+      ],
+      "correctIndex": 3,
+      "explanationVi": "おとなしい = hiền lành, điềm đạm, không ồn ào nghịch phá → gần nghĩa nhất là 静か（しずか）です."
+    },
+    {
+      "id": "v25",
+      "sectionId": "v_m5",
+      "part": "vocab",
+      "kind": "usage",
+      "number": 25,
+      "headwordJa": "うんてん（運転）",
+      "promptJa": "つぎの ことばの つかいかたで いちばん いい ものを えらんで ください。",
+      "promptVi": "Chọn câu dùng từ 'うんてん' (lái phương tiện / vận hành máy lớn) đúng nhất.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "この パソコンの [[うんてん]]の しかたが わかりますか。",
+          "vi": "Sai — cách dùng máy tính là つかいかた / そうさ."
+        },
+        {
+          "label": "2",
+          "ja": "わたしは {車|くるま}の [[うんてん]]は できません。",
+          "vi": "Tôi không biết lái ô tô."
+        },
+        {
+          "label": "3",
+          "ja": "その カメラは {古|ふる}いので、もう [[うんてん]]は できません。",
+          "vi": "Sai — máy ảnh không dùng うんてん."
+        },
+        {
+          "label": "4",
+          "ja": "はやしさんは ピアノの [[うんてん]]が じょうずです。",
+          "vi": "Sai — chơi piano dùng えんそう / ひく."
+        }
+      ],
+      "correctIndex": 1,
+      "explanationVi": "運転（うんてん）dùng để lái xe cộ (ô tô, tàu điện...) — KHÔNG dùng cho máy tính, máy ảnh hay đàn piano!"
+    },
+    {
+      "id": "v26",
+      "sectionId": "v_m5",
+      "part": "vocab",
+      "kind": "usage",
+      "number": 26,
+      "headwordJa": "あさい（浅い）",
+      "promptJa": "つぎの ことばの つかいかたで いちばん いい ものを えらんで ください。",
+      "promptVi": "Chọn câu dùng tính từ 'あさい' (nông, cạn — trái nghĩa với 深い sâu) đúng nhất.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "おとうとは わたしより せが [[あさい]]です。",
+          "vi": "Sai — chiều cao thấp dùng せがひくい."
+        },
+        {
+          "label": "2",
+          "ja": "この カメラは [[あさい]]ので、われやすいです。",
+          "vi": "Sai — dễ vỡ không dùng あさい."
+        },
+        {
+          "label": "3",
+          "ja": "この プールは [[あさい]]ですから、{子|こ}どもも {入|はい}って あそべます。",
+          "vi": "Hồ bơi này nông nên trẻ con cũng có thể xuống chơi được."
+        },
+        {
+          "label": "4",
+          "ja": "{電話|でんわ}の おとが [[あさくて]]、よく {聞|き}こえません。",
+          "vi": "Sai — âm thanh nhỏ dùng ちいさくて."
+        }
+      ],
+      "correctIndex": 2,
+      "explanationVi": "浅い（あさい）= nông/cạn (dùng cho sông, biển, hồ bơi, đĩa, giấc ngủ...). Trái nghĩa với 深い（ふかい = sâu）."
+    },
+    {
+      "id": "v27",
+      "sectionId": "v_m5",
+      "part": "vocab",
+      "kind": "usage",
+      "number": 27,
+      "headwordJa": "しょうかい（紹介）",
+      "promptJa": "つぎの ことばの つかいかたで いちばん いい ものを えらんで ください。",
+      "promptVi": "Chọn câu dùng từ 'しょうかい' (giới thiệu người / đồ vật / văn hóa) đúng nhất.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "リーさんが じぶんの {国|くに}の たべものを [[しょうかい]]して くれました。",
+          "vi": "Bạn Lee đã giới thiệu món ăn nước mình cho tôi."
+        },
+        {
+          "label": "2",
+          "ja": "{学校|がっこう}に {来|こ}なかった {友|とも}だちに、しゅくだいを [[しょうかい]]して あげました。",
+          "vi": "Sai — báo bài tập cho bạn dùng おしえて / つたえて."
+        },
+        {
+          "label": "3",
+          "ja": "{先生|せんせい}に {毎日|まいにち} はつおんを [[しょうかい]]して もらって、じょうずに なりました。",
+          "vi": "Sai — được thầy dạy/sửa phát âm dùng おしえて / なおして."
+        },
+        {
+          "label": "4",
+          "ja": "もりさんに あしたの テストは ちゅうしだと [[しょうかい]]して ください。",
+          "vi": "Sai — nhắn tin báo hủy bài kiểm tra dùng つたえて."
+        }
+      ],
+      "correctIndex": 0,
+      "explanationVi": "紹介（しょうかい）= giới thiệu (người, món ăn, địa điểm hay) cho người chưa biết. Còn dạy kiến thức dùng 教える, truyền đạt tin nhắn dùng 伝える."
+    },
+    {
+      "id": "v28",
+      "sectionId": "v_m5",
+      "part": "vocab",
+      "kind": "usage",
+      "number": 28,
+      "headwordJa": "にる（似る）",
+      "promptJa": "つぎの ことばの つかいかたで いちばん いい ものを えらんで ください。",
+      "promptVi": "Chọn câu dùng động từ 'にる' (giống nhau về ngoại hình, giọng nói, tính cách) đúng nhất.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "{足|あし}に [[にて]] いない くつは とても あるきにくいです。",
+          "vi": "Sai — giày vừa chân dùng 足に合う（あう）."
+        },
+        {
+          "label": "2",
+          "ja": "わたしの いもうとは {母|はは}と こえが [[にて]] います。",
+          "vi": "Em gái tôi có giọng nói giống mẹ."
+        },
+        {
+          "label": "3",
+          "ja": "けっこんするなら、{年|とし}が [[にて]] いる ひとが いいです。",
+          "vi": "Sai — tuổi gần nhau dùng 年が近い（ちかい）."
+        },
+        {
+          "label": "4",
+          "ja": "まだ 9{月|がつ}ですが、{今日|きょう}は とても さむくて、ふゆに [[にて]] います。",
+          "vi": "Sai — giống như mùa đông dùng 冬のようです / 冬みたいです."
+        }
+      ],
+      "correctIndex": 1,
+      "explanationVi": "AとBは〜が似ている = A và B giống nhau về ngoại hình/giọng nói/tính cách (ví dụ: 母と声が似ている = giọng giống mẹ)!"
+    },
+    {
+      "id": "g1",
+      "sectionId": "g_m1",
+      "part": "grammar",
+      "kind": "cloze",
+      "number": 1,
+      "promptJa": "バターは ぎゅうにゅう（　）{作|つく}られます。",
+      "promptVi": "Bơ được làm từ sữa bò.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "が"
+        },
+        {
+          "label": "2",
+          "ja": "から"
+        },
+        {
+          "label": "3",
+          "ja": "に"
+        },
+        {
+          "label": "4",
+          "ja": "まで"
+        }
+      ],
+      "correctIndex": 1,
+      "explanationVi": "Nguyên liệu bị biến đổi tính chất/hình dạng (sữa → bơ, nho → rượu vang) dùng 「N + から + 作られる」! (Phân biệt với 「で」 khi còn thấy nguyên liệu như bàn gỗ, mứt dâu)."
+    },
+    {
+      "id": "g2",
+      "sectionId": "g_m1",
+      "part": "grammar",
+      "kind": "cloze",
+      "number": 2,
+      "promptJa": "A「きのう デパートへ {行|い}ったんです。」\nB「{何|なに}（　）いい ものが ありましたか。」\nA「ええ、きれいな {色|いろ}の スカートを {買|か}いました。」",
+      "promptVi": "A: Hôm qua tôi đi trung tâm thương mại đấy. — B: Có món gì hay không? — A: Có, tôi mua được chiếc váy màu đẹp lắm.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "か"
+        },
+        {
+          "label": "2",
+          "ja": "は"
+        },
+        {
+          "label": "3",
+          "ja": "も"
+        },
+        {
+          "label": "4",
+          "ja": "を"
+        }
+      ],
+      "correctIndex": 0,
+      "explanationVi": "何か（なにか）+ いいもの = thứ gì đó hay hay / đẹp đẹp (đại từ bất định đi kèm câu hỏi xác nhận)."
+    },
+    {
+      "id": "g3",
+      "sectionId": "g_m1",
+      "part": "grammar",
+      "kind": "cloze",
+      "number": 3,
+      "promptJa": "ねぼうして、やくそくの {時間|じかん}（　）{遅|おく}れて しまいました。",
+      "promptVi": "Ngủ quên nên tôi đã bị trễ giờ hẹn mất rồi.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "で"
+        },
+        {
+          "label": "2",
+          "ja": "と"
+        },
+        {
+          "label": "3",
+          "ja": "に"
+        },
+        {
+          "label": "4",
+          "ja": "が"
+        }
+      ],
+      "correctIndex": 2,
+      "explanationVi": "Cụm trợ từ cố định: 時間 / 授業 / 電車 + に + 遅れる（おくれる）= trễ giờ / trễ học / trễ tàu."
+    },
+    {
+      "id": "g4",
+      "sectionId": "g_m1",
+      "part": "grammar",
+      "kind": "cloze",
+      "number": 4,
+      "promptJa": "{漢字|かんじ}の じゅぎょうでは、いつも {漢字|かんじ}を 10こ（　）{教|おそ}わります。",
+      "promptVi": "Trong giờ học Kanji, lúc nào chúng tôi cũng được dạy mỗi lần 10 chữ Kanji.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "が"
+        },
+        {
+          "label": "2",
+          "ja": "に"
+        },
+        {
+          "label": "3",
+          "ja": "ずつ"
+        },
+        {
+          "label": "4",
+          "ja": "について"
+        }
+      ],
+      "correctIndex": 2,
+      "explanationVi": "Số lượng + ずつ = từng (bao nhiêu) một đều đặn mỗi lần → 10個ずつ = mỗi lần 10 chữ."
+    },
+    {
+      "id": "g5",
+      "sectionId": "g_m1",
+      "part": "grammar",
+      "kind": "cloze",
+      "number": 5,
+      "promptJa": "{私|わたし}は アイスクリームが {大好|だいす}きです。（　）いちごの アイスクリームが {好|す}きです。",
+      "promptVi": "Tôi rất thích kem. (Đặc biệt là) tôi thích kem dâu tây.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "とくに",
+          "vi": "đặc biệt là"
+        },
+        {
+          "label": "2",
+          "ja": "かならず",
+          "vi": "nhất định"
+        },
+        {
+          "label": "3",
+          "ja": "よく",
+          "vi": "thường xuyên"
+        },
+        {
+          "label": "4",
+          "ja": "だんだん",
+          "vi": "dần dần"
+        }
+      ],
+      "correctIndex": 0,
+      "explanationVi": "Thích kem nói chung → nhấn mạnh vị yêu thích nhất trong đó → 特に（とくに）= đặc biệt là."
+    },
+    {
+      "id": "g6",
+      "sectionId": "g_m1",
+      "part": "grammar",
+      "kind": "cloze",
+      "number": 6,
+      "promptJa": "この かばんは（　）し、{軽|かる}いから、{毎日|まいにち} {使|つか}って います。",
+      "promptVi": "Chiếc cặp này vừa (bền chắc), lại vừa nhẹ nên ngày nào tôi cũng dùng.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "じょうぶ"
+        },
+        {
+          "label": "2",
+          "ja": "じょうぶで"
+        },
+        {
+          "label": "3",
+          "ja": "じょうぶな"
+        },
+        {
+          "label": "4",
+          "ja": "じょうぶだ"
+        }
+      ],
+      "correctIndex": 3,
+      "explanationVi": "Quy tắc chia trước 「〜し」 (liệt kê lý do): Thể thông thường! Tính từ đuôi な phải giữ 「だ」 → 丈夫（じょうぶ）だし (bẫy rất nhiều bạn chọn じょうぶな!)."
+    },
+    {
+      "id": "g7",
+      "sectionId": "g_m1",
+      "part": "grammar",
+      "kind": "cloze",
+      "number": 7,
+      "promptJa": "{冷|つめ}たい {飲|の}み{物|もの}を（　）すぎて、おなかが {痛|いた}く なりました。",
+      "promptVi": "Vì uống quá nhiều đồ uống lạnh nên tôi bị đau bụng.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "{飲|の}み"
+        },
+        {
+          "label": "2",
+          "ja": "{飲|の}む"
+        },
+        {
+          "label": "3",
+          "ja": "{飲|の}んで"
+        },
+        {
+          "label": "4",
+          "ja": "{飲|の}んだ"
+        }
+      ],
+      "correctIndex": 0,
+      "explanationVi": "Mẫu N4: V(ます bỏ ます) + すぎる = làm gì quá mức → 飲みすぎる (uống quá nhiều)."
+    },
+    {
+      "id": "g8",
+      "sectionId": "g_m1",
+      "part": "grammar",
+      "kind": "cloze",
+      "number": 8,
+      "promptJa": "{今朝|けさ} さんぽ（　）に、かわいい ねこを {見|み}ました。",
+      "promptVi": "Sáng nay trong lúc đang đi dạo, tôi đã nhìn thấy một chú mèo dễ thương.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "とき"
+        },
+        {
+          "label": "2",
+          "ja": "ごろ"
+        },
+        {
+          "label": "3",
+          "ja": "{間|あいだ}"
+        },
+        {
+          "label": "4",
+          "ja": "{中|ちゅう}"
+        }
+      ],
+      "correctIndex": 3,
+      "explanationVi": "Danh động từ + 中（ちゅう）に = trong lúc đang làm gì (散歩中に = trong lúc đi dạo). Còn とき/間 cần trợ từ の (散歩のとき / 散歩の間)."
+    },
+    {
+      "id": "g9",
+      "sectionId": "g_m1",
+      "part": "grammar",
+      "kind": "cloze",
+      "number": 9,
+      "promptJa": "べんとうを {作|つく}った（　）、{家|いえ}に {忘|わす}れました。",
+      "promptVi": "(Mặc dù) đã làm cơm hộp rồi vậy mà tôi lại để quên ở nhà.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "ので"
+        },
+        {
+          "label": "2",
+          "ja": "のに"
+        },
+        {
+          "label": "3",
+          "ja": "か"
+        },
+        {
+          "label": "4",
+          "ja": "かどうか"
+        }
+      ],
+      "correctIndex": 1,
+      "explanationVi": "V(た) + のに = vậy mà / mặc dù đã... (thể hiện sự tiếc nuối, trái ngược với mong đợi!)."
+    },
+    {
+      "id": "g10",
+      "sectionId": "g_m1",
+      "part": "grammar",
+      "kind": "cloze",
+      "number": 10,
+      "promptJa": "{私|わたし}の {大学|だいがく}の としょかんは、15さつまで {本|ほん}が（　）。",
+      "promptVi": "Thư viện trường đại học tôi (có thể mượn) tối đa 15 cuốn sách.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "{借|か}ります"
+        },
+        {
+          "label": "2",
+          "ja": "{借|か}りるんです"
+        },
+        {
+          "label": "3",
+          "ja": "{借|か}りそうです"
+        },
+        {
+          "label": "4",
+          "ja": "{借|か}りられます"
+        }
+      ],
+      "correctIndex": 3,
+      "explanationVi": "Chủ thể đi với trợ từ 「本が」 (KHÔNG phải 本を) → cần thể KHẢ NĂNG! 借りる là động từ nhóm II → thể khả năng là 借りられます = có thể mượn."
+    },
+    {
+      "id": "g11",
+      "sectionId": "g_m1",
+      "part": "grammar",
+      "kind": "cloze",
+      "number": 11,
+      "promptJa": "{家|いえ}の {近|ちか}くで できる アルバイトを ずっと さがして いましたが、やっと（　）。{仕事|しごと}は あしたからです。",
+      "promptVi": "Tôi đã tìm mãi việc làm thêm gần nhà, và cuối cùng đã (tìm thấy rồi). Ngày mai bắt đầu đi làm.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "{見|み}つかります"
+        },
+        {
+          "label": "2",
+          "ja": "{見|み}つかりません"
+        },
+        {
+          "label": "3",
+          "ja": "{見|み}つかりました"
+        },
+        {
+          "label": "4",
+          "ja": "{見|み}つかりませんでした"
+        }
+      ],
+      "correctIndex": 2,
+      "explanationVi": "Từ khóa 「やっと」 (cuối cùng thì cũng) + câu sau 'ngày mai bắt đầu làm' → khẳng định quá khứ 見つかりました (đã tìm thấy rồi)!"
+    },
+    {
+      "id": "g12",
+      "sectionId": "g_m1",
+      "part": "grammar",
+      "kind": "cloze",
+      "number": 12,
+      "promptJa": "{大山|おおやま}「{中田|なかた}さん、{今日|きょう}の {野球|やきゅう}の {試合|しあい}は どちらが {勝|か}つと {思|おも}いますか。」\n{中田|なかた}「どちらも {強|つよ}いので、どちらが（　）ですね。」",
+      "promptVi": "Oyama: Anh Nakata nghĩ trận bóng chày hôm nay đội nào thắng? — Nakata: Cả hai đội đều mạnh nên đội nào (thắng cũng không có gì lạ) nhỉ.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "{勝|か}っても おかしくない"
+        },
+        {
+          "label": "2",
+          "ja": "{勝|か}たないと いけない"
+        },
+        {
+          "label": "3",
+          "ja": "{勝|か}たなくても いい"
+        },
+        {
+          "label": "4",
+          "ja": "{勝|か}ったほうが いい"
+        }
+      ],
+      "correctIndex": 0,
+      "explanationVi": "Cả 2 đội ngang tài ngang sức → 「V(ても)おかしくない」 = cho dù bên nào thắng cũng không có gì lạ!"
+    },
+    {
+      "id": "g13",
+      "sectionId": "g_m1",
+      "part": "grammar",
+      "kind": "cloze",
+      "number": 13,
+      "promptJa": "{父|ちち}の {仕事|しごと}の {都合|つごう}で、{来月|らいげつ} {東京|とうきょう}に（　）。",
+      "promptVi": "Vì lý do công việc của bố nên tháng sau nhà tôi (được quyết định sẽ chuyển nhà) lên Tokyo.",
+      "options": [
+        {
+          "label": "1",
+          "ja": "ひっこすことが できました"
+        },
+        {
+          "label": "2",
+          "ja": "ひっこすことに なりました"
+        },
+        {
+          "label": "3",
+          "ja": "ひっこしたところです"
+        },
+        {
+          "label": "4",
+          "ja": "ひっこして いるところです"
+        }
+      ],
+      "correctIndex": 1,
+      "explanationVi": "Mẫu N4 siêu chuẩn: 「V(る) + ことになりました」 = đã được quyết định (do yếu tố khách quan như công việc của bố — khác với ことにしました do bản thân tự quyết)!"
+    },
+    {
+      "id": "g14",
+      "sectionId": "g_m2",
+      "part": "grammar",
+      "kind": "star_order",
+      "number": 14,
+      "promptJa": "あした、{高校|こうこう} [[STAR_SLOTS]] に {会|あ}う {予定|よてい}です。",
+      "promptVi": "Ngày mai tôi dự định gặp tiền bối hồi cấp 3 vào lúc 10 giờ.",
+      "starSlotIndex": 2,
+      "starOrder": [
+        3,
+        0,
+        2,
+        1
+      ],
+      "options": [
+        {
+          "label": "1",
+          "ja": "せんぱい"
+        },
+        {
+          "label": "2",
+          "ja": "10{時|じ}"
+        },
+        {
+          "label": "3",
+          "ja": "と"
+        },
+        {
+          "label": "4",
+          "ja": "の"
+        }
+      ],
+      "correctIndex": 2,
+      "explanationVi": "Câu hoàn chỉnh: 「あした、高校 [4 の] [1 せんぱい] [★ 3 と] [2 10時] に 会う予定です。」 (せんぱいと会う = gặp tiền bối; 10時に = lúc 10 giờ)."
+    },
+    {
+      "id": "g15",
+      "sectionId": "g_m2",
+      "part": "grammar",
+      "kind": "star_order",
+      "number": 15,
+      "promptJa": "「これは、{日本|にほん}で 10{年間|ねんかん} {日本料理|にほんりょうり}を {勉強|べんきょう}した タイ{人|じん} [[STAR_SLOTS]] {本|ほん}です。」",
+      "promptVi": "'Đây là cuốn sách về ẩm thực Nhật được viết bởi một người Thái Lan đã học món Nhật 10 năm ở Nhật Bản.'",
+      "starSlotIndex": 2,
+      "starOrder": [
+        1,
+        3,
+        2,
+        0
+      ],
+      "options": [
+        {
+          "label": "1",
+          "ja": "の"
+        },
+        {
+          "label": "2",
+          "ja": "によって"
+        },
+        {
+          "label": "3",
+          "ja": "{日本料理|にほんりょうり}"
+        },
+        {
+          "label": "4",
+          "ja": "{書|か}かれた"
+        }
+      ],
+      "correctIndex": 2,
+      "explanationVi": "Câu hoàn chỉnh: 「タイ人 [2 によって] [4 書かれた] [★ 3 日本料理] [1 の] 本です。」 (Mẫu bị động tác phẩm sáng tác: Tác giả + によって + 書かれた)."
+    },
+    {
+      "id": "g16",
+      "sectionId": "g_m2",
+      "part": "grammar",
+      "kind": "star_order",
+      "number": 16,
+      "promptJa": "{私|わたし}は いつも コーヒーは [[STAR_SLOTS]] コーヒーも {飲|の}みたく なる。",
+      "promptVi": "Bình thường tôi hay uống cà phê không đường, nhưng thỉnh thoảng cũng muốn uống cà phê ngọt.",
+      "starSlotIndex": 2,
+      "starOrder": [
+        1,
+        3,
+        0,
+        2
+      ],
+      "options": [
+        {
+          "label": "1",
+          "ja": "ときどき"
+        },
+        {
+          "label": "2",
+          "ja": "さとうを {入|い}れないで"
+        },
+        {
+          "label": "3",
+          "ja": "あまい"
+        },
+        {
+          "label": "4",
+          "ja": "{飲|の}むが"
+        }
+      ],
+      "correctIndex": 0,
+      "explanationVi": "Câu hoàn chỉnh: 「いつも コーヒーは [2 さとうを入れないで] [4 飲むが] [★ 1 ときどき] [3 あまい] コーヒーも 飲みたくなる。」 (Aないで飲む = uống không cho đường; が = nhưng mà)."
+    },
+    {
+      "id": "g17",
+      "sectionId": "g_m2",
+      "part": "grammar",
+      "kind": "star_order",
+      "number": 17,
+      "promptJa": "（{会社|かいしゃ}で）\n{山下|やました}「{森|もり}さん、ちょっと そうだんしたいことが あるんですが、あした {時間|じかん}が ありますか。」\n{森|もり}「ええ。4{時|じ}まで [[STAR_SLOTS]] ですよ。」",
+      "promptVi": "Yamashita: Mori ơi, tôi có chút việc muốn bàn, ngày mai bạn có rảnh không? — Mori: Vâng, nếu trước 4 giờ thì lúc nào cũng được đấy ạ.",
+      "starSlotIndex": 2,
+      "starOrder": [
+        2,
+        3,
+        1,
+        0
+      ],
+      "options": [
+        {
+          "label": "1",
+          "ja": "だいじょうぶ"
+        },
+        {
+          "label": "2",
+          "ja": "でも"
+        },
+        {
+          "label": "3",
+          "ja": "だったら"
+        },
+        {
+          "label": "4",
+          "ja": "いつ"
+        }
+      ],
+      "correctIndex": 1,
+      "explanationVi": "Câu hoàn chỉnh: 「4時まで [3 だったら] [4 いつ] [★ 2 でも] [1 だいじょうぶ] ですよ。」 (〜だったら = nếu là...; いつでも = lúc nào cũng được!)."
+    },
+    {
+      "id": "g18",
+      "sectionId": "g_m3",
+      "part": "grammar",
+      "kind": "passage_cloze",
+      "number": 18,
+      "passageId": "g12_m3_juice",
+      "promptJa": "（18）に {入|はい}る ものは どれですか。",
+      "promptVi": "Chọn ngữ pháp đúng cho chỗ trống (18): 'Nghe nói bạn ấy ngày nào cũng làm nước ép rau rồi (uống).'",
+      "options": [
+        {
+          "label": "1",
+          "ja": "{飲|の}んで いるそうです"
+        },
+        {
+          "label": "2",
+          "ja": "{飲|の}みそうです"
+        },
+        {
+          "label": "3",
+          "ja": "{飲|の}んだと {思|おも}います"
+        },
+        {
+          "label": "4",
+          "ja": "{飲|の}もうと {思|おも}って います"
+        }
+      ],
+      "correctIndex": 0,
+      "explanationVi": "Truyền đạt thông tin nghe kể về thói quen hằng ngày (毎日) của người bạn → 「V(ている) + そうです」 (nghe nói là đang uống hằng ngày). Loại 2 (飲みそうです = trông sắp uống), loại 4 (ý định của chính mình)."
+    },
+    {
+      "id": "g19",
+      "sectionId": "g_m3",
+      "part": "grammar",
+      "kind": "passage_cloze",
+      "number": 19,
+      "passageId": "g12_m3_juice",
+      "promptJa": "（19）に {入|はい}る ものは どれですか。",
+      "promptVi": "Chọn ngữ pháp đúng cho chỗ trống (19): 'Thế nên tôi đã (nhờ bạn chỉ cho) cách làm.'",
+      "options": [
+        {
+          "label": "1",
+          "ja": "{聞|き}かれました"
+        },
+        {
+          "label": "2",
+          "ja": "{聞|き}かせました"
+        },
+        {
+          "label": "3",
+          "ja": "{教|おし}えて あげました"
+        },
+        {
+          "label": "4",
+          "ja": "{教|おし}えて もらいました"
+        }
+      ],
+      "correctIndex": 3,
+      "explanationVi": "Tác giả (私) được bạn (ともだちに) chỉ cho cách làm → 「ともだちに 作り方を 教えてもらいました」 (phù hợp với câu đầu bài: 作り方はともだちに習いました)."
+    },
+    {
+      "id": "g20",
+      "sectionId": "g_m3",
+      "part": "grammar",
+      "kind": "passage_cloze",
+      "number": 20,
+      "passageId": "g12_m3_juice",
+      "promptJa": "（20）に {入|はい}る ものは どれですか。",
+      "promptVi": "Chọn trợ từ đúng cho chỗ trống (20): 'Ban đầu tôi làm loại nước ép giống (với) bạn.'",
+      "options": [
+        {
+          "label": "1",
+          "ja": "は"
+        },
+        {
+          "label": "2",
+          "ja": "も"
+        },
+        {
+          "label": "3",
+          "ja": "と"
+        },
+        {
+          "label": "4",
+          "ja": "に"
+        }
+      ],
+      "correctIndex": 2,
+      "explanationVi": "Cấu trúc cố định N5–N4: 「A と 同じ（おなじ）」 = giống với A → ともだちと同じジュース."
+    },
+    {
+      "id": "g21",
+      "sectionId": "g_m3",
+      "part": "grammar",
+      "kind": "passage_cloze",
+      "number": 21,
+      "passageId": "g12_m3_juice",
+      "promptJa": "（21）に {入|はい}る ものは どれですか。",
+      "promptVi": "Chọn mẫu câu kết bài đúng cho chỗ trống (21): 'Vì làm rất đơn giản nên mọi người cũng (thử làm xem sao nhé)?'",
+      "options": [
+        {
+          "label": "1",
+          "ja": "{作|つく}っても いいですか"
+        },
+        {
+          "label": "2",
+          "ja": "{作|つく}って みませんか"
+        },
+        {
+          "label": "3",
+          "ja": "{作|つく}ることに なります"
+        },
+        {
+          "label": "4",
+          "ja": "{作|つく}るように なりました"
+        }
+      ],
+      "correctIndex": 1,
+      "explanationVi": "Bài phát biểu trước lớp (クラスのみんなの前で読みました), kết bài rủ mọi người cùng thử làm → 「みなさんも 作ってみませんか」 (mọi người cũng thử làm xem sao nhé)!"
+    }
+  ]
+}

@@ -3,9 +3,9 @@ export type StoryCategory = "jlpt" | "situation" | "story";
 export interface StoryCatalogEntry {
   id: string;
   category: StoryCategory;
-  kind?: "engine" | "standalone" | "jlpt-choukai" | "jlpt-dokkai";
+  kind?: "engine" | "standalone" | "jlpt-choukai" | "jlpt-dokkai" | "jlpt-gengo";
   href?: string;
-  thumbStyle?: "konbini" | "hachiko" | "jlpt" | "jlpt-dokkai" | "image";
+  thumbStyle?: "konbini" | "hachiko" | "jlpt" | "jlpt-dokkai" | "jlpt-gengo" | "image";
   thumbImage?: string;
   artBadge?: string;
   titleJa: string;

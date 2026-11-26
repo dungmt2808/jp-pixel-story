@@ -5,6 +5,7 @@ import { resolveAssetUrl } from "../utils/assetUrl";
 import { getSavedDictationCount } from "./DictationView";
 import { getSavedChoukaiScore } from "./JlptChoukaiView";
 import { getSavedDokkaiScore } from "./JlptDokkaiView";
+import { getSavedGengoScore } from "./JlptGengoView";
 
 interface StoryLibraryProps {
   stories: StoryCatalogEntry[];
@@ -12,6 +13,7 @@ interface StoryLibraryProps {
   onSelectDictation: (storyId: string) => void;
   onSelectChoukai: (examId: string) => void;
   onSelectDokkai: (examId: string) => void;
+  onSelectGengo: (examId: string) => void;
 }
 
 /** Cute 320x200 pixel-art thumbnail preview for Hachikō at Shibuya Station */
@@ -189,12 +191,69 @@ function drawDokkaiThumb(ctx: CanvasRenderingContext2D, title: string): void {
   ctx.fillText("問題4 + 問題6 · VOICEVOX & FILTER TABLE", VIRTUAL_W / 2, 75);
 }
 
+/** Crisp pixel-art JLPT Language Knowledge (Kanji & Grammar ★) thumbnail */
+function drawGengoThumb(ctx: CanvasRenderingContext2D, title: string): void {
+  const px = (x: number, y: number, w: number, h: number, c: string) => {
+    ctx.fillStyle = c;
+    ctx.fillRect(x, y, w, h);
+  };
+  // Deep plum-indigo backdrop
+  px(0, 0, VIRTUAL_W, VIRTUAL_H, "#1f1530");
+  px(0, 148, VIRTUAL_W, 52, "#2c1e45");
+  px(0, 148, VIRTUAL_W, 3, "#6d4aa3");
+  for (let gx = 16; gx < VIRTUAL_W; gx += 20) {
+    for (let gy = 20; gy < 142; gy += 18) {
+      px(gx, gy, 1, 1, "rgba(255, 216, 117, 0.2)");
+    }
+  }
+
+  // Left card: Kanji flashcard ("漢")
+  px(54, 88, 92, 84, "#100a1c");
+  px(58, 92, 84, 76, "#faf3e1");
+  px(58, 92, 84, 14, "#7c3fa6");
+  px(64, 97, 36, 4, "#ffd875");
+  ctx.font = 'bold 34px "DotGothic16", monospace';
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#26173d";
+  ctx.fillText("漢", 100, 144);
+  px(70, 154, 60, 4, "#c89d42");
+
+  // Right card: Grammar ★ slot puzzle card
+  px(160, 88, 108, 84, "#100a1c");
+  px(164, 92, 100, 76, "#faf3e1");
+  px(164, 92, 100, 14, "#2d6e63");
+  px(170, 97, 44, 4, "#ffffff");
+  // 4 grammar puzzle slots (3rd slot is gold ★!)
+  const slots = [172, 194, 216, 238];
+  slots.forEach((sx, si) => {
+    px(sx, 118, 18, 16, si === 2 ? "#ffd875" : "#d9d2c0");
+    px(sx, 134, 18, 3, si === 2 ? "#b5651d" : "#5a6275");
+  });
+  ctx.font = 'bold 12px "DotGothic16", monospace';
+  ctx.fillStyle = "#20142e";
+  ctx.fillText("★", 225, 130);
+  // Cloze text bars below
+  px(172, 145, 84, 4, "#5a6275");
+  px(172, 154, 62, 4, "#8a92a5");
+
+  // Crisp Japanese title
+  ctx.font = 'bold 15px "DotGothic16", monospace';
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#0e0817";
+  ctx.fillText(title, VIRTUAL_W / 2 + 2, 60);
+  ctx.fillStyle = "#ffd875";
+  ctx.fillText(title, VIRTUAL_W / 2, 58);
+  ctx.font = 'bold 10px "DotGothic16", monospace';
+  ctx.fillStyle = "#d9b3ff";
+  ctx.fillText("文字・語彙 (28) + 文法 (21) · 49 QUESTIONS", VIRTUAL_W / 2, 75);
+}
+
 function MiniPreviewCanvas({
   title,
   style,
 }: {
   title: string;
-  style?: "konbini" | "hachiko" | "jlpt" | "jlpt-dokkai";
+  style?: "konbini" | "hachiko" | "jlpt" | "jlpt-dokkai" | "jlpt-gengo";
 }) {
   const ref = useRef<HTMLCanvasElement | null>(null);
 
@@ -210,6 +269,8 @@ function MiniPreviewCanvas({
       drawJlptThumb(ctx, title);
     } else if (style === "jlpt-dokkai") {
       drawDokkaiThumb(ctx, title);
+    } else if (style === "jlpt-gengo") {
+      drawGengoThumb(ctx, title);
     } else {
       drawSkylineIntro(ctx, 1.2, title);
     }
@@ -252,6 +313,7 @@ export function StoryLibrary({
   onSelectDictation,
   onSelectChoukai,
   onSelectDokkai,
+  onSelectGengo,
 }: StoryLibraryProps) {
   const [filter, setFilter] = useState<"all" | StoryCategory>("all");
 
@@ -268,6 +330,10 @@ export function StoryLibrary({
     }
     if (item.kind === "jlpt-dokkai") {
       onSelectDokkai(item.id);
+      return;
+    }
+    if (item.kind === "jlpt-gengo") {
+      onSelectGengo(item.id);
       return;
     }
     if (item.kind === "standalone" && item.href) {
@@ -328,9 +394,11 @@ export function StoryLibrary({
           const cat = CATEGORY_META[item.category] ?? CATEGORY_META.story;
           const isChoukai = item.kind === "jlpt-choukai";
           const isDokkai = item.kind === "jlpt-dokkai";
+          const isGengo = item.kind === "jlpt-gengo";
           const dictDone = getSavedDictationCount(item.id);
           const choukaiDone = isChoukai ? getSavedChoukaiScore(item.id).answered : 0;
           const dokkaiDone = isDokkai ? getSavedDokkaiScore(item.id).answered : 0;
+          const gengoDone = isGengo ? getSavedGengoScore(item.id).answered : 0;
           return (
             <article key={item.id} className="story-card">
               <div
@@ -353,7 +421,9 @@ export function StoryLibrary({
                           ? "jlpt"
                           : item.thumbStyle === "jlpt-dokkai"
                             ? "jlpt-dokkai"
-                            : "konbini"
+                            : item.thumbStyle === "jlpt-gengo"
+                              ? "jlpt-gengo"
+                              : "konbini"
                     }
                   />
                 )}
@@ -402,6 +472,18 @@ export function StoryLibrary({
                       {dictDone > 0 && (
                         <span style={{ color: "#46b89d", fontWeight: 700 }}>
                           ⌨️ Đã chép {dictDone} câu
+                        </span>
+                      )}
+                    </>
+                  ) : isGengo ? (
+                    <>
+                      <span>漢 28 câu Từ vựng</span>
+                      <span>🧩 21 câu Ngữ pháp</span>
+                      <span>★ Ghép câu tương tác</span>
+                      <span>📝 Đục lỗ đoạn văn</span>
+                      {gengoDone > 0 && (
+                        <span style={{ color: "#46b89d", fontWeight: 700 }}>
+                          ✅ Đã làm {gengoDone}/{item.questionCount ?? 49}
                         </span>
                       )}
                     </>
@@ -456,6 +538,14 @@ export function StoryLibrary({
                         ⌨️ Nghe chép
                       </button>
                     </>
+                  ) : isGengo ? (
+                    <button
+                      type="button"
+                      className="pixel-btn pixel-btn-purple"
+                      onClick={() => onSelectGengo(item.id)}
+                    >
+                      📝 Luyện Từ vựng &amp; Ngữ pháp (49 câu)
+                    </button>
                   ) : (
                     <>
                       <button

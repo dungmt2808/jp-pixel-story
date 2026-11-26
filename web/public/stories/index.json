@@ -1,6 +1,22 @@
 {
   "stories": [
     {
+      "id": "jlpt-n4-2025-12-gengo",
+      "category": "jlpt",
+      "kind": "jlpt-gengo",
+      "thumbStyle": "jlpt-gengo",
+      "artBadge": "漢 TỪ VỰNG & NGỮ PHÁP",
+      "titleJa": "JLPT N4 文字・語彙・文法 (12/2025)",
+      "titleVi": "Đề Từ vựng & Ngữ pháp thật JLPT N4 — Kỳ 12/2025 (Đủ 49 câu)",
+      "level": "JLPT N4 · 12/2025",
+      "description": "Trọn bộ 28 câu 文字・語彙 (問題1–5) + 21 câu 文法 (問題1–3) đề thật 12/2025: ẩn Furigana chống lộ đáp án câu Kanji, nháp ghép 4 mảnh câu ★, đoạn văn đục lỗ bấm điền trực tiếp + giải thích bẫy từng câu.",
+      "sceneCount": 8,
+      "vocabCount": 28,
+      "grammarCount": 21,
+      "questionCount": 49,
+      "theme": "jlpt_exam"
+    },
+    {
       "id": "jlpt-n4-2025-12-choukai",
       "category": "jlpt",
       "kind": "jlpt-choukai",
@@ -46,6 +62,22 @@
       "vocabCount": 21,
       "grammarCount": 8,
       "questionCount": 5,
+      "theme": "jlpt_exam"
+    },
+    {
+      "id": "jlpt-n4-2025-07-gengo",
+      "category": "jlpt",
+      "kind": "jlpt-gengo",
+      "thumbStyle": "jlpt-gengo",
+      "artBadge": "漢 TỪ VỰNG & NGỮ PHÁP",
+      "titleJa": "JLPT N4 文字・語彙・文法 (07/2025)",
+      "titleVi": "Đề Từ vựng & Ngữ pháp thật JLPT N4 — Kỳ 07/2025 (Đủ 49 câu)",
+      "level": "JLPT N4 · 07/2025",
+      "description": "Trọn bộ 28 câu 文字・語彙 (問題1–5) + 21 câu 文法 (問題1–3) đề thật 07/2025: ẩn Furigana chống lộ đáp án câu Kanji, nháp ghép 4 mảnh câu ★, đoạn văn đục lỗ bấm điền trực tiếp + giải thích bẫy từng câu.",
+      "sceneCount": 8,
+      "vocabCount": 28,
+      "grammarCount": 21,
+      "questionCount": 49,
       "theme": "jlpt_exam"
     },
     {

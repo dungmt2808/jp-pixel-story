@@ -8,7 +8,9 @@ import { RubyText } from "./RubyText";
 interface ReadingViewProps {
   story: StoryData;
   showFurigana: boolean;
+  showVi: boolean;
   onToggleFurigana: () => void;
+  onToggleVi: () => void;
   onBackToStory: () => void;
   onOpenLibrary: () => void;
   onOpenDictation: () => void;
@@ -17,7 +19,9 @@ interface ReadingViewProps {
 export function ReadingView({
   story,
   showFurigana,
+  showVi,
   onToggleFurigana,
+  onToggleVi,
   onBackToStory,
   onOpenLibrary,
   onOpenDictation,
@@ -88,13 +92,22 @@ export function ReadingView({
           {story.titleJa} · {story.level}
         </div>
 
-        <button
-          type="button"
-          className={`pixel-icon-btn ${showFurigana ? "active" : ""}`}
-          onClick={onToggleFurigana}
-        >
-          ふりがな {showFurigana ? "ON" : "OFF"}
-        </button>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <button
+            type="button"
+            className={`pixel-icon-btn ${showFurigana ? "active" : ""}`}
+            onClick={onToggleFurigana}
+          >
+            ふりがな {showFurigana ? "ON" : "OFF"}
+          </button>
+          <button
+            type="button"
+            className={`pixel-icon-btn ${showVi ? "active" : ""}`}
+            onClick={onToggleVi}
+          >
+            🇻🇳 Dịch {showVi ? "ON" : "OFF"}
+          </button>
+        </div>
       </div>
 
       <div className="reading-grid">
@@ -137,7 +150,7 @@ export function ReadingView({
                     showFurigana={showFurigana}
                   />
                 </div>
-                <div className="sentence-vi">{sent.vi}</div>
+                {showVi && <div className="sentence-vi">{sent.vi}</div>}
                 <span className="sentence-play-hint">
                   ▶ Nghe giọng VOICEVOX ({sent.durationSec?.toFixed(1) ?? "—"}s)
                 </span>
@@ -169,7 +182,9 @@ export function ReadingView({
                         showFurigana={showFurigana}
                       />
                     </div>
-                    <div className="quiz-q-vi">{q.questionVi}</div>
+                    {(showVi || picked !== undefined) && (
+                      <div className="quiz-q-vi">{q.questionVi}</div>
+                    )}
                     <div className="quiz-opts">
                       {q.options.map((opt, oIdx) => {
                         const chosen = picked === oIdx;
