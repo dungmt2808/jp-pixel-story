@@ -2963,6 +2963,8 @@ rt {
 
 .rd-ch-head { border-bottom: 2px dashed var(--rd-line); padding-bottom: 12px; margin-bottom: 18px; }
 .rd-ch-label {
+  display: block;
+  margin-bottom: 4px;
   font-family: var(--font-mono);
   font-weight: 800;
   font-size: 12px;
