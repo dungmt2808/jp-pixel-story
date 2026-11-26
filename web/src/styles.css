@@ -1359,3 +1359,281 @@ rt {
   padding: 2px 7px;
   border: 1px solid #241712;
 }
+
+.cat-jlpt {
+  background: #e09f3e !important;
+  color: #101322 !important;
+}
+
+/* ==================== JLPT CHOUKAI EXAM VIEW ==================== */
+.choukai-section-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.choukai-score-pill {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--accent-amber);
+  background: #17203d;
+  border: 1px solid #35477d;
+  padding: 4px 10px;
+}
+
+.dict-dot.wrong {
+  background: #8c2d3b;
+  color: #fff;
+  border-color: #d96b7c;
+}
+
+.choukai-q-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.choukai-sec-badge {
+  display: inline-block;
+  font-family: var(--font-jp);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent-amber);
+}
+
+.choukai-sec-sub {
+  font-size: 13px;
+  color: #9db0d9;
+  margin-top: 3px;
+}
+
+.choukai-nav-mini {
+  display: flex;
+  gap: 8px;
+}
+
+.choukai-player {
+  background: #0d1224;
+  border: 2px solid #2c3860;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.choukai-timeline-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.choukai-time {
+  font-family: var(--font-jp);
+  font-size: 12px;
+  color: #9db0d9;
+  min-width: 38px;
+}
+
+.choukai-timeline {
+  flex: 1;
+  height: 10px;
+  background: #1c2647;
+  border: 1px solid #3c4e85;
+  cursor: pointer;
+  position: relative;
+}
+
+.choukai-timeline-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-mint), var(--accent-amber));
+  transition: width 0.1s linear;
+}
+
+.choukai-pic-frame {
+  background: #f8f4ea;
+  border: 3px solid #2b3556;
+  padding: 10px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.choukai-pic-img {
+  max-width: min(100%, 540px);
+  max-height: 390px;
+  width: auto;
+  height: auto;
+  display: block;
+}
+
+.choukai-prompt-box {
+  background: #161d36;
+  border-left: 4px solid var(--accent-amber);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.choukai-prompt-ja {
+  font-family: var(--font-jp);
+  font-size: 17px;
+  line-height: 1.85;
+  color: #ffffff;
+}
+
+.choukai-prompt-vi {
+  font-size: 13px;
+  color: #b7c4e0;
+  margin-top: 4px;
+}
+
+.choukai-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.choukai-opt-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+  background: #18203a;
+  color: #f5f1e6;
+  border: 2px solid #3d4d7e;
+  padding: 11px 14px;
+  cursor: pointer;
+  transition: transform 0.08s ease, border-color 0.12s ease, background 0.12s ease;
+}
+
+.choukai-opt-btn:hover {
+  border-color: var(--accent-amber);
+  background: #222e52;
+  transform: translateY(-1px);
+}
+
+.choukai-opt-btn.ok {
+  background: #174038;
+  border-color: var(--accent-mint);
+}
+
+.choukai-opt-btn.no {
+  background: #471c26;
+  border-color: #e06c7f;
+}
+
+.choukai-opt-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  background: #0d1224;
+  border: 2px solid #f5f1e6;
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent-amber);
+}
+
+.choukai-opt-content {
+  flex: 1;
+}
+
+.choukai-opt-ja {
+  font-family: var(--font-jp);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.choukai-opt-hidden {
+  font-size: 13px;
+  color: #9bb0db;
+  padding-top: 4px;
+}
+
+.choukai-opt-vi {
+  font-size: 12px;
+  color: #c7d4ee;
+  margin-top: 4px;
+}
+
+.choukai-clue-text {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #f5f1e6;
+  margin-top: 6px;
+}
+
+.choukai-script-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.choukai-script-box {
+  margin-top: 14px;
+  padding: 16px 18px;
+  background: #f6f2e9;
+  color: #1e2130;
+  border: 2px solid #d4cbb8;
+}
+
+.choukai-script-line {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 8px 0;
+  border-bottom: 1px dashed #d6ccba;
+}
+
+.choukai-script-line:last-of-type {
+  border-bottom: none;
+}
+
+.choukai-speaker-pill {
+  font-family: var(--font-jp);
+  font-size: 12px;
+  font-weight: 700;
+  background: #232d4f;
+  color: var(--accent-amber);
+  padding: 3px 8px;
+  min-width: 58px;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.choukai-script-body {
+  flex: 1;
+}
+
+.choukai-script-ja {
+  font-family: var(--font-jp);
+  font-size: 16px;
+  line-height: 1.85;
+  color: #151826;
+}
+
+.choukai-script-ja rt {
+  color: #7c42a6;
+}
+
+.choukai-script-vi {
+  font-size: 13px;
+  color: #554f44;
+  margin-top: 2px;
+}
+
+.choukai-script-box .choukai-clue-text {
+  color: #252b40;
+  background: #ebe2ce;
+  padding: 8px 12px;
+  border-left: 3px solid #7c42a6;
+}

@@ -55,7 +55,12 @@ export type SceneType =
   | "tsuru_visitor_promise"
   | "tsuru_weaving_choice"
   | "tsuru_slide_fusuma"
-  | "tsuru_farewell_sky";
+  | "tsuru_farewell_sky"
+  | "depato_intro"
+  | "depato_counter_clue"
+  | "depato_step_rain"
+  | "depato_campus_reveal"
+  | "depato_outro";
 
 export interface StoryArtAssets {
   backgrounds: Record<string, string>;

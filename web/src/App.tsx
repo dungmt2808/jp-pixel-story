@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { retroAudio } from "./audio/chiptune";
+import { DepatoStage } from "./components/DepatoStage";
 import { DictationView } from "./components/DictationView";
 import { HybridStage } from "./components/HybridStage";
+import { JlptChoukaiView } from "./components/JlptChoukaiView";
 import { PixelStage } from "./components/PixelStage";
 import { ReadingView } from "./components/ReadingView";
 import { StoryLibrary } from "./components/StoryLibrary";
 import { TsuruStage } from "./components/TsuruStage";
 import type { StoryCatalog, StoryCatalogEntry } from "./types/catalog";
+import type { ChoukaiExamData } from "./types/choukai";
 import type { DictationItem, DictationPack } from "./types/dictation";
 import type { StoryData } from "./types/story";
 import { resolveAssetUrl } from "./utils/assetUrl";
@@ -66,23 +69,26 @@ export function App() {
   const initialStoryId = initialParams.get("story");
   const initialAutoplay = initialParams.get("autoplay") === "true";
   const initialModeParam = initialParams.get("mode");
-  const initialMode: "stage" | "reading" | "dictation" =
-    initialModeParam === "dictation"
-      ? "dictation"
-      : initialModeParam === "reading"
-        ? "reading"
-        : "stage";
+  const initialMode: "stage" | "reading" | "dictation" | "choukai" =
+    initialModeParam === "choukai"
+      ? "choukai"
+      : initialModeParam === "dictation"
+        ? "dictation"
+        : initialModeParam === "reading"
+          ? "reading"
+          : "stage";
 
   const [catalog, setCatalog] = useState<StoryCatalogEntry[]>([]);
   const [selectedStoryId, setSelectedStoryId] = useState<string | null>(
     initialStoryId
   );
   const [autoplay, setAutoplay] = useState<boolean>(initialAutoplay);
-  const [mode, setMode] = useState<"stage" | "reading" | "dictation">(
+  const [mode, setMode] = useState<"stage" | "reading" | "dictation" | "choukai">(
     initialMode
   );
   const [story, setStory] = useState<StoryData | null>(null);
   const [dictationPack, setDictationPack] = useState<DictationPack | null>(null);
+  const [choukaiExam, setChoukaiExam] = useState<ChoukaiExamData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showFurigana, setShowFurigana] = useState(true);
   const [muted, setMuted] = useState(false);
@@ -126,6 +132,7 @@ export function App() {
     if (!selectedStoryId) {
       setStory(null);
       setDictationPack(null);
+      setChoukaiExam(null);
       setError(null);
       retroAudio.stopBgm();
       return;
@@ -135,6 +142,28 @@ export function App() {
     setError(null);
 
     const loadData = async () => {
+      if (mode === "choukai" || selectedStoryId.endsWith("-choukai")) {
+        setChoukaiExam(null);
+        try {
+          const cRes = await fetch(
+            resolveAssetUrl(`stories/${selectedStoryId}/choukai.json`)
+          );
+          if (!cRes.ok) {
+            throw new Error(`Không tìm thấy đề nghe JLPT "${selectedStoryId}"`);
+          }
+          const cData = (await cRes.json()) as ChoukaiExamData;
+          if (!cancelled) {
+            setChoukaiExam(cData);
+            if (mode !== "choukai") setMode("choukai");
+          }
+        } catch (err: unknown) {
+          if (!cancelled) {
+            setError(err instanceof Error ? err.message : String(err));
+          }
+        }
+        return;
+      }
+
       if (mode === "dictation") {
         setDictationPack(null);
         // 1. Prefer dedicated dictation.json (used by standalone stories like Hachiko)
@@ -205,7 +234,15 @@ export function App() {
       setSelectedStoryId(p.get("story"));
       setAutoplay(p.get("autoplay") === "true");
       const m = p.get("mode");
-      setMode(m === "dictation" ? "dictation" : m === "reading" ? "reading" : "stage");
+      setMode(
+        m === "choukai"
+          ? "choukai"
+          : m === "dictation"
+            ? "dictation"
+            : m === "reading"
+              ? "reading"
+              : "stage"
+      );
     };
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
@@ -213,7 +250,7 @@ export function App() {
 
   const updateUrl = (
     storyId: string | null,
-    nextMode: "stage" | "reading" | "dictation",
+    nextMode: "stage" | "reading" | "dictation" | "choukai",
     isAutoplay = false
   ) => {
     const url = new URL(window.location.href);
@@ -222,7 +259,7 @@ export function App() {
     } else {
       url.searchParams.delete("story");
     }
-    if (nextMode === "dictation" || nextMode === "reading") {
+    if (nextMode === "dictation" || nextMode === "reading" || nextMode === "choukai") {
       url.searchParams.set("mode", nextMode);
     } else {
       url.searchParams.delete("mode");
@@ -250,6 +287,14 @@ export function App() {
     setSelectedStoryId(storyId);
   }, []);
 
+  const handleOpenChoukai = useCallback((examId: string) => {
+    retroAudio.stopBgm();
+    updateUrl(examId, "choukai", false);
+    setAutoplay(false);
+    setMode("choukai");
+    setSelectedStoryId(examId);
+  }, []);
+
   const handleOpenLibrary = useCallback(() => {
     retroAudio.stopBgm();
     updateUrl(null, "stage", false);
@@ -265,6 +310,7 @@ export function App() {
           stories={catalog}
           onSelectStory={handleSelectStory}
           onSelectDictation={handleOpenDictation}
+          onSelectChoukai={handleOpenChoukai}
         />
       </div>
     );
@@ -285,6 +331,28 @@ export function App() {
             </button>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  if (mode === "choukai") {
+    if (!choukaiExam) {
+      return (
+        <div className="app-shell">
+          <div className="subtitle-box">
+            <div className="subtitle-ja">読み込み中... (Đang tải đề luyện nghe JLPT...)</div>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="app-shell">
+        <JlptChoukaiView
+          exam={choukaiExam}
+          showFurigana={showFurigana}
+          onToggleFurigana={() => setShowFurigana((v) => !v)}
+          onOpenLibrary={handleOpenLibrary}
+        />
       </div>
     );
   }
@@ -386,6 +454,19 @@ export function App() {
 
           {story.id === "tsuru-ongaeshi" ? (
             <TsuruStage
+              key={`${story.id}-${autoplay ? "auto" : "play"}`}
+              story={story}
+              showFurigana={showFurigana}
+              muted={muted}
+              autoplay={autoplay}
+              onOpenReading={() => {
+                updateUrl(story.id, "reading", false);
+                setMode("reading");
+              }}
+              onOpenDictation={() => handleOpenDictation(story.id)}
+            />
+          ) : story.scenes[0]?.type.startsWith("depato_") ? (
+            <DepatoStage
               key={`${story.id}-${autoplay ? "auto" : "play"}`}
               story={story}
               showFurigana={showFurigana}

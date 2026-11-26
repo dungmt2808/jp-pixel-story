@@ -1,6 +1,38 @@
 {
   "stories": [
     {
+      "id": "jlpt-n4-2025-07-choukai",
+      "category": "jlpt",
+      "kind": "jlpt-choukai",
+      "thumbStyle": "jlpt",
+      "artBadge": "🎙️ MP3 THI THẬT",
+      "titleJa": "JLPT N4 聴解 (07/2025)",
+      "titleVi": "Đề Nghe hiểu thật JLPT N4 — Kỳ tháng 07/2025 (Đủ 28 câu)",
+      "level": "JLPT N4 · 07/2025",
+      "description": "Cắt trực tiếp từ MP3 gốc phòng thi JLPT N4 07/2025 (問題1–4, 28 câu), ảnh đề thi đã xóa watermark sạch nét, 2 chế độ Thi thử & Học sâu kèm Script ふりがな + giải thích bẫy từng câu.",
+      "sceneCount": 4,
+      "vocabCount": 28,
+      "questionCount": 28,
+      "theme": "jlpt_exam"
+    },
+    {
+      "id": "jlpt-n4-2025-07-rain-bgm",
+      "category": "jlpt",
+      "kind": "engine",
+      "thumbStyle": "image",
+      "thumbImage": "stories/jlpt-n4-2025-07-rain-bgm/assets/bg_rain.png",
+      "artBadge": "📖 ĐỌC HIỂU 07/2025",
+      "titleJa": "デパートの雨の音楽",
+      "titleVi": "JLPT N4 07/2025 (問題5) · Bí mật bản nhạc trời mưa ở siêu thị",
+      "level": "JLPT N4 · 07/2025",
+      "description": "Chuyển thể từ bài đọc trung văn thật JLPT N4 07/2025 (問題5): đổi nhạc nền trực tiếp ☀️ Nhạc nắng ↔ ☔ Nhạc báo mưa, kiểm tra manh mối, nguyên văn bài đọc + đủ 3 câu hỏi thi thật (Câu 25–27) + Daily Dictation.",
+      "sceneCount": 5,
+      "vocabCount": 7,
+      "grammarCount": 5,
+      "quizCount": 3,
+      "theme": "ramen_midnight"
+    },
+    {
       "id": "tsuru-ongaeshi",
       "category": "story",
       "kind": "engine",

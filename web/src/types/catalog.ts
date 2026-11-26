@@ -1,11 +1,11 @@
-export type StoryCategory = "situation" | "story";
+export type StoryCategory = "jlpt" | "situation" | "story";
 
 export interface StoryCatalogEntry {
   id: string;
   category: StoryCategory;
-  kind?: "engine" | "standalone";
+  kind?: "engine" | "standalone" | "jlpt-choukai";
   href?: string;
-  thumbStyle?: "konbini" | "hachiko" | "image";
+  thumbStyle?: "konbini" | "hachiko" | "jlpt" | "image";
   thumbImage?: string;
   artBadge?: string;
   titleJa: string;
@@ -16,6 +16,7 @@ export interface StoryCatalogEntry {
   vocabCount: number;
   grammarCount?: number;
   quizCount?: number;
+  questionCount?: number;
   theme?: string;
 }
 

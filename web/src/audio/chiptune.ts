@@ -11,6 +11,7 @@ class RetroAudioEngine {
   private step = 0;
   private muted = false;
   private ducked = false;
+  private bgmTheme: "default" | "depato_sunny" | "depato_rain" = "default";
 
   // Gentle nostalgic pentatonic midnight Tokyo melody (Hz)
   private readonly melody: (number | null)[] = [
@@ -25,6 +26,36 @@ class RetroAudioEngine {
     174.61, null, null, null, 130.81, null, null, null,
     146.83, null, null, null, 196.0, null, null, null,
     174.61, null, 196.0, null, 130.81, null, null, null,
+  ];
+
+  // Bright, cheerful Japanese department store shopping melody (F Major waltz-chime)
+  private readonly depatoSunnyMelody: (number | null)[] = [
+    698.46, null, 880.0, 1046.5, 880.0, null, 783.99, null,
+    698.46, 783.99, 880.0, null, 659.25, null, null, null,
+    587.33, null, 698.46, 880.0, 783.99, null, 698.46, null,
+    659.25, 783.99, 1046.5, null, 698.46, null, null, null,
+  ];
+
+  private readonly depatoSunnyBass: (number | null)[] = [
+    174.61, null, null, null, 261.63, null, null, null,
+    233.08, null, null, null, 261.63, null, null, null,
+    146.83, null, null, null, 220.0, null, null, null,
+    196.0, null, 261.63, null, 174.61, null, null, null,
+  ];
+
+  // Special "Rain Signal" melody played by Japanese department stores (soft melancholic raindrop motif)
+  private readonly depatoRainMelody: (number | null)[] = [
+    659.25, null, 587.33, null, 523.25, null, 493.88, null,
+    440.0, null, 523.25, null, 659.25, null, null, null,
+    587.33, null, 523.25, null, 493.88, null, 440.0, null,
+    392.0, null, 440.0, 493.88, 440.0, null, null, null,
+  ];
+
+  private readonly depatoRainBass: (number | null)[] = [
+    110.0, null, null, null, 164.81, null, null, null,
+    130.81, null, null, null, 164.81, null, null, null,
+    146.83, null, null, null, 196.0, null, null, null,
+    130.81, null, 164.81, null, 110.0, null, null, null,
   ];
 
   private ensureContext(): AudioContext | null {
@@ -73,24 +104,49 @@ class RetroAudioEngine {
     }
   }
 
-  public startBgm(): void {
+  public setBgmTheme(theme: "default" | "depato_sunny" | "depato_rain"): void {
+    this.bgmTheme = theme;
+    this.step = 0;
+  }
+
+  public startBgm(theme?: "default" | "depato_sunny" | "depato_rain"): void {
+    if (theme) this.bgmTheme = theme;
     const ctx = this.ensureContext();
     if (!ctx || this.bgmTimer !== null) return;
 
     this.bgmTimer = window.setInterval(() => {
       if (!this.ctx || !this.bgmGain || this.muted) return;
       const now = this.ctx.currentTime;
-      const mFreq = this.melody[this.step % this.melody.length];
-      const bFreq = this.bass[this.step % this.bass.length];
+      const mel =
+        this.bgmTheme === "depato_sunny"
+          ? this.depatoSunnyMelody
+          : this.bgmTheme === "depato_rain"
+            ? this.depatoRainMelody
+            : this.melody;
+      const bas =
+        this.bgmTheme === "depato_sunny"
+          ? this.depatoSunnyBass
+          : this.bgmTheme === "depato_rain"
+            ? this.depatoRainBass
+            : this.bass;
+      const mFreq = mel[this.step % mel.length];
+      const bFreq = bas[this.step % bas.length];
       this.step += 1;
 
       if (mFreq) {
-        this.playTone(mFreq, 0.22, "square", 0.18, this.bgmGain, now);
+        const wave: OscillatorType =
+          this.bgmTheme === "depato_rain"
+            ? "sine"
+            : this.bgmTheme === "depato_sunny"
+              ? "triangle"
+              : "square";
+        const vol = this.bgmTheme === "depato_rain" ? 0.24 : 0.2;
+        this.playTone(mFreq, 0.26, wave, vol, this.bgmGain, now);
       }
       if (bFreq) {
-        this.playTone(bFreq, 0.36, "triangle", 0.35, this.bgmGain, now);
+        this.playTone(bFreq, 0.38, "triangle", 0.32, this.bgmGain, now);
       }
-    }, 290);
+    }, 280);
   }
 
   public stopBgm(): void {
@@ -98,6 +154,7 @@ class RetroAudioEngine {
       window.clearInterval(this.bgmTimer);
       this.bgmTimer = null;
     }
+    this.bgmTheme = "default";
   }
 
   private playTone(

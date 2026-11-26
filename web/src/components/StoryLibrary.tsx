@@ -3,11 +3,13 @@ import { drawSkylineIntro, VIRTUAL_H, VIRTUAL_W } from "../engine/pixelRenderer"
 import type { StoryCatalogEntry, StoryCategory } from "../types/catalog";
 import { resolveAssetUrl } from "../utils/assetUrl";
 import { getSavedDictationCount } from "./DictationView";
+import { getSavedChoukaiScore } from "./JlptChoukaiView";
 
 interface StoryLibraryProps {
   stories: StoryCatalogEntry[];
   onSelectStory: (storyId: string, autoplay: boolean) => void;
   onSelectDictation: (storyId: string) => void;
+  onSelectChoukai: (examId: string) => void;
 }
 
 /** Cute 320x200 pixel-art thumbnail preview for Hachikō at Shibuya Station */
@@ -76,12 +78,58 @@ function drawHachikoThumb(ctx: CanvasRenderingContext2D, title: string): void {
   ctx.fillText(title, VIRTUAL_W / 2, 54);
 }
 
+/** Crisp pixel-art retro cassette & JLPT exam audio room thumbnail */
+function drawJlptThumb(ctx: CanvasRenderingContext2D, title: string): void {
+  const px = (x: number, y: number, w: number, h: number, c: string) => {
+    ctx.fillStyle = c;
+    ctx.fillRect(x, y, w, h);
+  };
+  // Deep indigo exam-room backdrop
+  px(0, 0, VIRTUAL_W, VIRTUAL_H, "#131932");
+  px(0, 140, VIRTUAL_W, 60, "#1d274a");
+  px(0, 140, VIRTUAL_W, 3, "#3b4c80");
+  // Subtle grid dots
+  for (let gx = 16; gx < VIRTUAL_W; gx += 20) {
+    for (let gy = 20; gy < 135; gy += 18) {
+      px(gx, gy, 1, 1, "rgba(154, 178, 232, 0.2)");
+    }
+  }
+  // Retro JLPT Cassette / Audio Deck on center-bottom
+  px(74, 88, 172, 74, "#0d1122");
+  px(78, 92, 164, 66, "#28355e");
+  px(82, 96, 156, 22, "#f5f1e6");
+  // Cassette label stripe
+  px(82, 113, 156, 5, "#46b89d");
+  // Animated-look equalizer bars inside cassette window
+  px(108, 124, 104, 24, "#101426");
+  const bars = [10, 16, 12, 20, 14, 18, 9, 15, 20, 11, 16, 8];
+  bars.forEach((bh, i) => {
+    px(116 + i * 7, 146 - bh, 4, bh, i % 2 === 0 ? "#ffd875" : "#46b89d");
+  });
+  // Tape reels
+  px(86, 127, 16, 16, "#141a30");
+  px(90, 131, 8, 8, "#ffd875");
+  px(218, 127, 16, 16, "#141a30");
+  px(222, 131, 8, 8, "#ffd875");
+
+  // Crisp Japanese title
+  ctx.font = 'bold 16px "DotGothic16", monospace';
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#0b0e1a";
+  ctx.fillText(title, VIRTUAL_W / 2 + 2, 62);
+  ctx.fillStyle = "#ffd875";
+  ctx.fillText(title, VIRTUAL_W / 2, 60);
+  ctx.font = 'bold 10px "DotGothic16", monospace';
+  ctx.fillStyle = "#8ad4ff";
+  ctx.fillText("ORIGINAL AUDIO · 28 QUESTIONS", VIRTUAL_W / 2, 77);
+}
+
 function MiniPreviewCanvas({
   title,
   style,
 }: {
   title: string;
-  style?: "konbini" | "hachiko";
+  style?: "konbini" | "hachiko" | "jlpt";
 }) {
   const ref = useRef<HTMLCanvasElement | null>(null);
 
@@ -93,6 +141,8 @@ function MiniPreviewCanvas({
     ctx.imageSmoothingEnabled = false;
     if (style === "hachiko") {
       drawHachikoThumb(ctx, title);
+    } else if (style === "jlpt") {
+      drawJlptThumb(ctx, title);
     } else {
       drawSkylineIntro(ctx, 1.2, title);
     }
@@ -112,6 +162,11 @@ const CATEGORY_META: Record<
   StoryCategory,
   { label: string; icon: string; badgeClass: string }
 > = {
+  jlpt: {
+    label: "Đề thi JLPT",
+    icon: "📝",
+    badgeClass: "cat-jlpt",
+  },
   situation: {
     label: "Tình huống",
     icon: "💬",
@@ -128,15 +183,21 @@ export function StoryLibrary({
   stories,
   onSelectStory,
   onSelectDictation,
+  onSelectChoukai,
 }: StoryLibraryProps) {
   const [filter, setFilter] = useState<"all" | StoryCategory>("all");
 
+  const jlptCount = stories.filter((s) => s.category === "jlpt").length;
   const situationCount = stories.filter((s) => s.category === "situation").length;
   const storyCount = stories.filter((s) => s.category === "story").length;
   const filtered =
     filter === "all" ? stories : stories.filter((s) => s.category === filter);
 
   const openItem = (item: StoryCatalogEntry, autoplay: boolean) => {
+    if (item.kind === "jlpt-choukai") {
+      onSelectChoukai(item.id);
+      return;
+    }
     if (item.kind === "standalone" && item.href) {
       const target = resolveAssetUrl(item.href);
       window.location.href = autoplay ? `${target}?auto=1` : target;
@@ -169,6 +230,13 @@ export function StoryLibrary({
         </button>
         <button
           type="button"
+          className={`cat-tab ${filter === "jlpt" ? "active" : ""}`}
+          onClick={() => setFilter("jlpt")}
+        >
+          📝 Đề thi JLPT ({jlptCount})
+        </button>
+        <button
+          type="button"
           className={`cat-tab ${filter === "situation" ? "active" : ""}`}
           onClick={() => setFilter("situation")}
         >
@@ -186,7 +254,9 @@ export function StoryLibrary({
       <div className="library-grid">
         {filtered.map((item) => {
           const cat = CATEGORY_META[item.category] ?? CATEGORY_META.story;
-          const dictDone = getSavedDictationCount(item.id);
+          const isChoukai = item.kind === "jlpt-choukai";
+          const dictDone = isChoukai ? 0 : getSavedDictationCount(item.id);
+          const choukaiDone = isChoukai ? getSavedChoukaiScore(item.id).answered : 0;
           return (
             <article key={item.id} className="story-card">
               <div
@@ -200,7 +270,16 @@ export function StoryLibrary({
                     className="library-thumb-canvas"
                   />
                 ) : (
-                  <MiniPreviewCanvas title={item.titleJa} style={item.thumbStyle === "hachiko" ? "hachiko" : "konbini"} />
+                  <MiniPreviewCanvas
+                    title={item.titleJa}
+                    style={
+                      item.thumbStyle === "hachiko"
+                        ? "hachiko"
+                        : item.thumbStyle === "jlpt"
+                          ? "jlpt"
+                          : "konbini"
+                    }
+                  />
                 )}
                 <span className={`story-card-cat ${cat.badgeClass}`}>
                   {cat.icon} {cat.label}
@@ -217,40 +296,67 @@ export function StoryLibrary({
                 <p className="story-card-desc">{item.description}</p>
 
                 <div className="story-card-meta">
-                  <span>🎬 {item.sceneCount} cảnh</span>
-                  <span>📒 {item.vocabCount} từ vựng</span>
-                  {item.grammarCount ? <span>🧩 {item.grammarCount} ngữ pháp</span> : null}
-                  {item.quizCount ? <span>✅ {item.quizCount} quiz</span> : null}
-                  <span>🔊 VOICEVOX</span>
-                  {dictDone > 0 && (
-                    <span style={{ color: "#46b89d", fontWeight: 700 }}>
-                      🎧 Đã chép {dictDone} câu
-                    </span>
+                  {isChoukai ? (
+                    <>
+                      <span>🎧 {item.questionCount ?? 28} câu thi thật</span>
+                      <span>🎙️ MP3 gốc JLPT</span>
+                      <span>📜 Script ふりがな</span>
+                      {choukaiDone > 0 && (
+                        <span style={{ color: "#46b89d", fontWeight: 700 }}>
+                          ✅ Đã làm {choukaiDone}/{item.questionCount ?? 28}
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <span>🎬 {item.sceneCount} cảnh</span>
+                      <span>📒 {item.vocabCount} từ vựng</span>
+                      {item.grammarCount ? <span>🧩 {item.grammarCount} ngữ pháp</span> : null}
+                      {item.quizCount ? <span>✅ {item.quizCount} quiz</span> : null}
+                      <span>🔊 VOICEVOX</span>
+                      {dictDone > 0 && (
+                        <span style={{ color: "#46b89d", fontWeight: 700 }}>
+                          🎧 Đã chép {dictDone} câu
+                        </span>
+                      )}
+                    </>
                   )}
                 </div>
 
                 <div className="story-card-actions">
-                  <button
-                    type="button"
-                    className="pixel-btn pixel-btn-purple"
-                    onClick={() => openItem(item, false)}
-                  >
-                    ▶ Học tương tác
-                  </button>
-                  <button
-                    type="button"
-                    className="pixel-btn pixel-btn-mint"
-                    onClick={() => onSelectDictation(item.id)}
-                  >
-                    🎧 Nghe chép
-                  </button>
-                  <button
-                    type="button"
-                    className="pixel-btn pixel-btn-dark"
-                    onClick={() => openItem(item, true)}
-                  >
-                    🎬 Tự chạy
-                  </button>
+                  {isChoukai ? (
+                    <button
+                      type="button"
+                      className="pixel-btn pixel-btn-purple"
+                      onClick={() => onSelectChoukai(item.id)}
+                    >
+                      🎧 Vào phòng luyện nghe JLPT →
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        className="pixel-btn pixel-btn-purple"
+                        onClick={() => openItem(item, false)}
+                      >
+                        ▶ Học tương tác
+                      </button>
+                      <button
+                        type="button"
+                        className="pixel-btn pixel-btn-mint"
+                        onClick={() => onSelectDictation(item.id)}
+                      >
+                        🎧 Nghe chép
+                      </button>
+                      <button
+                        type="button"
+                        className="pixel-btn pixel-btn-dark"
+                        onClick={() => openItem(item, true)}
+                      >
+                        🎬 Tự chạy
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </article>

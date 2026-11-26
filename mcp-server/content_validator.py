@@ -57,6 +57,7 @@ def validate_story_folder(
 
     story_json = sdir / "story.json"
     dictation_json = sdir / "dictation.json"
+    choukai_json = sdir / "choukai.json"
     standalone_html = sdir / "index.html"
 
     if story_json.exists():
@@ -100,6 +101,29 @@ def validate_story_folder(
             _check_ruby_segments(f"dictation/{it['id']}", it.get("jaRuby", []), issues)
             check_audio_ref(f"dictation/{it['id']}", it.get("audioUrl"))
 
+    if choukai_json.exists():
+        cdata = json.loads(choukai_json.read_text(encoding="utf-8"))
+        for q in cdata.get("questions", []):
+            qid = q["id"]
+            stats["kanji_blocks_checked"] += 1
+            _check_ruby_segments(f"choukai/{qid}.prompt", q.get("promptJa", ""), issues)
+            check_audio_ref(f"choukai/{qid}", q.get("audioUrl"))
+            img_url = q.get("imageUrl")
+            if img_url:
+                img_fp = public_root / img_url.lstrip("/")
+                if not img_fp.exists() or img_fp.stat().st_size < 500:
+                    issues.append(f"[Missing/Empty Image] choukai/{qid}: {img_url}")
+            opts = q.get("options", [])
+            for oi, opt in enumerate(opts):
+                if opt.get("ja"):
+                    _check_ruby_segments(f"choukai/{qid}.opt{oi}", opt["ja"], issues)
+            cidx = q.get("correctIndex", -1)
+            if not (0 <= cidx < len(opts)):
+                issues.append(f"[Invalid choukai correctIndex] {qid}: {cidx}")
+            for li, ln in enumerate(q.get("script", [])):
+                stats["kanji_blocks_checked"] += 1
+                _check_ruby_segments(f"choukai/{qid}.script[{li}]", ln.get("ja", ""), issues)
+
     if standalone_html.exists():
         html = standalone_html.read_text(encoding="utf-8")
         manifest_path = sdir / "audio" / "manifest.json"
@@ -126,7 +150,7 @@ def validate_story_folder(
         for entry in cat.get("stories", []):
             if entry.get("id") == sdir.name:
                 registered = True
-                if entry.get("category") not in ("situation", "story"):
+                if entry.get("category") not in ("situation", "story", "jlpt"):
                     issues.append(
                         f"[Invalid Category in index.json] '{sdir.name}': {entry.get('category')}"
                     )

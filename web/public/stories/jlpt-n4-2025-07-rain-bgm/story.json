@@ -1,0 +1,486 @@
+{
+  "id": "jlpt-n4-2025-07-rain-bgm",
+  "engine": "hybrid",
+  "series": "JLPT N4 07/2025 · ĐỌC HIỂU 問題５",
+  "titleJa": "デパートの雨の音楽",
+  "titleVi": "Bí mật bản nhạc trời mưa ở trung tâm thương mại",
+  "level": "JLPT N4 · 07/2025",
+  "author": "JLPT N4 07/2025 (問題5)",
+  "palette": "ramen_midnight",
+  "assets": {
+    "backgrounds": {
+      "counter": "/stories/jlpt-n4-2025-07-rain-bgm/assets/bg_counter.png",
+      "rain": "/stories/jlpt-n4-2025-07-rain-bgm/assets/bg_rain.png",
+      "campus": "/stories/jlpt-n4-2025-07-rain-bgm/assets/bg_campus.png"
+    },
+    "portraits": {
+      "student": "/stories/jlpt-n4-2025-07-rain-bgm/assets/portrait_student.png",
+      "clerk": "/stories/jlpt-n4-2025-07-rain-bgm/assets/portrait_clerk.png",
+      "kitamura": "/stories/jlpt-n4-2025-07-rain-bgm/assets/portrait_kitamura.png"
+    },
+    "items": {},
+    "cardPortrait": "/stories/jlpt-n4-2025-07-rain-bgm/assets/portrait_clerk.png"
+  },
+  "voices": {
+    "student": {
+      "label": "私 (玄野武宏)",
+      "speakerId": 11,
+      "speedScale": 0.92,
+      "intonationScale": 1.12,
+      "pauseLengthScale": 1.1
+    },
+    "clerk": {
+      "label": "店員 (小夜/SAYO)",
+      "speakerId": 46,
+      "speedScale": 0.9,
+      "intonationScale": 1.1,
+      "pauseLengthScale": 1.12
+    },
+    "kitamura": {
+      "label": "北村先輩 (青山龍星)",
+      "speakerId": 13,
+      "speedScale": 0.92,
+      "intonationScale": 1.15,
+      "pauseLengthScale": 1.1
+    }
+  },
+  "characterCard": {
+    "nameJa": "JLPT N4 07/2025 · 問題５",
+    "subtitle": "NGUYÊN VĂN ĐỀ THI THẬT + 3 CÂU HỎI CHÍNH THỨC (25–27)",
+    "facts": [
+      {
+        "label": "SOURCE",
+        "value": "Đề thi chính thức JLPT N4 kỳ tháng 7/2025 — Phần Đọc hiểu Trung văn (問題５)"
+      },
+      {
+        "label": "CULTURE",
+        "value": "Có thật ở Nhật! Khi trời đổ mưa, các trung tâm thương mại (デパート) bật bài nhạc riêng như 'Raindrops Keep Fallin' on My Head' để báo nhân viên đổi túi chống nước cho khách."
+      },
+      {
+        "label": "QUESTIONS",
+        "value": "Đủ 3 câu hỏi chính thức của đề thi thật (Câu 25, 26, 27) kèm đáp án chuẩn"
+      },
+      {
+        "label": "GRAMMAR",
+        "value": "〜ようです / 〜のに / 〜かもしれない / 〜てみる / 〜ための (Trọng tâm N4)"
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "depato_intro",
+      "type": "depato_intro",
+      "bannerTitle": "デパートの雨の音楽",
+      "actionLabel": "はじめる · BẮT ĐẦU",
+      "lines": [
+        {
+          "id": "d01_l01",
+          "voice": "student",
+          "speakerLabel": "私 (Người kể)",
+          "jaPlain": "日本のデパートでは、いつも音楽が聞こえていますが、私は最近、面白いことを知りました。",
+          "jaRuby": "{日本|にほん}のデパートでは、いつも{音楽|おんがく}が{聞|き}こえていますが、{私|わたし}は{最近|さいきん}、{面白|おもしろ}いことを{知|し}りました。",
+          "vi": "Ở các trung tâm thương mại Nhật Bản lúc nào cũng có tiếng nhạc, và gần đây tôi vừa biết được một điều cực kỳ thú vị.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d01_l01.mp3",
+          "durationSec": 7.424
+        }
+      ]
+    },
+    {
+      "id": "depato_counter_clue",
+      "type": "depato_counter_clue",
+      "whoButtonLabel": "? Thông tin đề thi",
+      "instruction": "Nhạc nền vừa đổi giai điệu! Kiểm tra 2 manh mối quanh quầy rồi trả lời nhân viên",
+      "lines": [
+        {
+          "id": "d02_l01",
+          "voice": "student",
+          "speakerLabel": "私",
+          "jaPlain": "先週、さくらデパートへ買い物に行って、シャツを買いました。",
+          "jaRuby": "{先週|せんしゅう}、さくらデパートへ{買|か}い{物|もの}に{行|い}って、シャツを{買|か}いました。",
+          "vi": "Tuần trước, tôi đi mua sắm ở trung tâm thương mại Sakura và mua một chiếc áo sơ mi.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d02_l01.mp3",
+          "durationSec": 4.757
+        },
+        {
+          "id": "d02_l02",
+          "voice": "clerk",
+          "speakerLabel": "店員 (Nhân viên)",
+          "jaPlain": "外は雨のようですから、袋は紙じゃないのにしますね。",
+          "jaRuby": "{外|そと}は{雨|あめ}のようですから、{袋|ふくろ}は{紙|かみ}じゃないのにしますね。",
+          "vi": "Có vẻ bên ngoài đang mưa rồi, nên tôi sẽ đổi sang loại túi không phải túi giấy (chống ướt) cho quý khách nhé.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d02_l02.mp3",
+          "durationSec": 5.131
+        },
+        {
+          "id": "d02_l03",
+          "voice": "student",
+          "speakerLabel": "私",
+          "jaPlain": "えっ？来たときはいい天気だったのに…周りには窓もないし、傘を持っている人もいません。",
+          "jaRuby": "えっ？{来|き}たときはいい{天気|てんき}だったのに…{周|まわ}りには{窓|まど}もないし、{傘|かさ}を{持|も}っている{人|ひと}もいません。",
+          "vi": "Hả? Lúc mình tới trời vẫn đẹp mà... Xung quanh đây chẳng có cửa sổ nào, cũng chẳng có ai cầm ô cả.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d02_l03.mp3",
+          "durationSec": 7.04
+        }
+      ],
+      "minigame": {
+        "prompt": "Nhân viên đang chờ phản hồi của bạn:",
+        "choices": [
+          {
+            "id": "reply_onegai",
+            "labelJa": "お願いします。",
+            "labelRuby": "お{願|ねが}いします。",
+            "labelVi": "Vâng, nhờ chị ạ! (Rồi đi ra cửa kiểm tra xem trời có mưa thật không)",
+            "effect": "accept",
+            "responseLine": {
+              "id": "d02_c01",
+              "voice": "clerk",
+              "speakerLabel": "店員",
+              "jaPlain": "はい、かしこまりました。お気をつけてお帰りくださいませ。",
+              "jaRuby": "はい、かしこまりました。お{気|き}をつけてお{帰|かえ}りくださいませ。",
+              "vi": "Vâng, tôi hiểu rồi ạ. Quý khách về cẩn thận nhé.",
+              "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d02_c01.mp3",
+              "durationSec": 5.845
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "depato_step_rain",
+      "type": "depato_step_rain",
+      "actionLabel": "次の日、北村先輩に会う · Sang ngày hôm sau →",
+      "lines": [
+        {
+          "id": "d03_l01",
+          "voice": "student",
+          "speakerLabel": "私",
+          "jaPlain": "買い物のあと、すぐにデパートを出ました。外は、本当に雨が降っていました！",
+          "jaRuby": "{買|か}い{物|もの}のあと、すぐにデパートを{出|で}ました。{外|そと}は、{本当|ほんとう}に{雨|あめ}が{降|ふ}っていました！",
+          "vi": "Mua xong, tôi lập tức bước ra khỏi trung tâm thương mại. Bên ngoài trời đang mưa thật!",
+          "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d03_l01.mp3",
+          "durationSec": 6.005
+        }
+      ]
+    },
+    {
+      "id": "depato_campus_reveal",
+      "type": "depato_campus_reveal",
+      "instruction": "Nghe thử 2 bản nhạc (☀️ Nhạc nắng ↔ ☔ Nhạc mưa) để hiểu bí mật của nhân viên siêu thị Nhật!",
+      "actionLabel": "なるほど！ · Đã hiểu ra bí mật →",
+      "lines": [
+        {
+          "id": "d04_l01",
+          "voice": "student",
+          "speakerLabel": "私",
+          "jaPlain": "北村先輩、デパートでアルバイトをしていますよね。昨日、窓もないのに、店員さんが雨だとわかったんです。",
+          "jaRuby": "{北村|きたむら}{先輩|せんぱい}、デパートでアルバイトをしていますよね。{昨日|きのう}、{窓|まど}もないのに、{店員|てんいん}さんが{雨|あめ}だとわかったんです。",
+          "vi": "Anh Kitamura ơi, anh làm thêm ở trung tâm thương mại đúng không ạ? Hôm qua không có cửa sổ mà chị nhân viên vẫn biết trời mưa đấy.",
+          "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d04_l01.mp3",
+          "durationSec": 8.64
+        },
+        {
+          "id": "d04_l02",
+          "voice": "kitamura",
+          "speakerLabel": "北村先輩 (Tiền bối)",
+          "jaPlain": "ああ、日本のデパートでは普通、雨が降ったときや、やんだときに、特別な音楽に変えるんだよ。だから、店員は天気がわかるんだよ。",
+          "jaRuby": "ああ、{日本|にほん}のデパートでは{普通|ふつう}、{雨|あめ}が{降|ふ}ったときや、やんだときに、{特別|とくべつ}な{音楽|おんがく}に{変|か}えるんだよ。だから、{店員|てんいん}は{天気|てんき}がわかるんだよ。",
+          "vi": "À, ở trung tâm thương mại Nhật Bản thường khi trời đổ mưa hay tạnh mưa họ sẽ đổi sang một bản nhạc đặc biệt đấy. Nhờ vậy nhân viên mới biết được thời tiết!",
+          "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d04_l02.mp3",
+          "durationSec": 11.829
+        }
+      ]
+    },
+    {
+      "id": "depato_outro",
+      "type": "depato_outro",
+      "lines": [
+        {
+          "id": "d05_l01",
+          "voice": "student",
+          "speakerLabel": "私",
+          "jaPlain": "デパートの音楽は、客を楽しい気持ちにするためのものだと思っていました。でも、ほかにも意味があるのです。面白いと思いました。",
+          "jaRuby": "デパートの{音楽|おんがく}は、{客|きゃく}を{楽|たの}しい{気持|きも}ちにするためのものだと{思|おも}っていました。でも、ほかにも{意味|いみ}があるのです。{面白|おもしろ}いと{思|おも}いました。",
+          "vi": "Tôi cứ tưởng nhạc ở trung tâm thương mại chỉ để giúp khách hàng thấy vui vẻ. Nhưng hóa ra nó còn có ý nghĩa khác nữa. Thật thú vị!",
+          "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d05_l01.mp3",
+          "durationSec": 9.707
+        }
+      ]
+    }
+  ],
+  "reading": {
+    "sectionTitle": "JLPT N4 07/2025 · 問題５ Nguyên văn bài đọc & 3 câu hỏi thật",
+    "subtitle": "Bấm từng đoạn văn nguyên bản từ đề thi thật JLPT N4 07/2025 để nghe VOICEVOX, ôn từ vựng/ngữ pháp N4 và làm trọn bộ Câu 25–27.",
+    "sentences": [
+      {
+        "id": "dr_01",
+        "voice": "student",
+        "jaPlain": "日本のデパートでは、いつも音楽が聞こえていますが、私は最近、面白いことを知りました。",
+        "jaRuby": "{日本|にほん}のデパートでは、いつも{音楽|おんがく}が{聞|き}こえていますが、{私|わたし}は{最近|さいきん}、{面白|おもしろ}いことを{知|し}りました。",
+        "vi": "Ở các trung tâm thương mại Nhật Bản lúc nào cũng vang lên tiếng nhạc, nhưng gần đây tôi vừa biết được một điều thú vị.",
+        "highlightVocabIds": [
+          "omoshiroi"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_01.mp3",
+        "durationSec": 7.424
+      },
+      {
+        "id": "dr_02",
+        "voice": "student",
+        "jaPlain": "先週、さくらデパートへ買い物に行きました。シャツを買って袋に入れてもらっているとき、店員が「外は雨のようですから、袋は紙じゃないのにしますね。」と言いました。",
+        "jaRuby": "{先週|せんしゅう}、さくらデパートへ{買|か}い{物|もの}に{行|い}きました。シャツを{買|か}って{袋|ふくろ}に{入|い}れてもらっているとき、{店員|てんいん}が「{外|そと}は{雨|あめ}のようですから、{袋|ふくろ}は{紙|かみ}じゃないのにしますね。」と{言|い}いました。",
+        "vi": "Tuần trước, tôi đi mua sắm ở Sakura Department Store. Khi mua áo sơ mi và đang được bỏ vào túi, nhân viên nói: \"Có vẻ ngoài trời đang mưa nên tôi sẽ đổi sang loại túi không phải bằng giấy nhé.\"",
+        "highlightVocabIds": [
+          "fukuro",
+          "tenin"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_02.mp3",
+        "durationSec": 12.789
+      },
+      {
+        "id": "dr_03",
+        "voice": "student",
+        "jaPlain": "私は①「えっ？」と思いましたが、「お願いします。」と言いました。私が来たときはいい天気だったのに、どうして店員が雨だと思ったか、わからなかったのです。",
+        "jaRuby": "{私|わたし}は①「えっ？」と{思|おも}いましたが、「お{願|ねが}いします。」と{言|い}いました。{私|わたし}が{来|き}たときはいい{天気|てんき}だったのに、どうして{店員|てんいん}が{雨|あめ}だと{思|おも}ったか、わからなかったのです。",
+        "vi": "Tôi thầm nghĩ ①\"Hả?\" nhưng vẫn đáp \"Vâng, nhờ chị ạ\". Lúc tôi đến trời vẫn đẹp thế mà, nên tôi không hiểu tại sao nhân viên lại nghĩ trời mưa.",
+        "highlightVocabIds": [
+          "tenin"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_03.mp3",
+        "durationSec": 12.896
+      },
+      {
+        "id": "dr_04",
+        "voice": "student",
+        "jaPlain": "周りには窓もないし、傘を持っている人もいませんでした。私は買い物のあと、すぐにデパートを出ました。外は本当に雨が降っていました。",
+        "jaRuby": "{周|まわ}りには{窓|まど}もないし、{傘|かさ}を{持|も}っている{人|ひと}もいませんでした。{私|わたし}は{買|か}い{物|もの}のあと、すぐにデパートを{出|で}ました。{外|そと}は{本当|ほんとう}に{雨|あめ}が{降|ふ}っていました。",
+        "vi": "Xung quanh chẳng có cửa sổ, cũng không có ai cầm ô. Mua sắm xong, tôi đi ra khỏi cửa hàng ngay lập tức. Bên ngoài trời đang mưa thật.",
+        "highlightVocabIds": [
+          "mawari",
+          "kasa"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_04.mp3",
+        "durationSec": 10.379
+      },
+      {
+        "id": "dr_05",
+        "voice": "student",
+        "jaPlain": "次の日、大学の先輩の北村さんに会いました。北村さんはデパートでアルバイトをしているので、何か知っているかもしれないと思って、前の日のことを②話してみました。",
+        "jaRuby": "{次|つぎ}の{日|ひ}、{大学|だいがく}の{先輩|せんぱい}の{北村|きたむら}さんに{会|あ}いました。{北村|きたむら}さんはデパートでアルバイトをしているので、{何|なに}か{知|し}っているかもしれないと{思|おも}って、{前|まえ}の{日|ひ}のことを②{話|はな}してみました。",
+        "vi": "Ngày hôm sau, tôi gặp anh Kitamura, tiền bối ở trường đại học. Vì anh làm thêm ở trung tâm thương mại nên tôi nghĩ có lẽ anh biết gì đó và ②kể thử chuyện hôm trước.",
+        "highlightVocabIds": [
+          "senpai"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_05.mp3",
+        "durationSec": 12.043
+      },
+      {
+        "id": "dr_06",
+        "voice": "kitamura",
+        "jaPlain": "北村さんは笑って、「日本のデパートでは普通、雨が降ったときやんだときに特別な音楽に変えるんだよ。だから、店員は天気がわかるんだよ。」と教えてくれました。",
+        "jaRuby": "{北村|きたむら}さんは{笑|わら}って、「{日本|にほん}のデパートでは{普通|ふつう}、{雨|あめ}が{降|ふ}ったときやんだときに{特別|とくべつ}な{音楽|おんがく}に{変|か}えるんだよ。だから、{店員|てんいん}は{天気|てんき}がわかるんだよ。」と{教|おし}えてくれました。",
+        "vi": "Anh Kitamura cười rồi giải thích: \"Ở trung tâm thương mại Nhật, thông thường khi trời đổ mưa hay tạnh mưa người ta sẽ đổi sang bản nhạc đặc biệt. Vì thế nhân viên mới biết được thời tiết đấy.\"",
+        "highlightVocabIds": [
+          "tokubetsu",
+          "tenin"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_06.mp3",
+        "durationSec": 13.013
+      },
+      {
+        "id": "dr_07",
+        "voice": "student",
+        "jaPlain": "デパートの音楽は、客を楽しい気持ちにするためのものだと思っていました。でも、ほかにも意味があるのです。面白いと思いました。",
+        "jaRuby": "デパートの{音楽|おんがく}は、{客|きゃく}を{楽|たの}しい{気持|きも}ちにするためのものだと{思|おも}っていました。でも、ほかにも{意味|いみ}があるのです。{面白|おもしろ}いと{思|おも}いました。",
+        "vi": "Tôi vốn nghĩ nhạc trong trung tâm thương mại chỉ để giúp khách có tâm trạng vui vẻ. Nhưng ngoài ra nó còn mang ý nghĩa khác. Thật thú vị!",
+        "highlightVocabIds": [
+          "imi",
+          "omoshiroi"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_07.mp3",
+        "durationSec": 9.707
+      }
+    ],
+    "vocab": [
+      {
+        "id": "fukuro",
+        "word": "袋",
+        "reading": "ふくろ",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Cái túi, bao đựng",
+        "note": "紙の袋 (túi giấy) ↔ ビニール袋 (túi ni-lông chống nước). Từ rất hay gặp trong JLPT N4!"
+      },
+      {
+        "id": "tenin",
+        "word": "店員",
+        "reading": "てんいん",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Nhân viên cửa hàng",
+        "note": "Phân biệt 店員 (nhân viên bán hàng) và 客 (きゃく — khách hàng)."
+      },
+      {
+        "id": "mawari",
+        "word": "周り",
+        "reading": "まわり",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Xung quanh",
+        "note": "周りには窓もない (xung quanh cũng không có cửa sổ)."
+      },
+      {
+        "id": "kasa",
+        "word": "傘",
+        "reading": "かさ",
+        "level": "N5–N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Cái ô (dù)",
+        "note": "傘を持つ (cầm ô) / 傘をさす (che ô)."
+      },
+      {
+        "id": "senpai",
+        "word": "先輩",
+        "reading": "せんぱい",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Tiền bối, đàn anh/đàn chị khóa trên",
+        "note": "Trái nghĩa là 後輩 (こうはい — hậu bối)."
+      },
+      {
+        "id": "tokubetsu",
+        "word": "特別な",
+        "reading": "とくべつな",
+        "level": "N4",
+        "partOfSpeech": "Tính từ đuôi な",
+        "meaningVi": "Đặc biệt",
+        "note": "Trái nghĩa với 普通 (ふつう — thông thường)."
+      },
+      {
+        "id": "imi",
+        "word": "意味",
+        "reading": "いみ",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Ý nghĩa",
+        "note": "ほかにも意味がある (ngoài ra còn có ý nghĩa khác nữa)."
+      }
+    ],
+    "grammar": [
+      {
+        "id": "dg_youdesu",
+        "pattern": "Nの / V + ようです",
+        "level": "N4",
+        "meaningVi": "Có vẻ như là... (suy đoán dựa trên giác quan/dấu hiệu)",
+        "explanation": "Nhân viên nghe tiếng nhạc mưa đổi nên suy đoán khéo léo: 「外は雨のようです」.",
+        "exampleJa": "外は雨のようですから、袋は紙じゃないのにしますね。",
+        "exampleRuby": "{外|そと}は{雨|あめ}のようですから、{袋|ふくろ}は{紙|かみ}じゃないのにしますね。",
+        "exampleVi": "Có vẻ bên ngoài đang mưa nên tôi đổi sang túi không phải túi giấy nhé."
+      },
+      {
+        "id": "dg_noni",
+        "pattern": "Câu 1 + のに、Câu 2",
+        "level": "N4",
+        "meaningVi": "Mặc dù... thế nhưng... (ngạc nhiên, trái mong đợi)",
+        "explanation": "Thể hiện sự bất ngờ: lúc đến trời nắng đẹp thế mà sao nhân viên lại bảo trời mưa.",
+        "exampleJa": "私が来たときはいい天気だったのに、雨だと言われました。",
+        "exampleRuby": "{私|わたし}が{来|き}たときはいい{天気|てんき}だったのに、{雨|あめ}だと{言|い}われました。",
+        "exampleVi": "Mặc dù lúc tôi đến trời rất đẹp, thế mà lại được bảo là đang mưa."
+      },
+      {
+        "id": "dg_kamoshirenai",
+        "pattern": "Thể thông thường + かもしれない",
+        "level": "N4",
+        "meaningVi": "Có lẽ, biết đâu chừng...",
+        "explanation": "Suy đoán khả năng khoảng 50% (anh Kitamura làm thêm ở siêu thị nên có lẽ anh biết).",
+        "exampleJa": "北村さんは何か知っているかもしれないと思いました。",
+        "exampleRuby": "{北村|きたむら}さんは{何|なに}か{知|し}っているかもしれないと{思|おも}いました。",
+        "exampleVi": "Tôi nghĩ có lẽ anh Kitamura biết điều gì đó."
+      },
+      {
+        "id": "dg_temiru",
+        "pattern": "V-て + みる",
+        "level": "N4",
+        "meaningVi": "Làm thử V xem sao",
+        "explanation": "Trong đề JLPT Câu 26: 「前の日のことを話してみました」 (kể thử chuyện hôm trước xem anh ấy có biết không).",
+        "exampleJa": "先輩に前の日のことを話してみました。",
+        "exampleRuby": "{先輩|せんぱい}に{前|まえ}の{日|ひ}のことを{話|はな}してみました。",
+        "exampleVi": "Tôi đã kể thử chuyện hôm trước cho tiền bối nghe."
+      },
+      {
+        "id": "dg_tameni",
+        "pattern": "V (từ điển) + ための + N",
+        "level": "N4",
+        "meaningVi": "N dùng để làm V (mục đích bổ nghĩa cho danh từ)",
+        "explanation": "Khác với ために đứng trước động từ, khi bổ nghĩa cho danh từ (もの) phải đổi thành ための.",
+        "exampleJa": "客を楽しい気持ちにするためのものだと思っていました。",
+        "exampleRuby": "{客|きゃく}を{楽|たの}しい{気持|きも}ちにするためのものだと{思|おも}っていました。",
+        "exampleVi": "Tôi đã tưởng đó là thứ chỉ để giúp khách hàng thấy vui vẻ."
+      }
+    ],
+    "quiz": [
+      {
+        "id": "jlpt_q25",
+        "questionJa": "【{問|とい}25】どうして「{私|わたし}」は①「えっ？」と{思|おも}いましたか。",
+        "questionVi": "Câu 25 (Đề thi thật): Tại sao \"Tôi\" lại thầm nghĩ ①\"Hả?\"?",
+        "options": [
+          {
+            "ja": "1. {店員|てんいん}が{雨|あめ}だと{思|おも}った{理由|りゆう}が、わからなかったから"
+          },
+          {
+            "ja": "2. {店員|てんいん}の{言|い}ったことが、よく{聞|き}こえなかったから"
+          },
+          {
+            "ja": "3. {店員|てんいん}がシャツを{袋|ふくろ}に{入|い}れてくれなかったから"
+          },
+          {
+            "ja": "4. シャツを{袋|ふくろ}に{入|い}れる{必要|ひつよう}はないと{思|おも}ったから"
+          }
+        ],
+        "correctIndex": 0,
+        "explanationVi": "Đáp án chuẩn JLPT: 1. Ngay sau ① bài viết giải thích rõ: 「どうして店員が雨だと思ったか、わからなかったのです」 (vì không hiểu lý do tại sao nhân viên biết trời mưa)."
+      },
+      {
+        "id": "jlpt_q26",
+        "questionJa": "【{問|とい}26】②「{話|はな}してみました」とありますが、どうして「{私|わたし}」は{北村|きたむら}さんに{話|はな}しましたか。",
+        "questionVi": "Câu 26 (Đề thi thật): Tại sao \"Tôi\" lại kể thử chuyện hôm trước cho anh Kitamura?",
+        "options": [
+          {
+            "ja": "1. {北村|きたむら}さんが{働|はたら}いているデパートでアルバイトをしたかったから"
+          },
+          {
+            "ja": "2. {北村|きたむら}さんが、{前|まえ}の{日|ひ}の{天気|てんき}のことを{覚|おぼ}えていると{思|おも}ったから"
+          },
+          {
+            "ja": "3. {北村|きたむら}さんが、デパートのことをよく{知|し}っていると{思|おも}ったから"
+          },
+          {
+            "ja": "4. {北村|きたむら}さんと{好|す}きな{音楽|おんがく}のことを{話|はな}したかったから"
+          }
+        ],
+        "correctIndex": 2,
+        "explanationVi": "Đáp án chuẩn JLPT: 3. Trong bài: 「北村さんはデパートでアルバイトをしているので、何か知っているかもしれないと思って」 → nghĩ anh ấy hiểu rõ về trung tâm thương mại."
+      },
+      {
+        "id": "jlpt_q27",
+        "questionJa": "【{問|とい}27】「{私|わたし}」は、{北村|きたむら}さんと{話|はな}して、どんなことを{知|し}りましたか。",
+        "questionVi": "Câu 27 (Đề thi thật): Sau khi nói chuyện với anh Kitamura, \"Tôi\" đã biết được điều gì?",
+        "options": [
+          {
+            "ja": "1. デパートでは、どの{店員|てんいん}もいつも{天気|てんき}を{調|しら}べていること"
+          },
+          {
+            "ja": "2. デパートでは、{音楽|おんがく}で{店員|てんいん}に{天気|てんき}を{知|し}らせていること"
+          },
+          {
+            "ja": "3. デパートの{音楽|おんがく}が、{店員|てんいん}を{楽|たの}しい{気持|きも}ちにしていること"
+          },
+          {
+            "ja": "4. デパートの{音楽|おんがく}が、{客|きゃく}を{楽|たの}しい{気持|きも}ちにしていること"
+          }
+        ],
+        "correctIndex": 1,
+        "explanationVi": "Đáp án chuẩn JLPT: 2. Cẩn thận bẫy câu 4 (đó là điều tôi TƯỞNG trước đó, không phải điều mới biết!). Điều mới biết là trung tâm thương mại dùng âm nhạc để báo thời tiết cho nhân viên!"
+      }
+    ]
+  }
+}
