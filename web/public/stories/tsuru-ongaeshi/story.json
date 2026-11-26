@@ -1,12 +1,12 @@
 {
   "id": "tsuru-ongaeshi",
-  "engine": "hybrid",
+  "engine": "tsuru",
   "series": "jp-pixel-story · AI PIXEL CINEMA",
   "titleJa": "鶴の恩返し",
   "titleVi": "Chim Hạc Trả Ơn",
   "level": "JLPT N4",
   "author": "jp-pixel-studio",
-  "palette": "ramen_midnight",
+  "palette": "jp_story_master",
   "assets": {
     "backgrounds": {
       "snow": "/stories/tsuru-ongaeshi/assets/bg_snow.png",
@@ -84,7 +84,8 @@
           "jaRuby": "むかしむかし、{雪|ゆき}の{降|ふ}る{寒|さむ}い{冬|ふゆ}の{日|ひ}、やさしい{与作|よさく}さんが、{白|しろ}い{鶴|つる}を{見|み}つけました。",
           "vi": "Ngày xửa ngày xưa, vào một ngày đông tuyết rơi lạnh giá, chàng Yosaku tốt bụng bắt gặp một chú chim hạc trắng.",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t01_l01.mp3",
-          "durationSec": 7.424
+          "durationSec": 7.424,
+          "ttsHash": "e7ee6aca3b7a"
         }
       ]
     },
@@ -101,7 +102,8 @@
           "jaRuby": "かわいそうに！{今|いま}すぐ{助|たす}けてあげるよ。さあ、{空|そら}へ{飛|と}びなさい！",
           "vi": "Tội nghiệp quá! Anh gỡ bẫy cứu ngay đây. Nào, bay về bầu trời đi!",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t02_l01.mp3",
-          "durationSec": 5.483
+          "durationSec": 5.483,
+          "ttsHash": "81bdf2241bec"
         }
       ]
     },
@@ -119,7 +121,8 @@
           "jaRuby": "その{夜|よる}、{美|うつく}しい{女|おんな}の{人|ひと}が{訪|たず}ねてきました。",
           "vi": "Đêm hôm đó, một cô gái xinh đẹp tìm đến gõ cửa ngôi nhà nhỏ.",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t03_l01.mp3",
-          "durationSec": 3.979
+          "durationSec": 3.979,
+          "ttsHash": "5c444ae6886c"
         },
         {
           "id": "t03_l02",
@@ -131,7 +134,8 @@
           "jaRuby": "{今夜|こんや}、ここに{泊|と}めてください。お{礼|れい}をするために、{美|うつく}しい{布|ぬの}を{織|お}ります。",
           "vi": "Xin cho em tá túc đêm nay. Để đền ơn, em sẽ dệt một tấm vải thật đẹp.",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t03_l02.mp3",
-          "durationSec": 6.773
+          "durationSec": 6.773,
+          "ttsHash": "366e118bab89"
         },
         {
           "id": "t03_l03",
@@ -143,7 +147,8 @@
           "jaRuby": "ただ、{布|ぬの}を{織|お}っているあいだ、ぜったいに、{部屋|へや}の{中|なか}を{見|み}ないでください。",
           "vi": "Chỉ có điều... trong lúc em đang dệt vải, xin chàng tuyệt đối đừng nhìn vào trong phòng nhé.",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t03_l03.mp3",
-          "durationSec": 8.064
+          "durationSec": 8.064,
+          "ttsHash": "15c3ce6910f8"
         }
       ]
     },
@@ -159,7 +164,8 @@
           "jaRuby": "{三日間|みっかかん}、{部屋|へや}の{中|なか}からトントンと、{不思議|ふしぎ}な{音|おと}が{聞|き}こえつづけました。",
           "vi": "Suốt ba ngày liền, từ sau cánh cửa cứ vang lên tiếng khung cửi dệt vải kỳ lạ...",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t04_l01.mp3",
-          "durationSec": 6.101
+          "durationSec": 6.101,
+          "ttsHash": "fb787aebbc4b"
         },
         {
           "id": "t04_l02",
@@ -169,7 +175,8 @@
           "jaRuby": "{三日|みっか}も{食|た}べずに、{大丈夫|だいじょうぶ}かな…どうしよう？",
           "vi": "Ba ngày rồi không ăn uống gì liệu cô ấy có ổn không... phải làm sao đây?",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t04_l02.mp3",
-          "durationSec": 3.915
+          "durationSec": 3.915,
+          "ttsHash": "7767d3f906f6"
         }
       ],
       "minigame": {
@@ -191,7 +198,8 @@
               "jaRuby": "{約束|やくそく}を{破|やぶ}って、{少|すこ}しだけ{中|なか}をのぞいてしまいました…",
               "vi": "Ta đã thất hứa, lỡ lén nhìn vào trong mất rồi...",
               "audioUrl": "/stories/tsuru-ongaeshi/audio/t04_c01.mp3",
-              "durationSec": 4.747
+              "durationSec": 4.747,
+              "ttsHash": "ce7f0c17c1a2"
             }
           },
           {
@@ -208,7 +216,8 @@
               "jaRuby": "{待|ま}とうとしましたが、{心配|しんぱい}になって、つい{戸|と}を{開|あ}けてしまいました。",
               "vi": "Dù đã cố đợi, nhưng vì quá lo lắng nên chàng vẫn lỡ tay hé cửa ra mất.",
               "audioUrl": "/stories/tsuru-ongaeshi/audio/t04_c02.mp3",
-              "durationSec": 5.216
+              "durationSec": 5.216,
+              "ttsHash": "c495f6334f3a"
             }
           }
         ]
@@ -227,7 +236,8 @@
           "jaRuby": "なんと、そこには{一羽|いちわ}の{白|しろ}い{鶴|つる}が、{自分|じぶん}の{羽|はね}で{美|うつく}しい{布|ぬの}を{織|お}っていました！",
           "vi": "Thật bất ngờ, bên trong là một chú chim hạc trắng đang tự nhổ lông mình để dệt nên tấm vải tuyệt đẹp!",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t05_l01.mp3",
-          "durationSec": 6.592
+          "durationSec": 6.592,
+          "ttsHash": "2bd86a618158"
         }
       ]
     },
@@ -245,7 +255,8 @@
           "jaRuby": "{助|たす}けてくれて、ありがとうございました。どうか、お{元気|げんき}で…",
           "vi": "Cảm ơn chàng đã cứu mạng em. Mong chàng luôn mạnh khỏe...",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t06_l01.mp3",
-          "durationSec": 7.659
+          "durationSec": 7.659,
+          "ttsHash": "e5fae14c3952"
         },
         {
           "id": "t06_l02",
@@ -255,7 +266,8 @@
           "jaRuby": "{白|しろ}い{鶴|つる}は、{雪|ゆき}の{夜空|よぞら}へ{高|たか}く{飛|と}び{立|た}ち、{二度|にど}と{戻|もど}ってきませんでした。",
           "vi": "Chim hạc trắng vỗ cánh bay cao lên bầu trời đêm đầy tuyết, và không bao giờ quay trở lại nữa.",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t06_l02.mp3",
-          "durationSec": 5.888
+          "durationSec": 5.888,
+          "ttsHash": "d3af9b14c5c5"
         }
       ]
     }
@@ -275,7 +287,8 @@
           "ongaeshi"
         ],
         "audioUrl": "/stories/tsuru-ongaeshi/audio/tr_01.mp3",
-        "durationSec": 6.347
+        "durationSec": 6.347,
+        "ttsHash": "d606680c6064"
       },
       {
         "id": "tr_02",
@@ -289,7 +302,8 @@
           "yakusoku"
         ],
         "audioUrl": "/stories/tsuru-ongaeshi/audio/tr_02.mp3",
-        "durationSec": 11.125
+        "durationSec": 11.125,
+        "ttsHash": "9f428ff62a8c"
       },
       {
         "id": "tr_03",
@@ -302,7 +316,8 @@
           "nozoku"
         ],
         "audioUrl": "/stories/tsuru-ongaeshi/audio/tr_03.mp3",
-        "durationSec": 7.019
+        "durationSec": 7.019,
+        "ttsHash": "9ea8b4c55dc4"
       },
       {
         "id": "tr_04",
@@ -315,7 +330,8 @@
           "ongaeshi"
         ],
         "audioUrl": "/stories/tsuru-ongaeshi/audio/tr_04.mp3",
-        "durationSec": 6.112
+        "durationSec": 6.112,
+        "ttsHash": "521bc6a7e356"
       }
     ],
     "vocab": [

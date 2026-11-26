@@ -1,12 +1,12 @@
 {
   "id": "jlpt-n4-2025-07-rain-bgm",
-  "engine": "hybrid",
+  "engine": "depato",
   "series": "JLPT N4 07/2025 · ĐỌC HIỂU 問題５",
   "titleJa": "デパートの雨の音楽",
   "titleVi": "Bí mật bản nhạc trời mưa ở trung tâm thương mại",
   "level": "JLPT N4 · 07/2025",
   "author": "JLPT N4 07/2025 (問題5)",
-  "palette": "ramen_midnight",
+  "palette": "jp_story_master",
   "assets": {
     "backgrounds": {
       "counter": "/stories/jlpt-n4-2025-07-rain-bgm/assets/bg_counter.png",
@@ -81,7 +81,8 @@
           "jaRuby": "{日本|にほん}のデパートでは、いつも{音楽|おんがく}が{聞|き}こえていますが、{私|わたし}は{最近|さいきん}、{面白|おもしろ}いことを{知|し}りました。",
           "vi": "Ở các trung tâm thương mại Nhật Bản lúc nào cũng có tiếng nhạc, và gần đây tôi vừa biết được một điều cực kỳ thú vị.",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d01_l01.mp3",
-          "durationSec": 7.424
+          "durationSec": 7.424,
+          "ttsHash": "f607e97da7ca"
         }
       ]
     },
@@ -99,7 +100,8 @@
           "jaRuby": "{先週|せんしゅう}、さくらデパートへ{買|か}い{物|もの}に{行|い}って、シャツを{買|か}いました。",
           "vi": "Tuần trước, tôi đi mua sắm ở trung tâm thương mại Sakura và mua một chiếc áo sơ mi.",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d02_l01.mp3",
-          "durationSec": 4.757
+          "durationSec": 4.757,
+          "ttsHash": "502a5f910644"
         },
         {
           "id": "d02_l02",
@@ -109,7 +111,8 @@
           "jaRuby": "{外|そと}は{雨|あめ}のようですから、{袋|ふくろ}は{紙|かみ}じゃないのにしますね。",
           "vi": "Có vẻ bên ngoài đang mưa rồi, nên tôi sẽ đổi sang loại túi không phải túi giấy (chống ướt) cho quý khách nhé.",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d02_l02.mp3",
-          "durationSec": 5.131
+          "durationSec": 5.131,
+          "ttsHash": "bd0aafb7c5fd"
         },
         {
           "id": "d02_l03",
@@ -119,7 +122,8 @@
           "jaRuby": "えっ？{来|き}たときはいい{天気|てんき}だったのに…{周|まわ}りには{窓|まど}もないし、{傘|かさ}を{持|も}っている{人|ひと}もいません。",
           "vi": "Hả? Lúc mình tới trời vẫn đẹp mà... Xung quanh đây chẳng có cửa sổ nào, cũng chẳng có ai cầm ô cả.",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d02_l03.mp3",
-          "durationSec": 7.04
+          "durationSec": 7.04,
+          "ttsHash": "30f715ee693c"
         }
       ],
       "minigame": {
@@ -139,7 +143,8 @@
               "jaRuby": "はい、かしこまりました。お{気|き}をつけてお{帰|かえ}りくださいませ。",
               "vi": "Vâng, tôi hiểu rồi ạ. Quý khách về cẩn thận nhé.",
               "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d02_c01.mp3",
-              "durationSec": 5.845
+              "durationSec": 5.845,
+              "ttsHash": "090616ccbd6d"
             }
           }
         ]
@@ -158,7 +163,8 @@
           "jaRuby": "{買|か}い{物|もの}のあと、すぐにデパートを{出|で}ました。{外|そと}は、{本当|ほんとう}に{雨|あめ}が{降|ふ}っていました！",
           "vi": "Mua xong, tôi lập tức bước ra khỏi trung tâm thương mại. Bên ngoài trời đang mưa thật!",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d03_l01.mp3",
-          "durationSec": 6.005
+          "durationSec": 6.005,
+          "ttsHash": "c87c61940840"
         }
       ]
     },
@@ -176,7 +182,8 @@
           "jaRuby": "{北村|きたむら}{先輩|せんぱい}、デパートでアルバイトをしていますよね。{昨日|きのう}、{窓|まど}もないのに、{店員|てんいん}さんが{雨|あめ}だとわかったんです。",
           "vi": "Anh Kitamura ơi, anh làm thêm ở trung tâm thương mại đúng không ạ? Hôm qua không có cửa sổ mà chị nhân viên vẫn biết trời mưa đấy.",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d04_l01.mp3",
-          "durationSec": 8.64
+          "durationSec": 8.64,
+          "ttsHash": "0a5f82b585e1"
         },
         {
           "id": "d04_l02",
@@ -186,7 +193,8 @@
           "jaRuby": "ああ、{日本|にほん}のデパートでは{普通|ふつう}、{雨|あめ}が{降|ふ}ったときや、やんだときに、{特別|とくべつ}な{音楽|おんがく}に{変|か}えるんだよ。だから、{店員|てんいん}は{天気|てんき}がわかるんだよ。",
           "vi": "À, ở trung tâm thương mại Nhật Bản thường khi trời đổ mưa hay tạnh mưa họ sẽ đổi sang một bản nhạc đặc biệt đấy. Nhờ vậy nhân viên mới biết được thời tiết!",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d04_l02.mp3",
-          "durationSec": 11.829
+          "durationSec": 11.829,
+          "ttsHash": "70df30b72191"
         }
       ]
     },
@@ -202,7 +210,8 @@
           "jaRuby": "デパートの{音楽|おんがく}は、{客|きゃく}を{楽|たの}しい{気持|きも}ちにするためのものだと{思|おも}っていました。でも、ほかにも{意味|いみ}があるのです。{面白|おもしろ}いと{思|おも}いました。",
           "vi": "Tôi cứ tưởng nhạc ở trung tâm thương mại chỉ để giúp khách hàng thấy vui vẻ. Nhưng hóa ra nó còn có ý nghĩa khác nữa. Thật thú vị!",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d05_l01.mp3",
-          "durationSec": 9.707
+          "durationSec": 9.707,
+          "ttsHash": "87fdc6004b9d"
         }
       ]
     }
@@ -221,7 +230,8 @@
           "omoshiroi"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_01.mp3",
-        "durationSec": 7.424
+        "durationSec": 7.424,
+        "ttsHash": "f607e97da7ca"
       },
       {
         "id": "dr_02",
@@ -234,7 +244,8 @@
           "tenin"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_02.mp3",
-        "durationSec": 12.789
+        "durationSec": 12.789,
+        "ttsHash": "153b025f6fab"
       },
       {
         "id": "dr_03",
@@ -246,7 +257,8 @@
           "tenin"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_03.mp3",
-        "durationSec": 12.896
+        "durationSec": 12.896,
+        "ttsHash": "f9bb52594758"
       },
       {
         "id": "dr_04",
@@ -259,7 +271,8 @@
           "kasa"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_04.mp3",
-        "durationSec": 10.379
+        "durationSec": 10.379,
+        "ttsHash": "5dc99cae5fcb"
       },
       {
         "id": "dr_05",
@@ -271,7 +284,8 @@
           "senpai"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_05.mp3",
-        "durationSec": 12.043
+        "durationSec": 12.043,
+        "ttsHash": "8be4f9137c37"
       },
       {
         "id": "dr_06",
@@ -284,7 +298,8 @@
           "tenin"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_06.mp3",
-        "durationSec": 13.013
+        "durationSec": 13.013,
+        "ttsHash": "991410955f73"
       },
       {
         "id": "dr_07",
@@ -297,7 +312,8 @@
           "omoshiroi"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/dr_07.mp3",
-        "durationSec": 9.707
+        "durationSec": 9.707,
+        "ttsHash": "87fdc6004b9d"
       }
     ],
     "vocab": [

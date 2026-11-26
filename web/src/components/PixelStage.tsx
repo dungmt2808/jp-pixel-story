@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { retroAudio } from "../audio/chiptune";
-import { drawBayerDitherOverlay } from "../engine/bayerDither";
 import {
   VIRTUAL_H,
   VIRTUAL_W,
@@ -12,10 +11,10 @@ import {
   drawSkylineIntro,
   type DragSceneState,
 } from "../engine/pixelRenderer";
-import type { DialogueLine, MiniGameChoice, StoryData } from "../types/story";
+import { useStageRuntime } from "../engine/useStageRuntime";
+import type { MiniGameChoice, StoryData } from "../types/story";
 import { CharacterCardModal } from "./CharacterCardModal";
 import { RubyText } from "./RubyText";
-import { resolveAssetUrl } from "../utils/assetUrl";
 
 interface PixelStageProps {
   story: StoryData;
@@ -25,13 +24,6 @@ interface PixelStageProps {
   onOpenReading: () => void;
 }
 
-declare global {
-  interface Window {
-    __JP_STORY_DONE__?: boolean;
-    __JP_STORY_EVENTS__?: Array<{ timeMs: number; type: string; audioUrl?: string }>;
-  }
-}
-
 export function PixelStage({
   story,
   showFurigana,
@@ -39,11 +31,19 @@ export function PixelStage({
   autoplay,
   onOpenReading,
 }: PixelStageProps) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const audioElRef = useRef<HTMLAudioElement | null>(null);
-
-  const [sceneIdx, setSceneIdx] = useState(0);
-  const [activeLine, setActiveLine] = useState<DialogueLine | null>(null);
+  const {
+    canvasRef,
+    assetsReady,
+    sceneIdx,
+    activeLine,
+    setActiveLine,
+    sceneStartRef,
+    playVoiceLine,
+    stopVoice,
+    goToScene,
+    markDone,
+    startLoop,
+  } = useStageRuntime({ story, muted });
   const [lineFinished, setLineFinished] = useState(false);
   const [showCard, setShowCard] = useState(false);
 
@@ -62,103 +62,14 @@ export function PixelStage({
   const effectStartRef = useRef<number>(0);
   const [warmedResult, setWarmedResult] = useState(true);
 
-  // Bayer dither transition state (0..1)
-  const transitionRef = useRef<{
-    active: boolean;
-    phase: "out" | "in";
-    amount: number;
-    nextIdx: number;
-  }>({ active: false, phase: "out", amount: 0, nextIdx: 0 });
-
-  const sceneStartRef = useRef<number>(performance.now());
-  const stageStartRef = useRef<number>(performance.now());
-
   // Virtual cursor for ?autoplay=true
   const [cursorPos, setCursorPos] = useState({ x: 50, y: 55, clicking: false });
 
   const currentScene = story.scenes[sceneIdx];
 
-  const logEvent = useCallback((type: string, audioUrl?: string) => {
-    if (!window.__JP_STORY_EVENTS__) window.__JP_STORY_EVENTS__ = [];
-    window.__JP_STORY_EVENTS__.push({
-      timeMs: Math.round(performance.now() - stageStartRef.current),
-      type,
-      audioUrl,
-    });
-  }, []);
-
-  const stopVoice = useCallback(() => {
-    if (audioElRef.current) {
-      audioElRef.current.pause();
-      audioElRef.current.currentTime = 0;
-    }
-    retroAudio.setDucked(false);
-  }, []);
-
-  const playVoiceLine = useCallback(
-    (line: DialogueLine): Promise<void> => {
-      return new Promise((resolve) => {
-        setActiveLine(line);
-        logEvent("voice", line.audioUrl);
-
-        if (!line.audioUrl) {
-          const fallbackMs = Math.max(1800, (line.durationSec ?? 2.5) * 1000);
-          window.setTimeout(resolve, fallbackMs);
-          return;
-        }
-
-        stopVoice();
-        const audio = new Audio(resolveAssetUrl(line.audioUrl));
-        audio.muted = muted;
-        audioElRef.current = audio;
-        retroAudio.setDucked(true);
-
-        let settled = false;
-        const done = () => {
-          if (settled) return;
-          settled = true;
-          retroAudio.setDucked(false);
-          resolve();
-        };
-
-        audio.addEventListener("ended", done, { once: true });
-        audio.addEventListener("error", () => {
-          window.setTimeout(done, Math.max(1500, (line.durationSec ?? 2.2) * 1000));
-        });
-
-        audio.play().catch(() => {
-          // Browser autoplay policy fallback (wait for expected duration)
-          window.setTimeout(done, Math.max(1500, (line.durationSec ?? 2.4) * 1000));
-        });
-      });
-    },
-    [logEvent, muted, stopVoice]
-  );
-
-  useEffect(() => {
-    if (audioElRef.current) {
-      audioElRef.current.muted = muted;
-    }
-    retroAudio.setMuted(muted);
-  }, [muted]);
-
-  const goToScene = useCallback(
-    (targetIdx: number) => {
-      if (transitionRef.current.active) return;
-      stopVoice();
-      retroAudio.playTransition();
-      transitionRef.current = {
-        active: true,
-        phase: "out",
-        amount: 0,
-        nextIdx: targetIdx,
-      };
-    },
-    [stopVoice]
-  );
-
   // Run scene narration sequence whenever sceneIdx changes
   useEffect(() => {
+    if (!assetsReady) return;
     let cancelled = false;
     sceneStartRef.current = performance.now();
     setLineFinished(false);
@@ -215,7 +126,7 @@ export function PixelStage({
       cancelled = true;
       stopVoice();
     };
-  }, [sceneIdx, currentScene, playVoiceLine, goToScene, stopVoice]);
+  }, [assetsReady, sceneIdx, currentScene, playVoiceLine, goToScene, sceneStartRef, setActiveLine, stopVoice]);
 
   // Handle Drag Completion (Scene 4)
   const completeDragScan = useCallback(async () => {
@@ -262,7 +173,7 @@ export function PixelStage({
 
   // Autoplay director for hands-free demo & Playwright MP4 recording (?autoplay=true)
   useEffect(() => {
-    if (!autoplay) return;
+    if (!autoplay || !assetsReady) return;
     let cancelled = false;
     const sleep = (ms: number) => new Promise((r) => window.setTimeout(r, ms));
 
@@ -343,10 +254,7 @@ export function PixelStage({
         }
       } else if (currentScene.type === "outro_celebrate" && lineFinished) {
         await sleep(1400);
-        if (!cancelled) {
-          window.__JP_STORY_DONE__ = true;
-          logEvent("done");
-        }
+        if (!cancelled) markDone();
       }
     };
 
@@ -363,23 +271,16 @@ export function PixelStage({
     goToScene,
     handleSelectChoice,
     lineFinished,
-    logEvent,
+    markDone,
+    assetsReady,
     sceneIdx,
   ]);
 
-  // Main 60fps Canvas Render Loop
+  // Main 60fps Canvas Render Loop (transition + integer-scaled present handled by the runtime)
   useEffect(() => {
-    let rafId = 0;
-    let lastTime = performance.now();
-
-    const render = (now: number) => {
-      const dt = Math.min((now - lastTime) / 1000, 0.1);
-      lastTime = now;
-
-      const canvas = canvasRef.current;
-      const ctx = canvas?.getContext("2d");
-      if (canvas && ctx) {
-        ctx.imageSmoothingEnabled = false;
+    if (!assetsReady) return;
+    return startLoop(
+      (ctx, now, dt) => {
         const t = now / 1000;
         const elapsed = (now - sceneStartRef.current) / 1000;
 
@@ -412,34 +313,11 @@ export function PixelStage({
             drawOutroCelebrate(ctx, t, warmedResult);
             break;
         }
-
-        // Update & draw Bayer Dither scene transition
-        const tr = transitionRef.current;
-        if (tr.active) {
-          if (tr.phase === "out") {
-            tr.amount += dt * 3.1;
-            if (tr.amount >= 1) {
-              tr.amount = 1;
-              tr.phase = "in";
-              setSceneIdx(tr.nextIdx);
-            }
-          } else {
-            tr.amount -= dt * 3.1;
-            if (tr.amount <= 0) {
-              tr.amount = 0;
-              tr.active = false;
-            }
-          }
-          drawBayerDitherOverlay(ctx, tr.amount);
-        }
-      }
-
-      rafId = window.requestAnimationFrame(render);
-    };
-
-    rafId = window.requestAnimationFrame(render);
-    return () => window.cancelAnimationFrame(rafId);
-  }, [chosenEffect, currentScene, warmedResult]);
+      },
+      "#0b0e1a",
+      3.1
+    );
+  }, [assetsReady, chosenEffect, currentScene, sceneStartRef, startLoop, warmedResult]);
 
   // Pointer helpers for Scene 4 Drag & Drop
   const toVirtualCoords = (e: React.PointerEvent<HTMLCanvasElement>) => {

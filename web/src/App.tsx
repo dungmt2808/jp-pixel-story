@@ -17,6 +17,7 @@ import type { DictationItem, DictationPack } from "./types/dictation";
 import type { DokkaiExamData } from "./types/dokkai";
 import type { GengoExamData } from "./types/gengo";
 import type { StoryData } from "./types/story";
+import { resolveStageEngine } from "./engine/stageEngines";
 import { resolveAssetUrl } from "./utils/assetUrl";
 import { parseRuby, rubyToKana } from "./utils/ruby";
 
@@ -639,71 +640,32 @@ export function App() {
             </div>
           </div>
 
-          {story.id === "tsuru-ongaeshi" ? (
-            <TsuruStage
-              key={`${story.id}-${autoplay ? "auto" : "play"}`}
-              story={story}
-              showFurigana={showFurigana}
-              muted={muted}
-              autoplay={autoplay}
-              onOpenReading={() => {
+          {(() => {
+            const stageKey = `${story.id}-${autoplay ? "auto" : "play"}`;
+            const common = {
+              story,
+              showFurigana,
+              muted,
+              autoplay,
+              onOpenReading: () => {
                 updateUrl(story.id, "reading", false);
                 setMode("reading");
-              }}
-              onOpenDictation={() => handleOpenDictation(story.id)}
-            />
-          ) : story.engine === "cinema" ? (
-            <CinemaStage
-              key={`${story.id}-${autoplay ? "auto" : "play"}`}
-              story={story}
-              showFurigana={showFurigana}
-              muted={muted}
-              autoplay={autoplay}
-              onOpenReading={() => {
-                updateUrl(story.id, "reading", false);
-                setMode("reading");
-              }}
-              onOpenDictation={() => handleOpenDictation(story.id)}
-            />
-          ) : story.scenes[0]?.type.startsWith("depato_") ? (
-            <DepatoStage
-              key={`${story.id}-${autoplay ? "auto" : "play"}`}
-              story={story}
-              showFurigana={showFurigana}
-              muted={muted}
-              autoplay={autoplay}
-              onOpenReading={() => {
-                updateUrl(story.id, "reading", false);
-                setMode("reading");
-              }}
-              onOpenDictation={() => handleOpenDictation(story.id)}
-            />
-          ) : story.engine === "hybrid" ? (
-            <HybridStage
-              key={`${story.id}-${autoplay ? "auto" : "play"}`}
-              story={story}
-              showFurigana={showFurigana}
-              muted={muted}
-              autoplay={autoplay}
-              onOpenReading={() => {
-                updateUrl(story.id, "reading", false);
-                setMode("reading");
-              }}
-              onOpenDictation={() => handleOpenDictation(story.id)}
-            />
-          ) : (
-            <PixelStage
-              key={`${story.id}-${autoplay ? "auto" : "play"}`}
-              story={story}
-              showFurigana={showFurigana}
-              muted={muted}
-              autoplay={autoplay}
-              onOpenReading={() => {
-                updateUrl(story.id, "reading", false);
-                setMode("reading");
-              }}
-            />
-          )}
+              },
+            };
+            const onOpenDictation = () => handleOpenDictation(story.id);
+            switch (resolveStageEngine(story)) {
+              case "tsuru":
+                return <TsuruStage key={stageKey} {...common} onOpenDictation={onOpenDictation} />;
+              case "cinema":
+                return <CinemaStage key={stageKey} {...common} onOpenDictation={onOpenDictation} />;
+              case "depato":
+                return <DepatoStage key={stageKey} {...common} onOpenDictation={onOpenDictation} />;
+              case "hybrid":
+                return <HybridStage key={stageKey} {...common} onOpenDictation={onOpenDictation} />;
+              default:
+                return <PixelStage key={stageKey} {...common} />;
+            }
+          })()}
         </div>
       ) : (
         <ReadingView

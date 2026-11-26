@@ -22,7 +22,8 @@
           "jaRuby": "{駅前|えきまえ}にちょっと{面白|おもしろ}い{魚料理|さかなりょうり}の{店|みせ}ができました。",
           "vi": "Trước nhà ga vừa mở một quán món cá khá là thú vị.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_1_s1.mp3",
-          "durationSec": 3.55
+          "durationSec": 3.55,
+          "ttsHash": "bf0233706cbc"
         },
         {
           "id": "d12_m4_1_s2",
@@ -31,7 +32,8 @@
           "jaRuby": "{客|きゃく}はまず、{広|ひろ}い{店|みせ}の{中|なか}に{作|つく}られた{池|いけ}で{魚|さかな}を{釣|つ}ります。",
           "vi": "Trước tiên, khách hàng sẽ câu cá tại cái hồ được xây ngay bên trong quán rộng lớn.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_1_s2.mp3",
-          "durationSec": 4.31
+          "durationSec": 4.31,
+          "ttsHash": "cae90661889e"
         },
         {
           "id": "d12_m4_1_s3",
@@ -40,7 +42,8 @@
           "jaRuby": "{釣|つ}った{魚|さかな}は、さしみや{天|てん}ぷらなど、{好|す}きな{料理|りょうり}にしてもらえます。",
           "vi": "Con cá câu được sẽ được quán chế biến thành món mình thích như sashimi hay tempura, v.v.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_1_s3.mp3",
-          "durationSec": 4.92
+          "durationSec": 4.92,
+          "ttsHash": "53d52263a535"
         },
         {
           "id": "d12_m4_1_s4",
@@ -48,7 +51,8 @@
           "jaRuby": "{魚|さかな}を{釣|つ}らないで、{料理|りょうり}だけ{頼|たの}むこともできますが、{値段|ねだん}は{自分|じぶん}で{釣|つ}ったほうが{安|やす}くなるそうです。",
           "vi": "Không câu cá mà chỉ gọi món thôi cũng được, nhưng nghe nói tự mình câu thì giá sẽ rẻ hơn đấy.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_1_s4.mp3",
-          "durationSec": 6.91
+          "durationSec": 6.91,
+          "ttsHash": "57ea61d41386"
         }
       ],
       "questions": [
@@ -157,7 +161,8 @@
           "jaRuby": "13{時|じ}に、あおた{銀行|ぎんこう}の{川野|かわの}{様|さま}から{電話|でんわ}がありました。",
           "vi": "Lúc 13:00 có điện thoại từ ông Kawano bên ngân hàng Aota gọi đến ạ.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_2_s1.mp3",
-          "durationSec": 4.95
+          "durationSec": 4.95,
+          "ttsHash": "83862e768d9d"
         },
         {
           "id": "d12_m4_2_s2",
@@ -165,7 +170,8 @@
           "jaRuby": "あしたの15{時|じ}の{会議|かいぎ}について、{相談|そうだん}したいことがあるそうです。",
           "vi": "Nghe nói ông ấy có việc muốn trao đổi về cuộc họp lúc 15:00 ngày mai.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_2_s2.mp3",
-          "durationSec": 5.11
+          "durationSec": 5.11,
+          "ttsHash": "6e3309e99d2d"
         },
         {
           "id": "d12_m4_2_s3",
@@ -174,7 +180,8 @@
           "jaRuby": "{川野|かわの}{様|さま}は、{今日|きょう}は16{時|じ}から{出|で}かけるので、{出|で}かけるまでに{電話|でんわ}がほしいとおっしゃっていました。",
           "vi": "Ông Kawano bảo rằng hôm nay từ 16:00 ông ấy sẽ ra ngoài, nên muốn nhận được điện thoại gọi lại trước khi ông ấy đi.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_2_s3.mp3",
-          "durationSec": 7.77
+          "durationSec": 7.77,
+          "ttsHash": "9b8a241656cc"
         },
         {
           "id": "d12_m4_2_s4",
@@ -182,7 +189,8 @@
           "jaRuby": "よろしくお{願|ねが}いします。",
           "vi": "Xin nhờ Trưởng phòng xử lý giúp ạ.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_2_s4.mp3",
-          "durationSec": 1.81
+          "durationSec": 1.81,
+          "ttsHash": "5259fd90bd01"
         }
       ],
       "timeline": [
@@ -303,7 +311,8 @@
           "jaRuby": "{犬|いぬ}や{猫|ねこ}を{飼|か}っている{人|ひと}は、なかなか{旅行|りょこう}に{行|い}けないと{言|い}います。",
           "vi": "Những người nuôi chó hoặc mèo thường nói rằng rất khó đi du lịch được.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_3_s1.mp3",
-          "durationSec": 4.58
+          "durationSec": 4.58,
+          "ttsHash": "56f6c316d671"
         },
         {
           "id": "d12_m4_3_s2",
@@ -311,7 +320,8 @@
           "jaRuby": "ペットを{連|つ}れていくのも、{家|いえ}にペットだけ{置|お}いていくのも{難|むずか}しいからです。",
           "vi": "Bởi vì dẫn thú cưng đi theo cũng khó, mà bỏ mỗi thú cưng ở nhà lại cũng khó.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_3_s2.mp3",
-          "durationSec": 5.29
+          "durationSec": 5.29,
+          "ttsHash": "2d2f1b227954"
         },
         {
           "id": "d12_m4_3_s3",
@@ -320,7 +330,8 @@
           "jaRuby": "でも{最近|さいきん}、ペットと{一緒|いっしょ}に{泊|と}まれるホテルが{増|ふ}えています。",
           "vi": "Nhưng gần đây, số khách sạn có thể ở trọ cùng thú cưng đang tăng lên.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_3_s3.mp3",
-          "durationSec": 4.7
+          "durationSec": 4.7,
+          "ttsHash": "ff49dd02fe60"
         },
         {
           "id": "d12_m4_3_s4",
@@ -328,7 +339,8 @@
           "jaRuby": "{犬|いぬ}を{飼|か}っている{友達|ともだち}は、{旅行|りょこう}に{行|い}きやすくなったと{喜|よろこ}んでいます。",
           "vi": "Người bạn nuôi chó của tôi đang rất vui vì đã dễ đi du lịch hơn.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m4_3_s4.mp3",
-          "durationSec": 4.94
+          "durationSec": 4.94,
+          "ttsHash": "4228771a71d6"
         }
       ],
       "questions": [
@@ -695,7 +707,8 @@
           "jaRuby": "「ニシヤマ」で{楽|たの}しく{絵|え}を{習|なら}ってみませんか。",
           "vi": "Bạn có muốn thử học vẽ thật vui vẻ tại lớp vẽ 'Nishiyama' không?",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m6_s1.mp3",
-          "durationSec": 3.26
+          "durationSec": 3.26,
+          "ttsHash": "8b01b07883ac"
         },
         {
           "id": "d12_m6_s2",
@@ -703,7 +716,8 @@
           "jaRuby": "※1{週間|しゅうかん}に2{回|かい}あるクラスは、どちらの{曜日|ようび}に{来|く}るか{決|き}めてください。{曜日|ようび}はあとで{変|か}えることができます。",
           "vi": "※ Với các lớp có 2 buổi/tuần, hãy chọn xem bạn sẽ đến vào thứ mấy. Sau này bạn có thể đổi ngày học.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m6_s2.mp3",
-          "durationSec": 6.98
+          "durationSec": 6.98,
+          "ttsHash": "0194176b7ce3"
         },
         {
           "id": "d12_m6_s3",
@@ -711,7 +725,8 @@
           "jaRuby": "※{教室|きょうしつ}に{入|はい}るかどうか{決|き}める{前|まえ}に、クラスの{見学|けんがく}ができます。",
           "vi": "※ Trước khi quyết định có đăng ký học hay không, bạn có thể đến tham quan lớp học trước.",
           "audioUrl": "/stories/jlpt-n4-2025-12-dokkai/audio/d12_m6_s3.mp3",
-          "durationSec": 4.36
+          "durationSec": 4.36,
+          "ttsHash": "b192cc0f3ea2"
         }
       ],
       "questions": [

@@ -39,13 +39,18 @@ Every lesson lives in `web/public/stories/<id>/` and is registered in `web/publi
 
 ## Choose the Right Reusable Engine (Zero Boilerplate!)
 
-| Content Type | `kind` in `index.json` | Data File | Engine Component | Audio / Image MCP Tools |
+| Content Type | `kind` / `engine` | Data File | Engine Component | Audio / Image MCP Tools |
 | :--- | :--- | :--- | :--- | :--- |
-| **Animated Story / JLPT 問題5** | `"engine"` (`engine: "cinema"`) | `story.json` | `CinemaStage` + `ReadingView` + auto `DictationView` | `voicevox_generate_story_audio`, `pixellab_clean_background`, `pixellab_clean_sprite` |
+| **NEW animated story / situation / JLPT 問題5** | `"engine"` + `story.engine: "cinema"` | `story.json` | `CinemaStage` (100% data-driven: backdrops, overlays, animated sprite cast) + `ReadingView` + auto `DictationView` | `pixellab_clean_background`, `pixellab_slice_spritesheet(registration="bust")`, `voicevox_generate_story_audio` |
+| Legacy bespoke stages | `story.engine`: `"tsuru"`, `"depato"`, `"hybrid"`, `"pixel"` | `story.json` | `TsuruStage`, `DepatoStage`, `HybridStage`, `PixelStage` (all on the shared `useStageRuntime`) | same |
 | **JLPT Listening (`聴解`)** | `"jlpt-choukai"` | `choukai.json` + `dictation.json` | `JlptChoukaiView` + native `DictationView` | `jlpt_clean_exam_image` + FFmpeg slice |
 | **JLPT Reading (`読解 問題4・6`)** | `"jlpt-dokkai"` | `dokkai.json` | `JlptDokkaiView` + auto `DictationView` | `voicevox_generate_dokkai_audio` |
 | **JLPT Vocab & Grammar (`言語知識`)** | `"jlpt-gengo"` | `gengo.json` | `JlptGengoView` | (text + interactive `★` scramble & cloze essay) |
 | **Custom Bespoke HTML** | `"standalone"` | `index.html` + `dictation.json` | Standalone Canvas + `DictationView` | `voicevox_generate_standalone_pack` |
+
+**Never write a new per-story stage component.** New stories use `engine: "cinema"`; if a scene needs a new
+look, add ONE reusable entry to `web/src/engine/cinemaBackdrops.ts` (`PROCEDURAL_BACKDROPS` / `OVERLAYS`).
+Stages are routed by `story.engine` (`web/src/engine/stageEngines.ts`), never by story id.
 
 Read schema references before creating files:
 - Stories & Cinema format: [references/story-schema.md](./references/story-schema.md)
@@ -54,17 +59,26 @@ Read schema references before creating files:
 
 ## Workflow Steps
 
-1. **Author compact JSON** using `{漢字|かんじ}` strings (~75% fewer tokens than segment arrays).
-2. **Process Art & Exam Cards:**
-   - Stories: lock `320×200` backgrounds with `pixellab_clean_background(..., palette_name="ramen_midnight")` and `96×96` portraits with `pixellab_clean_sprite` / `pixellab_slice_spritesheet(..., bg_mode="chroma_green")`. Stage portraits frameless flush-bottom (`bottomY = VIRTUAL_H`).
+1. **Author compact JSON** using `{漢字|かんじ}` strings (~75% fewer tokens than segment arrays). Reference example: `web/public/stories/hanami-first/story.json`.
+2. **Process Art & Exam Cards** (master palette `jp_story_master`, the tools' default):
+   - Backgrounds: `pixellab_clean_background(...)` -> `320x200`.
+   - Characters: generate ONE expression sheet per character on pure `#00FF00` (frames: neutral, talk, blink, happy) and run
+     `pixellab_slice_spritesheet(frame_width=96, frame_height=96, bg_mode="chroma_green", registration="bust", clips={"idle": {"frames": [0,0,0,0,0,0,0,0,0,0,0,2], "fps": 4}, "talk": {"frames": [1,0], "fps": 7}, "happy": [3]})`.
+     All frames share one scale + anchor; `registration="bust"` removes AI drift for portraits cut by the frame edge (`"centroid"` for full-body sprites).
+     Reference the sheet as `assets.sprites.<key> = ".../meta.json"` and in `cast.left/right.sprite`.
+   - Single props/portraits: `pixellab_clean_sprite` (keeps aspect ratio). Existing off-palette PNGs: `pixellab_relock_palette`.
+   - Never scale pixel art by fractions in code: use `drawPixelImage` / `drawSpriteFrame` / `drawPixelZoom` (whole-number scales only).
    - JLPT Listening/Reading cards: strip colored watermarks with `jlpt_clean_exam_image`.
-3. **Generate VOICEVOX MP3 Audio:**
-   - `story.json` → `voicevox_generate_story_audio(audio_format="mp3")`
-   - `dokkai.json` → `voicevox_generate_dokkai_audio(audio_format="mp3")`
-   - Standalone HTML → `voicevox_generate_standalone_pack`
+3. **Generate VOICEVOX MP3 Audio** (hash-aware: re-running only re-synthesizes new or edited lines; `force=True` only when switching engines/voices globally):
+   - `story.json` -> `voicevox_generate_story_audio(audio_format="mp3")`
+   - `dokkai.json` -> `voicevox_generate_dokkai_audio(audio_format="mp3")`
+   - Standalone HTML -> `voicevox_generate_standalone_pack` (merge-safe: keeps hand-made manifest entries & dictation.json)
 4. **Register in `web/public/stories/index.json`** with accurate counts and `category`.
 5. **Mandatory Verification Gate (Before Commit / Push):**
    - Run MCP tool **`story_validate_catalog`** on `web/public/stories` (must return `ok: true`, `total_issues: 0`, `orphan_folders: []`).
+     It now also fails on `[Off-Palette Asset]`, `[Missing Asset]`, broken sprite `meta.json`, and `[Stale Audio]` (text edited after synthesis).
    - Run backend tests: `cd mcp-server && PYTHONPATH=. uv run pytest -v`
    - Run frontend tests & build: `cd web && npm test && npm run build`
-   - Deploy live to GitHub Pages via `git push origin main` (CI automatically re-runs frontend tests, Python validator/pytest, and Vite build before deploying!).
+   - Play every animated story end-to-end on a virtual clock: `cd exporter && npm run check:all -- --url <preview url>`
+   - Optional MP4: `cd exporter && node export_video.mjs --story <id>` (deterministic, frame-exact A/V sync; voices are muxed from the clip files).
+   - Deploy live to GitHub Pages via `git push origin main` (CI re-runs all of the above before deploying).

@@ -108,6 +108,40 @@ def remove_background(
     return Image.fromarray(out, mode="RGBA")
 
 
+def _downsample_rgba(
+    arr: np.ndarray,
+    out_w: int,
+    out_h: int,
+    *,
+    alpha_threshold: int = 128,
+    coverage: float = 0.40,
+) -> np.ndarray:
+    """Area-sample an RGBA array onto an ``out_w x out_h`` grid with hard binary alpha.
+
+    Every target pixel looks at the source cell it covers: it becomes opaque only when at
+    least ``coverage`` of that cell is opaque, and takes the per-channel median colour of the
+    opaque source pixels (robust against anti-aliased edges, so no mixels or halos).
+    """
+    src_h, src_w = arr.shape[:2]
+    out = np.zeros((out_h, out_w, 4), dtype=np.uint8)
+    ys = [int(round(i * src_h / out_h)) for i in range(out_h + 1)]
+    xs = [int(round(i * src_w / out_w)) for i in range(out_w + 1)]
+    for ty in range(out_h):
+        y0 = min(ys[ty], src_h - 1)
+        y1 = max(y0 + 1, ys[ty + 1])
+        for tx in range(out_w):
+            x0 = min(xs[tx], src_w - 1)
+            x1 = max(x0 + 1, xs[tx + 1])
+            cell = arr[y0:y1, x0:x1]
+            opaque_mask = cell[:, :, 3] >= alpha_threshold
+            if np.mean(opaque_mask) < coverage:
+                continue
+            opaque_rgb = cell[:, :, :3][opaque_mask]
+            out[ty, tx, :3] = np.median(opaque_rgb, axis=0).astype(np.uint8)
+            out[ty, tx, 3] = 255
+    return out
+
+
 def snap_to_pixel_grid(
     img: Image.Image,
     target_width: int,
@@ -115,58 +149,88 @@ def snap_to_pixel_grid(
     *,
     alpha_threshold: int = 128,
 ) -> Image.Image:
-    """Downscale an image to a true crisp pixel-art grid with hard binary alpha (no anti-aliasing)."""
-    rgba = img.convert("RGBA")
-    arr = np.array(rgba, dtype=np.uint8)
-    src_h, src_w, _ = arr.shape
+    """Downscale an image to a crisp pixel-art grid with hard binary alpha (no anti-aliasing).
 
-    out = np.zeros((target_height, target_width, 4), dtype=np.uint8)
-
-    # Sample the center-weighted region of each target pixel cell to avoid blurry edges / mixels
-    for ty in range(target_height):
-        y0 = int(round(ty * src_h / target_height))
-        y1 = max(y0 + 1, int(round((ty + 1) * src_h / target_height)))
-        for tx in range(target_width):
-            x0 = int(round(tx * src_w / target_width))
-            x1 = max(x0 + 1, int(round((tx + 1) * src_w / target_width)))
-            cell = arr[y0:y1, x0:x1]
-
-            opaque_mask = cell[:, :, 3] >= alpha_threshold
-            # Pixel is visible only if at least 40% of its source cell is opaque
-            if np.mean(opaque_mask) < 0.40:
-                continue
-
-            opaque_rgb = cell[:, :, :3][opaque_mask]
-            # Use median per channel inside the cell: robust against edge anti-aliasing artifacts
-            med_rgb = np.median(opaque_rgb, axis=0).astype(np.uint8)
-            out[ty, tx, :3] = med_rgb
-            out[ty, tx, 3] = 255
-
-    return Image.fromarray(out, mode="RGBA")
-
-
-def quantize_to_palette(img: Image.Image, palette_name: str) -> Image.Image:
-    """Lock every visible pixel to the closest color in a curated retro palette."""
-    if palette_name == "none":
-        return img.convert("RGBA")
-
-    palette_rgb = np.array(get_palette_rgb(palette_name), dtype=np.int32)
+    NOTE: this maps the whole image onto the target size and does NOT preserve aspect ratio.
+    Sprite pipelines use :func:`fit_sprite` instead, which keeps proportions.
+    """
     arr = np.array(img.convert("RGBA"), dtype=np.uint8)
-    visible = arr[:, :, 3] > 0
-
-    if not np.any(visible):
-        return img.convert("RGBA")
-
-    pixels = arr[:, :, :3][visible].astype(np.int32)  # (N, 3)
-    # Vectorized Euclidean distance in RGB space: (N, 1, 3) - (1, P, 3)
-    diffs = pixels[:, None, :] - palette_rgb[None, :, :]
-    dists = np.sum(diffs * diffs, axis=-1)
-    nearest_idx = np.argmin(dists, axis=-1)
-    snapped_rgb = palette_rgb[nearest_idx].astype(np.uint8)
-
-    out = arr.copy()
-    out[:, :, :3][visible] = snapped_rgb
+    out = _downsample_rgba(arr, target_width, target_height, alpha_threshold=alpha_threshold)
     return Image.fromarray(out, mode="RGBA")
+
+
+def _alpha_bbox(arr: np.ndarray, alpha_threshold: int = 128) -> tuple[int, int, int, int] | None:
+    """Return (x0, y0, x1, y1) (exclusive) of pixels with alpha >= threshold, or None."""
+    mask = arr[:, :, 3] >= alpha_threshold
+    if not np.any(mask):
+        return None
+    rows = np.where(mask.any(axis=1))[0]
+    cols = np.where(mask.any(axis=0))[0]
+    return int(cols[0]), int(rows[0]), int(cols[-1]) + 1, int(rows[-1]) + 1
+
+
+def _fit_scale(content_w: int, content_h: int, box_w: int, box_h: int) -> float:
+    """Uniform scale that fits content inside box. Upscales only by whole integers (crisp)."""
+    scale = min(box_w / content_w, box_h / content_h)
+    if scale >= 1.0:
+        return float(int(scale))
+    return scale
+
+
+def _place_offset(
+    out_w: int, out_h: int, frame_w: int, frame_h: int, *, align_bottom: bool, padding: int
+) -> tuple[int, int]:
+    x = (frame_w - out_w) // 2
+    y = (frame_h - out_h - padding) if align_bottom else (frame_h - out_h) // 2
+    return x, max(0, y)
+
+
+def fit_sprite(
+    img: Image.Image,
+    target_width: int,
+    target_height: int,
+    *,
+    align_bottom: bool = True,
+    padding: int = 1,
+    fit_mode: str = "bbox",
+) -> Image.Image:
+    """Scale a background-removed image into a target cell WITHOUT distorting its proportions.
+
+    fit_mode:
+      - 'bbox'  : crop tight to the visible subject, then fit it inside the cell (default).
+      - 'frame' : keep the source framing (centre-crop the whole image to the cell aspect ratio).
+    """
+    arr = np.array(img.convert("RGBA"), dtype=np.uint8)
+    if fit_mode == "frame":
+        src_h, src_w = arr.shape[:2]
+        target_ratio = target_width / float(target_height)
+        if src_w / float(src_h) > target_ratio:
+            new_w = int(round(src_h * target_ratio))
+            left = (src_w - new_w) // 2
+            arr = arr[:, left : left + new_w]
+        else:
+            new_h = int(round(src_w / target_ratio))
+            top = (src_h - new_h) // 2
+            arr = arr[top : top + new_h]
+        out = _downsample_rgba(arr, target_width, target_height)
+        return Image.fromarray(out, mode="RGBA")
+    if fit_mode != "bbox":
+        raise ValueError(f"Unsupported fit_mode '{fit_mode}'. Use bbox or frame.")
+
+    canvas = np.zeros((target_height, target_width, 4), dtype=np.uint8)
+    bbox = _alpha_bbox(arr)
+    if bbox is None:
+        return Image.fromarray(canvas, mode="RGBA")
+    x0, y0, x1, y1 = bbox
+    content = arr[y0:y1, x0:x1]
+    cw, ch = x1 - x0, y1 - y0
+    scale = _fit_scale(cw, ch, max(1, target_width - 2 * padding), max(1, target_height - 2 * padding))
+    out_w = max(1, int(round(cw * scale)))
+    out_h = max(1, int(round(ch * scale)))
+    small = _downsample_rgba(content, out_w, out_h)
+    px_, py_ = _place_offset(out_w, out_h, target_width, target_height, align_bottom=align_bottom, padding=padding)
+    canvas[py_ : py_ + out_h, px_ : px_ + out_w] = small
+    return Image.fromarray(canvas, mode="RGBA")
 
 
 def align_sprite_frame(
@@ -177,28 +241,70 @@ def align_sprite_frame(
     align_bottom: bool = True,
     padding: int = 1,
 ) -> Image.Image:
-    """Crop tight to character bounding box and place cleanly aligned in target cell."""
-    bbox = frame.getbbox()
-    canvas = Image.new("RGBA", (target_width, target_height), (0, 0, 0, 0))
-    if bbox is None:
-        return canvas
+    """Crop tight to the subject and place it in the target cell, keeping aspect ratio.
 
-    cropped = frame.crop(bbox)
-    cw, ch = cropped.size
+    Kept for backwards compatibility; equivalent to ``fit_sprite(..., fit_mode='bbox')``.
+    """
+    return fit_sprite(frame, target_width, target_height, align_bottom=align_bottom, padding=padding)
 
-    max_w = max(1, target_width - padding * 2)
-    max_h = max(1, target_height - padding * 2)
-    if cw > max_w or ch > max_h:
-        scale = min(max_w / cw, max_h / ch)
-        new_w = max(1, int(round(cw * scale)))
-        new_h = max(1, int(round(ch * scale)))
-        cropped = cropped.resize((new_w, new_h), resample=Image.Resampling.NEAREST)
-        cw, ch = cropped.size
 
-    paste_x = (target_width - cw) // 2
-    paste_y = (target_height - ch - padding) if align_bottom else (target_height - ch) // 2
-    canvas.paste(cropped, (paste_x, max(0, paste_y)), cropped)
-    return canvas
+# ---------------------------------------------------------------------------
+# Perceptual palette matching (OKLab)
+# ---------------------------------------------------------------------------
+
+
+def srgb_to_oklab(rgb: np.ndarray) -> np.ndarray:
+    """Convert sRGB values (0-255, shape (..., 3)) to OKLab (perceptually uniform)."""
+    c = np.asarray(rgb, dtype=np.float64) / 255.0
+    lin = np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
+    r, g, b = lin[..., 0], lin[..., 1], lin[..., 2]
+    l_ = np.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b)
+    m_ = np.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b)
+    s_ = np.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b)
+    return np.stack(
+        [
+            0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_,
+            1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_,
+            0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_,
+        ],
+        axis=-1,
+    )
+
+
+def nearest_palette_indices(pixels_rgb: np.ndarray, palette_rgb: np.ndarray) -> np.ndarray:
+    """Index of the perceptually closest palette colour (OKLab distance) for every pixel."""
+    pix_lab = srgb_to_oklab(pixels_rgb.reshape(-1, 3))
+    pal_lab = srgb_to_oklab(np.asarray(palette_rgb).reshape(-1, 3))
+    idx = np.empty(len(pix_lab), dtype=np.int64)
+    chunk = 65536
+    for start in range(0, len(pix_lab), chunk):
+        part = pix_lab[start : start + chunk]
+        d = np.sum((part[:, None, :] - pal_lab[None, :, :]) ** 2, axis=-1)
+        idx[start : start + chunk] = np.argmin(d, axis=-1)
+    return idx
+
+
+def quantize_to_palette(img: Image.Image, palette_name: str) -> Image.Image:
+    """Lock every visible pixel to the perceptually closest colour of a curated palette."""
+    if palette_name == "none":
+        return img.convert("RGBA")
+
+    palette_rgb = np.array(get_palette_rgb(palette_name), dtype=np.uint8)
+    arr = np.array(img.convert("RGBA"), dtype=np.uint8)
+    visible = arr[:, :, 3] > 0
+    if not np.any(visible):
+        return img.convert("RGBA")
+
+    nearest_idx = nearest_palette_indices(arr[:, :, :3][visible], palette_rgb)
+    out = arr.copy()
+    out[:, :, :3][visible] = palette_rgb[nearest_idx]
+    return Image.fromarray(out, mode="RGBA")
+
+
+def _used_colors(img: Image.Image) -> int:
+    arr = np.array(img.convert("RGBA"))
+    vis = arr[arr[:, :, 3] > 0][:, :3]
+    return int(len(np.unique(vis, axis=0))) if len(vis) else 0
 
 
 def process_pixel_sprite(
@@ -207,25 +313,27 @@ def process_pixel_sprite(
     *,
     target_width: int = 48,
     target_height: int = 64,
-    palette_name: str = "midnight_tokyo",
+    palette_name: str = "jp_story_master",
     bg_mode: str = "auto",
     tolerance: int = 48,
     align_bottom: bool = True,
+    fit_mode: str = "bbox",
 ) -> dict[str, Any]:
-    """Process a single AI-generated character/object image into a crisp pixel-art PNG."""
+    """Process a single AI-generated character/object image into a crisp pixel-art PNG.
+
+    Proportions are always preserved (the subject is fitted, never stretched).
+    """
     inp = Path(input_path).expanduser().resolve()
     out = Path(output_path).expanduser().resolve()
     out.parent.mkdir(parents=True, exist_ok=True)
 
     img = Image.open(inp)
     clean = remove_background(img, mode=bg_mode, tolerance=tolerance)
-    snapped = snap_to_pixel_grid(clean, target_width, target_height)
-    aligned = align_sprite_frame(snapped, target_width, target_height, align_bottom=align_bottom)
-    locked = quantize_to_palette(aligned, palette_name)
+    fitted = fit_sprite(
+        clean, target_width, target_height, align_bottom=align_bottom, fit_mode=fit_mode
+    )
+    locked = quantize_to_palette(fitted, palette_name)
     locked.save(out, format="PNG")
-
-    arr = np.array(locked)
-    used_colors = np.unique(arr[arr[:, :, 3] > 0][:, :3], axis=0)
 
     return {
         "ok": True,
@@ -233,8 +341,33 @@ def process_pixel_sprite(
         "output_path": str(out),
         "size": [target_width, target_height],
         "palette": palette_name,
-        "unique_colors": int(len(used_colors)),
+        "fit_mode": fit_mode,
+        "unique_colors": _used_colors(locked),
     }
+
+
+def _normalize_clips(
+    clips: dict[str, Any] | None, frame_count: int, fps: float
+) -> dict[str, dict[str, Any]]:
+    """Normalise clip definitions to {name: {frames: [...], fps: float, loop: bool}}."""
+    if not clips:
+        return {"all": {"frames": list(range(frame_count)), "fps": fps, "loop": True}}
+    result: dict[str, dict[str, Any]] = {}
+    for name, spec in clips.items():
+        if isinstance(spec, list):
+            spec = {"frames": spec}
+        if not isinstance(spec, dict) or not isinstance(spec.get("frames"), list):
+            raise ValueError(f"Clip '{name}' must be a list of frame indices or {{frames: [...]}}.")
+        frames = [int(f) for f in spec["frames"]]
+        bad = [f for f in frames if f < 0 or f >= frame_count]
+        if not frames or bad:
+            raise ValueError(f"Clip '{name}' has invalid frame indices {bad or frames} (0..{frame_count - 1}).")
+        result[name] = {
+            "frames": frames,
+            "fps": float(spec.get("fps", fps)),
+            "loop": bool(spec.get("loop", True)),
+        }
+    return result
 
 
 def process_sprite_sheet(
@@ -245,55 +378,127 @@ def process_sprite_sheet(
     rows: int = 1,
     frame_width: int = 48,
     frame_height: int = 64,
-    palette_name: str = "midnight_tokyo",
+    palette_name: str = "jp_story_master",
     bg_mode: str = "auto",
     tolerance: int = 48,
     align_bottom: bool = True,
+    registration: str = "cell",
+    fps: float = 8.0,
+    clips: dict[str, Any] | None = None,
+    padding: int = 1,
 ) -> dict[str, Any]:
-    """Slice a raw AI spritesheet grid into clean pixel-perfect frames + uniform horizontal strip."""
+    """Slice a raw AI spritesheet grid into registered, pixel-perfect animation frames.
+
+    All frames share ONE scale factor and ONE anchor so the character never stretches,
+    shrinks or jitters between frames.
+
+    registration:
+      - 'cell'     : trust the source layout; every frame keeps its position inside its cell.
+      - 'centroid' : AI sheets often drift; shift every frame so the silhouette centroid (x)
+                     and the ground line (bottom y) line up before the shared crop.
+      - 'bust'     : like 'centroid' but anchored on the head (top row + head centroid-x), for
+                     portrait/expression sheets whose torso is cut off by the cell edge.
+    """
+    if registration not in ("cell", "centroid", "bust"):
+        raise ValueError("registration must be 'cell', 'centroid' or 'bust'.")
     inp = Path(input_path).expanduser().resolve()
     out_dir = Path(output_dir).expanduser().resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
 
     raw = Image.open(inp).convert("RGBA")
     src_w, src_h = raw.size
-    cell_w = src_w / cols
-    cell_h = src_h / rows
+    cell_w = src_w // cols
+    cell_h = src_h // rows
 
-    frames: list[Image.Image] = []
-    frame_files: list[str] = []
-
-    idx = 0
+    # 1. Clean every cell (identical cell size so a shared crop box maps identically).
+    cells: list[np.ndarray] = []
     for r in range(rows):
         for c in range(cols):
-            box = (
-                int(round(c * cell_w)),
-                int(round(r * cell_h)),
-                int(round((c + 1) * cell_w)),
-                int(round((r + 1) * cell_h)),
-            )
-            sub = raw.crop(box)
+            left = int(round(c * src_w / cols))
+            top = int(round(r * src_h / rows))
+            sub = raw.crop((left, top, left + cell_w, top + cell_h))
             clean = remove_background(sub, mode=bg_mode, tolerance=tolerance)
-            snapped = snap_to_pixel_grid(clean, frame_width, frame_height)
-            aligned = align_sprite_frame(
-                snapped, frame_width, frame_height, align_bottom=align_bottom
-            )
-            locked = quantize_to_palette(aligned, palette_name)
+            cells.append(np.array(clean, dtype=np.uint8))
 
-            frame_path = out_dir / f"frame_{idx:02d}.png"
-            locked.save(frame_path, format="PNG")
-            frames.append(locked)
-            frame_files.append(str(frame_path))
-            idx += 1
+    # 2. Optional drift correction across frames:
+    #    'centroid' -> silhouette centroid-x + ground line (bottom row): full-body sprites;
+    #    'bust'     -> head centroid-x (top 40% of the silhouette) + top row: busts/portraits
+    #                  that are cut off by the cell edge, so their bottom row cannot be trusted.
+    if registration in ("centroid", "bust"):
+        anchors: list[tuple[float, int] | None] = []
+        for arr in cells:
+            mask = arr[:, :, 3] >= 128
+            if not np.any(mask):
+                anchors.append(None)
+                continue
+            rows = np.where(mask.any(axis=1))[0]
+            top, bottom = int(rows[0]), int(rows[-1])
+            if registration == "bust":
+                head_end = top + max(1, int((bottom - top + 1) * 0.4))
+                xs = np.where(mask[top:head_end])[1]
+                anchors.append((float(xs.mean()), top))
+            else:
+                xs = np.where(mask)[1]
+                anchors.append((float(xs.mean()), bottom))
+        valid = [a for a in anchors if a is not None]
+        if valid:
+            ref_x = float(np.median([a[0] for a in valid]))
+            ref_b = int(np.median([a[1] for a in valid]))
+            shifted: list[np.ndarray] = []
+            for arr, a in zip(cells, anchors):
+                if a is None:
+                    shifted.append(arr)
+                    continue
+                dx = int(round(ref_x - a[0]))
+                dy = ref_b - a[1]
+                moved = np.zeros_like(arr)
+                h, w = arr.shape[:2]
+                ys0, ys1 = max(0, dy), min(h, h + dy)
+                xs0, xs1 = max(0, dx), min(w, w + dx)
+                moved[ys0:ys1, xs0:xs1] = arr[ys0 - dy : ys1 - dy, xs0 - dx : xs1 - dx]
+                shifted.append(moved)
+            cells = shifted
 
-    # Assemble clean horizontal strip spritesheet
+    # 3. Union bounding box over all frames -> one shared crop + one shared scale.
+    boxes = [b for b in (_alpha_bbox(a) for a in cells) if b is not None]
+    frame_files: list[str] = []
+    frames: list[Image.Image] = []
+    if boxes:
+        ux0 = min(b[0] for b in boxes)
+        uy0 = min(b[1] for b in boxes)
+        ux1 = max(b[2] for b in boxes)
+        uy1 = max(b[3] for b in boxes)
+        uw, uh = ux1 - ux0, uy1 - uy0
+        scale = _fit_scale(uw, uh, max(1, frame_width - 2 * padding), max(1, frame_height - 2 * padding))
+        out_w = max(1, int(round(uw * scale)))
+        out_h = max(1, int(round(uh * scale)))
+        off_x, off_y = _place_offset(
+            out_w, out_h, frame_width, frame_height, align_bottom=align_bottom, padding=padding
+        )
+    else:
+        ux0 = uy0 = ux1 = uy1 = 0
+        scale, out_w, out_h, off_x, off_y = 1.0, frame_width, frame_height, 0, 0
+
+    for idx, arr in enumerate(cells):
+        canvas = np.zeros((frame_height, frame_width, 4), dtype=np.uint8)
+        if boxes:
+            small = _downsample_rgba(arr[uy0:uy1, ux0:ux1], out_w, out_h)
+            canvas[off_y : off_y + out_h, off_x : off_x + out_w] = small
+        locked = quantize_to_palette(Image.fromarray(canvas, mode="RGBA"), palette_name)
+        frame_path = out_dir / f"frame_{idx:02d}.png"
+        locked.save(frame_path, format="PNG")
+        frames.append(locked)
+        frame_files.append(str(frame_path))
+
+    # 4. Uniform horizontal strip.
     strip = Image.new("RGBA", (frame_width * len(frames), frame_height), (0, 0, 0, 0))
     for i, fr in enumerate(frames):
         strip.paste(fr, (i * frame_width, 0))
-
     strip_path = out_dir / "spritesheet.png"
     strip.save(strip_path, format="PNG")
 
+    norm_clips = _normalize_clips(clips, len(frames), fps)
+    pivot = {"x": off_x + out_w // 2, "y": off_y + out_h} if boxes else {"x": frame_width // 2, "y": frame_height}
     meta = {
         "spritesheet": "spritesheet.png",
         "frameWidth": frame_width,
@@ -301,6 +506,11 @@ def process_sprite_sheet(
         "frameCount": len(frames),
         "palette": palette_name,
         "frames": [f"frame_{i:02d}.png" for i in range(len(frames))],
+        "pivot": pivot,
+        "fps": float(fps),
+        "clips": norm_clips,
+        "scale": round(float(scale), 6),
+        "registration": registration,
     }
     meta_path = out_dir / "meta.json"
     meta_path.write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
@@ -312,7 +522,37 @@ def process_sprite_sheet(
         "frame_count": len(frames),
         "frame_size": [frame_width, frame_height],
         "palette": palette_name,
+        "scale": meta["scale"],
+        "pivot": pivot,
+        "clips": list(norm_clips.keys()),
         "frame_files": frame_files,
+    }
+
+
+def relock_palette(
+    input_path: str | Path,
+    output_path: str | Path | None = None,
+    *,
+    palette_name: str = "jp_story_master",
+) -> dict[str, Any]:
+    """Re-lock an EXISTING pixel-art PNG to a palette without resizing (keeps alpha as-is)."""
+    inp = Path(input_path).expanduser().resolve()
+    out = Path(output_path).expanduser().resolve() if output_path else inp
+    img = Image.open(inp)
+    had_alpha = img.mode in ("RGBA", "LA") or "transparency" in img.info
+    before = _used_colors(img)
+    locked = quantize_to_palette(img, palette_name)
+    if not had_alpha:
+        locked = locked.convert("RGB")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    locked.save(out, format="PNG")
+    return {
+        "ok": True,
+        "input_path": str(inp),
+        "output_path": str(out),
+        "palette": palette_name,
+        "colors_before": before,
+        "colors_after": _used_colors(locked),
     }
 
 
@@ -345,7 +585,7 @@ def process_pixel_background(
     *,
     target_width: int = 320,
     target_height: int = 200,
-    palette_name: str = "ramen_midnight",
+    palette_name: str = "jp_story_master",
     dither_strength: float = 18.0,
 ) -> dict[str, Any]:
     """Convert an AI-generated environment illustration into a true crisp 320x200 pixel-art background
@@ -387,13 +627,9 @@ def process_pixel_background(
         bayer_tile = np.tile(_BAYER_4X4, (h // 4 + 1, w // 4 + 1))[:h, :w]
         arr = np.clip(arr + bayer_tile[:, :, None] * dither_strength, 0, 255)
 
-    palette_rgb = np.array(get_palette_rgb(palette_name), dtype=np.float32)
-    # Perceptually weighted RGB distance (human eye is more sensitive to green & red warmth)
-    weights = np.array([2.0, 4.0, 3.0], dtype=np.float32)
-    flat = arr.reshape(-1, 3)
-    diffs = flat[:, None, :] - palette_rgb[None, :, :]
-    dists = np.sum((diffs * diffs) * weights[None, None, :], axis=-1)
-    nearest = np.argmin(dists, axis=-1)
+    palette_rgb = np.array(get_palette_rgb(palette_name), dtype=np.uint8)
+    # Perceptual OKLab distance (same matcher as sprites, so every asset maps consistently)
+    nearest = nearest_palette_indices(arr.reshape(-1, 3), palette_rgb)
     quantized = palette_rgb[nearest].reshape(h, w, 3).astype(np.uint8)
 
     Image.fromarray(quantized, mode="RGB").save(out, format="PNG")

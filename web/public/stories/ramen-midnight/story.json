@@ -133,7 +133,8 @@
           ],
           "vi": "Giữa đêm mưa rơi, ánh đèn ấm áp của một quán mì ramen nhỏ hiện ra.",
           "audioUrl": "/stories/ramen-midnight/audio/r01_l01.mp3",
-          "durationSec": 4.363
+          "durationSec": 4.363,
+          "ttsHash": "0cf303cc0669"
         }
       ]
     },
@@ -176,7 +177,8 @@
           ],
           "vi": "Bụng đói meo rồi. Vào ăn một bát mì ramen nóng hổi thôi!",
           "audioUrl": "/stories/ramen-midnight/audio/r02_l01.mp3",
-          "durationSec": 3.787
+          "durationSec": 3.787,
+          "ttsHash": "2327bb0ff204"
         }
       ]
     },
@@ -226,7 +228,8 @@
           ],
           "vi": "Chào cậu! Đi dưới mưa vất vả rồi nhỉ. Cậu gọi món gì nào?",
           "audioUrl": "/stories/ramen-midnight/audio/r03_l01.mp3",
-          "durationSec": 5.12
+          "durationSec": 5.12,
+          "ttsHash": "de402c55bf8b"
         }
       ],
       "minigame": {
@@ -283,7 +286,8 @@
               ],
               "vi": "Cho cháu bát mì nước tương Shōyu đặc trưng của quán ạ!",
               "audioUrl": "/stories/ramen-midnight/audio/r03_c01.mp3",
-              "durationSec": 2.56
+              "durationSec": 2.56,
+              "ttsHash": "a2dbb5ab203e"
             }
           },
           {
@@ -331,7 +335,8 @@
               ],
               "vi": "Cho cháu một bát mì tương đậu Miso nóng ạ!",
               "audioUrl": "/stories/ramen-midnight/audio/r03_c02.mp3",
-              "durationSec": 2.091
+              "durationSec": 2.091,
+              "ttsHash": "be55e9b87b00"
             }
           }
         ]
@@ -361,7 +366,8 @@
           ],
           "vi": "Có ngay! Độ cứng của sợi mì cậu muốn thế nào?",
           "audioUrl": "/stories/ramen-midnight/audio/r04_l01.mp3",
-          "durationSec": 3.157
+          "durationSec": 3.157,
+          "ttsHash": "7b86adf68c7c"
         },
         {
           "id": "r04_l02",
@@ -383,7 +389,8 @@
           ],
           "vi": "À, độ cứng của sợi mì kìa! Chọn mức nào đây nhỉ?",
           "audioUrl": "/stories/ramen-midnight/audio/r04_l02.mp3",
-          "durationSec": 3.243
+          "durationSec": 3.243,
+          "ttsHash": "2d524ce506c0"
         }
       ],
       "minigame": {
@@ -426,7 +433,8 @@
               ],
               "vi": "Cho cháu sợi hơi cứng (dai) ạ!",
               "audioUrl": "/stories/ramen-midnight/audio/r04_c01.mp3",
-              "durationSec": 1.6
+              "durationSec": 1.6,
+              "ttsHash": "8ec774849e90"
             }
           },
           {
@@ -466,7 +474,8 @@
               ],
               "vi": "Cho cháu mức vừa phải ạ!",
               "audioUrl": "/stories/ramen-midnight/audio/r04_c02.mp3",
-              "durationSec": 1.579
+              "durationSec": 1.579,
+              "ttsHash": "c0d6241cf87b"
             }
           },
           {
@@ -506,7 +515,8 @@
               ],
               "vi": "Cho cháu sợi mềm một chút ạ!",
               "audioUrl": "/stories/ramen-midnight/audio/r04_c03.mp3",
-              "durationSec": 1.803
+              "durationSec": 1.803,
+              "ttsHash": "d45edc8f4f6e"
             }
           }
         ]
@@ -544,7 +554,8 @@
           ],
           "vi": "Để cậu chờ lâu rồi! Đây là bát mì ramen đặc biệt!",
           "audioUrl": "/stories/ramen-midnight/audio/r05_l01.mp3",
-          "durationSec": 3.04
+          "durationSec": 3.04,
+          "ttsHash": "96aad72856cb"
         }
       ]
     },
@@ -565,7 +576,8 @@
           ],
           "vi": "Oa, trông ngon quá đi! Cháu xin phép ăn ạ!",
           "audioUrl": "/stories/ramen-midnight/audio/r06_l01.mp3",
-          "durationSec": 3.029
+          "durationSec": 3.029,
+          "ttsHash": "4960bc876e17"
         },
         {
           "id": "r06_l02",
@@ -605,7 +617,8 @@
           ],
           "vi": "Húp một ngụm nước dùng ấm nóng, cả cơ thể lẫn tâm hồn đều ấm áp hẳn lên.",
           "audioUrl": "/stories/ramen-midnight/audio/r06_l02.mp3",
-          "durationSec": 4.619
+          "durationSec": 4.619,
+          "ttsHash": "7c31b20d9904"
         }
       ]
     }
@@ -676,7 +689,8 @@
           "iriguchi"
         ],
         "audioUrl": "/stories/ramen-midnight/audio/rr_01.mp3",
-        "durationSec": 7.744
+        "durationSec": 7.744,
+        "ttsHash": "924c12f8c665"
       },
       {
         "id": "rr_02",
@@ -719,7 +733,8 @@
           "katasa"
         ],
         "audioUrl": "/stories/ramen-midnight/audio/rr_02.mp3",
-        "durationSec": 6.741
+        "durationSec": 6.741,
+        "ttsHash": "bf491643ab7e"
       },
       {
         "id": "rr_03",
@@ -762,7 +777,8 @@
           "erabu"
         ],
         "audioUrl": "/stories/ramen-midnight/audio/rr_03.mp3",
-        "durationSec": 6.539
+        "durationSec": 6.539,
+        "ttsHash": "c34b73d6ffcc"
       },
       {
         "id": "rr_04",
@@ -815,7 +831,8 @@
           "ajitama"
         ],
         "audioUrl": "/stories/ramen-midnight/audio/rr_04.mp3",
-        "durationSec": 9.045
+        "durationSec": 9.045,
+        "ttsHash": "8f29b9e1fe07"
       }
     ],
     "vocab": [

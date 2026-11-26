@@ -46,7 +46,7 @@
       "vocabCount": 7,
       "grammarCount": 5,
       "quizCount": 3,
-      "theme": "ramen_midnight"
+      "theme": "jp_story_master"
     },
     {
       "id": "jlpt-n4-2025-12-dokkai",
@@ -110,7 +110,7 @@
       "vocabCount": 7,
       "grammarCount": 5,
       "quizCount": 3,
-      "theme": "ramen_midnight"
+      "theme": "jp_story_master"
     },
     {
       "id": "jlpt-n4-2025-07-dokkai",
@@ -143,7 +143,24 @@
       "vocabCount": 6,
       "grammarCount": 4,
       "quizCount": 4,
-      "theme": "ramen_midnight"
+      "theme": "jp_story_master"
+    },
+    {
+      "id": "hanami-first",
+      "category": "situation",
+      "kind": "engine",
+      "thumbStyle": "image",
+      "thumbImage": "stories/hanami-first/assets/bg_park.png",
+      "artBadge": "🌸 SPRITE ANIMATION",
+      "titleJa": "はじめてのお花見",
+      "titleVi": "Lần đầu ngắm hoa anh đào cùng Yui",
+      "level": "JLPT N4",
+      "description": "Truyện demo cho engine CinemaStage dữ liệu hoá: nhân vật hoạt hình theo frame (spritesheet + meta.json), bảng màu Master 40 màu, đổi phông khi chọn hoạt động picnic, Daily Dictation.",
+      "sceneCount": 5,
+      "vocabCount": 5,
+      "grammarCount": 3,
+      "quizCount": 2,
+      "theme": "jp_story_master"
     },
     {
       "id": "ramen-midnight",

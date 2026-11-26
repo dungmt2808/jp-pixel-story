@@ -7,6 +7,12 @@ import re
 from pathlib import Path
 from typing import Any
 
+import numpy as np
+from PIL import Image
+
+from palettes import PALETTES, get_palette_rgb
+from tts_spec import dokkai_sentence_spec, iter_story_lines, standalone_spec, story_line_spec
+
 KANJI_RE = re.compile(r"[\u4e00-\u9faf]")
 RUBY_BRACE_RE = re.compile(r"\{([^|}]+)\|([^}]+)\}")
 
@@ -28,6 +34,110 @@ def _check_ruby_segments(label: str, segs: str | list[dict[str, Any]], issues: l
             issues.append(f"[Missing Furigana] {label}: '{text}'")
         if reading and not KANJI_RE.search(text):
             issues.append(f"[Ruby on non-Kanji] {label}: '{text}' -> '{reading}'")
+
+
+def _off_palette_colors(png_path: Path, palette_name: str) -> int:
+    """Number of distinct visible colours in an image that are NOT in the named palette."""
+    allowed = {tuple(c) for c in get_palette_rgb(palette_name)}
+    arr = np.array(Image.open(png_path).convert("RGBA"))
+    visible = arr[arr[:, :, 3] > 0][:, :3]
+    if len(visible) == 0:
+        return 0
+    used = {tuple(int(v) for v in c) for c in np.unique(visible, axis=0)}
+    return len(used - allowed)
+
+
+def _resolve_palette(story: dict[str, Any], catalog_entry: dict[str, Any] | None) -> str | None:
+    """Declared palette of a story: story.json `palette`, else a catalog `theme` naming a palette."""
+    name = story.get("palette")
+    if not name and catalog_entry:
+        theme = catalog_entry.get("theme")
+        name = theme if theme in PALETTES else None
+    if name in (None, "none"):
+        return None
+    return str(name)
+
+
+def _check_story_assets(
+    data: dict[str, Any],
+    sdir: Path,
+    public_root: Path,
+    catalog_entry: dict[str, Any] | None,
+    issues: list[str],
+    stats: dict[str, int],
+) -> None:
+    """Every referenced asset exists, sprite metas are consistent, and PNGs obey the palette lock."""
+    palette = _resolve_palette(data, catalog_entry)
+    if data.get("palette") and data["palette"] != "none" and data["palette"] not in PALETTES:
+        issues.append(f"[Unknown Palette] story.json palette '{data['palette']}' is not in palettes.py")
+        palette = None
+
+    pngs: dict[str, Path] = {}
+    assets = data.get("assets") or {}
+    for group in ("backgrounds", "portraits", "items"):
+        for key, url in (assets.get(group) or {}).items():
+            fp = public_root / str(url).lstrip("/")
+            if not fp.exists():
+                issues.append(f"[Missing Asset] {group}/{key}: {url}")
+            elif fp.suffix.lower() == ".png":
+                pngs[str(fp)] = fp
+    if assets.get("cardPortrait"):
+        fp = public_root / str(assets["cardPortrait"]).lstrip("/")
+        if not fp.exists():
+            issues.append(f"[Missing Asset] cardPortrait: {assets['cardPortrait']}")
+
+    for key, url in (assets.get("sprites") or {}).items():
+        meta_fp = public_root / str(url).lstrip("/")
+        if not meta_fp.exists():
+            issues.append(f"[Missing Sprite Meta] sprites/{key}: {url}")
+            continue
+        meta = json.loads(meta_fp.read_text(encoding="utf-8"))
+        sheet_fp = meta_fp.parent / meta.get("spritesheet", "spritesheet.png")
+        if not sheet_fp.exists():
+            issues.append(f"[Missing Spritesheet] sprites/{key}: {sheet_fp.name}")
+            continue
+        fw, fh, n = int(meta.get("frameWidth", 0)), int(meta.get("frameHeight", 0)), int(meta.get("frameCount", 0))
+        with Image.open(sheet_fp) as im:
+            if im.size != (fw * n, fh):
+                issues.append(f"[Spritesheet Size Mismatch] sprites/{key}: {im.size} != {(fw * n, fh)}")
+        for clip, spec in (meta.get("clips") or {}).items():
+            frames = spec.get("frames", []) if isinstance(spec, dict) else spec
+            if not frames or any(not (0 <= int(f) < n) for f in frames):
+                issues.append(f"[Invalid Sprite Clip] sprites/{key}.{clip}: {frames} (frameCount={n})")
+        if meta.get("palette") and palette and meta["palette"] != palette:
+            issues.append(f"[Sprite Palette Mismatch] sprites/{key}: '{meta['palette']}' != story '{palette}'")
+        pngs[str(sheet_fp)] = sheet_fp
+
+    assets_dir = sdir / "assets"
+    if assets_dir.is_dir():
+        for fp in sorted(assets_dir.rglob("*.png")):
+            if fp.name.startswith("frame_"):
+                continue  # individual frames are already covered by their spritesheet.png
+            pngs.setdefault(str(fp), fp)
+
+    if not palette:
+        return
+    for fp in pngs.values():
+        stats["palette_assets_checked"] = stats.get("palette_assets_checked", 0) + 1
+        off = _off_palette_colors(fp, palette)
+        if off:
+            rel = fp.relative_to(public_root) if fp.is_relative_to(public_root) else fp
+            issues.append(
+                f"[Off-Palette Asset] {rel}: {off} colours outside '{palette}' "
+                "(re-run pixellab_clean_* with this palette)"
+            )
+
+
+def _check_tts_hash(label: str, obj: dict[str, Any], spec: Any, issues: list[str], stats: dict[str, int]) -> None:
+    stored = obj.get("ttsHash")
+    if not stored or spec is None:
+        return
+    stats["tts_hash_checked"] = stats.get("tts_hash_checked", 0) + 1
+    if spec.fingerprint() != stored:
+        issues.append(
+            f"[Stale Audio] {label}: text/voice changed since the clip was synthesized "
+            "(re-run the voicevox_generate_* tool)"
+        )
 
 
 def validate_story_folder(
@@ -62,8 +172,19 @@ def validate_story_folder(
     gengo_json = sdir / "gengo.json"
     standalone_html = sdir / "index.html"
 
+    index_file = sdir.parent / "index.json"
+    catalog_entry: dict[str, Any] | None = None
+    if index_file.exists():
+        for entry in json.loads(index_file.read_text(encoding="utf-8")).get("stories", []):
+            if entry.get("id") == sdir.name:
+                catalog_entry = entry
+
     if story_json.exists():
         data = json.loads(story_json.read_text(encoding="utf-8"))
+        _check_story_assets(data, sdir, public_root, catalog_entry, issues, stats)
+        voices = data.get("voices", {})
+        for line, default_id in iter_story_lines(data):
+            _check_tts_hash(f"story/{line.get('id') or default_id}", line, story_line_spec(line, voices), issues, stats)
         for sc in data.get("scenes", []):
             for ln in sc.get("lines", []):
                 stats["kanji_blocks_checked"] += 1
@@ -146,6 +267,7 @@ def validate_story_folder(
                         f"dokkai/{pid}/{sent['id']}.sectionTag", sent["sectionTagJa"], issues
                     )
                 check_audio_ref(f"dokkai/{pid}/{sent['id']}", sent.get("audioUrl"))
+                _check_tts_hash(f"dokkai/{pid}/{sent['id']}", sent, dokkai_sentence_spec(sent, p), issues, stats)
             sim = p.get("conditionSimulator")
             if isinstance(sim, dict):
                 for oi, opt in enumerate(sim.get("options", [])):
@@ -235,6 +357,13 @@ def validate_story_folder(
                         issues.append(f"[Missing Standalone Audio] {section}/{v['file']}")
                     else:
                         stats["audio_checked"] += 1
+                    if section == "lines" and "speedScale" in v:
+                        spec = standalone_spec(k, int(v.get("speakerId", 13)), float(v["speedScale"]))
+                        _check_tts_hash(f"standalone/{v['file']}", v, spec, issues, stats)
+            voiced = set(man.get("lines", {}).keys())
+            for i, m in enumerate(re.finditer(r'sayW\("([^"]+)","([^"]+)"', html)):
+                if m.group(1) not in voiced:
+                    issues.append(f"[Unvoiced Standalone Line] sayW[{i}]: re-run voicevox_generate_standalone_pack")
         for i, m in enumerate(re.finditer(r'sayW\("([^"]+)","([^"]+)"', html)):
             stripped = RUBY_BRACE_RE.sub("", m.group(1))
             leftover = KANJI_RE.findall(stripped)
@@ -242,7 +371,6 @@ def validate_story_folder(
                 issues.append(f"[Unfurigana Kanji in HTML sayW[{i}]] {''.join(leftover)}")
 
     # Verify registration in stories/index.json
-    index_file = sdir.parent / "index.json"
     registered = False
     if index_file.exists():
         cat = json.loads(index_file.read_text(encoding="utf-8"))
@@ -296,6 +424,8 @@ def validate_catalog(
     total_issues = 0
     total_audio = 0
     total_kanji = 0
+    total_palette = 0
+    total_hash = 0
 
     for entry in entries:
         sid = entry["id"]
@@ -305,6 +435,8 @@ def validate_catalog(
         total_issues += res["issue_count"]
         total_audio += res["stats"]["audio_checked"]
         total_kanji += res["stats"]["kanji_blocks_checked"]
+        total_palette += res["stats"].get("palette_assets_checked", 0)
+        total_hash += res["stats"].get("tts_hash_checked", 0)
         if not res["ok"]:
             failed.append(sid)
 
@@ -323,5 +455,7 @@ def validate_catalog(
         "total_issues": total_issues,
         "total_audio_checked": total_audio,
         "total_kanji_blocks_checked": total_kanji,
+        "total_palette_assets_checked": total_palette,
+        "total_tts_hashes_checked": total_hash,
         "results": results,
     }

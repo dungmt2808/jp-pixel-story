@@ -20,6 +20,7 @@ from pixel_processor import (
     clean_exam_image,
     list_palettes_info,
     process_pixel_background,
+    relock_palette,
     process_pixel_sprite,
     process_sprite_sheet,
 )
@@ -105,9 +106,13 @@ async def voicevox_generate_standalone_pack(
     speaker_id: int = 13,
     speed_scale: float = 0.91,
     force: bool = False,
+    rebuild_dictation: bool = False,
     base_url: str = DEFAULT_VOICEVOX_URL,
 ) -> str:
-    """Scan a standalone interactive HTML story (like Hachiko), synthesize VOICEVOX MP3 audio + audio/manifest.json, and auto-generate dictation.json for Daily Dictation mode."""
+    """Scan a standalone interactive HTML story (like Hachiko), synthesize VOICEVOX MP3 audio + audio/manifest.json, and auto-generate dictation.json for Daily Dictation mode.
+
+    Hash-aware (only new/edited lines are synthesized) and merge-safe (hand-made manifest entries,
+    per-entry speaker overrides and an existing dictation.json are preserved unless rebuild_dictation=True)."""
     result = await generate_standalone_pack(
         html_path=html_path,
         story_id=story_id,
@@ -117,6 +122,7 @@ async def voicevox_generate_standalone_pack(
         speaker_id=speaker_id,
         speed_scale=speed_scale,
         force=force,
+        rebuild_dictation=rebuild_dictation,
         base_url=base_url,
     )
     return json.dumps(result, ensure_ascii=False, indent=2)
@@ -193,12 +199,25 @@ def pixellab_list_palettes() -> str:
 
 
 @mcp.tool()
+def pixellab_relock_palette(
+    input_path: str,
+    output_path: str = "",
+    palette_name: str = "jp_story_master",
+) -> str:
+    """Re-lock an existing pixel-art PNG (background, portrait, item or spritesheet) to a palette without resizing.
+
+    Use it to fix '[Off-Palette Asset]' validator issues. Overwrites the input when output_path is empty."""
+    result = relock_palette(input_path, output_path or None, palette_name=palette_name)
+    return json.dumps(result, ensure_ascii=False, indent=2)
+
+
+@mcp.tool()
 def pixellab_clean_background(
     input_path: str,
     output_path: str,
     target_width: int = 320,
     target_height: int = 200,
-    palette_name: str = "ramen_midnight",
+    palette_name: str = "jp_story_master",
     dither_strength: float = 18.0,
 ) -> str:
     """Convert an AI-generated scene illustration into a crisp 320x200 pixel-art background locked to a Master Palette with subtle retro Bayer ordered dithering."""
@@ -219,12 +238,19 @@ def pixellab_clean_sprite(
     output_path: str,
     target_width: int = 48,
     target_height: int = 64,
-    palette_name: str = "midnight_tokyo",
+    palette_name: str = "jp_story_master",
     bg_mode: str = "auto",
     tolerance: int = 48,
     align_bottom: bool = True,
+    fit_mode: str = "bbox",
 ) -> str:
-    """Convert an AI-generated character or prop image into a crisp, transparent, palette-locked pixel-art sprite PNG."""
+    """Convert an AI-generated character or prop image into a crisp, transparent, palette-locked pixel-art sprite PNG.
+
+    Proportions are always preserved. fit_mode='bbox' fits the visible subject into the cell;
+    fit_mode='frame' keeps the source framing (centre-cropped to the cell aspect ratio).
+    For several expressions/poses of ONE character use pixellab_slice_spritesheet instead,
+    so all frames share one scale and anchor.
+    """
     result: dict[str, Any] = process_pixel_sprite(
         input_path=input_path,
         output_path=output_path,
@@ -234,6 +260,7 @@ def pixellab_clean_sprite(
         bg_mode=bg_mode,
         tolerance=tolerance,
         align_bottom=align_bottom,
+        fit_mode=fit_mode,
     )
     return json.dumps(result, ensure_ascii=False, indent=2)
 
@@ -246,12 +273,22 @@ def pixellab_slice_spritesheet(
     rows: int = 1,
     frame_width: int = 48,
     frame_height: int = 64,
-    palette_name: str = "midnight_tokyo",
+    palette_name: str = "jp_story_master",
     bg_mode: str = "auto",
     tolerance: int = 48,
     align_bottom: bool = True,
+    registration: str = "cell",
+    fps: float = 8.0,
+    clips: dict[str, Any] | None = None,
 ) -> str:
-    """Clean, snap to pixel grid, palette-lock, and slice a raw AI spritesheet grid into a uniform horizontal spritesheet.png + meta.json."""
+    """Slice a raw AI spritesheet grid into registered, palette-locked animation frames + spritesheet.png + meta.json.
+
+    All frames share one scale and one anchor (no stretching or jitter). registration='centroid'
+    corrects AI sheets whose character drifts between cells (full body); registration='bust' does the
+    same for portrait/expression sheets cut off at the cell edge (anchors on the head). clips maps a name to frame indices,
+    e.g. {"idle": [0, 2], "talk": {"frames": [0, 1], "fps": 10}}; meta.json stores pivot, fps
+    and clips for the web SpriteAnimator.
+    """
     result = process_sprite_sheet(
         input_path=input_path,
         output_dir=output_dir,
@@ -263,6 +300,9 @@ def pixellab_slice_spritesheet(
         bg_mode=bg_mode,
         tolerance=tolerance,
         align_bottom=align_bottom,
+        registration=registration,
+        fps=fps,
+        clips=clips,
     )
     return json.dumps(result, ensure_ascii=False, indent=2)
 

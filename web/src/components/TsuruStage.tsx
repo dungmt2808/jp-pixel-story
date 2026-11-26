@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { retroAudio } from "../audio/chiptune";
-import { drawBayerDitherOverlay } from "../engine/bayerDither";
 import { VIRTUAL_H, VIRTUAL_W } from "../engine/pixelRenderer";
+import { cropPixelImage, drawPixelImage } from "../engine/pixelScale";
+import { useStageRuntime } from "../engine/useStageRuntime";
 import type { DialogueLine, MiniGameChoice, StoryData } from "../types/story";
-import { resolveAssetUrl } from "../utils/assetUrl";
 import { CharacterCardModal } from "./CharacterCardModal";
 import { RubyText } from "./RubyText";
 
@@ -225,13 +225,13 @@ function drawFramelessCharacter(
     enterProgress,
     opacity = 1,
     t,
-    size = 122,
+    size = im.naturalWidth,
     bottomY = VIRTUAL_H,
   } = options;
   const ease = easeOutCubic(enterProgress);
   const slideDist = 28 * (1 - ease);
   const focusShift = active ? 0 : side === "left" ? -5 : 5;
-  const baseX = side === "left" ? 4 : VIRTUAL_W - size - 4;
+  const baseX = side === "left" ? 58 - Math.floor(size / 2) : 262 - Math.floor(size / 2);
   const x = Math.round(baseX + (side === "left" ? -slideDist : slideDist) + focusShift);
 
   const breath = Math.round(Math.sin(t * 2.2 + (side === "left" ? 0 : 1.7)) * 0.8);
@@ -244,7 +244,7 @@ function drawFramelessCharacter(
     ctx.filter = "brightness(0.64) saturate(0.85)";
   }
   ctx.globalAlpha = clamp01(ease * opacity);
-  ctx.drawImage(im, x, y, size, size);
+  drawPixelImage(ctx, im, x, y, size, size);
   ctx.restore();
 }
 
@@ -256,14 +256,23 @@ export function TsuruStage({
   onOpenReading,
   onOpenDictation,
 }: TsuruStageProps) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const audioElRef = useRef<HTMLAudioElement | null>(null);
-  const imagesRef = useRef<Record<string, HTMLImageElement>>({});
+  const rt = useStageRuntime({ story, muted });
+  const {
+    canvasRef,
+    imagesRef,
+    assetsReady,
+    sceneIdx,
+    activeLine,
+    setActiveLine,
+    sceneStartRef,
+    speakingRef,
+    stopVoice,
+    goToScene,
+    markDone,
+    startLoop,
+  } = rt;
   const particlesRef = useRef<BurstParticle[]>([]);
 
-  const [assetsReady, setAssetsReady] = useState(false);
-  const [sceneIdx, setSceneIdx] = useState(0);
-  const [activeLine, setActiveLine] = useState<DialogueLine | null>(null);
   const [lineIndex, setLineIndex] = useState(0);
   const [lineFinished, setLineFinished] = useState(false);
   const [showCard, setShowCard] = useState(false);
@@ -294,19 +303,20 @@ export function TsuruStage({
   const [doorRevealed, setDoorRevealed] = useState(false);
 
   // Bayer dither scene transition
-  const transitionRef = useRef<{
-    active: boolean;
-    phase: "out" | "in";
-    amount: number;
-    nextIdx: number;
-  }>({ active: false, phase: "out", amount: 0, nextIdx: 0 });
 
-  const sceneStartRef = useRef<number>(performance.now());
-  const stageStartRef = useRef<number>(performance.now());
-  const speakingRef = useRef<string | null>(null);
   const [cursorPos, setCursorPos] = useState({ x: 50, y: 55, clicking: false });
 
   const currentScene = story.scenes[sceneIdx];
+
+  // Stamp the line-change time so expression crossfades keep working on the shared runtime.
+  const playVoiceLine = useCallback(
+    (line: DialogueLine) => {
+      lineChangedAtRef.current = performance.now();
+      return rt.playVoiceLine(line);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [rt.playVoiceLine]
+  );
 
   const spawnBurst = useCallback(
     (x: number, y: number, count: number, colors: string[]) => {
@@ -326,131 +336,6 @@ export function TsuruStage({
       }
     },
     []
-  );
-
-  // Preload all AI pixel art assets
-  useEffect(() => {
-    let cancelled = false;
-    const entries: Array<[string, string]> = [];
-    if (story.assets) {
-      for (const [k, v] of Object.entries(story.assets.backgrounds)) {
-        entries.push([`bg:${k}`, resolveAssetUrl(v)]);
-      }
-      for (const [k, v] of Object.entries(story.assets.portraits)) {
-        entries.push([`p:${k}`, resolveAssetUrl(v)]);
-      }
-      for (const [k, v] of Object.entries(story.assets.items)) {
-        entries.push([`i:${k}`, resolveAssetUrl(v)]);
-      }
-    }
-    if (entries.length === 0) {
-      setAssetsReady(true);
-      return;
-    }
-
-    let loaded = 0;
-    const map: Record<string, HTMLImageElement> = {};
-    entries.forEach(([key, url]) => {
-      const im = new Image();
-      im.onload = () => {
-        map[key] = im;
-        loaded += 1;
-        if (!cancelled && loaded === entries.length) {
-          imagesRef.current = map;
-          setAssetsReady(true);
-        }
-      };
-      im.onerror = () => {
-        loaded += 1;
-        if (!cancelled && loaded === entries.length) {
-          imagesRef.current = map;
-          setAssetsReady(true);
-        }
-      };
-      im.src = url;
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [story]);
-
-  const stopVoice = useCallback(() => {
-    if (audioElRef.current) {
-      audioElRef.current.pause();
-      audioElRef.current.currentTime = 0;
-    }
-    speakingRef.current = null;
-    retroAudio.setDucked(false);
-  }, []);
-
-  const playVoiceLine = useCallback(
-    (line: DialogueLine): Promise<void> => {
-      return new Promise((resolve) => {
-        setActiveLine(line);
-        lineChangedAtRef.current = performance.now();
-        speakingRef.current = line.voice;
-
-        if (!window.__JP_STORY_EVENTS__) window.__JP_STORY_EVENTS__ = [];
-        window.__JP_STORY_EVENTS__.push({
-          timeMs: Math.round(performance.now() - stageStartRef.current),
-          type: "voice",
-          audioUrl: line.audioUrl,
-        });
-
-        if (!line.audioUrl) {
-          window.setTimeout(() => {
-            speakingRef.current = null;
-            resolve();
-          }, Math.max(1800, (line.durationSec ?? 2.5) * 1000));
-          return;
-        }
-
-        stopVoice();
-        speakingRef.current = line.voice;
-        const audio = new Audio(resolveAssetUrl(line.audioUrl));
-        audio.muted = muted;
-        audioElRef.current = audio;
-        retroAudio.setDucked(true);
-
-        let settled = false;
-        const done = () => {
-          if (settled) return;
-          settled = true;
-          speakingRef.current = null;
-          retroAudio.setDucked(false);
-          resolve();
-        };
-
-        audio.addEventListener("ended", done, { once: true });
-        audio.addEventListener("error", () => {
-          window.setTimeout(done, Math.max(1600, (line.durationSec ?? 2.5) * 1000));
-        });
-        audio.play().catch(() => {
-          window.setTimeout(done, Math.max(1600, (line.durationSec ?? 2.6) * 1000));
-        });
-      });
-    },
-    [muted, stopVoice]
-  );
-
-  useEffect(() => {
-    if (audioElRef.current) audioElRef.current.muted = muted;
-    retroAudio.setMuted(muted);
-  }, [muted]);
-
-  const goToScene = useCallback(
-    (targetIdx: number) => {
-      if (transitionRef.current.active) return;
-      stopVoice();
-      retroAudio.playTransition();
-      transitionRef.current = {
-        active: true,
-        phase: "out",
-        amount: 0,
-        nextIdx: targetIdx,
-      };
-    },
-    [stopVoice]
   );
 
   // Scene 2: Complete rescuing the white crane
@@ -685,7 +570,7 @@ export function TsuruStage({
         if (!cancelled) void triggerDoorReveal();
       } else if (currentScene.type === "tsuru_farewell_sky" && lineFinished) {
         await sleep(1400);
-        if (!cancelled) window.__JP_STORY_DONE__ = true;
+        if (!cancelled) markDone();
       }
     };
 
@@ -711,12 +596,7 @@ export function TsuruStage({
   // Main 60fps Cinematic Pixel Art Render Loop
   useEffect(() => {
     if (!assetsReady) return;
-    let rafId = 0;
-    let lastTime = performance.now();
-
-    const render = (now: number) => {
-      const dt = Math.min((now - lastTime) / 1000, 0.1);
-      lastTime = now;
+    return startLoop((ctx, now, dt) => {
 
       // Scene 2: Smooth hold-to-untie progression
       if (
@@ -761,10 +641,7 @@ export function TsuruStage({
           .filter((p) => p.life < p.maxLife);
       }
 
-      const canvas = canvasRef.current;
-      const ctx = canvas?.getContext("2d");
-      if (canvas && ctx) {
-        ctx.imageSmoothingEnabled = false;
+      {
         const t = now / 1000;
         const elapsed = (now - sceneStartRef.current) / 1000;
         const lineElapsed = (now - lineChangedAtRef.current) / 1000;
@@ -773,11 +650,8 @@ export function TsuruStage({
         switch (currentScene.type) {
           case "tsuru_snow_intro": {
             // Slow cinematic Ken Burns zoom into the moonlit village
-            const zoom = 1 + Math.min(elapsed * 0.008, 0.055);
+            // Static 1x backdrop: sub-pixel Ken Burns zooms smeared the pixel grid.
             ctx.save();
-            ctx.translate(VIRTUAL_W * 0.56, VIRTUAL_H * 0.48);
-            ctx.scale(zoom, zoom);
-            ctx.translate(-VIRTUAL_W * 0.56, -VIRTUAL_H * 0.48);
             if (imgs["bg:snow"]) {
               ctx.drawImage(imgs["bg:snow"], 0, 0, VIRTUAL_W, VIRTUAL_H);
             }
@@ -789,7 +663,7 @@ export function TsuruStage({
             ctx.fillRect(102, 126, 24, 3);
             if (imgs["i:crane"]) {
               const bob = Math.round(Math.sin(t * 2.2) * 0.9);
-              ctx.drawImage(imgs["i:crane"], 92, 83 + bob, 44, 44);
+              drawPixelImage(ctx, imgs["i:crane"], 92, 83 + bob, 44, 44);
             }
             ctx.restore();
 
@@ -815,10 +689,8 @@ export function TsuruStage({
 
           case "tsuru_rescue_crane": {
             // Smooth close-up onto the snowy clearing
+            // 1x backdrop: the old fixed 1.26x close-up made background texels 1-2px wide.
             ctx.save();
-            ctx.translate(VIRTUAL_W * 0.38, VIRTUAL_H * 0.66);
-            ctx.scale(1.26, 1.26);
-            ctx.translate(-VIRTUAL_W * 0.38, -VIRTUAL_H * 0.66);
             if (imgs["bg:snow"]) {
               ctx.drawImage(imgs["bg:snow"], 0, 0, VIRTUAL_W, VIRTUAL_H);
             }
@@ -843,7 +715,7 @@ export function TsuruStage({
             }
 
             if (imgs["i:crane"]) {
-              ctx.drawImage(imgs["i:crane"], Math.round(cx), Math.round(cy), 56, 56);
+              drawPixelImage(ctx, imgs["i:crane"], Math.round(cx), Math.round(cy), 56, 56);
             }
 
             if (!freed) {
@@ -889,7 +761,6 @@ export function TsuruStage({
                 active: true,
                 enterProgress: Math.min(flyT / 0.45, 1),
                 t,
-                size: 120,
                 bottomY: VIRTUAL_H,
               });
             }
@@ -899,11 +770,8 @@ export function TsuruStage({
 
           case "tsuru_visitor_promise": {
             // Cozy hearth interior with subtle film zoom
-            const zoom = 1 + Math.min(elapsed * 0.006, 0.045);
+            // Static 1x backdrop: sub-pixel Ken Burns zooms smeared the pixel grid.
             ctx.save();
-            ctx.translate(VIRTUAL_W * 0.5, VIRTUAL_H * 0.5);
-            ctx.scale(zoom, zoom);
-            ctx.translate(-VIRTUAL_W * 0.5, -VIRTUAL_H * 0.5);
             if (imgs["bg:hearth"]) {
               ctx.drawImage(imgs["bg:hearth"], 0, 0, VIRTUAL_W, VIRTUAL_H);
             }
@@ -926,7 +794,6 @@ export function TsuruStage({
                 active: speakingRef.current === "yosaku",
                 enterProgress: Math.max(0.2, appearT),
                 t,
-                size: 122,
                 bottomY: VIRTUAL_H,
               });
 
@@ -939,7 +806,6 @@ export function TsuruStage({
                   enterProgress: Math.max(0.2, appearT),
                   opacity: 1 - pleadMix,
                   t,
-                  size: 122,
                   bottomY: VIRTUAL_H,
                 });
               }
@@ -950,7 +816,6 @@ export function TsuruStage({
                   enterProgress: 1,
                   opacity: pleadMix,
                   t,
-                  size: 122,
                   bottomY: VIRTUAL_H,
                 });
               }
@@ -1007,7 +872,6 @@ export function TsuruStage({
                 active: true,
                 enterProgress: Math.min(lineElapsed / 0.45, 1),
                 t,
-                size: 120,
                 bottomY: VIRTUAL_H,
               });
             }
@@ -1063,16 +927,15 @@ export function TsuruStage({
               ctx.fillStyle = "#c9a67d";
               ctx.fillRect(leftX + 8, 10, halfW - 14, VIRTUAL_H - 20);
               if (imgs["bg:hearth"]) {
-                ctx.drawImage(
-                  imgs["bg:hearth"],
-                  212,
-                  66,
-                  30,
-                  64,
+                // painted panel crop at a whole-number scale (was stretched ~4.7x2.8)
+                drawPixelImage(
+                  ctx,
+                  cropPixelImage(imgs["bg:hearth"], 212, 66, 30, 64),
                   leftX + 8,
                   10,
                   halfW - 14,
-                  VIRTUAL_H - 20
+                  VIRTUAL_H - 20,
+                  "center"
                 );
               }
               ctx.fillStyle = "#241712";
@@ -1086,16 +949,15 @@ export function TsuruStage({
               ctx.fillStyle = "#c9a67d";
               ctx.fillRect(rightX + 6, 10, halfW - 14, VIRTUAL_H - 20);
               if (imgs["bg:hearth"]) {
-                ctx.drawImage(
-                  imgs["bg:hearth"],
-                  251,
-                  62,
-                  35,
-                  72,
+                // painted panel crop at a whole-number scale (was stretched ~4.7x2.8)
+                drawPixelImage(
+                  ctx,
+                  cropPixelImage(imgs["bg:hearth"], 251, 62, 35, 72),
                   rightX + 6,
                   10,
                   halfW - 14,
-                  VIRTUAL_H - 20
+                  VIRTUAL_H - 20,
+                  "center"
                 );
               }
               ctx.fillStyle = "#241712";
@@ -1128,11 +990,8 @@ export function TsuruStage({
 
           case "tsuru_farewell_sky": {
             // Bittersweet moonlit farewell over the snowy village
-            const zoom = 1 + Math.min(elapsed * 0.005, 0.04);
+            // Static 1x backdrop: sub-pixel Ken Burns zooms smeared the pixel grid.
             ctx.save();
-            ctx.translate(VIRTUAL_W * 0.45, VIRTUAL_H * 0.38);
-            ctx.scale(zoom, zoom);
-            ctx.translate(-VIRTUAL_W * 0.45, -VIRTUAL_H * 0.38);
             if (imgs["bg:snow"]) {
               ctx.drawImage(imgs["bg:snow"], 0, 0, VIRTUAL_W, VIRTUAL_H);
             }
@@ -1144,7 +1003,7 @@ export function TsuruStage({
             if (imgs["i:cloth"]) {
               ctx.fillStyle = "rgba(16, 20, 40, 0.22)";
               ctx.fillRect(142, 117, 30, 3);
-              ctx.drawImage(imgs["i:cloth"], 138, 84, 38, 38);
+              drawPixelImage(ctx, imgs["i:cloth"], 138, 84, 38, 38);
               drawSparkle(ctx, 146, 90, t, 0.3);
               drawSparkle(ctx, 170, 94, t, 1.5);
             }
@@ -1161,7 +1020,6 @@ export function TsuruStage({
                 enterProgress: Math.min(elapsed / 0.7, 1),
                 opacity: 1,
                 t,
-                size: 122,
                 bottomY: VIRTUAL_H,
               });
             } else {
@@ -1174,7 +1032,6 @@ export function TsuruStage({
                   enterProgress: 1,
                   opacity: fadeOut * 0.85,
                   t,
-                  size: 122,
                   bottomY: VIRTUAL_H,
                 });
               }
@@ -1185,7 +1042,7 @@ export function TsuruStage({
               const fy = 68 - flyProg * 48 + Math.sin(t * 3.6) * 4;
               const craneSize = Math.round(42 - flyProg * 14);
               if (imgs["i:crane"]) {
-                ctx.drawImage(imgs["i:crane"], Math.round(fx), Math.round(fy), craneSize, craneSize);
+                drawPixelImage(ctx, imgs["i:crane"], Math.round(fx), Math.round(fy), craneSize, craneSize);
               }
               drawSparkle(ctx, fx + 4, fy + 14, t, 0.8, "#f6eed8");
               drawCinemaBottomFade(ctx, 0.7);
@@ -1206,33 +1063,8 @@ export function TsuruStage({
           ctx.fillRect(Math.round(p.x), Math.round(p.y), p.size, p.size);
           ctx.restore();
         }
-
-        // Bayer 4x4 dithering scene transition
-        const tr = transitionRef.current;
-        if (tr.active) {
-          if (tr.phase === "out") {
-            tr.amount += dt * 2.8;
-            if (tr.amount >= 1) {
-              tr.amount = 1;
-              tr.phase = "in";
-              setSceneIdx(tr.nextIdx);
-            }
-          } else {
-            tr.amount -= dt * 2.8;
-            if (tr.amount <= 0) {
-              tr.amount = 0;
-              tr.active = false;
-            }
-          }
-          drawBayerDitherOverlay(ctx, tr.amount, "#101322");
-        }
       }
-
-      rafId = window.requestAnimationFrame(render);
-    };
-
-    rafId = window.requestAnimationFrame(render);
-    return () => window.cancelAnimationFrame(rafId);
+    }, "#101322", 2.8);
   }, [assetsReady, choiceTaken, completeCraneRescue, currentScene, lineIndex, nightCount, spawnBurst]);
 
   const toVirtual = (e: React.PointerEvent<HTMLCanvasElement>) => {

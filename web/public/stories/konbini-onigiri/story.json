@@ -1,5 +1,6 @@
 {
   "id": "konbini-onigiri",
+  "engine": "pixel",
   "series": "jp-pixel-story",
   "titleJa": "夜のコンビニ",
   "titleVi": "Lần đầu mua cơm nắm lúc nửa đêm",
@@ -90,7 +91,8 @@
           ],
           "vi": "Tokyo, 11 giờ 45 phút đêm.",
           "audioUrl": "/stories/konbini-onigiri/audio/s01_l01.wav",
-          "durationSec": 3.317
+          "durationSec": 3.317,
+          "ttsHash": "587fd2be82dd"
         }
       ]
     },
@@ -144,7 +146,8 @@
           ],
           "vi": "Trên con phố yên tĩnh, ánh đèn cửa hàng tiện lợi mở cửa 24 giờ vẫn đang sáng rực.",
           "audioUrl": "/stories/konbini-onigiri/audio/s02_l01.wav",
-          "durationSec": 5.216
+          "durationSec": 5.216,
+          "ttsHash": "3e4baab8ceae"
         }
       ]
     },
@@ -167,7 +170,8 @@
           ],
           "vi": "Xin kính chào quý khách!",
           "audioUrl": "/stories/konbini-onigiri/audio/s03_l01.wav",
-          "durationSec": 1.291
+          "durationSec": 1.291,
+          "ttsHash": "ddb695b4d41c"
         },
         {
           "id": "s03_l02",
@@ -196,7 +200,8 @@
           ],
           "vi": "Đói bụng quá đi. Chọn cơm nắm cá hồi vậy!",
           "audioUrl": "/stories/konbini-onigiri/audio/s03_l02.wav",
-          "durationSec": 3.115
+          "durationSec": 3.115,
+          "ttsHash": "8e47a30f61cc"
         }
       ]
     },
@@ -232,7 +237,8 @@
           ],
           "vi": "Một chiếc cơm nắm đúng không ạ. Của bạn hết 160 yên.",
           "audioUrl": "/stories/konbini-onigiri/audio/s04_l01.wav",
-          "durationSec": 3.808
+          "durationSec": 3.808,
+          "ttsHash": "691a53487069"
         }
       ]
     },
@@ -260,7 +266,8 @@
           ],
           "vi": "Cơm nắm này, bạn có muốn hâm nóng không ạ?",
           "audioUrl": "/stories/konbini-onigiri/audio/s05_l01.wav",
-          "durationSec": 2.336
+          "durationSec": 2.336,
+          "ttsHash": "7a6f90a41146"
         },
         {
           "id": "s05_l02",
@@ -289,7 +296,8 @@
           ],
           "vi": "À, là từ \"hâm nóng\"! Trả lời thế nào bây giờ nhỉ?",
           "audioUrl": "/stories/konbini-onigiri/audio/s05_l02.wav",
-          "durationSec": 3.019
+          "durationSec": 3.019,
+          "ttsHash": "128024d9f9fc"
         }
       ],
       "minigame": {
@@ -299,9 +307,16 @@
             "id": "warm_yes",
             "labelJa": "はい、お願いします！",
             "labelRuby": [
-              { "t": "はい、お" },
-              { "t": "願", "r": "ねが" },
-              { "t": "いします！" }
+              {
+                "t": "はい、お"
+              },
+              {
+                "t": "願",
+                "r": "ねが"
+              },
+              {
+                "t": "いします！"
+              }
             ],
             "labelVi": "Vâng, làm ơn hâm nóng giúp tôi!",
             "effect": "microwave",
@@ -325,16 +340,24 @@
               ],
               "vi": "Vâng, nhờ anh/chị hâm nóng giúp em ạ!",
               "audioUrl": "/stories/konbini-onigiri/audio/s05_c01.wav",
-              "durationSec": 1.984
+              "durationSec": 1.984,
+              "ttsHash": "d9c5975e4edf"
             }
           },
           {
             "id": "warm_no",
             "labelJa": "いいえ、大丈夫です。",
             "labelRuby": [
-              { "t": "いいえ、" },
-              { "t": "大丈夫", "r": "だいじょうぶ" },
-              { "t": "です。" }
+              {
+                "t": "いいえ、"
+              },
+              {
+                "t": "大丈夫",
+                "r": "だいじょうぶ"
+              },
+              {
+                "t": "です。"
+              }
             ],
             "labelVi": "Không, để nguyên là được rồi ạ.",
             "effect": "polite_bow",
@@ -358,7 +381,8 @@
               ],
               "vi": "Không, như vậy là ổn rồi ạ.",
               "audioUrl": "/stories/konbini-onigiri/audio/s05_c02.wav",
-              "durationSec": 2.165
+              "durationSec": 2.165,
+              "ttsHash": "a3e05229fe13"
             }
           }
         ]
@@ -381,7 +405,8 @@
           ],
           "vi": "Vâng, gửi bạn ạ! Xin cảm ơn quý khách!",
           "audioUrl": "/stories/konbini-onigiri/audio/s06_l01.wav",
-          "durationSec": 3.701
+          "durationSec": 3.701,
+          "ttsHash": "c50f34b9ecab"
         },
         {
           "id": "s06_l02",
@@ -449,7 +474,8 @@
           ],
           "vi": "Lần đầu tự mua đồ ở cửa hàng tiện lợi đã thành công rực rỡ! Nhờ chiếc cơm nắm ấm nóng, bao mệt mỏi cũng tan biến.",
           "audioUrl": "/stories/konbini-onigiri/audio/s06_l02.wav",
-          "durationSec": 6.731
+          "durationSec": 6.731,
+          "ttsHash": "ddea9c46932d"
         }
       ]
     }
@@ -492,7 +518,8 @@
           "benri"
         ],
         "audioUrl": "/stories/konbini-onigiri/audio/read_01.wav",
-        "durationSec": 4.544
+        "durationSec": 4.544,
+        "ttsHash": "2209631437be"
       },
       {
         "id": "read_02",
@@ -545,7 +572,8 @@
           "tenin"
         ],
         "audioUrl": "/stories/konbini-onigiri/audio/read_02.wav",
-        "durationSec": 6.315
+        "durationSec": 6.315,
+        "ttsHash": "76503bc6a0cb"
       },
       {
         "id": "read_03",
@@ -588,7 +616,8 @@
           "daijoubu"
         ],
         "audioUrl": "/stories/konbini-onigiri/audio/read_03.wav",
-        "durationSec": 10.315
+        "durationSec": 10.315,
+        "ttsHash": "b5d4206fde4c"
       }
     ],
     "vocab": [
@@ -662,8 +691,13 @@
         "explanation": "Dùng khi chọn món ăn, đồ uống hoặc quyết định lựa chọn giữa nhiều thứ. Thể ý chí 「〜にしよう」 mang sắc thái tự nhủ thân mật.",
         "exampleJa": "鮭おにぎりにしよう！",
         "exampleRuby": [
-          { "t": "鮭", "r": "さけ" },
-          { "t": "おにぎりにしよう！" }
+          {
+            "t": "鮭",
+            "r": "さけ"
+          },
+          {
+            "t": "おにぎりにしよう！"
+          }
         ],
         "exampleVi": "Chọn cơm nắm cá hồi vậy!"
       },
@@ -675,9 +709,16 @@
         "explanation": "Cách nhân viên thu ngân Nhật báo giá tiền lịch sự (tương đương 「〜です」 trong ngữ cảnh phục vụ khách hàng).",
         "exampleJa": "160円になります。",
         "exampleRuby": [
-          { "t": "160" },
-          { "t": "円", "r": "えん" },
-          { "t": "になります。" }
+          {
+            "t": "160"
+          },
+          {
+            "t": "円",
+            "r": "えん"
+          },
+          {
+            "t": "になります。"
+          }
         ],
         "exampleVi": "Của quý khách hết 160 yên ạ."
       },
@@ -689,15 +730,37 @@
         "explanation": "Nối 2 mệnh đề diễn tả thời điểm diễn ra hành động.",
         "exampleJa": "おにぎりを買うとき、店員さんは「温めますか？」と聞きます。",
         "exampleRuby": [
-          { "t": "おにぎりを" },
-          { "t": "買", "r": "か" },
-          { "t": "うとき、" },
-          { "t": "店員", "r": "てんいん" },
-          { "t": "さんは「" },
-          { "t": "温", "r": "あたた" },
-          { "t": "めますか？」と" },
-          { "t": "聞", "r": "き" },
-          { "t": "きます。" }
+          {
+            "t": "おにぎりを"
+          },
+          {
+            "t": "買",
+            "r": "か"
+          },
+          {
+            "t": "うとき、"
+          },
+          {
+            "t": "店員",
+            "r": "てんいん"
+          },
+          {
+            "t": "さんは「"
+          },
+          {
+            "t": "温",
+            "r": "あたた"
+          },
+          {
+            "t": "めますか？」と"
+          },
+          {
+            "t": "聞",
+            "r": "き"
+          },
+          {
+            "t": "きます。"
+          }
         ],
         "exampleVi": "Khi mua cơm nắm, nhân viên hỏi \"Có hâm nóng không?\"."
       },
@@ -709,12 +772,27 @@
         "explanation": "Khác với 「V-たい」 (tự mình muốn làm), 「V-てほしい」 diễn tả mong muốn người khác thực hiện hành động đó.",
         "exampleJa": "温めてほしいときは「はい、お願いします」と言います。",
         "exampleRuby": [
-          { "t": "温", "r": "あたた" },
-          { "t": "めてほしいときは「はい、お" },
-          { "t": "願", "r": "ねが" },
-          { "t": "いします」と" },
-          { "t": "言", "r": "い" },
-          { "t": "います。" }
+          {
+            "t": "温",
+            "r": "あたた"
+          },
+          {
+            "t": "めてほしいときは「はい、お"
+          },
+          {
+            "t": "願",
+            "r": "ねが"
+          },
+          {
+            "t": "いします」と"
+          },
+          {
+            "t": "言",
+            "r": "い"
+          },
+          {
+            "t": "います。"
+          }
         ],
         "exampleVi": "Khi muốn được hâm nóng hãy nói 「はい、お願いします」."
       }
@@ -723,23 +801,68 @@
       {
         "id": "q1",
         "questionJa": [
-          { "t": "コンビニの" },
-          { "t": "店員", "r": "てんいん" },
-          { "t": "さんが「" },
-          { "t": "温", "r": "あたた" },
-          { "t": "めますか？」と" },
-          { "t": "聞", "r": "き" },
-          { "t": "いたら、" },
-          { "t": "何", "r": "なに" },
-          { "t": "の" },
-          { "t": "意味", "r": "いみ" },
-          { "t": "ですか。" }
+          {
+            "t": "コンビニの"
+          },
+          {
+            "t": "店員",
+            "r": "てんいん"
+          },
+          {
+            "t": "さんが「"
+          },
+          {
+            "t": "温",
+            "r": "あたた"
+          },
+          {
+            "t": "めますか？」と"
+          },
+          {
+            "t": "聞",
+            "r": "き"
+          },
+          {
+            "t": "いたら、"
+          },
+          {
+            "t": "何",
+            "r": "なに"
+          },
+          {
+            "t": "の"
+          },
+          {
+            "t": "意味",
+            "r": "いみ"
+          },
+          {
+            "t": "ですか。"
+          }
         ],
         "questionVi": "Khi nhân viên konbini hỏi 「温めますか？」, câu đó có nghĩa là gì?",
         "options": [
-          { "ja": [{ "t": "Bạn có cần túi nilon không?" }] },
-          { "ja": [{ "t": "Bạn có muốn hâm nóng không?" }] },
-          { "ja": [{ "t": "Bạn thanh toán bằng thẻ phải không?" }] }
+          {
+            "ja": [
+              {
+                "t": "Bạn có cần túi nilon không?"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "Bạn có muốn hâm nóng không?"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "Bạn thanh toán bằng thẻ phải không?"
+              }
+            ]
+          }
         ],
         "correctIndex": 1,
         "explanationVi": "「温める」(あたためる) nghĩa là hâm nóng đồ ăn/đồ uống."
@@ -747,16 +870,58 @@
       {
         "id": "q2",
         "questionJa": [
-          { "t": "温", "r": "あたた" },
-          { "t": "めてほしいとき、どう" },
-          { "t": "答", "r": "こた" },
-          { "t": "えますか。" }
+          {
+            "t": "温",
+            "r": "あたた"
+          },
+          {
+            "t": "めてほしいとき、どう"
+          },
+          {
+            "t": "答",
+            "r": "こた"
+          },
+          {
+            "t": "えますか。"
+          }
         ],
         "questionVi": "Khi muốn nhờ nhân viên hâm nóng giúp, bạn trả lời thế nào?",
         "options": [
-          { "ja": [{ "t": "はい、お" }, { "t": "願", "r": "ねが" }, { "t": "いします！" }] },
-          { "ja": [{ "t": "いいえ、" }, { "t": "大丈夫", "r": "だいじょうぶ" }, { "t": "です。" }] },
-          { "ja": [{ "t": "いらっしゃいませ！" }] }
+          {
+            "ja": [
+              {
+                "t": "はい、お"
+              },
+              {
+                "t": "願",
+                "r": "ねが"
+              },
+              {
+                "t": "いします！"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "いいえ、"
+              },
+              {
+                "t": "大丈夫",
+                "r": "だいじょうぶ"
+              },
+              {
+                "t": "です。"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "いらっしゃいませ！"
+              }
+            ]
+          }
         ],
         "correctIndex": 0,
         "explanationVi": "「はい、お願いします！」 là câu đồng ý lịch sự và tự nhiên nhất."
@@ -764,17 +929,47 @@
       {
         "id": "q3",
         "questionJa": [
-          { "t": "「いいえ、" },
-          { "t": "大丈夫", "r": "だいじょうぶ" },
-          { "t": "です」はどんなときに" },
-          { "t": "使", "r": "つか" },
-          { "t": "いますか。" }
+          {
+            "t": "「いいえ、"
+          },
+          {
+            "t": "大丈夫",
+            "r": "だいじょうぶ"
+          },
+          {
+            "t": "です」はどんなときに"
+          },
+          {
+            "t": "使",
+            "r": "つか"
+          },
+          {
+            "t": "いますか。"
+          }
         ],
         "questionVi": "Câu 「いいえ、大丈夫です」 thường dùng trong tình huống nào ở cửa hàng?",
         "options": [
-          { "ja": [{ "t": "Từ chối lịch sự (không cần hâm nóng / không cần túi)" }] },
-          { "ja": [{ "t": "Hỏi đường đi ra nhà ga" }] },
-          { "ja": [{ "t": "Chào tạm biệt khi ra về" }] }
+          {
+            "ja": [
+              {
+                "t": "Từ chối lịch sự (không cần hâm nóng / không cần túi)"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "Hỏi đường đi ra nhà ga"
+              }
+            ]
+          },
+          {
+            "ja": [
+              {
+                "t": "Chào tạm biệt khi ra về"
+              }
+            ]
+          }
         ],
         "correctIndex": 0,
         "explanationVi": "Trong giao tiếp thực tế ở Nhật, 「大丈夫です」 dùng rất nhiều để từ chối nhẹ nhàng."
