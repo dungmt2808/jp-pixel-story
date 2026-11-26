@@ -19,21 +19,25 @@ Every lesson in `web/public/stories/<story-id>/` automatically powers **3 modes*
 ## Prerequisites
 
 1. Verify local VOICEVOX is running with MCP tool `voicevox_health`.
-2. Inspect available speakers via `voicevox_list_speakers` (recommended: narrator `13`, young male `11`, bright female `8`).
+2. Inspect available speakers via `voicevox_list_speakers`. Recommended expressive voice cast (always pass real Kanji `jaPlain` so OpenJTalk preserves native Japanese pitch accent — NEVER pass all-Hiragana `ttsText` unless fixing a specific misread word!):
+   - Warm storyteller narrator: `青山龍星 (しっとり=84)` or `(ノーマル=13)`
+   - Gentle/emotional female: `WhiteCUL (ノーマル=23 / かなしい=25)` or `小夜/SAYO (46)`
+   - Earnest young male: `玄野武宏 (ノーマル=11 / 悲しみ=41)`
+   - Bright female: `春日部つむぎ (8)`
 
 ## Step 1: Choose Category & Format
 
 Decide the library category in `web/public/stories/index.json`:
-- `"situation"` (`💬 Tình huống đời sống`): everyday Japan interactions (konbini, train station, ramen shop, clinic...).
-- `"story"` (`📖 Câu chuyện & Đọc hiểu`): cultural stories, folktales, JLPT passages (Hachikō, Momotarō...).
+- `"situation"` (`💬 Tình huống đời sống`): everyday Japan interactions (konbini, train station, ramen shop, clinic, JLPT Listening).
+- `"story"` (`📖 Câu chuyện & Đọc hiểu`): cultural stories, folktales, JLPT Reading passages (Hachikō, Tsuru no Ongaeshi...).
 
 And choose one of two formats:
-- **Format A — Standard Engine (`story.json`, fastest & auto-supports Daily Dictation):**
-  Create `web/public/stories/<story-id>/story.json` following [story-schema.md](./references/story-schema.md), including:
-  - 5–6 scenes with `jaPlain`, `ttsText`, exact `jaRuby` Furigana on every Kanji (no Romaji!), and natural Vietnamese `vi`.
+- **Format A — Standard Engine (`story.json`, fastest, token-efficient & auto-supports Daily Dictation):**
+  Create `web/public/stories/<story-id>/story.json` following [story-schema.md](./references/story-schema.md), using **compact `{漢字|かんじ}` string notation** for `jaRuby`, `labelRuby`, `exampleRuby`, `questionJa`, and `options[].ja` (~75% fewer tokens than segment arrays!):
+  - 5–6 scenes with `jaPlain` (with natural `、` breath commas for VOICEVOX), compact `{漢字|かんじ}` `jaRuby` on every Kanji (no Romaji!), and natural Vietnamese `vi`.
   - `characterCard` popup facts.
-  - `reading` with `sentences`, `vocab`, `grammar` (with `exampleRuby`), and 3–4 `quiz` questions.
-  - Run MCP tool `voicevox_generate_story_audio` (`audio_format="mp3"`).
+  - `reading` with `sentences`, `vocab`, `grammar` (with compact `exampleRuby`), and 3–4 `quiz` questions.
+  - Run MCP tool `voicevox_generate_story_audio` (`audio_format="mp3"`), and audition key lines to confirm natural prosody.
   - Daily Dictation automatically reads all voiced lines from `story.json`!
 - **Format B — Custom Standalone Interactive HTML (for richly bespoke interactions like Hachikō):**
   Create `web/public/stories/<story-id>/index.html` using `{漢字|かんじ}` markup, `sayW(jp, vi)`, `PASSAGE`, `DICT`, `QUIZ`, a **`ふりがな ON/OFF`** toggle (no Romaji), a **`📚 Thư viện`** button (`../../`), and a **`🎧 Nghe chép`** button (`../../?story=<story-id>&mode=dictation`).
@@ -45,7 +49,8 @@ Follow the Art Style Bible in [art-style.md](./references/art-style.md) strictly
 1. Always pass style anchor images from `web/public/assets/style-ref/` (`ref_background.png`, `ref_minh.png`) when generating new artwork.
 2. Lock backgrounds (`320×200`) with MCP tool `pixellab_clean_background(..., palette_name="ramen_midnight")`.
 3. Lock character portraits (`96×96`) and interactive items (`36×36`–`80×80`) with `pixellab_clean_sprite` or `pixellab_slice_spritesheet(..., palette_name="ramen_midnight", bg_mode="chroma_green")`.
-4. Declare `"engine": "hybrid"` and `"assets": { ... }` in `story.json` so `HybridStage.tsx` renders crisp PNG art + live Canvas FX (rain, steam, lantern pulse, Bayer dithering).
+4. Stage portraits **frameless** flush to the bottom edge (`bottomY = VIRTUAL_H`) with `ctx.filter = "brightness(0.64)"` for listening characters — never paste floating square portrait boxes on top of scenes!
+5. Declare `"engine": "hybrid"` and `"assets": { ... }` in `story.json` so the stage renders crisp PNG art + live Canvas FX (snow/rain, steam, hearth embers, radial candlelight, Bayer dithering).
 
 ## Step 3: Register in Library Catalog
 

@@ -11,7 +11,16 @@ KANJI_RE = re.compile(r"[\u4e00-\u9faf]")
 RUBY_BRACE_RE = re.compile(r"\{([^|}]+)\|([^}]+)\}")
 
 
-def _check_ruby_segments(label: str, segs: list[dict[str, Any]], issues: list[str]) -> None:
+def _check_ruby_segments(label: str, segs: str | list[dict[str, Any]], issues: list[str]) -> None:
+    if isinstance(segs, str):
+        for m in RUBY_BRACE_RE.finditer(segs):
+            if not KANJI_RE.search(m.group(1)):
+                issues.append(f"[Ruby on non-Kanji] {label}: '{m.group(1)}' -> '{m.group(2)}'")
+        stripped = RUBY_BRACE_RE.sub("", segs)
+        leftover = KANJI_RE.findall(stripped)
+        if leftover:
+            issues.append(f"[Missing Furigana] {label}: '{''.join(leftover)}'")
+        return
     for seg in segs:
         text = str(seg.get("t", ""))
         reading = seg.get("r")

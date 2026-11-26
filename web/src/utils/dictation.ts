@@ -1,4 +1,5 @@
-import type { RubySegment } from "../types/story";
+import type { RubySegment, RubyTextValue } from "../types/story";
+import { parseRuby } from "./ruby";
 
 export interface DiffToken {
   char: string;
@@ -176,10 +177,11 @@ export interface DictationTile {
   plain: string;
 }
 
-export function splitRubyIntoTiles(jaRuby: RubySegment[]): DictationTile[] {
+export function splitRubyIntoTiles(jaRuby: RubyTextValue): DictationTile[] {
+  const segs = parseRuby(jaRuby);
   // Flatten into atomic tokens (each kanji ruby unit or single kana char)
   const atoms: RubySegment[] = [];
-  for (const seg of jaRuby) {
+  for (const seg of segs) {
     if (seg.r) {
       atoms.push(seg);
     } else {

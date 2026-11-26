@@ -175,6 +175,65 @@ class RetroAudioEngine {
       this.playTone(f, 0.22, "square", 0.18, this.masterGain!, now + idx * 0.09);
     });
   }
+
+  /** Traditional wooden weaving loom rhythm: "トン…カラリ…" */
+  public playLoomClack(): void {
+    const ctx = this.ensureContext();
+    if (!ctx || !this.masterGain || this.muted) return;
+    const now = ctx.currentTime;
+    // Deep wooden frame thud ("トン")
+    this.playTone(155, 0.075, "triangle", 0.26, this.masterGain, now);
+    this.playTone(230, 0.045, "sine", 0.16, this.masterGain, now + 0.01);
+    // Crisp shuttle slide & clack ("カラリ")
+    this.playTone(410, 0.05, "triangle", 0.14, this.masterGain, now + 0.22);
+    this.playTone(320, 0.06, "triangle", 0.18, this.masterGain, now + 0.34);
+    this.playTone(170, 0.07, "triangle", 0.22, this.masterGain, now + 0.44);
+  }
+
+  /** Gentle sliding paper fusuma door on wooden track */
+  public playSlideDoor(): void {
+    const ctx = this.ensureContext();
+    if (!ctx || !this.masterGain || this.muted) return;
+    const now = ctx.currentTime;
+    const bufferSize = Math.floor(ctx.sampleRate * 0.42);
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * 0.28;
+    }
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.setValueAtTime(520, now);
+    filter.frequency.exponentialRampToValueAtTime(280, now + 0.4);
+    filter.Q.value = 1.6;
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(0.24, now + 0.06);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.41);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+    noise.start(now);
+    noise.stop(now + 0.42);
+  }
+
+  /** Delicate Japanese pentatonic koto shimmer for magical story beats */
+  public playKotoChime(): void {
+    const ctx = this.ensureContext();
+    if (!ctx || !this.masterGain || this.muted) return;
+    const now = ctx.currentTime;
+    // Japanese Hirajoshi / Yo pentatonic shimmer (D5, E5, G5, A5, D6)
+    const notes = [587.33, 659.25, 783.99, 880.0, 1174.66];
+    notes.forEach((f, idx) => {
+      this.playTone(f, 0.36, "triangle", 0.16, this.masterGain!, now + idx * 0.085);
+      this.playTone(f * 2, 0.18, "sine", 0.06, this.masterGain!, now + idx * 0.085);
+    });
+  }
 }
 
 export const retroAudio = new RetroAudioEngine();

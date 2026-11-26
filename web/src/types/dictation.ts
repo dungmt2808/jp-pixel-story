@@ -1,11 +1,11 @@
-import type { RubySegment } from "./story";
+import type { RubyTextValue } from "./story";
 
 export interface DictationItem {
   id: string;
   speakerLabel?: string;
   jaPlain: string;
   jaKana: string;
-  jaRuby: RubySegment[];
+  jaRuby: RubyTextValue;
   vi: string;
   audioUrl: string;
   durationSec?: number;

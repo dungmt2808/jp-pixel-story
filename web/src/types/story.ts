@@ -5,13 +5,19 @@ export interface RubySegment {
   r?: string;
 }
 
+/** Supports both legacy RubySegment[] and compact `{漢字|かんじ}` string notation. */
+export type RubyTextValue = string | RubySegment[];
+
 export interface DialogueLine {
   id: string;
   voice: string;
   speakerLabel?: string;
+  speakerId?: number;
+  speedScale?: number;
+  intonationScale?: number;
   jaPlain: string;
   ttsText?: string;
-  jaRuby: RubySegment[];
+  jaRuby: RubyTextValue;
   vi: string;
   audioUrl?: string;
   durationSec?: number;
@@ -20,7 +26,7 @@ export interface DialogueLine {
 export interface MiniGameChoice {
   id: string;
   labelJa: string;
-  labelRuby?: RubySegment[];
+  labelRuby?: RubyTextValue;
   labelVi: string;
   effect: "microwave" | "polite_bow" | string;
   responseLine: DialogueLine;
@@ -85,7 +91,7 @@ export interface ReadingSentence {
   id: string;
   voice: string;
   jaPlain: string;
-  jaRuby: RubySegment[];
+  jaRuby: RubyTextValue;
   vi: string;
   audioUrl?: string;
   durationSec?: number;
@@ -111,15 +117,15 @@ export interface GrammarItem {
   meaningVi: string;
   explanation: string;
   exampleJa: string;
-  exampleRuby?: RubySegment[];
+  exampleRuby?: RubyTextValue;
   exampleVi: string;
 }
 
 export interface QuizQuestion {
   id: string;
-  questionJa: RubySegment[];
+  questionJa: RubyTextValue;
   questionVi: string;
-  options: { ja: RubySegment[]; text?: string }[];
+  options: { ja: RubyTextValue; text?: string }[];
   correctIndex: number;
   explanationVi: string;
 }
@@ -136,7 +142,14 @@ export interface StoryData {
   palette: string;
   voices: Record<
     string,
-    { label: string; speakerId: number; speedScale: number }
+    {
+      label: string;
+      speakerId: number;
+      speedScale: number;
+      pitchScale?: number;
+      intonationScale?: number;
+      pauseLengthScale?: number;
+    }
   >;
   characterCard: CharacterCard;
   scenes: StoryScene[];

@@ -92,6 +92,7 @@ async def synthesize_line(
     speed_scale: float = 0.94,
     pitch_scale: float = 0.0,
     intonation_scale: float = 1.05,
+    pause_length_scale: float = 1.08,
     volume_scale: float = 1.0,
     pre_phoneme_length: float = 0.1,
     post_phoneme_length: float = 0.18,
@@ -110,10 +111,11 @@ async def synthesize_line(
         q_resp.raise_for_status()
         query = q_resp.json()
 
-        # Adjust prosody for Japanese learners (slightly slower & clear intonation)
+        # Adjust prosody for Japanese learners (slightly slower, expressive pitch & breath pauses)
         query["speedScale"] = speed_scale
         query["pitchScale"] = pitch_scale
         query["intonationScale"] = intonation_scale
+        query["pauseLengthScale"] = pause_length_scale
         query["volumeScale"] = volume_scale
         query["prePhonemeLength"] = pre_phoneme_length
         query["postPhonemeLength"] = post_phoneme_length
@@ -162,16 +164,22 @@ async def generate_story_audio(
     skipped: list[str] = []
 
     async def process_line_obj(line: dict[str, Any], default_id: str) -> None:
-        tts_text = line.get("ttsText") or line.get("jaPlain")
+        # Prefer natural Japanese with Kanji (`ttsText` only if explicitly overriding a misread word)
+        raw_ja = line.get("ja") if isinstance(line.get("ja"), str) else (
+            line.get("jaRuby") if isinstance(line.get("jaRuby"), str) else None
+        )
+        plain_from_ruby = _RUBY_BRACE_RE.sub(r"\1", raw_ja) if isinstance(raw_ja, str) else None
+        tts_text = line.get("ttsText") or line.get("jaPlain") or plain_from_ruby
         if not tts_text:
             return
         line_id = line.get("id") or default_id
         voice_key = line.get("voice", "narrator")
-        voice_cfg = voices.get(voice_key, {"speakerId": 13, "speedScale": 0.94})
-        speaker_id = int(voice_cfg.get("speakerId", 13))
-        speed_scale = float(line.get("speedScale", voice_cfg.get("speedScale", 0.94)))
-        pitch_scale = float(voice_cfg.get("pitchScale", 0.0))
-        intonation_scale = float(voice_cfg.get("intonationScale", 1.05))
+        voice_cfg = voices.get(voice_key, {"speakerId": 13, "speedScale": 0.92})
+        speaker_id = int(line.get("speakerId", voice_cfg.get("speakerId", 13)))
+        speed_scale = float(line.get("speedScale", voice_cfg.get("speedScale", 0.92)))
+        pitch_scale = float(line.get("pitchScale", voice_cfg.get("pitchScale", 0.0)))
+        intonation_scale = float(line.get("intonationScale", voice_cfg.get("intonationScale", 1.12)))
+        pause_length_scale = float(line.get("pauseLengthScale", voice_cfg.get("pauseLengthScale", 1.12)))
 
         out_name = f"{line_id}.{ext}"
         out_path = audio_dir / out_name
@@ -194,6 +202,7 @@ async def generate_story_audio(
                         speed_scale=speed_scale,
                         pitch_scale=pitch_scale,
                         intonation_scale=intonation_scale,
+                        pause_length_scale=pause_length_scale,
                         base_url=base_url,
                     )
                     _convert_wav_to_mp3(tmp_wav, out_path)
@@ -206,6 +215,7 @@ async def generate_story_audio(
                     speed_scale=speed_scale,
                     pitch_scale=pitch_scale,
                     intonation_scale=intonation_scale,
+                    pause_length_scale=pause_length_scale,
                     base_url=base_url,
                 )
                 duration_sec = res["duration_sec"]

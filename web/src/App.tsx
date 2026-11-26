@@ -10,6 +10,7 @@ import type { StoryCatalog, StoryCatalogEntry } from "./types/catalog";
 import type { DictationItem, DictationPack } from "./types/dictation";
 import type { StoryData } from "./types/story";
 import { resolveAssetUrl } from "./utils/assetUrl";
+import { parseRuby, rubyToKana } from "./utils/ruby";
 
 function buildDictationPackFromStory(story: StoryData): DictationPack {
   const items: DictationItem[] = [];
@@ -26,13 +27,13 @@ function buildDictationPackFromStory(story: StoryData): DictationPack {
   }) => {
     if (!ln.audioUrl || seen.has(ln.id)) return;
     seen.add(ln.id);
-    const jaKana = ln.jaRuby.map((seg) => seg.r ?? seg.t).join("");
+    const jaKana = rubyToKana(ln.jaRuby);
     items.push({
       id: ln.id,
       speakerLabel: ln.speakerLabel,
       jaPlain: ln.jaPlain,
       jaKana,
-      jaRuby: ln.jaRuby,
+      jaRuby: parseRuby(ln.jaRuby),
       vi: ln.vi,
       audioUrl: ln.audioUrl,
       durationSec: ln.durationSec,

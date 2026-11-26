@@ -1,14 +1,16 @@
 import type { RubySegment } from "../types/story";
+import { parseRuby } from "../utils/ruby";
 
 interface RubyTextProps {
-  segments: RubySegment[];
+  segments: string | RubySegment[];
   showFurigana: boolean;
 }
 
 export function RubyText({ segments, showFurigana }: RubyTextProps) {
+  const list = parseRuby(segments);
   return (
     <>
-      {segments.map((seg, idx) =>
+      {list.map((seg, idx) =>
         seg.r && showFurigana ? (
           <ruby key={idx}>
             {seg.t}
