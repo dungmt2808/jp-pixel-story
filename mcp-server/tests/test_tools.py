@@ -209,6 +209,52 @@ def test_validator_catches_compact_ruby_errors(tmp_path: Path) -> None:
     assert "Ruby on non-Kanji" in joined
 
 
+def _v2_story(story_id: str, *, strict: bool) -> dict:
+    story = {
+        "id": story_id,
+        "engine": "cinema",
+        "characterCard": {
+            "nameJa": "ゆい",
+            "subtitle": "東京の学生",  # kanji without ruby
+            "facts": [{"label": "SECRET", "value": "卵焼き", "locked": True}],
+        },
+        "scenes": [
+            {
+                "id": "sc1",
+                "titleCard": {"title": "お花見"},
+                "labels": [{"text": "桜", "x": 10, "y": 10}],
+                "summary": "{今日|きょう}は楽しかった",
+                "lines": [],
+            }
+        ],
+        "reading": {"sentences": [], "grammar": [], "quiz": []},
+    }
+    if strict:
+        story["artQuality"] = {"minOutlineCompliance": 0.9}
+    return story
+
+
+def test_validator_checks_player_v2_furigana(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "v2-ruby", category="story")
+    (sdir / "story.json").write_text(json.dumps(_v2_story("v2-ruby", strict=True), ensure_ascii=False), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    joined = " | ".join(res["issues"])
+    assert res["ok"] is False
+    for where in ("sc1/titleCard", "sc1/labels[0]", "sc1/summary", "characterCard.subtitle", "characterCard.facts[0]"):
+        assert where in joined, where
+    assert "characterCard.nameJa" not in joined  # pure kana needs no ruby
+
+
+def test_validator_card_ruby_is_a_warning_for_legacy_stories(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "legacy-card", category="story")
+    story = _v2_story("legacy-card", strict=False)
+    story["scenes"][0].update({"titleCard": {"title": "{花見|はなみ}"}, "labels": [], "summary": "{今日|きょう}"})
+    (sdir / "story.json").write_text(json.dumps(story, ensure_ascii=False), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    assert not any("characterCard" in i for i in res["issues"])
+    assert any("characterCard.subtitle" in w for w in res["warnings"])
+
+
 def test_validator_catches_dokkai_issues(tmp_path: Path) -> None:
     pub, sdir = _setup_mock_catalog(tmp_path, "bad-dokkai")
     (sdir / "dokkai.json").write_text(

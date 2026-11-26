@@ -349,3 +349,21 @@ def test_validator_checks_rig_files(tmp_path: Path) -> None:
     rig["clips"]["talk"]["frames"] = [0, 9]
     rig_json.write_text(json.dumps(rig))
     assert any(i.startswith("[Invalid Rig Clip]") for i in validate_story_folder(sdir, web_public_dir=pub)["issues"])
+
+
+def test_chroma_green_keeps_green_objects(tmp_path: Path) -> None:
+    """Regression: the old despill turned every greenish pixel (tea, leaves) almost black."""
+    img = Image.new("RGB", (200, 200), (0, 255, 0))
+    d = ImageDraw.Draw(img)
+    d.ellipse([40, 40, 160, 160], fill=(98, 120, 72), outline=(36, 23, 18), width=6)  # green teapot body
+    d.rectangle([90, 90, 110, 110], fill=(0, 255, 0))  # enclosed pocket of green screen
+    buf = io.BytesIO()
+    img.save(buf, "JPEG", quality=85)
+    (tmp_path / "pot.jpg").write_bytes(buf.getvalue())
+    process_pixel_sprite(tmp_path / "pot.jpg", tmp_path / "pot.png", target_width=40, target_height=40,
+                         palette_name="none", bg_mode="chroma_green", record_provenance=False)
+    a = np.array(Image.open(tmp_path / "pot.png"))
+    body = a[(a[:, :, 3] > 0)][:, :3].astype(int)
+    greenish = body[(body[:, 1] > 100) & (body[:, 1] > body[:, 0])]
+    assert len(greenish) > 0.5 * len(body)  # the body is still green, not black
+    assert a[20, 20, 3] == 0  # enclosed green-screen pocket removed

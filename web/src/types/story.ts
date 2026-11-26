@@ -102,6 +102,80 @@ export interface CinemaActor {
   x?: number;
 }
 
+/** In-scene pixel tag (reference player style): term + optional translation, optional leader line. */
+export interface StageLabel {
+  /** Main text; Japanese may use compact ruby `{弁当|べんとう}`. */
+  text: string;
+  /** Translation shown under the term (hidden when the VI subtitle mode is off). */
+  sub?: string;
+  /** Centre of the tag in virtual 320x200 coordinates. */
+  x: number;
+  y: number;
+  /** Draws a crisp 1px leader line from the tag to this point. */
+  to?: [number, number];
+  /** Only show once line N (0-based) of the scene has started. */
+  afterLine?: number;
+  style?: "tag" | "letter";
+}
+
+export interface SceneStamp {
+  text: string;
+  x?: number;
+  y?: number;
+}
+
+export interface DragItem {
+  id: string;
+  /** Key in assets.items (palette-locked sprite). */
+  item: string;
+  from: [number, number];
+  to: [number, number];
+  label?: string;
+  labelVi?: string;
+}
+
+export interface TapSpot {
+  id: string;
+  x: number;
+  y: number;
+  r?: number;
+  /** Optional sprite drawn at the spot (assets.items key). */
+  item?: string;
+  label?: string;
+  labelVi?: string;
+  /** Optional voice line played when found. */
+  line?: DialogueLine;
+}
+
+export interface HoldGauge {
+  label: string;
+  x: number;
+  y: number;
+  durationSec: number;
+  /** Optional sprite drawn while holding (assets.items key), e.g. a teapot. */
+  item?: string;
+  /** Particle stream from the item to this point while holding (pouring, watering...). */
+  streamTo?: [number, number];
+}
+
+/** Data-driven mini-game of a scene (played after the scene's lines). */
+export interface SceneInteraction {
+  type: "drag" | "tap" | "hold";
+  /** Vietnamese instruction; shown uppercase in the caption bar with progress. */
+  hint: string;
+  items?: DragItem[];
+  spots?: TapSpot[];
+  hold?: HoldGauge;
+  /** Voice line played when the interaction is completed. */
+  doneLine?: DialogueLine;
+}
+
+export interface CinemaTitleCard {
+  title?: string;
+  subtitle?: string;
+  credit?: string;
+}
+
 export interface CinemaRevealNote {
   label: string;
   text: string;
@@ -129,6 +203,18 @@ export interface StoryScene {
   /** Cinema: which actors are on stage (default both; legacy outro shows only the left actor). */
   actors?: Array<"left" | "right">;
   revealNote?: CinemaRevealNote[];
+  /** Player v2: location / date stamp, e.g. "SHINJUKU GYOEN · 4月". */
+  stamp?: string | SceneStamp;
+  /** Player v2: pixel tags placed in the scene. */
+  labels?: StageLabel[];
+  /** Player v2: mini-game played after the lines. */
+  interaction?: SceneInteraction;
+  /** Player v2: intro title panel (defaults to bannerTitle / bannerSubtitle). */
+  titleCard?: CinemaTitleCard;
+  /** Additional atmospheric overlays drawn in order (e.g. ["light_rays", "petals"]). */
+  overlays?: string[];
+  /** Outro: one-line recap shown above the end buttons in the caption bar. */
+  summary?: string;
   outroLabels?: CinemaOutroLabels;
   whoButtonLabel?: string;
   actionLabel?: string;
@@ -140,6 +226,8 @@ export interface StoryScene {
 export interface CharacterFact {
   label: string;
   value: string;
+  /** Shown as "??? — hoàn thành truyện để mở khoá" until the outro is reached. */
+  locked?: boolean;
 }
 
 export interface CharacterCard {
@@ -201,6 +289,10 @@ export interface StoryData {
   cast?: { left?: CinemaActor; right?: CinemaActor };
   /** Strict sprite craft checks for the validator (outline colour / noise / colour count). */
   artQuality?: { outlineColor?: string; minOutlineCompliance?: number; maxOrphanRatio?: number; maxColorsPerSprite?: number };
+  /** Player v2 watermark shown in the stage corner. */
+  brand?: string;
+  /** Player v2 look: subtle dithered corner vignette (off by default). */
+  look?: { vignette?: boolean };
   /** Chiptune BGM theme started when the story begins. */
   bgm?: "default" | "depato_sunny" | "depato_rain";
   series: string;

@@ -11,13 +11,13 @@
           },
           "input": {
             "path": "web/public/stories/hanami-first/assets/sprites/minh",
-            "sha": "a8318d0bf7b5cb02"
+            "sha": "7a40e4a17954f764"
           },
-          "at": "2026-11-26T14:37:08+00:00"
+          "at": "2026-11-26T14:55:50+00:00"
         }
       ],
       "output": {
-        "sha": "aad6d0deba8d93f5"
+        "sha": "e13591d96e592aa4"
       }
     }
   }

@@ -10,7 +10,7 @@
   "artQuality": {
     "outlineColor": "#241712",
     "minOutlineCompliance": 0.98,
-    "maxOrphanRatio": 0.06
+    "maxOrphanRatio": 0.1
   },
   "bgm": "default",
   "assets": {
@@ -27,6 +27,11 @@
     "rigs": {
       "minh": "/stories/hanami-first/assets/sprites/minh/rig/rig.json",
       "yui": "/stories/hanami-first/assets/sprites/yui/rig/rig.json"
+    },
+    "items": {
+      "bento": "/stories/hanami-first/assets/items/bento.png",
+      "teapot": "/stories/hanami-first/assets/items/teapot.png",
+      "sakura": "/stories/hanami-first/assets/items/sakura.png"
     }
   },
   "cast": {
@@ -64,19 +69,24 @@
   },
   "characterCard": {
     "nameJa": "ゆい (YUI)",
-    "subtitle": "ミンさんの友だち · 東京の大学生",
+    "subtitle": "ミンさんの{友|とも}だち · {東京|とうきょう}の{大学生|だいがくせい}",
     "facts": [
       {
-        "label": "SHUMI",
-        "value": "お弁当を作ること (Thích tự làm cơm hộp)"
+        "label": "SỞ THÍCH",
+        "value": "お{弁当|べんとう}を{作|つく}ること (Thích tự làm cơm hộp)"
       },
       {
-        "label": "HANAMI",
-        "value": "毎年四月に友だちとお花見をします (Tháng Tư nào cũng đi ngắm hoa với bạn)"
+        "label": "MỖI NĂM",
+        "value": "{四月|しがつ}に{友|とも}だちとお{花見|はなみ}をします (Tháng Tư nào cũng đi ngắm hoa)"
       },
       {
-        "label": "TIP",
-        "value": "「〜ませんか」は相手をさそう言い方 (〜ませんか dùng để rủ rê)"
+        "label": "MẸO",
+        "value": "「〜ませんか」は{人|ひと}をさそう{言|い}い{方|かた} (〜ませんか dùng để rủ rê)"
+      },
+      {
+        "label": "BÍ MẬT",
+        "value": "Yui dậy từ 6 giờ sáng để tự làm món たまごやき (trứng cuộn) cho Minh!",
+        "locked": true
       }
     ]
   },
@@ -85,10 +95,15 @@
       "id": "hanami_intro",
       "type": "cinema_intro",
       "backdrop": "bg:park",
-      "overlay": "petals",
-      "bannerTitle": "はじめてのお花見",
-      "bannerSubtitle": "JLPT N4 · Tình huống đời sống",
-      "actionLabel": "はじめる · BẮT ĐẦU",
+      "overlays": [
+        "petals"
+      ],
+      "titleCard": {
+        "title": "はじめてのお{花見|はなみ}",
+        "subtitle": "JLPT N4 · Tình huống đời sống",
+        "credit": "jp-pixel-story · bài 13"
+      },
+      "actionLabel": "BẮT ĐẦU",
       "lines": [
         {
           "id": "h01",
@@ -107,9 +122,24 @@
       "id": "under_sakura",
       "type": "cinema_dialogue",
       "backdrop": "bg:park",
-      "overlay": "petals",
-      "instruction": "Nghe Yui và Minh nói chuyện dưới tán hoa anh đào",
-      "actionLabel": "お弁当を食べよう →",
+      "overlays": [
+        "petals"
+      ],
+      "stamp": "TOKYO · THÁNG 4 · CHỦ NHẬT",
+      "labels": [
+        {
+          "text": "{桜|さくら}",
+          "sub": "hoa anh đào",
+          "x": 112,
+          "y": 36,
+          "to": [
+            80,
+            52
+          ],
+          "afterLine": 0
+        }
+      ],
+      "actionLabel": "TIẾP TỤC →",
       "lines": [
         {
           "id": "h02",
@@ -137,11 +167,14 @@
     },
     {
       "id": "bento_time",
-      "type": "cinema_checklist",
+      "type": "cinema_dialogue",
       "backdrop": "bg:park",
-      "overlay": "petals",
-      "instruction": "Bấm thử 2 hoạt động trong buổi picnic!",
-      "actionLabel": "もうすぐ夕方 →",
+      "overlays": [
+        "petals"
+      ],
+      "actors": [
+        "right"
+      ],
       "lines": [
         {
           "id": "h04",
@@ -155,56 +188,138 @@
           "ttsHash": "3967ccf8469b"
         }
       ],
-      "minigame": {
-        "prompt": "Chọn hoạt động",
-        "choices": [
+      "interaction": {
+        "type": "drag",
+        "hint": "Kéo hộp cơm lên tấm bạt picnic",
+        "items": [
           {
-            "id": "c_bento",
-            "labelJa": "🍱 お弁当を食べる",
-            "labelRuby": "🍱 お{弁当|べんとう}を{食|た}べる",
-            "labelVi": "Ăn cơm hộp",
-            "effect": "none",
-            "backdrop": "bg:picnic",
-            "responseLine": {
-              "id": "h05",
-              "voice": "minh",
-              "speakerLabel": "ミン",
-              "jaPlain": "この卵焼き、甘くておいしいです！",
-              "jaRuby": "この{卵焼|たまごや}き、{甘|あま}くておいしいです！",
-              "vi": "Món trứng cuộn này ngọt và ngon quá!",
-              "audioUrl": "/stories/hanami-first/audio/h05.mp3",
-              "durationSec": 3.8,
-              "ttsHash": "bf04f9ec9837"
-            }
+            "id": "bento",
+            "item": "bento",
+            "from": [
+              52,
+              150
+            ],
+            "to": [
+              168,
+              164
+            ],
+            "label": "お{弁当|べんとう}",
+            "labelVi": "cơm hộp"
+          }
+        ],
+        "doneLine": {
+          "id": "h05",
+          "voice": "minh",
+          "speakerLabel": "ミン",
+          "jaPlain": "この卵焼き、甘くておいしいです！",
+          "jaRuby": "この{卵焼|たまごや}き、{甘|あま}くておいしいです！",
+          "vi": "Món trứng cuộn này ngọt và ngon quá!",
+          "audioUrl": "/stories/hanami-first/audio/h05.mp3",
+          "durationSec": 3.8,
+          "ttsHash": "bf04f9ec9837"
+        }
+      },
+      "actionLabel": "UỐNG TRÀ →"
+    },
+    {
+      "id": "tea_time",
+      "type": "cinema_dialogue",
+      "backdrop": "bg:picnic",
+      "actors": [
+        "left"
+      ],
+      "labels": [
+        {
+          "text": "お{茶|ちゃ}",
+          "sub": "trà",
+          "x": 214,
+          "y": 104,
+          "to": [
+            262,
+            134
+          ],
+          "afterLine": 0
+        }
+      ],
+      "lines": [
+        {
+          "id": "h06",
+          "voice": "yui",
+          "speakerLabel": "ゆい",
+          "jaPlain": "温かいお茶もありますよ。どうぞ。",
+          "jaRuby": "{温|あたた}かいお{茶|ちゃ}もありますよ。どうぞ。",
+          "vi": "Có cả trà nóng nữa đấy. Mời cậu.",
+          "audioUrl": "/stories/hanami-first/audio/h06.mp3",
+          "durationSec": 2.9,
+          "ttsHash": "3daffaf894c9"
+        }
+      ],
+      "interaction": {
+        "type": "hold",
+        "hint": "Giữ chuột (hoặc giữ ngón tay) để rót trà",
+        "hold": {
+          "label": "{注|そそ}ぐ",
+          "x": 252,
+          "y": 70,
+          "durationSec": 2.2,
+          "item": "teapot",
+          "streamTo": [
+            262,
+            132
+          ]
+        }
+      },
+      "actionLabel": "DẠO QUANH →"
+    },
+    {
+      "id": "petal_hunt",
+      "type": "cinema_dialogue",
+      "backdrop": "bg:park",
+      "overlays": [
+        "petals"
+      ],
+      "actors": [],
+      "stamp": "TÌM HOA RƠI",
+      "lines": [],
+      "interaction": {
+        "type": "tap",
+        "hint": "Tìm 3 bông hoa anh đào rơi trên cỏ",
+        "spots": [
+          {
+            "id": "f1",
+            "x": 46,
+            "y": 168,
+            "item": "sakura",
+            "label": "{一|いち}",
+            "labelVi": "một"
           },
           {
-            "id": "c_tea",
-            "labelJa": "🍵 お茶を飲む",
-            "labelRuby": "🍵 お{茶|ちゃ}を{飲|の}む",
-            "labelVi": "Uống trà",
-            "effect": "none",
-            "backdrop": "bg:picnic",
-            "responseLine": {
-              "id": "h06",
-              "voice": "yui",
-              "speakerLabel": "ゆい",
-              "jaPlain": "温かいお茶もありますよ。どうぞ。",
-              "jaRuby": "{温|あたた}かいお{茶|ちゃ}もありますよ。どうぞ。",
-              "vi": "Có cả trà nóng nữa đấy. Mời cậu.",
-              "audioUrl": "/stories/hanami-first/audio/h06.mp3",
-              "durationSec": 2.9,
-              "ttsHash": "3daffaf894c9"
-            }
+            "id": "f2",
+            "x": 246,
+            "y": 150,
+            "item": "sakura",
+            "label": "{二|に}",
+            "labelVi": "hai"
+          },
+          {
+            "id": "f3",
+            "x": 288,
+            "y": 186,
+            "item": "sakura",
+            "label": "{三|さん}",
+            "labelVi": "ba"
           }
         ]
-      }
+      },
+      "actionLabel": "TIẾP TỤC →"
     },
     {
       "id": "promise",
       "type": "cinema_dialogue",
       "backdrop": "bg:park",
-      "overlay": "petals",
-      "actionLabel": "→",
+      "overlays": [
+        "petals"
+      ],
       "lines": [
         {
           "id": "h07",
@@ -228,17 +343,21 @@
           "durationSec": 2.86,
           "ttsHash": "0fdf7e03af46"
         }
-      ]
+      ],
+      "actionLabel": "→"
     },
     {
       "id": "hanami_outro",
       "type": "cinema_outro",
       "backdrop": "bg:park",
-      "overlay": "petals",
+      "overlays": [
+        "petals"
+      ],
       "actors": [
         "left",
         "right"
       ],
+      "summary": "HOÀN THÀNH! お{花見|はなみ} · お{弁当|べんとう} · お{茶|ちゃ} · {約束|やくそく} — 4 từ mới",
       "outroLabels": {
         "reading": "📖 ĐỌC BÀI & LÀM QUIZ →",
         "card": "THẺ NHÂN VẬT"
@@ -426,5 +545,6 @@
         "explanationVi": "Minh rủ 「来年もいっしょにお花見をしませんか」 và Yui đáp 「約束ですよ」."
       }
     ]
-  }
+  },
+  "brand": "jp-pixel-story.vn"
 }

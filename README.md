@@ -37,6 +37,7 @@ Dùng tự động cho cả **Antigravity** (`.agents/plugins/jp-pixel-studio/`)
 - **`SpriteAnimator`**: hoạt hình theo frame từ `meta.json` (idle chớp mắt, talk mấp máy miệng khi nhân vật nói).
 - **`RigAnimator`**: nhân vật tách đầu/thân từ `rig.json` — thở, gật đầu khi nghe, nhún đầu khi nói, luôn theo bước nguyên pixel.
 - **`CinemaStage` dữ liệu hoá 100%**: phông (`bg:` / `proc:`), hiệu ứng (`petals`, `snow`, `rain`, `bath_steam`), dàn nhân vật, ghi chú, nhãn nút… đều khai báo trong `story.json`.
+- **Player điện ảnh v2** (giao diện kiểu ClassMate): thanh công cụ trên (`?` thẻ nhân vật, `ふ`, `JA·VI`, âm thanh), phụ đề nằm *dưới* khung hình, title card, tem địa điểm, nhãn chữ có đường dẫn 1px, mini-game kéo / chạm / giữ (`interaction`) với con trỏ tự chơi khi xuất video, thẻ thông tin giấy cũ có mục bí mật mở khoá, chuyển cảnh hoà tan dither (`cinemaFx.ts`, `cinemaUi.ts`).
 
 ---
 

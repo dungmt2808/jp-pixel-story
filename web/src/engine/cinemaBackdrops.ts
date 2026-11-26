@@ -5,6 +5,7 @@
  *   "overlay":  "bath_steam" | "snow" | "rain" | "petals"
  * Add a new entry here once and every story can use it - no per-story stage code.
  */
+import { drawLightRays } from "./cinemaFx";
 import { VIRTUAL_H, VIRTUAL_W } from "./pixelRenderer";
 
 export type ImageMap = Record<string, HTMLImageElement>;
@@ -242,6 +243,7 @@ export const OVERLAYS: Record<string, OverlayFn> = {
   snow: drawSnow,
   rain: drawRain,
   petals: drawPetals,
+  light_rays: (ctx, t) => drawLightRays(ctx, t),
 };
 
 /** Legacy `locationBadge` values that implied an overlay before `overlay` existed. */

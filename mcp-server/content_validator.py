@@ -282,6 +282,35 @@ def validate_story_folder(
                 stats["kanji_blocks_checked"] += 1
                 _check_ruby_segments(f"{sc['id']}/{ln['id']}", ln.get("jaRuby", []), issues)
                 check_audio_ref(f"{sc['id']}/{ln['id']}", ln.get("audioUrl"))
+            inter = sc.get("interaction")
+            if isinstance(inter, dict):
+                extra = [("done", inter.get("doneLine"))] + [
+                    (f"spot{i}", sp.get("line")) for i, sp in enumerate(inter.get("spots") or [])
+                ]
+                for tag, ln in extra:
+                    if isinstance(ln, dict):
+                        stats["kanji_blocks_checked"] += 1
+                        _check_ruby_segments(f"{sc['id']}/{tag}", ln.get("jaRuby", []), issues)
+                        check_audio_ref(f"{sc['id']}/{tag}", ln.get("audioUrl"))
+                texts = [it.get("label") for it in inter.get("items") or []]
+                texts += [sp.get("label") for sp in inter.get("spots") or []]
+                texts += [(inter.get("hold") or {}).get("label")]
+                for i, txt in enumerate(x for x in texts if x):
+                    _check_ruby_segments(f"{sc['id']}/interaction.label[{i}]", txt, issues)
+                for key, grp in (("items", inter.get("items") or []), ("spots", inter.get("spots") or [])):
+                    for it in grp:
+                        ref = it.get("item")
+                        if ref and ref not in ((data.get("assets") or {}).get("items") or {}):
+                            issues.append(f"[Missing Item] {sc['id']}/{key}: '{ref}' is not in assets.items")
+                hold_item = (inter.get("hold") or {}).get("item")
+                if hold_item and hold_item not in ((data.get("assets") or {}).get("items") or {}):
+                    issues.append(f"[Missing Item] {sc['id']}/hold: '{hold_item}' is not in assets.items")
+            for i, lab in enumerate(sc.get("labels") or []):
+                _check_ruby_segments(f"{sc['id']}/labels[{i}]", lab.get("text", ""), issues)
+            if sc.get("summary"):
+                _check_ruby_segments(f"{sc['id']}/summary", sc["summary"], issues)
+            if (sc.get("titleCard") or {}).get("title"):
+                _check_ruby_segments(f"{sc['id']}/titleCard", sc["titleCard"]["title"], issues)
             mg = sc.get("minigame")
             if isinstance(mg, dict):
                 for ch in mg.get("choices", []):
@@ -291,6 +320,16 @@ def validate_story_folder(
                     if isinstance(rl, dict):
                         _check_ruby_segments(f"{sc['id']}/{ch['id']}.resp", rl.get("jaRuby", []), issues)
                         check_audio_ref(f"{sc['id']}/{ch['id']}.resp", rl.get("audioUrl"))
+
+        card = data.get("characterCard") or {}
+        card_issues: list[str] = []
+        for key in ("nameJa", "subtitle"):
+            if card.get(key):
+                _check_ruby_segments(f"characterCard.{key}", card[key], card_issues)
+        for i, fact in enumerate(card.get("facts") or []):
+            _check_ruby_segments(f"characterCard.facts[{i}]", fact.get("value", ""), card_issues)
+        # strict for stories that opt into the v2 quality gate, a warning for legacy cards
+        (issues if data.get("artQuality") else warnings).extend(card_issues)
 
         reading = data.get("reading", {})
         for sent in reading.get("sentences", []):

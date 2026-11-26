@@ -41,7 +41,7 @@ Every lesson lives in `web/public/stories/<id>/` and is registered in `web/publi
 
 | Content Type | `kind` / `engine` | Data File | Engine Component | Audio / Image MCP Tools |
 | :--- | :--- | :--- | :--- | :--- |
-| **NEW animated story / situation / JLPT 問題5** | `"engine"` + `story.engine: "cinema"` | `story.json` | `CinemaStage` (100% data-driven: backdrops, overlays, animated sprite cast) + `ReadingView` + auto `DictationView` | `pixellab_clean_background`, `pixellab_slice_spritesheet(registration="bust")`, `voicevox_generate_story_audio` |
+| **NEW animated story / situation / JLPT 問題5** | `"engine"` + `story.engine: "cinema"` | `story.json` | `CinemaStage` player v2 (100% data-driven: top bar + caption bar, title card, stamps, leader-line labels, drag/tap/hold mini-games, info card, backdrops, overlays, rig/sprite cast) + `ReadingView` + auto `DictationView` | `pixellab_clean_background`, `pixellab_slice_spritesheet(registration="bust")`, `voicevox_generate_story_audio` |
 | Legacy bespoke stages | `story.engine`: `"tsuru"`, `"depato"`, `"hybrid"`, `"pixel"` | `story.json` | `TsuruStage`, `DepatoStage`, `HybridStage`, `PixelStage` (all on the shared `useStageRuntime`) | same |
 | **JLPT Listening (`聴解`)** | `"jlpt-choukai"` | `choukai.json` + `dictation.json` | `JlptChoukaiView` + native `DictationView` | `jlpt_clean_exam_image` + FFmpeg slice |
 | **JLPT Reading (`読解 問題4・6`)** | `"jlpt-dokkai"` | `dokkai.json` | `JlptDokkaiView` + auto `DictationView` | `voicevox_generate_dokkai_audio` |
@@ -50,6 +50,8 @@ Every lesson lives in `web/public/stories/<id>/` and is registered in `web/publi
 
 **Never write a new per-story stage component.** New stories use `engine: "cinema"`; if a scene needs a new
 look, add ONE reusable entry to `web/src/engine/cinemaBackdrops.ts` (`PROCEDURAL_BACKDROPS` / `OVERLAYS`).
+Make scenes feel like a cinematic lesson, not a slideshow: give most scenes a `stamp` or `labels`, and add one
+`interaction` (drag / tap / hold) every 2–3 scenes with a voiced `doneLine` (see story-schema.md "Cinematic player v2").
 Stages are routed by `story.engine` (`web/src/engine/stageEngines.ts`), never by story id.
 
 Read schema references before creating files:

@@ -94,6 +94,56 @@ Full example: `web/public/stories/hanami-first/story.json`.
 - `lines[]`: `{ id, voice, speakerLabel, jaPlain, ttsText?, jaRuby, vi, audioUrl, durationSec, ttsHash }` — the last three are written by `voicevox_generate_story_audio`.
 - `reading`: `{ sectionTitle, subtitle, sentences, vocab, grammar, quiz }`. Daily Dictation is built automatically from all voiced lines.
 
+### Cinematic player v2 (Classmate-style chrome, labels & mini-games)
+
+`CinemaStage` renders every cinema story as one player: a top bar (title + `?` card, `ふ` furigana, `JA·VI`, mute, close),
+the 16:10 pixel stage, and a caption bar *under* the stage (speaker, Japanese with ruby, Vietnamese, or the
+interaction hint / outro buttons). All coordinates below are in the 320x200 virtual frame. Example: `hanami-first`.
+
+```json
+{
+  "brand": "jp-pixel-story.vn",
+  "look": { "vignette": false },
+  "assets": { "items": { "bento": "/stories/hanami-first/assets/items/bento.png" } },
+  "characterCard": { "nameJa": "ゆい (YUI)", "subtitle": "{東京|とうきょう}の{大学生|だいがくせい}",
+    "facts": [ { "label": "SỞ THÍCH", "value": "お{弁当|べんとう}を{作|つく}ること" },
+               { "label": "BÍ MẬT", "value": "...", "locked": true } ] },
+  "scenes": [
+    { "type": "cinema_intro", "titleCard": { "title": "はじめてのお{花見|はなみ}", "subtitle": "JLPT N4", "credit": "..." } },
+    { "type": "cinema_dialogue", "stamp": "TOKYO · THÁNG 4 · CHỦ NHẬT", "overlays": ["light_rays", "petals"],
+      "labels": [ { "text": "{桜|さくら}", "sub": "hoa anh đào", "x": 250, "y": 40, "to": [228, 70], "afterLine": 1 } ],
+      "lines": [ ... ] },
+    { "type": "cinema_dialogue", "actors": ["right"],
+      "interaction": { "type": "drag", "hint": "Kéo hộp cơm đến tấm thảm",
+        "items": [ { "id": "b", "item": "bento", "from": [52, 150], "to": [168, 164], "label": "{弁当|べんとう}", "labelVi": "cơm hộp" } ],
+        "doneLine": { "id": "h05", "voice": "yui", "jaPlain": "...", "jaRuby": "...", "vi": "..." } } },
+    { "interaction": { "type": "hold", "hint": "Giữ để rót trà",
+        "hold": { "label": "{注|そそ}ぐ", "x": 252, "y": 70, "durationSec": 2.2, "item": "teapot", "streamTo": [262, 132] } } },
+    { "interaction": { "type": "tap", "hint": "Tìm 3 cánh hoa rơi",
+        "spots": [ { "id": "p1", "x": 60, "y": 90, "r": 12, "item": "sakura", "label": "一" } ] } },
+    { "type": "cinema_outro", "summary": "{今日|きょう}は…", "outroLabels": { "reading": "📖 ĐỌC BÀI →" } }
+  ]
+}
+```
+
+- `stamp`: string or `{ text, x?, y? }` — typewriter-style location/date stamp (top-left by default).
+- `labels[]`: pixel tags `{ text, sub?, x, y, to?, afterLine?, style? }`; `to` draws a crisp 1px leader line, `sub` (Vietnamese)
+  hides when VI is off, `afterLine` delays the tag until that line (0-based) starts.
+- `interaction` runs after the scene's lines; the caption shows `hint` in uppercase with progress (`1/3`).
+  `drag` (items from `from` to `to`, dotted arc hint + target glow), `tap` (find `spots`, optional `line` per spot),
+  `hold` (press-and-hold meter for `durationSec`, optional `item` sprite + pixel `streamTo`). `doneLine` plays on completion.
+  In `autoplay` / exported videos a pixel cursor performs the interaction, so MP4s show the whole game.
+- `assets.items`: small palette-locked object sprites (`pixellab_clean_sprite` on an `art-src/` raw image) used by interactions.
+- `titleCard`: intro panel `{ title, subtitle, credit }` (falls back to `bannerTitle` / `bannerSubtitle` / story title).
+- `overlays[]`: several atmospheric layers in order (`light_rays`, `petals`, `snow`, `rain`, `bath_steam`); `overlay` still works.
+- `summary`: one-line recap (ruby allowed) shown above the end buttons of `cinema_outro`.
+- `characterCard` (parchment info card, opened with `?`): `nameJa`, `subtitle` and fact values accept ruby; `locked: true`
+  facts show "??? — hoàn thành truyện để mở khoá" until the outro is reached.
+- `brand`: small watermark in the stage corner. `look.vignette`: opt-in subtle dithered corner vignette.
+- Scene changes use a Bayer-dither dissolve; voices are generated for `doneLine` (`sXX_done`) and spot lines (`sXX_tNN`) too.
+- Furigana rule: every kanji in `titleCard.title`, `labels[].text`, interaction labels, `summary` and `characterCard` must use
+  `{漢字|かな}` — the validator fails stories with `artQuality` (warning for legacy stories).
+
 ### Sprite `meta.json` (written by `pixellab_slice_spritesheet`)
 
 ```json

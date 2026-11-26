@@ -11,13 +11,13 @@
           },
           "input": {
             "path": "web/public/stories/hanami-first/assets/sprites/yui",
-            "sha": "97a6390f1900a735"
+            "sha": "69428826e4cf6a67"
           },
-          "at": "2026-11-26T14:37:10+00:00"
+          "at": "2026-11-26T14:55:53+00:00"
         }
       ],
       "output": {
-        "sha": "32bc456c6dd4ce1a"
+        "sha": "3502edb6082eb02d"
       }
     }
   }

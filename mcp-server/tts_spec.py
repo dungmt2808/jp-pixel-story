@@ -93,6 +93,13 @@ def iter_story_lines(story: dict[str, Any]):
             for c_idx, choice in enumerate(minigame.get("choices", [])):
                 if isinstance(choice.get("responseLine"), dict):
                     yield choice["responseLine"], f"s{s_idx + 1:02d}_c{c_idx + 1:02d}"
+        inter = scene.get("interaction")
+        if isinstance(inter, dict):
+            if isinstance(inter.get("doneLine"), dict):
+                yield inter["doneLine"], f"s{s_idx + 1:02d}_done"
+            for t_idx, spot in enumerate(inter.get("spots", []) or []):
+                if isinstance(spot.get("line"), dict):
+                    yield spot["line"], f"s{s_idx + 1:02d}_t{t_idx + 1:02d}"
     reading = story.get("reading")
     if isinstance(reading, dict):
         for p_idx, sent in enumerate(reading.get("sentences", [])):

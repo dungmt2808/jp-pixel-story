@@ -2,7 +2,7 @@
   "version": 1,
   "frameWidth": 96,
   "frameHeight": 96,
-  "neckRow": 56,
+  "neckRow": 57,
   "neckExtension": 3,
   "pivot": {
     "x": 47,
@@ -14,7 +14,7 @@
   },
   "head": {
     "sheet": "head.png",
-    "frameHeight": 56,
+    "frameHeight": 57,
     "frameCount": 4
   },
   "fps": 6.0,

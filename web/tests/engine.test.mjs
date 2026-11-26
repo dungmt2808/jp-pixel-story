@@ -29,6 +29,7 @@ const sprite = await loadTsModule("src/engine/spriteAnimator.ts");
 const cinema = await loadTsModule("src/engine/cinemaModel.ts");
 const engines = await loadTsModule("src/engine/stageEngines.ts");
 const rig = await loadTsModule("src/engine/rigAnimator.ts");
+const ui = await loadTsModule("src/engine/cinemaUi.ts");
 
 let passed = 0;
 function test(name, fn) {
@@ -268,6 +269,70 @@ test("rigHeadFrame plays the talk clip while talking and the idle (blink) clip o
   assert.equal(rig.rigHeadFrame(rigData, true, 0.15), 0);
   assert.equal(rig.rigHeadFrame(rigData, false, 0.8), 2);
   assert.equal(rig.rigHeadFrame(rigData, false, 0.1), 0);
+});
+
+// --- cinematic player v2 -------------------------------------------------------------------
+
+test("toPct maps virtual 320x200 coordinates onto the stage", () => {
+  assert.deepEqual(ui.toPct(160, 100), { left: "50%", top: "50%" });
+  assert.deepEqual(ui.toPct(0, 200), { left: "0%", top: "100%" });
+});
+
+test("pixelLine is a gap-free 1px line including both ends", () => {
+  const pts = ui.pixelLine([2, 3], [9, 6]);
+  assert.deepEqual(pts[0], [2, 3]);
+  assert.deepEqual(pts.at(-1), [9, 6]);
+  for (let i = 1; i < pts.length; i++) {
+    assert.ok(Math.abs(pts[i][0] - pts[i - 1][0]) <= 1 && Math.abs(pts[i][1] - pts[i - 1][1]) <= 1);
+  }
+  assert.equal(new Set(pts.map((p) => p[0])).size, 8); // one pixel per column on a shallow line
+});
+
+test("arcDots draws an integer arc above the straight path, excluding the ends", () => {
+  const dots = ui.arcDots([10, 100], [90, 100], 7, 20);
+  assert.equal(dots.length, 7);
+  assert.ok(dots.every(([x, y]) => Number.isInteger(x) && Number.isInteger(y) && y < 100 && x > 10 && x < 90));
+  assert.equal(Math.min(...dots.map((d) => d[1])), 80); // apex lifted by `lift`
+});
+
+test("hintText uppercases Vietnamese and appends progress", () => {
+  assert.equal(ui.hintText("kéo hộp cơm lên tấm bạt", 0, 1), "KÉO HỘP CƠM LÊN TẤM BẠT");
+  assert.equal(ui.hintText("tìm cánh hoa", 1, 3), "TÌM CÁNH HOA · 1/3");
+});
+
+test("drag: pick the item under the pointer, snap onto the target or return home", () => {
+  let items = ui.initDrag([{ id: "a", from: [40, 150], to: [160, 130] }, { id: "b", from: [80, 150], to: [200, 130] }]);
+  assert.equal(ui.pickDragItem(items, [42, 148]), 0);
+  assert.equal(ui.pickDragItem(items, [300, 10]), -1);
+  let r = ui.dropDragItem(items, 0, [100, 100]);
+  assert.equal(r.placed, false);
+  assert.deepEqual(r.items[0].pos, [40, 150]);
+  r = ui.dropDragItem(items, 0, [165, 134]);
+  assert.equal(r.placed, true);
+  assert.deepEqual(r.items[0].pos, [160, 130]);
+  items = r.items;
+  assert.equal(ui.pickDragItem(items, [160, 130]), -1); // placed items can't be picked again
+});
+
+test("tap spots are found once, hold gauge fills while held and drains slowly", () => {
+  const spots = [{ id: "p1", x: 50, y: 50 }, { id: "p2", x: 100, y: 60, r: 6 }];
+  assert.equal(ui.hitTapSpot(spots, [], [55, 52]), "p1");
+  assert.equal(ui.hitTapSpot(spots, ["p1"], [55, 52]), null);
+  assert.equal(ui.hitTapSpot(spots, [], [108, 60]), null);
+  let p = 0;
+  for (let i = 0; i < 30; i++) p = ui.stepHold(p, true, 0.1, 2);
+  assert.equal(p, 1);
+  const after = ui.stepHold(0.5, false, 0.1, 2);
+  assert.ok(after < 0.5 && after > 0.45);
+  assert.equal(ui.stepHold(0, false, 1, 2), 0);
+});
+
+test("ditherDissolve keeps more of the old frame as amount grows, none at 0, all at 1", () => {
+  const w = 8, h = 8;
+  const mk = (v) => new Uint8ClampedArray(w * h * 4).fill(v);
+  const count = (a) => { let n = 0; for (let i = 0; i < a.length; i += 4) if (a[i] === 200) n++; return n; };
+  const results = [0, 0.25, 0.5, 1].map((amt) => { const cur = mk(10); ui.ditherDissolve(cur, mk(200), w, h, amt, 1); return count(cur); });
+  assert.deepEqual(results, [0, 16, 32, 64]);
 });
 
 // --- engine routing ------------------------------------------------------------------------

@@ -3,6 +3,7 @@ import { retroAudio } from "../audio/chiptune";
 import type { DialogueLine, StoryData } from "../types/story";
 import { resolveAssetUrl } from "../utils/assetUrl";
 import { drawBayerDitherOverlay } from "./bayerDither";
+import { ditherDissolve } from "./cinemaUi";
 import { VIRTUAL_H, VIRTUAL_W } from "./pixelRenderer";
 import { loadRig, type Rig } from "./rigAnimator";
 import { loadSpriteSheet, type SpriteSheet } from "./spriteAnimator";
@@ -57,6 +58,8 @@ export function useStageRuntime({ story, muted }: { story: StoryData; muted: boo
   const [activeLine, setActiveLine] = useState<DialogueLine | null>(null);
 
   const transitionRef = useRef<TransitionState>(idleTransition());
+  /** "dissolve" transitions: last frame of the old scene + remaining amount (1 -> 0). */
+  const dissolveRef = useRef<{ snapshot: ImageData | null; amount: number }>({ snapshot: null, amount: 0 });
   const sceneStartRef = useRef<number>(performance.now());
   const stageStartRef = useRef<number>(performance.now());
   const speakingRef = useRef<string | null>(null);
@@ -205,11 +208,21 @@ export function useStageRuntime({ story, muted }: { story: StoryData; muted: boo
     [recordMode, stopVoice]
   );
 
+  /**
+   * "fade": Bayer-dither to a solid colour, swap, dither back (legacy stages).
+   * "dissolve": swap immediately and dither the OLD frame away over the new one (player v2).
+   */
   const goToScene = useCallback(
-    (targetIdx: number) => {
-      if (transitionRef.current.active) return;
+    (targetIdx: number, style: "fade" | "dissolve" = "fade") => {
+      if (transitionRef.current.active || dissolveRef.current.amount > 0) return;
       stopVoice();
       retroAudio.playTransition();
+      if (style === "dissolve") {
+        const ctx = bufferRef.current?.getContext("2d", { willReadFrequently: true });
+        dissolveRef.current = { snapshot: ctx ? ctx.getImageData(0, 0, VIRTUAL_W, VIRTUAL_H) : null, amount: 1 };
+        setSceneIdx(targetIdx);
+        return;
+      }
       transitionRef.current = { active: true, phase: "out", amount: 0, nextIdx: targetIdx };
     },
     [stopVoice]
@@ -247,7 +260,8 @@ export function useStageRuntime({ story, muted }: { story: StoryData; muted: boo
           buffer.height = VIRTUAL_H;
           bufferRef.current = buffer;
         }
-        const ctx = buffer.getContext("2d");
+        // willReadFrequently: the dither dissolve reads the frame back every tick
+        const ctx = buffer.getContext("2d", { willReadFrequently: true });
         if (ctx) {
           ctx.imageSmoothingEnabled = false;
           draw(ctx, now, dt);
@@ -255,6 +269,14 @@ export function useStageRuntime({ story, muted }: { story: StoryData; muted: boo
           const swapTo = stepTransition(tr, dt, transitionSpeed);
           if (swapTo !== null) setSceneIdx(swapTo);
           if (tr.active) drawBayerDitherOverlay(ctx, tr.amount, transitionColor);
+          const dz = dissolveRef.current;
+          if (dz.amount > 0 && dz.snapshot) {
+            const img = ctx.getImageData(0, 0, VIRTUAL_W, VIRTUAL_H);
+            ditherDissolve(img.data, dz.snapshot.data, VIRTUAL_W, VIRTUAL_H, dz.amount, 2);
+            ctx.putImageData(img, 0, 0);
+            dz.amount = Math.max(0, dz.amount - dt * 1.7);
+            if (dz.amount === 0) dz.snapshot = null;
+          }
           present(canvas, buffer);
         }
       }

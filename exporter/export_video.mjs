@@ -66,8 +66,11 @@ async function startPreview() {
  */
 async function pinStageSize(page, width) {
   const height = Math.round((width * 200) / 320);
+  // Player v2 (cine-player): pin the whole player width; the stage inside keeps 16:10 = exact 3x.
   await page.addStyleTag({
-    content: `.canvas-viewport{width:${width}px!important;height:${height}px!important;max-width:none!important;aspect-ratio:auto!important;flex:none!important}`,
+    content:
+      `.cine-player{width:${width}px!important;max-width:none!important}` +
+      `.canvas-viewport{width:${width}px!important;height:${height}px!important;max-width:none!important;aspect-ratio:auto!important;flex:none!important}`,
   });
   const box = await page.evaluate(() => {
     const r = document.querySelector(".canvas-viewport")?.getBoundingClientRect();
@@ -123,7 +126,8 @@ async function main() {
     if (!opts.check) await pinStageSize(page, opts.width);
     const t0 = await page.evaluate(() => performance.now());
 
-    const el = await page.$(".canvas-viewport");
+    // record the whole cinematic player (tool bar + stage + caption bar) when present
+    const el = (await page.$(".cine-player")) ?? (await page.$(".canvas-viewport"));
     let ffmpeg = null;
     const tmpVideo = `${outPath}.video.mp4`;
     if (!opts.check) {

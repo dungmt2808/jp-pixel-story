@@ -94,17 +94,24 @@ def remove_background(
     out = arr.copy()
     out[:, :, 3] = alpha
 
-    # Despill any faint greenish JPEG compression halo along 1px silhouette edges
+    # Chroma-green cleanup. Only touches (a) enclosed holes that really are the backdrop colour and
+    # (b) the green JPEG halo along the silhouette, so GREEN OBJECTS (tea, leaves, scallions) survive.
     if mode == "chroma_green":
         rgb_i = out[:, :, :3].astype(np.int32)
+        backdrop = np.array([0, 255, 0], dtype=np.int32)
+        near_backdrop = np.sum((rgb_i - backdrop) ** 2, axis=-1) <= (tolerance * 1.5) ** 2
+        out[near_backdrop, 3] = 0  # enclosed pockets of green screen (e.g. between arm and body)
+        opaque = out[:, :, 3] > 0
+        transparent = np.pad(~opaque, 2, constant_values=True)
+        near_edge = np.zeros_like(opaque)
+        for dy in range(-2, 3):
+            for dx in range(-2, 3):
+                near_edge |= transparent[2 + dy : 2 + dy + h, 2 + dx : 2 + dx + w]
         g_dom = rgb_i[:, :, 1] - np.maximum(rgb_i[:, :, 0], rgb_i[:, :, 2])
-        strong_green = (rgb_i[:, :, 1] > 110) & (g_dom > 32)
-        out[strong_green, 3] = 0
-        fringe = (out[:, :, 3] > 0) & (g_dom > 14)
+        fringe = opaque & near_edge & (g_dom > 14)
         if np.any(fringe):
-            out[fringe, 0] = np.minimum(out[fringe, 0], 42)
-            out[fringe, 1] = np.minimum(out[fringe, 1], 28)
-            out[fringe, 2] = np.minimum(out[fringe, 2], 24)
+            # classic despill: clamp green to the stronger of red/blue (removes the halo tint only)
+            out[fringe, 1] = np.maximum(rgb_i[fringe, 0], rgb_i[fringe, 2]).astype(np.uint8)
 
     return Image.fromarray(out, mode="RGBA")
 

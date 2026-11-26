@@ -583,7 +583,25 @@ export function App() {
 
   return (
     <div className="app-shell">
-      {mode === "stage" ? (
+      {mode === "stage" && resolveStageEngine(story) === "cinema" ? (
+        <CinemaStage
+          key={`${story.id}-${autoplay ? "auto" : "play"}`}
+          story={story}
+          showFurigana={showFurigana}
+          showVi={showVi}
+          muted={muted}
+          autoplay={autoplay}
+          onToggleFurigana={() => setShowFurigana((v) => !v)}
+          onToggleVi={() => setShowVi((v) => !v)}
+          onToggleMute={() => setMuted((m) => !m)}
+          onClose={handleOpenLibrary}
+          onOpenReading={() => {
+            updateUrl(story.id, "reading", false);
+            setMode("reading");
+          }}
+          onOpenDictation={() => handleOpenDictation(story.id)}
+        />
+      ) : mode === "stage" ? (
         <div className={`stage-frame ${showVi ? "" : "hide-vi"}`}>
           <div className="stage-topbar">
             <div className="topbar-meta">
@@ -656,8 +674,6 @@ export function App() {
             switch (resolveStageEngine(story)) {
               case "tsuru":
                 return <TsuruStage key={stageKey} {...common} onOpenDictation={onOpenDictation} />;
-              case "cinema":
-                return <CinemaStage key={stageKey} {...common} onOpenDictation={onOpenDictation} />;
               case "depato":
                 return <DepatoStage key={stageKey} {...common} onOpenDictation={onOpenDictation} />;
               case "hybrid":
