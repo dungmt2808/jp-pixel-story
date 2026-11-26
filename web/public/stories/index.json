@@ -1,6 +1,38 @@
 {
   "stories": [
     {
+      "id": "jlpt-n4-2025-12-choukai",
+      "category": "jlpt",
+      "kind": "jlpt-choukai",
+      "thumbStyle": "jlpt",
+      "artBadge": "🎙️ MP3 THI THẬT",
+      "titleJa": "JLPT N4 聴解 (12/2025)",
+      "titleVi": "Đề Nghe hiểu thật JLPT N4 — Kỳ tháng 12/2025 (Đủ 28 câu)",
+      "level": "JLPT N4 · 12/2025",
+      "description": "Cắt trực tiếp từ MP3 gốc phòng thi JLPT N4 12/2025 (問題1–4, 28 câu), 11 tranh đề thi xóa sạch watermark, 2 chế độ Thi thử & Học sâu + 🎧 Daily Dictation câu đơn giọng Nhật thật!",
+      "sceneCount": 4,
+      "vocabCount": 28,
+      "questionCount": 28,
+      "theme": "jlpt_exam"
+    },
+    {
+      "id": "jlpt-n4-2025-12-japan-life",
+      "category": "jlpt",
+      "kind": "engine",
+      "thumbStyle": "image",
+      "thumbImage": "stories/jlpt-n4-2025-12-japan-life/assets/bg_ofuro.png",
+      "artBadge": "📖 ĐỌC HIỂU 12/2025",
+      "titleJa": "日本の生活",
+      "titleVi": "JLPT N4 12/2025 (問題5) · Tuần trải nghiệm cuộc sống Nhật của Lisa",
+      "level": "JLPT N4 · 12/2025",
+      "description": "Chuyển thể nguyên văn bài đọc thật JLPT N4 12/2025 (問題5): trải nghiệm ăn washoku & ngâm bồn ofuro như trong anime, cảnh tàu ra sân bay động + cú twist ấm lòng của gia đình Haruko + Câu 25–27 + Daily Dictation.",
+      "sceneCount": 4,
+      "vocabCount": 7,
+      "grammarCount": 5,
+      "quizCount": 3,
+      "theme": "ramen_midnight"
+    },
+    {
       "id": "jlpt-n4-2025-07-choukai",
       "category": "jlpt",
       "kind": "jlpt-choukai",
@@ -9,7 +41,7 @@
       "titleJa": "JLPT N4 聴解 (07/2025)",
       "titleVi": "Đề Nghe hiểu thật JLPT N4 — Kỳ tháng 07/2025 (Đủ 28 câu)",
       "level": "JLPT N4 · 07/2025",
-      "description": "Cắt trực tiếp từ MP3 gốc phòng thi JLPT N4 07/2025 (問題1–4, 28 câu), ảnh đề thi đã xóa watermark sạch nét, 2 chế độ Thi thử & Học sâu kèm Script ふりがな + giải thích bẫy từng câu.",
+      "description": "Cắt trực tiếp từ MP3 gốc phòng thi JLPT N4 07/2025 (問題1–4, 28 câu), 12 tranh đề thi xóa sạch watermark, 2 chế độ Thi thử & Học sâu + 🎧 Daily Dictation câu đơn giọng Nhật thật!",
       "sceneCount": 4,
       "vocabCount": 28,
       "questionCount": 28,

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { retroAudio } from "./audio/chiptune";
+import { CinemaStage } from "./components/CinemaStage";
 import { DepatoStage } from "./components/DepatoStage";
 import { DictationView } from "./components/DictationView";
 import { HybridStage } from "./components/HybridStage";
@@ -142,7 +143,7 @@ export function App() {
     setError(null);
 
     const loadData = async () => {
-      if (mode === "choukai" || selectedStoryId.endsWith("-choukai")) {
+      if (mode === "choukai" || (selectedStoryId.endsWith("-choukai") && mode !== "dictation")) {
         setChoukaiExam(null);
         try {
           const cRes = await fetch(
@@ -352,6 +353,7 @@ export function App() {
           showFurigana={showFurigana}
           onToggleFurigana={() => setShowFurigana((v) => !v)}
           onOpenLibrary={handleOpenLibrary}
+          onOpenDictation={() => handleOpenDictation(choukaiExam.id)}
         />
       </div>
     );
@@ -369,7 +371,8 @@ export function App() {
     }
 
     const catEntry = catalog.find((c) => c.id === selectedStoryId);
-    const isEngineStory = !catEntry || catEntry.kind !== "standalone";
+    const isChoukaiPack = catEntry?.kind === "jlpt-choukai" || selectedStoryId.endsWith("-choukai");
+    const isEngineStory = !catEntry || (catEntry.kind !== "standalone" && !isChoukaiPack);
 
     return (
       <div className="app-shell">
@@ -379,12 +382,14 @@ export function App() {
           onToggleFurigana={() => setShowFurigana((v) => !v)}
           onOpenLibrary={handleOpenLibrary}
           onBackToStory={
-            isEngineStory
-              ? () => {
-                  updateUrl(selectedStoryId, "stage", false);
-                  setMode("stage");
-                }
-              : undefined
+            isChoukaiPack
+              ? () => handleOpenChoukai(selectedStoryId)
+              : isEngineStory
+                ? () => {
+                    updateUrl(selectedStoryId, "stage", false);
+                    setMode("stage");
+                  }
+                : undefined
           }
         />
       </div>
@@ -454,6 +459,19 @@ export function App() {
 
           {story.id === "tsuru-ongaeshi" ? (
             <TsuruStage
+              key={`${story.id}-${autoplay ? "auto" : "play"}`}
+              story={story}
+              showFurigana={showFurigana}
+              muted={muted}
+              autoplay={autoplay}
+              onOpenReading={() => {
+                updateUrl(story.id, "reading", false);
+                setMode("reading");
+              }}
+              onOpenDictation={() => handleOpenDictation(story.id)}
+            />
+          ) : story.engine === "cinema" ? (
+            <CinemaStage
               key={`${story.id}-${autoplay ? "auto" : "play"}`}
               story={story}
               showFurigana={showFurigana}

@@ -325,13 +325,22 @@ export function StoryLibrary({
 
                 <div className="story-card-actions">
                   {isChoukai ? (
-                    <button
-                      type="button"
-                      className="pixel-btn pixel-btn-purple"
-                      onClick={() => onSelectChoukai(item.id)}
-                    >
-                      🎧 Vào phòng luyện nghe JLPT →
-                    </button>
+                    <>
+                      <button
+                        type="button"
+                        className="pixel-btn pixel-btn-purple"
+                        onClick={() => onSelectChoukai(item.id)}
+                      >
+                        🎧 Luyện nghe JLPT
+                      </button>
+                      <button
+                        type="button"
+                        className="pixel-btn pixel-btn-mint"
+                        onClick={() => onSelectDictation(item.id)}
+                      >
+                        ⌨️ Nghe chép
+                      </button>
+                    </>
                   ) : (
                     <>
                       <button

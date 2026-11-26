@@ -9,6 +9,7 @@ interface JlptChoukaiViewProps {
   showFurigana: boolean;
   onToggleFurigana: () => void;
   onOpenLibrary: () => void;
+  onOpenDictation: () => void;
 }
 
 const SPEEDS = [0.75, 0.85, 1.0, 1.15];
@@ -40,6 +41,7 @@ export function JlptChoukaiView({
   showFurigana,
   onToggleFurigana,
   onOpenLibrary,
+  onOpenDictation,
 }: JlptChoukaiViewProps) {
   const [sectionFilter, setSectionFilter] = useState<"all" | "m1" | "m2" | "m3" | "m4">("all");
   const [studyMode, setStudyMode] = useState<"exam" | "study">("exam");
@@ -200,6 +202,17 @@ export function JlptChoukaiView({
             }}
           >
             📚 Thư viện
+          </button>
+          <button
+            type="button"
+            className="pixel-icon-btn"
+            onClick={() => {
+              stopAudio();
+              onOpenDictation();
+            }}
+            title="Luyện nghe chép chính tả giọng JLPT thật (問題3 & 問題4)"
+          >
+            🎧 Nghe chép
           </button>
           <button
             type="button"

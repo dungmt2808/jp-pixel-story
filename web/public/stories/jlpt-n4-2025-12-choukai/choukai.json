@@ -1,0 +1,705 @@
+{
+  "id": "jlpt-n4-2025-12-choukai",
+  "titleJa": "JLPT N4 聴解 (2025年12月)",
+  "titleVi": "Đề thi Nghe hiểu thật JLPT N4 — Kỳ tháng 12/2025 (28 câu)",
+  "examDate": "12/2025",
+  "level": "JLPT N4",
+  "audioSourceNote": "Cắt trực tiếp từ MP3 gốc phòng thi JLPT N4 12/2025 (rút gọn khoảng lặng chờ 20s ở 問題2 xuống 2s để luyện tập hiệu quả).",
+  "sections": [
+    {
+      "id": "m1",
+      "titleJa": "問題 1 (課題理解)",
+      "titleVi": "Hiểu nhiệm vụ · 8 câu",
+      "instructionVi": "Nghe câu hỏi + hội thoại, nhìn tranh/đáp án rồi chọn phương án đúng (1–4)."
+    },
+    {
+      "id": "m2",
+      "titleJa": "問題 2 (ポイント理解)",
+      "titleVi": "Hiểu điểm chính · 7 câu",
+      "instructionVi": "Đọc trước 4 đáp án chữ, nghe hội thoại và bắt chính xác thông tin hỏi."
+    },
+    {
+      "id": "m3",
+      "titleJa": "問題 3 (発話表現)",
+      "titleVi": "Biểu đạt phát ngôn · 5 câu",
+      "instructionVi": "Nhìn tranh có mũi tên (→), nghe 3 câu nói (1–3) và chọn câu phù hợp nhất."
+    },
+    {
+      "id": "m4",
+      "titleJa": "問題 4 (即時応答)",
+      "titleVi": "Phản xạ nhanh · 8 câu",
+      "instructionVi": "Không có tranh/chữ — nghe 1 câu mở đầu và chọn câu đáp lại tự nhiên nhất (1–3)."
+    }
+  ],
+  "questions": [
+    {
+      "id": "m1_q1",
+      "sectionId": "m1",
+      "number": 1,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m1_q1.mp3",
+      "durationSec": 43.0,
+      "imageUrl": "/stories/jlpt-n4-2025-12-choukai/images/m1_q1.png",
+      "promptJa": "レストランでお{客|きゃく}さんと{店員|てんいん}が{話|はな}しています。{店員|てんいん}はどの{上着|うわぎ}を{渡|わた}しますか。",
+      "promptVi": "Ở nhà hàng, khách nữ nói chuyện với nhân viên. Nhân viên sẽ đưa chiếc áo khoác nào?",
+      "options": [
+        { "label": "1", "vi": "Áo vest ngắn có túi đen" },
+        { "label": "2", "vi": "Áo khoác kẻ ca-rô" },
+        { "label": "3", "vi": "Áo khoác dài không cúc" },
+        { "label": "4", "vi": "Áo khoác dài màu xám có hàng cúc đen" }
+      ],
+      "correctIndex": 3,
+      "script": [
+        { "speaker": "女", "ja": "{今日|きょう}の{料理|りょうり}、すごくおいしかったです。ご{馳走様|ちそうさま}でした。", "vi": "Món ăn hôm nay ngon tuyệt vời. Cảm ơn vì bữa ăn ngon ạ." },
+        { "speaker": "男", "ja": "ありがとうございました。", "vi": "Xin cảm ơn quý khách." },
+        { "speaker": "女", "ja": "ああ、{上着|うわぎ}を{取|と}ってもらえますか。グレーの、ボタンが{黒|くろ}いコートです。", "vi": "À, anh lấy giúp tôi chiếc áo khoác nhé. Áo khoác dáng dài (コート) màu xám, có hàng cúc đen ấy ạ." },
+        { "speaker": "男", "ja": "はい。", "vi": "Vâng ạ." }
+      ],
+      "keyClueVi": "Nghe 2 đặc điểm then chốt: コート (áo khoác dáng dài → loại 1,2) + ボタンが黒い (cúc đen → Hình 4)."
+    },
+    {
+      "id": "m1_q2",
+      "sectionId": "m1",
+      "number": 2,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m1_q2.mp3",
+      "durationSec": 52.0,
+      "imageUrl": "/stories/jlpt-n4-2025-12-choukai/images/m1_q2.png",
+      "promptJa": "{妻|つま}と{夫|おっと}が{話|はな}しています。{夫|おっと}はこの{後|あと}、{何|なに}をしますか。",
+      "promptVi": "Hai vợ chồng đang nói chuyện. Ngay sau đây người chồng sẽ làm việc gì?",
+      "options": [
+        { "label": "1", "vi": "Lái xe ra ga đón chị Dina" },
+        { "label": "2", "vi": "Đun sẵn nước sôi pha trà" },
+        { "label": "3", "vi": "Đi mua sushi" },
+        { "label": "4", "vi": "Quét dọn vườn" }
+      ],
+      "correctIndex": 1,
+      "script": [
+        { "speaker": "女", "ja": "あっ、ねえ。{今|いま}からディナさんがうちに{来|く}ることになったんだ。ちょっと{駅|えき}まで{車|くるま}で{迎|むか}えに{行|い}ってくる。{帰|かえ}ったらお{茶|ちゃ}を{入|い}れるから、お{湯|ゆ}を{沸|わ}かしておいてね。", "vi": "À anh ơi, chị Dina sắp sang nhà mình chơi đấy. Em lái xe ra ga đón chị ấy chút nhé. Về nhà em pha trà nên anh đun sẵn nước sôi nhé." },
+        { "speaker": "男", "ja": "うん。あっ、{僕|ぼく}が{迎|むか}えに{行|い}こうか。", "vi": "Ừ. À hay để anh đi đón cho?" },
+        { "speaker": "女", "ja": "ディナさんとお{寿司|すし}を{買|か}ってくるから、わたしが{行|い}く。あ、{今朝|けさ}、{庭|にわ}を{掃除|そうじ}してくれてありがとう。きれいになったよ。", "vi": "Em còn mua sushi cùng Dina nữa nên để em đi. À, cảm ơn anh sáng nay đã dọn vườn nhé, sạch lắm rồi." },
+        { "speaker": "男", "ja": "どういたしまして。", "vi": "Không có gì." }
+      ],
+      "keyClueVi": "Loại bẫy: Đi đón & mua sushi là vợ đi (1,3 sai), dọn vườn làm xong từ sáng rồi (4 sai). Vợ nhờ chồng 「お湯を沸かしておいてね」 → Hình 2."
+    },
+    {
+      "id": "m1_q3",
+      "sectionId": "m1",
+      "number": 3,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m1_q3.mp3",
+      "durationSec": 71.0,
+      "promptJa": "{会社|かいしゃ}で、{女|おんな}の{人|ひと}と{部長|ぶちょう}が{話|はな}しています。{女|おんな}の{人|ひと}はこの{後|あと}まず{誰|だれ}に{連絡|れんらく}をしますか。",
+      "promptVi": "Ở công ty, nhân viên nữ nói chuyện với trưởng phòng. Ngay sau đây cô ấy sẽ liên lạc với AI trước?",
+      "options": [
+        { "label": "1", "ja": "{山本|やまもと}さん" },
+        { "label": "2", "ja": "かちょう" },
+        { "label": "3", "ja": "かちょうのおくさん" },
+        { "label": "4", "ja": "いしゃ" }
+      ],
+      "correctIndex": 0,
+      "script": [
+        { "speaker": "女", "ja": "あ、{部長|ぶちょう}、おはようございます。{今|いま}、{山本|やまもと}さんから{電話|でんわ}があって、もうすぐ{工場|こうじょう}で{会議|かいぎ}が{始|はじ}まるんですが、{課長|かちょう}がまだ{来|き}ていないそうなんです。きょうは{家|いえ}から{工場|こうじょう}に{向|む}かうと{言|い}っていたんですが。", "vi": "Chào trưởng phòng ạ. Vừa nãy anh Yamamoto gọi điện báo sắp họp ở nhà máy mà trưởng ban vẫn chưa tới, dù bảo đi thẳng từ nhà." },
+        { "speaker": "男", "ja": "あ、{今|いま}{課長|かちょう}の{奥|おく}さんから{連絡|れんらく}があって、{今朝|けさ}、{早|はや}く{熱|ねつ}が{出|で}て、{病院|びょういん}にいるそうだよ。", "vi": "À, vợ trưởng ban vừa gọi báo sáng sớm ông ấy bị sốt nên đang ở bệnh viện." },
+        { "speaker": "女", "ja": "えっ、{大丈夫|だいじょうぶ}なんですか。", "vi": "Ôi, có sao không ạ?" },
+        { "speaker": "男", "ja": "ああ、{医者|いしゃ}は{問題|もんだい}ないと{言|い}っているそうだよ。{山本|やまもと}さんには、わたしが{今|いま}から{行|い}くと{伝|つた}えて。", "vi": "Ừ, bác sĩ bảo không sao. Cô nhắn cho anh Yamamoto là bây giờ tôi sẽ qua họp thay nhé." },
+        { "speaker": "女", "ja": "{分|わ}かりました。", "vi": "Vâng ạ." }
+      ],
+      "keyClueVi": "Nghe mệnh lệnh cuối cùng của trưởng phòng: 「山本さんには、わたしが今から行くと伝えて」 (Nhắn cho anh Yamamoto!) → Đáp án 1."
+    },
+    {
+      "id": "m1_q4",
+      "sectionId": "m1",
+      "number": 4,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m1_q4.mp3",
+      "durationSec": 66.2,
+      "imageUrl": "/stories/jlpt-n4-2025-12-choukai/images/m1_q4.png",
+      "promptJa": "{建物|たてもの}の{前|まえ}で{先生|せんせい}が{学生|がくせい}に{話|はな}しています。{学生|がくせい}は{建物|たてもの}に{入|はい}る{時|とき}、{自分|じぶん}の{靴|くつ}をどうしますか。",
+      "promptVi": "Trước tòa nhà cổ, giáo viên dặn dò sinh viên. Khi vào trong, sinh viên sẽ để giày của mình thế nào?",
+      "options": [
+        { "label": "1", "vi": "Đặt giày trần lên kệ giày" },
+        { "label": "2", "vi": "Bỏ giày vào túi rồi đặt lên kệ giày" },
+        { "label": "3", "vi": "Bỏ giày vào túi rồi tự xách theo vào trong" },
+        { "label": "4", "vi": "Cởi giày để ngay dưới sàn lối vào" }
+      ],
+      "correctIndex": 2,
+      "script": [
+        { "speaker": "女", "ja": "ええ、これから200{年以上|ねんいじょう}{前|まえ}に{建|た}てられた{古|ふる}い{建物|たてもの}を{見|み}ます。{建物|たてもの}の{中|なか}を{見学|けんがく}しますが、{中|なか}に{入|はい}るときは、{靴|くつ}を{脱|ぬ}がなければなりません。", "vi": "Bây giờ ta sẽ tham quan tòa nhà cổ xây hơn 200 năm trước. Khi vào trong phải cởi giày." },
+        { "speaker": "女", "ja": "{入|い}り{口|ぐち}に{袋|ふくろ}が{置|お}いてありますから、{靴|くつ}を{脱|ぬ}いで{袋|ふくろ}に{入|い}れて、{自分|じぶん}で{持|も}って{建物|たてもの}の{中|なか}に{入|はい}ってください。{靴|くつ}を{入|い}れる{棚|たな}は{使|つか}わないでください。{入|い}り{口|ぐち}は{狭|せま}いので、{脱|ぬ}いだ{靴|くつ}を{置|お}いたままにすると、{他|ほか}の{人|ひと}が{困|こま}りますから、{気|き}をつけましょう。", "vi": "Ở cửa có để sẵn túi, các em bỏ giày vào túi rồi TỰ XÁCH THEO vào trong nhé. Đừng dùng kệ giày và đừng để giày lại lối vào." }
+      ],
+      "keyClueVi": "Rất phổ biến khi đi chùa/nhà cổ ở Nhật: 「靴を脱いで袋に入れて、自分で持って中に入ってください」 → Hình 3."
+    },
+    {
+      "id": "m1_q5",
+      "sectionId": "m1",
+      "number": 5,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m1_q5.mp3",
+      "durationSec": 68.4,
+      "imageUrl": "/stories/jlpt-n4-2025-12-choukai/images/m1_q5.png",
+      "promptJa": "{日本語|にほんご}の{学校|がっこう}で、{先生|せんせい}と{男|おとこ}の{留学生|りゅうがくせい}が{話|はな}しています。{最後|さいご}の{授業|じゅぎょう}の{日|ひ}に、{男|おとこ}の{留学生|りゅうがくせい}は{何|なに}をしますか。",
+      "promptVi": "Ở trường tiếng Nhật, cô giáo nói chuyện với nam du học sinh John. Ngày học cuối cùng, John sẽ làm gì?",
+      "options": [
+        { "label": "1", "vi": "Hát solo cầm micro" },
+        { "label": "2", "vi": "Đánh đàn guitar" },
+        { "label": "3", "vi": "Chơi đàn piano/organ" },
+        { "label": "4", "vi": "Nhảy múa" }
+      ],
+      "correctIndex": 1,
+      "script": [
+        { "speaker": "女", "ja": "ジョンさん、この{後|あと}、クラスでも{話|はな}しますが、{最後|さいご}の{授業|じゅぎょう}の{日|ひ}に{小学校|しょうがっこう}の{子|こ}どもたちが{来|き}てくれます。それでクラスでいっしょに{歌|うた}を{歌|うた}いたいんです。", "vi": "John ơi, buổi học cuối cùng các em tiểu học sẽ đến chơi, nên cô muốn cả lớp cùng hát." },
+        { "speaker": "男", "ja": "はい。", "vi": "Vâng ạ." },
+        { "speaker": "女", "ja": "それで、{歌|うた}の{時|とき}、ジョンさんにギターを{弾|ひ}いてもらいたいんです。{前|まえ}に{弾|ひ}いてくれたとき、すごく{上手|じょうず}でしたから。あ、わたしがピアノを{弾|ひ}きます。", "vi": "Nên lúc hát cô muốn nhờ John đánh guitar nhé, lần trước em đánh giỏi lắm. À cô sẽ đánh piano." },
+        { "speaker": "男", "ja": "ぜひやらせてください。", "vi": "Nhất định để em làm ạ!" },
+        { "speaker": "女", "ja": "ありがとう。{子|こ}どもたちはダンスを{見|み}せてくれるそうですよ。", "vi": "Cảm ơn em. Nghe nói các em nhỏ sẽ biểu diễn nhảy nữa đấy." },
+        { "speaker": "男", "ja": "{楽|たの}しみですね。", "vi": "Háo hức quá ạ." }
+      ],
+      "keyClueVi": "Phân vai rõ ràng: John = ギターを弾く (Hình 2), cô giáo = ピアノ (3), các em nhỏ = ダンス (4)."
+    },
+    {
+      "id": "m1_q6",
+      "sectionId": "m1",
+      "number": 6,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m1_q6.mp3",
+      "durationSec": 74.4,
+      "promptJa": "{電話|でんわ}で、{病院|びょういん}の{人|ひと}と{男|おとこ}の{人|ひと}が{話|はな}しています。{男|おとこ}の{人|ひと}は、{明日|あした}{何時|なんじ}に{病院|びょういん}に{行|い}かなければなりませんか。",
+      "promptVi": "Người đàn ông gọi điện đặt lịch khám bệnh viện. Ngày mai anh ấy phải CÓ MẶT ở bệnh viện lúc mấy giờ?",
+      "options": [
+        { "label": "1", "ja": "{午前|ごぜん}8{時|じ}" },
+        { "label": "2", "ja": "{午前|ごぜん}8{時|じ}45{分|ふん}" },
+        { "label": "3", "ja": "{午後|ごご}6{時|じ}45{分|ふん}" },
+        { "label": "4", "ja": "{午後|ごご}7{時|じ}" }
+      ],
+      "correctIndex": 2,
+      "script": [
+        { "speaker": "女", "ja": "はい、{東病院|ひがしびょういん}です。", "vi": "Vâng, Bệnh viện Higashi xin nghe." },
+        { "speaker": "男", "ja": "あの、{明日|あした}の{予約|よやく}をしたいんですが。", "vi": "Tôi muốn đặt lịch khám ngày mai ạ." },
+        { "speaker": "女", "ja": "はい。", "vi": "Vâng." },
+        { "speaker": "男", "ja": "{仕事|しごと}の{前|まえ}に{行|い}きたいんですけど、{朝|あさ}8{時頃|じごろ}{予約|よやく}できますか。", "vi": "Tôi muốn đi trước giờ làm, khoảng 8 giờ sáng đặt được không ạ?" },
+        { "speaker": "女", "ja": "すみません。{朝|あさ}は8{時|じ}45{分|ふん}からなんです。", "vi": "Xin lỗi, buổi sáng bệnh viện bắt đầu từ 8:45 ạ." },
+        { "speaker": "男", "ja": "そうですか。じゃ、{夕方|ゆうがた}の6{時|じ}ごろはどうですか。", "vi": "Vậy à. Thế khoảng 6 giờ tối thì sao?" },
+        { "speaker": "女", "ja": "えっと、7{時|じ}からはどうでしょうか。", "vi": "Ừm, 7 giờ tối thì sao ạ?" },
+        { "speaker": "男", "ja": "じゃ、7{時|じ}にお{願|ねが}いします。", "vi": "Vậy đặt 7 giờ tối giúp tôi." },
+        { "speaker": "女", "ja": "はい。{予約時間|よやくじかん}の15{分前|ふんまえ}に{来|き}てください。", "vi": "Vâng. Anh vui lòng đến TRƯỚC giờ hẹn 15 phút nhé." },
+        { "speaker": "男", "ja": "はい、{分|わ}かりました。", "vi": "Vâng, tôi hiểu rồi." }
+      ],
+      "keyClueVi": "Bẫy trừ giờ kinh điển JLPT: Chốt lịch 7 giờ tối (午後7時), nhưng dặn đến TRƯỚC 15 phút (15分前に来てください) → 7:00 - 15 phút = 午後6時45分 (Đáp án 3)!"
+    },
+    {
+      "id": "m1_q7",
+      "sectionId": "m1",
+      "number": 7,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m1_q7.mp3",
+      "durationSec": 66.5,
+      "imageUrl": "/stories/jlpt-n4-2025-12-choukai/images/m1_q7.png",
+      "promptJa": "{台所|だいどころ}で、{女|おんな}の{留学生|りゅうがくせい}と{男|おとこ}の{学生|がくせい}が{話|はな}しています。{女|おんな}の{留学生|りゅうがくせい}は、まず{何|なに}をしますか。",
+      "promptVi": "Trong bếp, nữ du học sinh và nam sinh chuẩn bị làm món Tempura rau. Nữ du học sinh sẽ làm gì ĐẦU TIÊN?",
+      "options": [
+        { "label": "1", "vi": "Thái rau củ" },
+        { "label": "2", "vi": "Đổ nước lạnh vào bột mì" },
+        { "label": "3", "vi": "Cho đá vào bình nước" },
+        { "label": "4", "vi": "Đập 1 quả trứng vào bát to" }
+      ],
+      "correctIndex": 3,
+      "script": [
+        { "speaker": "女", "ja": "わたし、{和食|わしょく}を{作|つく}るのは{初|はじ}めてなんだ。{楽|たの}しみ。", "vi": "Lần đầu mình nấu món Nhật đấy. Háo hức quá!" },
+        { "speaker": "男", "ja": "{今日|きょう}は{野菜|やさい}の{天|てん}ぷらを{作|つく}るよ。えっと、{野菜|やさい}を{切|き}るのは{後|あと}にしよう。{小麦粉|こむぎこ}と{水|みず}と{卵|たまご}を{準備|じゅんび}しよう。{水|みず}は{氷|こおり}を{入|い}れて{冷|つめ}たくするんだけど、{水|みず}は{僕|ぼく}がやるから、{卵|たまご}を{割|わ}って、その{大|おお}きい{茶碗|ちゃわん}に{入|い}れてもらえる？", "vi": "Hôm nay làm tempura rau nhé. Thái rau để sau đi (1 loại). Pha nước đá để mình làm (3 loại), cậu đập trứng cho vào cái bát to đó giúp mình nhé?" },
+        { "speaker": "女", "ja": "{何個|なんこ}？", "vi": "Mấy quả?" },
+        { "speaker": "男", "ja": "1{個|こ}。あとで、そこに{冷|つめ}たい{水|みず}を{入|い}れるよ。それで{小麦粉|こむぎこ}の{中|なか}に{入|い}れるんだ。", "vi": "1 quả thôi. Sau đó mới đổ nước lạnh vào rồi trộn với bột mì." },
+        { "speaker": "女", "ja": "わかった。", "vi": "Ok!" }
+      ],
+      "keyClueVi": "Loại theo trình tự & phân công: Thái rau (後 = sau), pha nước đá (僕 = bạn nam), trộn bột (あとで = sau) → Bạn nữ đập trứng vào bát trước (卵を割って大きい茶碗に入れる = Hình 4)."
+    },
+    {
+      "id": "m1_q8",
+      "sectionId": "m1",
+      "number": 8,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m1_q8.mp3",
+      "durationSec": 76.6,
+      "imageUrl": "/stories/jlpt-n4-2025-12-choukai/images/m1_q8.png",
+      "promptJa": "{会社|かいしゃ}で、{課長|かちょう}と{女|おんな}の{人|ひと}が{話|はな}しています。{女|おんな}の{人|ひと}はこのあと{何|なに}をしなければなりませんか。",
+      "promptVi": "Ở công ty, trưởng ban nói chuyện với nhân viên nữ. Ngay sau đây cô ấy phải làm gì?",
+      "options": [
+        { "label": "1", "vi": "Photo thêm tập tài liệu mới" },
+        { "label": "2", "vi": "Xếp chai trà lên bàn họp" },
+        { "label": "3", "vi": "Chuẩn bị hộp cơm bento" },
+        { "label": "4", "vi": "Chuẩn bị máy tính có ổ DVD trong phòng họp" }
+      ],
+      "correctIndex": 0,
+      "script": [
+        { "speaker": "男", "ja": "{山田|やまだ}さん、{今日|きょう}の{会議|かいぎ}の{資料|しりょう}をコピーしてくれた？", "vi": "Cô Yamada đã photo tài liệu cuộc họp hôm nay chưa?" },
+        { "speaker": "女", "ja": "はい。{課長|かちょう}の{机|つくえ}の{上|うえ}に{置|お}いておきました。", "vi": "Rồi ạ, tôi để sẵn trên bàn trưởng ban rồi." },
+        { "speaker": "男", "ja": "ありがとう。{悪|わる}いけど、この{資料|しりょう}も{会議|かいぎ}までに{同|おな}じ{数|かず}お{願|ねが}いできる？", "vi": "Cảm ơn. Phiền cô photo thêm TẬP TÀI LIỆU NÀY nữa cùng số lượng trước giờ họp nhé?" },
+        { "speaker": "女", "ja": "はい。あのう、お{茶|ちゃ}やお{弁当|べんとう}の{準備|じゅんび}もしましょうか。", "vi": "Vâng. À có cần chuẩn bị trà hay cơm hộp nữa không ạ?" },
+        { "speaker": "男", "ja": "お{茶|ちゃ}はペットボトルのものを{机|つくえ}に{並|なら}べてあるし、お{弁当|べんとう}は{他|ほか}の{人|ひと}に{頼|たの}んであるから、いいよ。あっ、じゃ、{会議室|かいぎしつ}にパソコンを{準備|じゅんび}してくれる？DVDが{使|つか}えるのが{必要|ひつよう}なんだけど、{用意|ようい}できる？", "vi": "Trà xếp sẵn rồi (2 loại), cơm hộp nhờ người khác rồi (3 loại). À chuẩn bị máy tính dùng được DVD ở phòng họp nhé?" },
+        { "speaker": "女", "ja": "{今|いま}はうちの{課|か}にあるパソコンでは、{使|つか}えないと{思|おも}います。", "vi": "Máy tính phòng mình hiện tại không dùng được DVD ạ." },
+        { "speaker": "男", "ja": "そうか。じゃあ、{自分|じぶん}のを{使|つか}うから、{自分|じぶん}でやるよ。ありがとう。", "vi": "Thế à. Vậy tôi tự dùng máy của tôi tự làm vậy (4 loại). Cảm ơn nhé." }
+      ],
+      "keyClueVi": "Bẫy 4 việc loại hết 3: Trà đã xếp sẵn, cơm nhờ người khác, laptop ông tự làm → Chỉ còn photo thêm tập tài liệu mới (この資料もお願いできる？ = Hình 1)."
+    },
+    {
+      "id": "m2_q1",
+      "sectionId": "m2",
+      "number": 1,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m2_q1.mp3",
+      "durationSec": 49.6,
+      "promptJa": "{女|おんな}の{人|ひと}と{男|おとこ}の{人|ひと}が{話|はな}しています。{二人|ふたり}はどこで{会|あ}いますか。",
+      "promptVi": "Đôi nam nữ hẹn nhau đi tiệc. Hai người sẽ gặp nhau ở đâu?",
+      "options": [
+        { "label": "1", "ja": "ホテルの{入口|いりぐち}" },
+        { "label": "2", "ja": "ホテルのきっさてん" },
+        { "label": "3", "ja": "えきの{出口|でぐち}" },
+        { "label": "4", "ja": "えきまえのきっさてん" }
+      ],
+      "correctIndex": 3,
+      "script": [
+        { "speaker": "女", "ja": "{来月|らいげつ}のパーティーのお{知|し}らせ{見|み}た？", "vi": "Cậu xem thông báo tiệc tháng sau chưa?" },
+        { "speaker": "男", "ja": "うん。さくらホテルだね。{一緒|いっしょ}に{行|い}こうよ。", "vi": "Ừ, ở khách sạn Sakura nhỉ. Đi chung nhé." },
+        { "speaker": "女", "ja": "いいよ。どこで{会|あ}う？ホテルの{入|い}り{口|ぐち}にする？", "vi": "Ok. Hẹn ở đâu? Cổng khách sạn nhé?" },
+        { "speaker": "男", "ja": "{僕|ぼく}は{場所|ばしょ}がよくわからないから、{駅|えき}の{出口|でぐち}でもいい？", "vi": "Mình không rành đường lắm, hẹn ở cổng ra nhà ga được không?" },
+        { "speaker": "女", "ja": "{駅|えき}は{人|ひと}が{多|おお}いから、{駅前|えきまえ}の{喫茶店|きっさてん}はどう？", "vi": "Nhà ga đông người lắm, quán cà phê trước ga thì sao?" },
+        { "speaker": "男", "ja": "わかった。", "vi": "Ok luôn." }
+      ],
+      "keyClueVi": "Nghe đến phương án chốt cuối cùng: Cổng khách sạn (bỏ) → Cổng ga (đông, bỏ) → 「駅前の喫茶店はどう？」 → わかった (Đáp án 4)."
+    },
+    {
+      "id": "m2_q2",
+      "sectionId": "m2",
+      "number": 2,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m2_q2.mp3",
+      "durationSec": 59.3,
+      "promptJa": "{会社|かいしゃ}で、{女|おんな}の{人|ひと}と{男|おとこ}の{人|ひと}が{話|はな}しています。{男|おとこ}の{人|ひと}はどうして{山川町|やまかわまち}に{住|す}むことにしましたか。",
+      "promptVi": "Ở công ty, hai đồng nghiệp nói chuyện. Tại sao người đàn ông quyết định chuyển đến sống ở thị trấn Yamakawa?",
+      "options": [
+        { "label": "1", "ja": "{会社|かいしゃ}からちかいから" },
+        { "label": "2", "ja": "こうつうがべんりだから" },
+        { "label": "3", "ja": "{安|やす}いスーパーが{多|おお}いから" },
+        { "label": "4", "ja": "{友|とも}だちがすんでいるから" }
+      ],
+      "correctIndex": 2,
+      "script": [
+        { "speaker": "女", "ja": "{加藤|かとう}さん。{山川町|やまかわまち}に{引|ひ}っ{越|こ}したんですか。", "vi": "Anh Kato chuyển nhà đến Yamakawa rồi à?" },
+        { "speaker": "男", "ja": "うん。{先週|せんしゅう}。", "vi": "Ừ, tuần trước." },
+        { "speaker": "女", "ja": "{会社|かいしゃ}に{通|かよ}うのに{時間|じかん}がかかりそうですけど、どうして{山川町|やまかわまち}なんですか。", "vi": "Đi làm có vẻ tốn thời gian thế mà sao anh lại chọn Yamakawa?" },
+        { "speaker": "男", "ja": "バスも{少|すく}ないし、{交通|こうつう}は{便利|べんり}じゃないんだけど、{安|やす}いスーパーがたくさんあるんだよ。{昨日|きのう}、{友|とも}だちが{遊|あそ}びに{来|き}て、{一緒|いっしょ}に{買|か}い{物|もの}に{行|い}ったんだけど、{友|とも}だちも{驚|おどろ}いていたよ。", "vi": "Xe buýt ít, giao thông chẳng tiện đâu (1,2 sai), nhưng có rất nhiều siêu thị rẻ đấy! Hôm qua bạn tới chơi đi mua sắm cùng cũng bất ngờ luôn." }
+      ],
+      "keyClueVi": "Cấu trúc 「〜じゃないんだけど、〜んだよ」 (Tuy giao thông không tiện, NHƯNG có nhiều siêu thị rẻ → Đáp án 3)."
+    },
+    {
+      "id": "m2_q3",
+      "sectionId": "m2",
+      "number": 3,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m2_q3.mp3",
+      "durationSec": 69.5,
+      "promptJa": "{会社|かいしゃ}で、{男|おとこ}の{人|ひと}と{女|おんな}の{人|ひと}が{話|はな}しています。{女|おんな}の{人|ひと}はどうして{佐藤|さとう}さんの{結婚式|けっこんしき}に{行|い}きませんか。",
+      "promptVi": "Ở công ty, hai đồng nghiệp nói chuyện. Tại sao chị Wang không đi đám cưới anh Sato?",
+      "options": [
+        { "label": "1", "ja": "さとうさんをよくしらないから" },
+        { "label": "2", "ja": "しごとのよていがあるから" },
+        { "label": "3", "ja": "{日本|にほん}のしゅうかんが{分|わ}からないから" },
+        { "label": "4", "ja": "おとうとのけっこんしきに{出|で}るから" }
+      ],
+      "correctIndex": 3,
+      "script": [
+        { "speaker": "男", "ja": "ワンさん。ワンさんも{来週|らいしゅう}、{佐藤|さとう}さんの{結婚式|けっこんしき}に{行|い}きますか。", "vi": "Chị Wang tuần sau có đi đám cưới anh Sato không?" },
+        { "speaker": "女", "ja": "あっ、{行|い}けないんです。", "vi": "À tôi không đi được ạ." },
+        { "speaker": "男", "ja": "そうなんですか。", "vi": "Vậy cơ à." },
+        { "speaker": "女", "ja": "{佐藤|さとう}さんとはよく{一緒|いっしょ}に{仕事|しごと}をしましたし。それに、{日本|にほん}の{結婚式|けっこんしき}の{習慣|しゅうかん}も{見|み}てみたいので、{本当|ほんとう}に{行|い}きたかったんですけど…{同|おな}じ{日|ひ}に{弟|おとうと}の{結婚式|けっこんしき}があって、{国|くに}に{帰|かえ}るんです。{残念|ざんねん}です。", "vi": "Tôi làm việc chung với anh Sato nhiều, lại muốn xem phong tục cưới Nhật nên rất muốn đi... nhưng trùng đúng ngày cưới em trai tôi nên phải về nước. Tiếc quá." },
+        { "speaker": "男", "ja": "そうですか。それじゃ、しかたがないですね。", "vi": "Vậy à, thế thì đành chịu thôi." }
+      ],
+      "keyClueVi": "Nghe phần sau chữ 「〜んですけど…」 (rất muốn đi nhưng...): 「同じ日に弟の結婚式があって」 → Đáp án 4."
+    },
+    {
+      "id": "m2_q4",
+      "sectionId": "m2",
+      "number": 4,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m2_q4.mp3",
+      "durationSec": 66.2,
+      "promptJa": "デパートで、{男|おとこ}の{人|ひと}と{女|おんな}の{店員|てんいん}が{話|はな}しています。{男|おとこ}の{人|ひと}はどのシャツを{選|えら}びましたか。",
+      "promptVi": "Ở trung tâm thương mại, khách nam chọn mua chiếc áo sơ mi nào?",
+      "options": [
+        { "label": "1", "ja": "あかの{小|ちい}さいシャツ" },
+        { "label": "2", "ja": "あかの{大|おお}きいシャツ" },
+        { "label": "3", "ja": "きいろの{小|ちい}さいシャツ" },
+        { "label": "4", "ja": "きいろの{大|おお}きいシャツ" }
+      ],
+      "correctIndex": 1,
+      "script": [
+        { "speaker": "男", "ja": "すみません。この{赤|あか}のシャツですが、もっと{小|ちい}さいのはありませんか。", "vi": "Xin lỗi, áo sơ mi đỏ này có cỡ nhỏ hơn không ạ?" },
+        { "speaker": "女", "ja": "お{客様|きゃくさま}、{赤|あか}は{小|ちい}さいのがないんですが、{黄色|きいろ}なら、{小|ちい}さいのも{大|おお}きいのもあります。", "vi": "Thưa quý khách, màu đỏ hết cỡ nhỏ rồi, màu vàng thì có đủ cả cỡ nhỏ lẫn cỡ to ạ." },
+        { "speaker": "男", "ja": "うーん、どっちの{色|いろ}がいいと{思|おも}いますか。", "vi": "Ừm, chị thấy màu nào đẹp hơn?" },
+        { "speaker": "女", "ja": "そうですね。お{客様|きゃくさま}には、{明|あか}るい{黄色|きいろ}が{似合|にあ}うと{思|おも}いますが。", "vi": "Tôi thấy màu vàng sáng rất hợp với anh đấy ạ." },
+        { "speaker": "男", "ja": "{黄色|きいろ}もいいねえ。うん、でも、やっぱり{赤|あか}にしよう。{少|すこ}し{大|おお}きいけど、{好|す}きな{色|いろ}だから。", "vi": "Màu vàng cũng đẹp nhỉ. Nhưng thôi, quyết định lấy màu ĐỎ (赤にしよう)! Hơi rộng chút nhưng là màu mình thích." }
+      ],
+      "keyClueVi": "Bẫy khen màu vàng, nhưng chốt bằng từ khóa vàng 「やっぱり赤にしよう。少し大きいけど」 → Áo đỏ cỡ lớn (Đáp án 2)."
+    },
+    {
+      "id": "m2_q5",
+      "sectionId": "m2",
+      "number": 5,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m2_q5.mp3",
+      "durationSec": 80.4,
+      "promptJa": "{男|おとこ}の{留学生|りゅうがくせい}と{女|おんな}の{留学生|りゅうがくせい}が{話|はな}しています。{女|おんな}の{留学生|りゅうがくせい}がこれから{初|はじ}めてすることはなんですか。{女|おんな}の{留学生|りゅうがくせい}です。",
+      "promptVi": "Nam và nữ du học sinh nói về chuyến đi dã ngoại. Trải nghiệm nào NỮ DU HỌC SINH sắp làm LẦN ĐẦU TIÊN?",
+      "options": [
+        { "label": "1", "ja": "たたみのへやにとまること" },
+        { "label": "2", "ja": "おんせんに{入|はい}ること" },
+        { "label": "3", "ja": "スキーをすること" },
+        { "label": "4", "ja": "そばをつくること" }
+      ],
+      "correctIndex": 0,
+      "script": [
+        { "speaker": "男", "ja": "リンさん、{来週|らいしゅう}クラスの{旅行|りょこう}があるね。", "vi": "Linh ơi, tuần sau lớp mình đi du lịch rồi nhỉ." },
+        { "speaker": "女", "ja": "うん。{畳|たたみ}の{部屋|へや}に{泊|と}まれるから{本当|ほんとう}に{楽|たの}しみ。{前|まえ}に{友|とも}だちと{温泉|おんせん}に{行|い}ったときは、ホテルだったし、わたし、{畳|たたみ}の{部屋|へや}に{泊|と}まったことがないんだ。あっ、それから、{今度|こんど}の{旅行|りょこう}ではスキーもできるから、うれしいなあ。{日本|にほん}で、{去年|きょねん}{初|はじ}めてスキーをやって、{本当|ほんとう}に{面白|おもしろ}かった。", "vi": "Ừ, sắp được ngủ phòng tatami nên háo hức lắm! Trước đi suối nước nóng (2 đã từng) toàn ở khách sạn, mình CHƯA TỪNG ngủ phòng tatami (泊まったことがない). Trượt tuyết thì năm ngoái đã thử rồi (3 đã từng)." },
+        { "speaker": "男", "ja": "そう。{僕|ぼく}は、{来週|らいしゅう}の{旅行|りょこう}で、そばを{作|つく}ると{聞|き}いて、{初|はじ}めてだから、{今|いま}からすごく{楽|たの}しみだよ。", "vi": "Thế à. Mình nghe bảo chuyến này tự làm mì soba, lần đầu nên hào hứng lắm." },
+        { "speaker": "女", "ja": "ああ、わたし、{友|とも}だちのうちがそば{屋|や}で、{前|まえ}に{一度|いちど}やったことがあるんだけど、そばはすごく{難|むずか}しかったよ。", "vi": "À nhà bạn mình bán soba nên mình từng làm thử 1 lần rồi (4 đã từng), khó lắm đấy." }
+      ],
+      "keyClueVi": "Bẫy đổi chủ ngữ cực hay: Tự làm soba là lần đầu của BẠN NAM (4 sai). Bạn nữ đã từng đi onsen, trượt tuyết, làm soba — chỉ CHƯA TỪNG ngủ phòng tatami (Đáp án 1)."
+    },
+    {
+      "id": "m2_q6",
+      "sectionId": "m2",
+      "number": 6,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m2_q6.mp3",
+      "durationSec": 90.7,
+      "promptJa": "テレビで、アナウンサーと{男|おとこ}の{人|ひと}がロボット{掃除機|そうじき}について{話|はな}しています。{男|おとこ}の{人|ひと}は{何|なに}を{見|み}てこの{掃除機|そうじき}を{作|つく}ったと{言|い}っていますか。",
+      "promptVi": "Trên TV, MC phỏng vấn nhà sáng chế robot hút bụi biết nói chuyện. Ông ấy đã nhìn thấy cảnh gì mà nảy ra ý tưởng chế tạo?",
+      "options": [
+        { "label": "1", "ja": "そうじきに{話|はな}す{母|はは}" },
+        { "label": "2", "ja": "うたいながらそうじする{妻|つま}" },
+        { "label": "3", "ja": "そうじきであそぶ{娘|むすめ}" },
+        { "label": "4", "ja": "そうじきのおとを{聞|き}くねこ" }
+      ],
+      "correctIndex": 0,
+      "script": [
+        { "speaker": "女", "ja": "{木村|きむら}さん、こちらは{木村|きむら}さんの{研究|けんきゅう}によって{作|つく}られた{掃除機|そうじき}ですが、{会話|かいわ}ができるロボット{掃除機|そうじき}で、{大人|おとな}から{子|こ}どもまで{人気|にんき}がありますね。", "vi": "Anh Kimura, đây là robot hút bụi biết trò chuyện do anh nghiên cứu chế tạo, rất được cả người lớn lẫn trẻ em yêu thích." },
+        { "speaker": "男", "ja": "ありがとうございます。", "vi": "Xin cảm ơn." },
+        { "speaker": "女", "ja": "{会話|かいわ}ができる{掃除機|そうじき}というアイデアはどこから{生|う}まれたんですか。", "vi": "Ý tưởng máy hút bụi biết nói chuyện bắt nguồn từ đâu vậy?" },
+        { "speaker": "男", "ja": "はい、{子|こ}どもの{時|とき}、{母|はは}が{掃除機|そうじき}をかけながら「{曲|ま}がるよ、{行|い}くよ」と{掃除機|そうじき}に{話|はな}しかけているのを{見|み}て、いつか{話|はな}しかけたら{答|こた}えてくれる{掃除機|そうじき}を{作|つく}ろうと{思|おも}ったんです。", "vi": "Hồi nhỏ tôi thấy MẸ vừa hút bụi vừa nói chuyện với cái máy hút bụi nên nảy ra ý tưởng chế tạo máy biết đáp lại." },
+        { "speaker": "男", "ja": "{今|いま}、わたしのうちでもこの{掃除機|そうじき}を{使|つか}っていますが、これは{歌|うた}も{歌|うた}うので、{妻|つま}は{一緒|いっしょ}に{歌|うた}いながら{掃除|そうじ}をしていますし、4{歳|さい}の{娘|むすめ}は{掃除機|そうじき}の{周|まわ}りで{踊|おど}ったりして{遊|あそ}んでいます。うちは{猫|ねこ}2{匹|ひき}{飼|か}っていますが、{猫|ねこ}も{掃除機|そうじき}の{声|こえ}を{聞|き}くと{集|あつ}まってきます。", "vi": "Bây giờ ở nhà vợ tôi vừa hát vừa dọn, con gái 4 tuổi nhảy múa xung quanh, 2 con mèo nghe tiếng cũng chạy tới." }
+      ],
+      "keyClueVi": "Phân biệt mốc thời gian: Chế tạo ra nhờ hồi nhỏ thấy MẸ nói chuyện với máy hút bụi (母が掃除機に話しかけているのを見て → Đáp án 1). Vợ, con gái, mèo là chuyện BÂY GIỜ (今) sau khi đã làm ra."
+    },
+    {
+      "id": "m2_q7",
+      "sectionId": "m2",
+      "number": 7,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m2_q7.mp3",
+      "durationSec": 70.3,
+      "promptJa": "{電話|でんわ}で、{友|とも}だちの{話|はな}を{聞|き}いています。アンナさんはどんなことを{頼|たの}まれましたか。",
+      "promptVi": "Anna đang nghe điện thoại từ bạn. Anna đã được bạn nhờ việc gì?",
+      "options": [
+        { "label": "1", "ja": "いいおんがく{学校|がっこう}をおしえてもらいたい" },
+        { "label": "2", "ja": "アパートを{見|み}つけてもらいたい" },
+        { "label": "3", "ja": "{国|くに}の{友|とも}だちをしょうかいしてもらいたい" },
+        { "label": "4", "ja": "ことばのべんきょうをてつだってもらいたい" }
+      ],
+      "correctIndex": 2,
+      "script": [
+        { "speaker": "女", "ja": "もしもし、アンナさん。わたし、{来年|らいねん}からアンナさんの{国|くに}の{音楽学校|おんがくがっこう}に{入|はい}ることになったんだ。それで、{向|む}こうに{行|い}ってから、バイオリンが{弾|ひ}けるアパートを{探|さが}したいんだけど、{一人|ひとり}で{探|さが}すのは{難|むずか}しいと{思|おも}って、{電話|でんわ}したんだ。", "vi": "Alo Anna à, sang năm mình sẽ vào học trường nhạc ở nước cậu. Sang đó mình muốn tìm căn hộ chơi được violin nhưng tự tìm khó quá nên gọi cậu." },
+        { "speaker": "女", "ja": "アンナさんは{日本|にほん}にいるから{無理|むり}だけど、{誰|だれ}か{向|む}こうで{手伝|てつだ}ってくれる{友|とも}だちを{紹介|しょうかい}してもらえない？わたし、{言葉|ことば}は{少|すこ}しできるから、{日本語|にほんご}ができない{人|ひと}でも{大丈夫|だいじょうぶ}だよ。", "vi": "Cậu đang ở Nhật nên không giúp trực tiếp được, cậu GIỚI THIỆU cho mình một người bạn ở bên đó giúp được không? Mình nói tiếng nước cậu được một chút nên không cần biết tiếng Nhật đâu." }
+      ],
+      "keyClueVi": "Nghe trực diện câu nhờ vả: 「誰か向こうで手伝ってくれる友だちを紹介してもらえない？」 (Giới thiệu bạn ở quê giúp) → Đáp án 3."
+    },
+    {
+      "id": "m3_q1",
+      "sectionId": "m3",
+      "number": 1,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m3_q1.mp3",
+      "durationSec": 25.6,
+      "imageUrl": "/stories/jlpt-n4-2025-12-choukai/images/m3_q1.png",
+      "hideOptionsUntilAnswered": true,
+      "promptJa": "{電車|でんしゃ}で、{女|おんな}の{人|ひと}が{切符|きっぷ}を{落|お}としました。{何|なに}といいますか。",
+      "promptVi": "Trên tàu điện, một cô gái đánh rơi vé tàu xuống sàn. Bạn gọi theo nói gì?",
+      "options": [
+        { "label": "1", "ja": "{拾|ひろ}いましたか。", "vi": "Chị nhặt được à? (sai)" },
+        { "label": "2", "ja": "なくしました。", "vi": "Tôi làm mất rồi (sai chủ ngữ)" },
+        { "label": "3", "ja": "{落|お}ちましたよ。", "vi": "Chị ơi có đồ rơi kìa!" }
+      ],
+      "correctIndex": 2,
+      "script": [
+        { "speaker": "問題", "ja": "{電車|でんしゃ}で、{女|おんな}の{人|ひと}が{切符|きっぷ}を{落|お}としました。{何|なに}といいますか。", "vi": "Trên tàu cô gái đánh rơi vé, nói thế nào?" },
+        { "speaker": "1", "ja": "{拾|ひろ}いましたか。", "vi": "Nhặt được à?" },
+        { "speaker": "2", "ja": "なくしました。", "vi": "Tôi đánh mất rồi." },
+        { "speaker": "3", "ja": "{落|お}ちましたよ。", "vi": "Bị rơi kìa (vé rơi rồi ạ)!" }
+      ],
+      "keyClueVi": "Phân biệt tự động từ 落ちる (rơi xuống): báo ai đó làm rơi đồ luôn dùng 「落ちましたよ」 → Đáp án 3."
+    },
+    {
+      "id": "m3_q2",
+      "sectionId": "m3",
+      "number": 2,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m3_q2.mp3",
+      "durationSec": 29.8,
+      "imageUrl": "/stories/jlpt-n4-2025-12-choukai/images/m3_q2.png",
+      "hideOptionsUntilAnswered": true,
+      "promptJa": "{今|いま}、{図書館|としょかん}にいます。{図書館|としょかん}は7{時|じ}に{閉|し}まります。{友達|ともだち}に{何|なに}といいますか。",
+      "promptVi": "Bây giờ đang ở thư viện, sắp đến 7 giờ đóng cửa rồi. Bạn nhắc bạn mình thế nào?",
+      "options": [
+        { "label": "1", "ja": "{図書館|としょかん}へ{急|いそ}ぎましょう。", "vi": "Nhanh đến thư viện nào (sai, đang ở sẵn trong thư viện!)" },
+        { "label": "2", "ja": "そろそろ{出|で}たほうがいいですね。", "vi": "Sắp đến giờ ra về rồi nhỉ." },
+        { "label": "3", "ja": "{今|いま}しまったところですよ。", "vi": "Vừa mới đóng cửa xong (sai vì mới 6:50)." }
+      ],
+      "correctIndex": 1,
+      "script": [
+        { "speaker": "問題", "ja": "{今|いま}、{図書館|としょかん}にいます。{図書館|としょかん}は7{時|じ}に{閉|し}まります。{友達|ともだち}に{何|なに}といいますか。", "vi": "Đang ở thư viện, 7 giờ đóng cửa, nói gì với bạn?" },
+        { "speaker": "1", "ja": "{図書館|としょかん}へ{急|いそ}ぎましょう。", "vi": "Nhanh tới thư viện nào." },
+        { "speaker": "2", "ja": "そろそろ{出|で}たほうがいいですね。", "vi": "Chắc sắp nên đi ra thôi nhỉ." },
+        { "speaker": "3", "ja": "{今|いま}しまったところですよ。", "vi": "Vừa mới đóng cửa xong." }
+      ],
+      "keyClueVi": "Đồng hồ chỉ gần 7 giờ → rủ ra về tự nhiên bằng 「そろそろ出たほうがいいですね」 → Đáp án 2."
+    },
+    {
+      "id": "m3_q3",
+      "sectionId": "m3",
+      "number": 3,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m3_q3.mp3",
+      "durationSec": 28.1,
+      "imageUrl": "/stories/jlpt-n4-2025-12-choukai/images/m3_q3.png",
+      "hideOptionsUntilAnswered": true,
+      "promptJa": "{人|ひと}がたくさん{集|あつ}まっています。{理由|りゆう}が{知|し}りたいです。{何|なに}といいますか。",
+      "promptVi": "Thấy đám đông tụ tập rất đông, bạn muốn hỏi xem có chuyện gì xảy ra. Bạn nói gì?",
+      "options": [
+        { "label": "1", "ja": "{何|なに}かあったんですか。", "vi": "Có chuyện gì xảy ra thế ạ?" },
+        { "label": "2", "ja": "これはどうですか。", "vi": "Cái này thế nào ạ?" },
+        { "label": "3", "ja": "どんなことについてですか。", "vi": "Về chuyện gì ạ?" }
+      ],
+      "correctIndex": 0,
+      "script": [
+        { "speaker": "問題", "ja": "{人|ひと}がたくさん{集|あつ}まっています。{理由|りゆう}が{知|し}りたいです。{何|なに}といいますか。", "vi": "Người tụ tập đông, muốn hỏi lý do thì nói thế nào?" },
+        { "speaker": "1", "ja": "{何|なに}かあったんですか。", "vi": "Có chuyện gì thế ạ?" },
+        { "speaker": "2", "ja": "これはどうですか。", "vi": "Cái này sao ạ?" },
+        { "speaker": "3", "ja": "どんなことについてですか。", "vi": "Về chủ đề gì ạ?" }
+      ],
+      "keyClueVi": "Câu hỏi cửa miệng cực thông dụng khi thấy sự việc lạ: 「何かあったんですか」 (Có chuyện gì vậy?) → Đáp án 1."
+    },
+    {
+      "id": "m3_q4",
+      "sectionId": "m3",
+      "number": 4,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m3_q4.mp3",
+      "durationSec": 29.1,
+      "imageUrl": "/stories/jlpt-n4-2025-12-choukai/images/m3_q4.png",
+      "hideOptionsUntilAnswered": true,
+      "promptJa": "{野球|やきゅう}のチケットがあります。{友|とも}だちと{見|み}に{行|い}きたいです。{何|なに}といいますか。",
+      "promptVi": "Bạn đang cầm 2 vé xem bóng chày muốn rủ bạn đi xem cùng. Bạn nói gì?",
+      "options": [
+        { "label": "1", "ja": "{野球|やきゅう}のチケットくれない？", "vi": "Cho mình vé bóng chày được không? (ngược chiều cho-nhận!)" },
+        { "label": "2", "ja": "{野球|やきゅう}の{試合|しあい}{見|み}に{行|い}かない？", "vi": "Đi xem trận bóng chày cùng không?" },
+        { "label": "3", "ja": "{一緒|いっしょ}に{野球|やきゅう}しない？", "vi": "Cùng chơi bóng chày không? (sai, là đi XEM không phải đi chơi)" }
+      ],
+      "correctIndex": 1,
+      "script": [
+        { "speaker": "問題", "ja": "{野球|やきゅう}のチケットがあります。{友|とも}だちと{見|み}に{行|い}きたいです。{何|なに}といいますか。", "vi": "Có vé bóng chày muốn rủ bạn đi xem, nói thế nào?" },
+        { "speaker": "1", "ja": "{野球|やきゅう}のチケットくれない？", "vi": "Cho mình vé bóng chày nhé?" },
+        { "speaker": "2", "ja": "{野球|やきゅう}の{試合|しあい}{見|み}に{行|い}かない？", "vi": "Đi xem trận bóng chày không?" },
+        { "speaker": "3", "ja": "{一緒|いっしょ}に{野球|やきゅう}しない？", "vi": "Cùng chơi bóng chày không?" }
+      ],
+      "keyClueVi": "Rủ bạn đi xem: 「〜見に行かない？」 → Đáp án 2. Đừng nhầm 3 (đi chơi bóng chày)."
+    },
+    {
+      "id": "m3_q5",
+      "sectionId": "m3",
+      "number": 5,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m3_q5.mp3",
+      "durationSec": 31.5,
+      "imageUrl": "/stories/jlpt-n4-2025-12-choukai/images/m3_q5.png",
+      "hideOptionsUntilAnswered": true,
+      "promptJa": "{友|とも}だちと{空|あ}いている{席|せき}を{探|さが}しています。ちょうど{帰|かえ}る{人|ひと}がいます。{友|とも}だちに{何|なに}といいますか。",
+      "promptVi": "Đang tìm 2 chỗ trống trong quán cùng bạn, đúng lúc có khách đứng dậy ra về bên quầy. Bạn nói gì với bạn mình?",
+      "options": [
+        { "label": "1", "ja": "あそこ{二人|ふたり}{座|すわ}れるよ。", "vi": "Đằng kia ngồi được 2 người đấy!" },
+        { "label": "2", "ja": "あっちの{席|せき}かもしれないよ。", "vi": "Có lẽ là chỗ đằng kia." },
+        { "label": "3", "ja": "あのいすをふたつくれるよ。", "vi": "Sẽ cho 2 cái ghế kia đấy (sai nghĩa)." }
+      ],
+      "correctIndex": 0,
+      "script": [
+        { "speaker": "問題", "ja": "{友|とも}だちと{空|あ}いている{席|せき}を{探|さが}しています。ちょうど{帰|かえ}る{人|ひと}がいます。{友|とも}だちに{何|なに}といいますか。", "vi": "Tìm chỗ trống cùng bạn, thấy có người sắp rời ghế thì nói gì?" },
+        { "speaker": "1", "ja": "あそこ{二人|ふたり}{座|すわ}れるよ。", "vi": "Chỗ kia ngồi được 2 người kìa!" },
+        { "speaker": "2", "ja": "あっちの{席|せき}かもしれないよ。", "vi": "Chắc là chỗ đằng kia." },
+        { "speaker": "3", "ja": "あのいすをふたつくれるよ。", "vi": "Cho 2 cái ghế kia." }
+      ],
+      "keyClueVi": "Thể khả năng N4 「座れる (ngồi được)」: 「あそこ二人座れるよ」 → Đáp án 1."
+    },
+    {
+      "id": "m4_q1",
+      "sectionId": "m4",
+      "number": 1,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m4_q1.mp3",
+      "durationSec": 23.2,
+      "hideOptionsUntilAnswered": true,
+      "promptJa": "ここから{駅|えき}までどうやっていく？",
+      "promptVi": "Từ đây ra nhà ga đi bằng cách nào nhỉ?",
+      "options": [
+        { "label": "1", "ja": "うん。{駅|えき}まで{行|い}くよ。", "vi": "Ừ đi tới ga." },
+        { "label": "2", "ja": "{近|ちか}いから{歩|ある}こう。", "vi": "Gần nên đi bộ thôi!" },
+        { "label": "3", "ja": "{電車|でんしゃ}に{乗|の}るからだよ。", "vi": "Vì sẽ đi tàu điện." }
+      ],
+      "correctIndex": 1,
+      "script": [
+        { "speaker": "質問", "ja": "ここから{駅|えき}までどうやっていく？", "vi": "Từ đây ra ga đi kiểu gì nhỉ?" },
+        { "speaker": "1", "ja": "うん。{駅|えき}まで{行|い}くよ。", "vi": "Ừ mình ra ga." },
+        { "speaker": "2", "ja": "{近|ちか}いから{歩|ある}こう。", "vi": "Gần mà, đi bộ thôi!" },
+        { "speaker": "3", "ja": "{電車|でんしゃ}に{乗|の}るからだよ。", "vi": "Tại đi tàu điện đấy." }
+      ],
+      "keyClueVi": "Hỏi phương tiện/cách đi (どうやって行く) → đề xuất cách đi bộ 「近いから歩こう」 → Đáp án 2."
+    },
+    {
+      "id": "m4_q2",
+      "sectionId": "m4",
+      "number": 2,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m4_q2.mp3",
+      "durationSec": 22.9,
+      "hideOptionsUntilAnswered": true,
+      "promptJa": "{今日|きょう}{昼|ひる}ご{飯|はん}は{食|た}べてきたんですか。",
+      "promptVi": "Hôm nay bạn đã ăn cơm trưa trước khi tới đây chưa?",
+      "options": [
+        { "label": "1", "ja": "もう{来|き}ました。", "vi": "Đến rồi (lệch trọng tâm)." },
+        { "label": "2", "ja": "いいですね。そうしましょう。", "vi": "Hay đấy, làm thế đi." },
+        { "label": "3", "ja": "まだ{食|た}べていません。", "vi": "Tôi vẫn chưa ăn ạ." }
+      ],
+      "correctIndex": 2,
+      "script": [
+        { "speaker": "質問", "ja": "{今日|きょう}{昼|ひる}ご{飯|はん}は{食|た}べてきたんですか。", "vi": "Hôm nay bạn ăn trưa rồi mới đến à?" },
+        { "speaker": "1", "ja": "もう{来|き}ました。", "vi": "Đã đến rồi." },
+        { "speaker": "2", "ja": "いいですね。そうしましょう。", "vi": "Tuyệt đấy, làm vậy nhé." },
+        { "speaker": "3", "ja": "まだ{食|た}べていません。", "vi": "Tôi chưa ăn ạ." }
+      ],
+      "keyClueVi": "Hỏi đã ăn chưa (食べてきたんですか) → 「まだ食べていません」 (Vẫn chưa ăn) → Đáp án 3."
+    },
+    {
+      "id": "m4_q3",
+      "sectionId": "m4",
+      "number": 3,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m4_q3.mp3",
+      "durationSec": 28.5,
+      "hideOptionsUntilAnswered": true,
+      "promptJa": "{受付|うけつけ}の{係|かかり}、ご{苦労様|くろうさま}。{少|すこ}しわたしがかわるよ。",
+      "promptVi": "Trực quầy lễ tân vất vả rồi! Để mình đổi ca làm thay cậu một lát nhé.",
+      "options": [
+        { "label": "1", "ja": "ありがとうございます。でも{大丈夫|だいじょうぶ}です。", "vi": "Cảm ơn bạn nhé. Nhưng mình ổn, không sao đâu." },
+        { "label": "2", "ja": "すみませんが、どこにかえますか。", "vi": "Xin lỗi đổi ở đâu ạ (bẫy đồng âm かわる/かえる)." },
+        { "label": "3", "ja": "ちょっと{手伝|てつだ}えないんです。", "vi": "Tôi hơi bận không phụ được (ngược vai!)." }
+      ],
+      "correctIndex": 0,
+      "script": [
+        { "speaker": "質問", "ja": "{受付|うけつけ}の{係|かかり}、ご{苦労様|くろうさま}。{少|すこ}しわたしがかわるよ。", "vi": "Trực lễ tân vất vả rồi, để tôi làm thay một chút nhé." },
+        { "speaker": "1", "ja": "ありがとうございます。でも{大丈夫|だいじょうぶ}です。", "vi": "Cảm ơn nhiều ạ, nhưng tôi vẫn ổn ạ." },
+        { "speaker": "2", "ja": "すみませんが、どこにかえますか。", "vi": "Xin lỗi đổi ở đâu ạ?" },
+        { "speaker": "3", "ja": "ちょっと{手伝|てつだ}えないんです。", "vi": "Tôi không giúp được." }
+      ],
+      "keyClueVi": "Từ chối khéo lời ngỏ ý giúp đỡ: 「ありがとうございます。でも大丈夫です」 → Đáp án 1."
+    },
+    {
+      "id": "m4_q4",
+      "sectionId": "m4",
+      "number": 4,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m4_q4.mp3",
+      "durationSec": 27.8,
+      "hideOptionsUntilAnswered": true,
+      "promptJa": "あっ、トムさん、{田中|たなか}です。わたしのことを{覚|おぼ}えていますか。",
+      "promptVi": "À anh Tom, tôi là Tanaka đây! Anh còn nhớ tôi không?",
+      "options": [
+        { "label": "1", "ja": "ああ、こちらこそどうぞよろしく。", "vi": "Rất hân hạnh (dùng khi mới gặp lần đầu!)." },
+        { "label": "2", "ja": "ああ、お{久|ひさ}しぶりです。", "vi": "Ồ, lâu lắm mới gặp anh!" },
+        { "label": "3", "ja": "ああ、{覚|おぼ}えませんでした。", "vi": "Tôi đã không học thuộc (sai thì, phải là 覚えていません)." }
+      ],
+      "correctIndex": 1,
+      "script": [
+        { "speaker": "質問", "ja": "あっ、トムさん、{田中|たなか}です。わたしのことを{覚|おぼ}えていますか。", "vi": "Anh Tom, tôi là Tanaka. Anh còn nhớ tôi không?" },
+        { "speaker": "1", "ja": "ああ、こちらこそどうぞよろしく。", "vi": "Tôi cũng rất vui được làm quen." },
+        { "speaker": "2", "ja": "ああ、お{久|ひさ}しぶりです。", "vi": "Ồ, lâu ngày quá không gặp!" },
+        { "speaker": "3", "ja": "ああ、{覚|おぼ}えませんでした。", "vi": "À tôi đã không ghi nhớ." }
+      ],
+      "keyClueVi": "Gặp lại người quen cũ → câu chào tự nhiên nhất là 「ああ、お久しぶりです」 → Đáp án 2."
+    },
+    {
+      "id": "m4_q5",
+      "sectionId": "m4",
+      "number": 5,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m4_q5.mp3",
+      "durationSec": 27.6,
+      "hideOptionsUntilAnswered": true,
+      "promptJa": "この{大学|だいがく}には、{学生|がくせい}が{全部|ぜんぶ}でどのぐらいいますか。",
+      "promptVi": "Trường đại học này có tổng cộng khoảng bao nhiêu sinh viên vậy?",
+      "options": [
+        { "label": "1", "ja": "{全部|ぜんぶ}かどうかわかりません。", "vi": "Không biết có phải tất cả không." },
+        { "label": "2", "ja": "だいたい{一万人|いちまんにん}です。", "vi": "Khoảng mười nghìn (1 vạn) sinh viên ạ." },
+        { "label": "3", "ja": "{夜|よる}9{時|じ}ぐらいまでいます。", "vi": "Ở đến khoảng 9 giờ tối (bẫy thời gian!)." }
+      ],
+      "correctIndex": 1,
+      "script": [
+        { "speaker": "質問", "ja": "この{大学|だいがく}には、{学生|がくせい}が{全部|ぜんぶ}でどのぐらいいますか。", "vi": "Trường này có tổng cộng khoảng bao nhiêu sinh viên?" },
+        { "speaker": "1", "ja": "{全部|ぜんぶ}かどうかわかりません。", "vi": "Không biết có phải tất cả không." },
+        { "speaker": "2", "ja": "だいたい{一万人|いちまんにん}です。", "vi": "Khoảng 1 vạn người ạ." },
+        { "speaker": "3", "ja": "{夜|よる}9{時|じ}ぐらいまでいます。", "vi": "Ở đến khoảng 9 giờ tối." }
+      ],
+      "keyClueVi": "Hỏi số lượng người (全部でどのぐらいいますか) → đáp số lượng 「だいたい一万人です」 → Đáp án 2."
+    },
+    {
+      "id": "m4_q6",
+      "sectionId": "m4",
+      "number": 6,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m4_q6.mp3",
+      "durationSec": 26.3,
+      "hideOptionsUntilAnswered": true,
+      "promptJa": "{今日|きょう}のパーティー、ジョンさん、{来|こ}ないかもしれないよ。",
+      "promptVi": "Bữa tiệc hôm nay, có lẽ John sẽ KHÔNG đến đâu.",
+      "options": [
+        { "label": "1", "ja": "えっ？{昨日|きのう}は{来|く}ると{言|い}っていたよ。", "vi": "Hả? Hôm qua cậu ấy bảo sẽ tới cơ mà!" },
+        { "label": "2", "ja": "よかった。{来|く}るんだ。", "vi": "May quá, cậu ấy tới à (nghe nhầm khẳng định!)." },
+        { "label": "3", "ja": "そう。{来|く}ることになったんだね。", "vi": "Thế à, quyết định sẽ đến nhỉ (ngược nghĩa!)." }
+      ],
+      "correctIndex": 0,
+      "script": [
+        { "speaker": "質問", "ja": "{今日|きょう}のパーティー、ジョンさん、{来|こ}ないかもしれないよ。", "vi": "Tiệc hôm nay có lẽ John không tới đâu." },
+        { "speaker": "1", "ja": "えっ？{昨日|きのう}は{来|く}ると{言|い}っていたよ。", "vi": "Ơ? Hôm qua cậu ấy bảo sẽ tới mà!" },
+        { "speaker": "2", "ja": "よかった。{来|く}るんだ。", "vi": "May quá, cậu ấy tới à." },
+        { "speaker": "3", "ja": "そう。{来|く}ることになったんだね。", "vi": "Ra là quyết định tới rồi nhỉ." }
+      ],
+      "keyClueVi": "Nghe kỹ phủ định 「来ないかもしれない (có lẽ KHÔNG tới)」 → phản ứng ngạc nhiên 「えっ？昨日は来ると言っていたよ」 → Đáp án 1."
+    },
+    {
+      "id": "m4_q7",
+      "sectionId": "m4",
+      "number": 7,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m4_q7.mp3",
+      "durationSec": 23.7,
+      "hideOptionsUntilAnswered": true,
+      "promptJa": "{日本|にほん}に{来|き}て{半年|はんとし}ですね。もう{日本|にほん}の{生活|せいかつ}に{慣|な}れましたか。",
+      "promptVi": "Bạn sang Nhật được nửa năm rồi nhỉ. Đã quen với cuộc sống ở Nhật chưa?",
+      "options": [
+        { "label": "1", "ja": "もうしました。", "vi": "Đã làm rồi (sai động từ!)." },
+        { "label": "2", "ja": "あまりないです。", "vi": "Hầu như không có (sai!)." },
+        { "label": "3", "ja": "ええ、やっと。", "vi": "Vâng, cuối cùng cũng quen rồi ạ!" }
+      ],
+      "correctIndex": 2,
+      "script": [
+        { "speaker": "質問", "ja": "{日本|にほん}に{来|き}て{半年|はんとし}ですね。もう{日本|にほん}の{生活|せいかつ}に{慣|な}れましたか。", "vi": "Sang Nhật nửa năm rồi nhỉ, bạn đã quen cuộc sống ở Nhật chưa?" },
+        { "speaker": "1", "ja": "もうしました。", "vi": "Đã làm rồi." },
+        { "speaker": "2", "ja": "あまりないです。", "vi": "Không có nhiều." },
+        { "speaker": "3", "ja": "ええ、やっと。", "vi": "Vâng, cuối cùng cũng quen rồi ạ." }
+      ],
+      "keyClueVi": "Phó từ N4 rất tự nhiên: 「やっと (cuối cùng cũng đã đạt được sau thời gian cố gắng)」 — 「ええ、やっと(慣れました)」 → Đáp án 3."
+    },
+    {
+      "id": "m4_q8",
+      "sectionId": "m4",
+      "number": 8,
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/m4_q8.mp3",
+      "durationSec": 26.7,
+      "hideOptionsUntilAnswered": true,
+      "promptJa": "この{資料|しりょう}を{急|いそ}いで{課長|かちょう}に{渡|わた}してきてくれますか。",
+      "promptVi": "Bạn mang gấp tập tài liệu này đưa cho trưởng ban giúp tôi được không?",
+      "options": [
+        { "label": "1", "ja": "あっ、はい。すぐ{届|とど}けます。", "vi": "Vâng ạ, tôi đi giao ngay đây ạ." },
+        { "label": "2", "ja": "{何|なに}について{聞|き}きますか。", "vi": "Hỏi về chuyện gì ạ?" },
+        { "label": "3", "ja": "では、{課長|かちょう}にもらってきます。", "vi": "Vậy tôi đi lấy từ trưởng ban (ngược hướng!)." }
+      ],
+      "correctIndex": 0,
+      "script": [
+        { "speaker": "質問", "ja": "この{資料|しりょう}を{急|いそ}いで{課長|かちょう}に{渡|わた}してきてくれますか。", "vi": "Bạn mang gấp tài liệu này đưa cho trưởng ban giúp tôi nhé?" },
+        { "speaker": "1", "ja": "あっ、はい。すぐ{届|とど}けます。", "vi": "Vâng, tôi đi giao ngay đây ạ." },
+        { "speaker": "2", "ja": "{何|なに}について{聞|き}きますか。", "vi": "Hỏi về việc gì ạ?" },
+        { "speaker": "3", "ja": "では、{課長|かちょう}にもらってきます。", "vi": "Vậy tôi đi nhận từ trưởng ban." }
+      ],
+      "keyClueVi": "Từ đồng nghĩa giao tiếp công sở: 渡す (đưa tận tay) ↔ 届ける (giao đến nơi) → 「すぐ届けます」 (Đáp án 1)."
+    }
+  ]
+}

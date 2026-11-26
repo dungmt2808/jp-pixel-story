@@ -1,0 +1,856 @@
+{
+  "id": "jlpt-n4-2025-12-choukai",
+  "titleJa": "JLPT N4 聴解 (2025年12月) · Daily Dictation",
+  "titleVi": "Nghe chép chính tả giọng JLPT thật (12/2025 · 問題3 & 問題4)",
+  "level": "JLPT N4",
+  "items": [
+    {
+      "id": "m3_q1_p",
+      "speakerLabel": "M3 Câu 1 · Câu hỏi gốc",
+      "jaPlain": "電車で、女の人が切符を落としました。何といいますか。",
+      "jaKana": "でんしゃで、おんなのひとがきっぷをおとしました。なにといいますか。",
+      "jaRuby": [
+        {
+          "t": "電車",
+          "r": "でんしゃ"
+        },
+        {
+          "t": "で、"
+        },
+        {
+          "t": "女",
+          "r": "おんな"
+        },
+        {
+          "t": "の"
+        },
+        {
+          "t": "人",
+          "r": "ひと"
+        },
+        {
+          "t": "が"
+        },
+        {
+          "t": "切符",
+          "r": "きっぷ"
+        },
+        {
+          "t": "を"
+        },
+        {
+          "t": "落",
+          "r": "お"
+        },
+        {
+          "t": "としました。"
+        },
+        {
+          "t": "何",
+          "r": "なに"
+        },
+        {
+          "t": "といいますか。"
+        }
+      ],
+      "vi": "Trên tàu điện, một cô gái đánh rơi vé tàu xuống sàn. Bạn gọi theo nói gì?",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m3_q1_p.mp3",
+      "durationSec": 6.78
+    },
+    {
+      "id": "m3_q1_a",
+      "speakerLabel": "M3 Câu 1 · Đáp án đúng (3)",
+      "jaPlain": "落ちましたよ。",
+      "jaKana": "おちましたよ。",
+      "jaRuby": [
+        {
+          "t": "落",
+          "r": "お"
+        },
+        {
+          "t": "ちましたよ。"
+        }
+      ],
+      "vi": "Chị ơi có đồ rơi kìa!",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m3_q1_a.mp3",
+      "durationSec": 1.26
+    },
+    {
+      "id": "m3_q2_p",
+      "speakerLabel": "M3 Câu 2 · Câu hỏi gốc",
+      "jaPlain": "今、図書館にいます。図書館は7時に閉まります。友達に何といいますか。",
+      "jaKana": "いま、としょかんにいます。としょかんは7じにしまります。ともだちになにといいますか。",
+      "jaRuby": [
+        {
+          "t": "今",
+          "r": "いま"
+        },
+        {
+          "t": "、"
+        },
+        {
+          "t": "図書館",
+          "r": "としょかん"
+        },
+        {
+          "t": "にいます。"
+        },
+        {
+          "t": "図書館",
+          "r": "としょかん"
+        },
+        {
+          "t": "は7"
+        },
+        {
+          "t": "時",
+          "r": "じ"
+        },
+        {
+          "t": "に"
+        },
+        {
+          "t": "閉",
+          "r": "し"
+        },
+        {
+          "t": "まります。"
+        },
+        {
+          "t": "友達",
+          "r": "ともだち"
+        },
+        {
+          "t": "に"
+        },
+        {
+          "t": "何",
+          "r": "なに"
+        },
+        {
+          "t": "といいますか。"
+        }
+      ],
+      "vi": "Bây giờ đang ở thư viện, sắp đến 7 giờ đóng cửa rồi. Bạn nhắc bạn mình thế nào?",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m3_q2_p.mp3",
+      "durationSec": 9.26
+    },
+    {
+      "id": "m3_q2_a",
+      "speakerLabel": "M3 Câu 2 · Đáp án đúng (2)",
+      "jaPlain": "そろそろ出たほうがいいですね。",
+      "jaKana": "そろそろでたほうがいいですね。",
+      "jaRuby": [
+        {
+          "t": "そろそろ"
+        },
+        {
+          "t": "出",
+          "r": "で"
+        },
+        {
+          "t": "たほうがいいですね。"
+        }
+      ],
+      "vi": "Sắp đến giờ ra về rồi nhỉ.",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m3_q2_a.mp3",
+      "durationSec": 2.2
+    },
+    {
+      "id": "m3_q3_p",
+      "speakerLabel": "M3 Câu 3 · Câu hỏi gốc",
+      "jaPlain": "人がたくさん集まっています。理由が知りたいです。何といいますか。",
+      "jaKana": "ひとがたくさんあつまっています。りゆうがしりたいです。なにといいますか。",
+      "jaRuby": [
+        {
+          "t": "人",
+          "r": "ひと"
+        },
+        {
+          "t": "がたくさん"
+        },
+        {
+          "t": "集",
+          "r": "あつ"
+        },
+        {
+          "t": "まっています。"
+        },
+        {
+          "t": "理由",
+          "r": "りゆう"
+        },
+        {
+          "t": "が"
+        },
+        {
+          "t": "知",
+          "r": "し"
+        },
+        {
+          "t": "りたいです。"
+        },
+        {
+          "t": "何",
+          "r": "なに"
+        },
+        {
+          "t": "といいますか。"
+        }
+      ],
+      "vi": "Thấy đám đông tụ tập rất đông, bạn muốn hỏi xem có chuyện gì xảy ra. Bạn nói gì?",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m3_q3_p.mp3",
+      "durationSec": 7.66
+    },
+    {
+      "id": "m3_q3_a",
+      "speakerLabel": "M3 Câu 3 · Đáp án đúng (1)",
+      "jaPlain": "何かあったんですか。",
+      "jaKana": "なにかあったんですか。",
+      "jaRuby": [
+        {
+          "t": "何",
+          "r": "なに"
+        },
+        {
+          "t": "かあったんですか。"
+        }
+      ],
+      "vi": "Có chuyện gì xảy ra thế ạ?",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m3_q3_a.mp3",
+      "durationSec": 1.78
+    },
+    {
+      "id": "m3_q4_p",
+      "speakerLabel": "M3 Câu 4 · Câu hỏi gốc",
+      "jaPlain": "野球のチケットがあります。友だちと見に行きたいです。何といいますか。",
+      "jaKana": "やきゅうのチケットがあります。ともだちとみにいきたいです。なにといいますか。",
+      "jaRuby": [
+        {
+          "t": "野球",
+          "r": "やきゅう"
+        },
+        {
+          "t": "のチケットがあります。"
+        },
+        {
+          "t": "友",
+          "r": "とも"
+        },
+        {
+          "t": "だちと"
+        },
+        {
+          "t": "見",
+          "r": "み"
+        },
+        {
+          "t": "に"
+        },
+        {
+          "t": "行",
+          "r": "い"
+        },
+        {
+          "t": "きたいです。"
+        },
+        {
+          "t": "何",
+          "r": "なに"
+        },
+        {
+          "t": "といいますか。"
+        }
+      ],
+      "vi": "Bạn đang cầm 2 vé xem bóng chày muốn rủ bạn đi xem cùng. Bạn nói gì?",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m3_q4_p.mp3",
+      "durationSec": 7.78
+    },
+    {
+      "id": "m3_q4_a",
+      "speakerLabel": "M3 Câu 4 · Đáp án đúng (2)",
+      "jaPlain": "野球の試合見に行かない？",
+      "jaKana": "やきゅうのしあいみにいかない？",
+      "jaRuby": [
+        {
+          "t": "野球",
+          "r": "やきゅう"
+        },
+        {
+          "t": "の"
+        },
+        {
+          "t": "試合",
+          "r": "しあい"
+        },
+        {
+          "t": "見",
+          "r": "み"
+        },
+        {
+          "t": "に"
+        },
+        {
+          "t": "行",
+          "r": "い"
+        },
+        {
+          "t": "かない？"
+        }
+      ],
+      "vi": "Đi xem trận bóng chày cùng không?",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m3_q4_a.mp3",
+      "durationSec": 2.44
+    },
+    {
+      "id": "m3_q5_p",
+      "speakerLabel": "M3 Câu 5 · Câu hỏi gốc",
+      "jaPlain": "友だちと空いている席を探しています。ちょうど帰る人がいます。友だちに何といいますか。",
+      "jaKana": "ともだちとあいているせきをさがしています。ちょうどかえるひとがいます。ともだちになにといいますか。",
+      "jaRuby": [
+        {
+          "t": "友",
+          "r": "とも"
+        },
+        {
+          "t": "だちと"
+        },
+        {
+          "t": "空",
+          "r": "あ"
+        },
+        {
+          "t": "いている"
+        },
+        {
+          "t": "席",
+          "r": "せき"
+        },
+        {
+          "t": "を"
+        },
+        {
+          "t": "探",
+          "r": "さが"
+        },
+        {
+          "t": "しています。ちょうど"
+        },
+        {
+          "t": "帰",
+          "r": "かえ"
+        },
+        {
+          "t": "る"
+        },
+        {
+          "t": "人",
+          "r": "ひと"
+        },
+        {
+          "t": "がいます。"
+        },
+        {
+          "t": "友",
+          "r": "とも"
+        },
+        {
+          "t": "だちに"
+        },
+        {
+          "t": "何",
+          "r": "なに"
+        },
+        {
+          "t": "といいますか。"
+        }
+      ],
+      "vi": "Đang tìm 2 chỗ trống trong quán cùng bạn, đúng lúc có khách đứng dậy ra về bên quầy. Bạn nói gì với bạn mình?",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m3_q5_p.mp3",
+      "durationSec": 9.82
+    },
+    {
+      "id": "m3_q5_a",
+      "speakerLabel": "M3 Câu 5 · Đáp án đúng (1)",
+      "jaPlain": "あそこ二人座れるよ。",
+      "jaKana": "あそこふたりすわれるよ。",
+      "jaRuby": [
+        {
+          "t": "あそこ"
+        },
+        {
+          "t": "二人",
+          "r": "ふたり"
+        },
+        {
+          "t": "座",
+          "r": "すわ"
+        },
+        {
+          "t": "れるよ。"
+        }
+      ],
+      "vi": "Đằng kia ngồi được 2 người đấy!",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m3_q5_a.mp3",
+      "durationSec": 2.46
+    },
+    {
+      "id": "m4_q1_p",
+      "speakerLabel": "M4 Câu 1 · Câu hỏi gốc",
+      "jaPlain": "ここから駅までどうやっていく？",
+      "jaKana": "ここからえきまでどうやっていく？",
+      "jaRuby": [
+        {
+          "t": "ここから"
+        },
+        {
+          "t": "駅",
+          "r": "えき"
+        },
+        {
+          "t": "までどうやっていく？"
+        }
+      ],
+      "vi": "Từ đây ra nhà ga đi bằng cách nào nhỉ?",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q1_p.mp3",
+      "durationSec": 2.74
+    },
+    {
+      "id": "m4_q1_a",
+      "speakerLabel": "M4 Câu 1 · Đáp án đúng (2)",
+      "jaPlain": "近いから歩こう。",
+      "jaKana": "ちかいからあるこう。",
+      "jaRuby": [
+        {
+          "t": "近",
+          "r": "ちか"
+        },
+        {
+          "t": "いから"
+        },
+        {
+          "t": "歩",
+          "r": "ある"
+        },
+        {
+          "t": "こう。"
+        }
+      ],
+      "vi": "Gần nên đi bộ thôi!",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q1_a.mp3",
+      "durationSec": 1.54
+    },
+    {
+      "id": "m4_q2_p",
+      "speakerLabel": "M4 Câu 2 · Câu hỏi gốc",
+      "jaPlain": "今日昼ご飯は食べてきたんですか。",
+      "jaKana": "きょうひるごはんはたべてきたんですか。",
+      "jaRuby": [
+        {
+          "t": "今日",
+          "r": "きょう"
+        },
+        {
+          "t": "昼",
+          "r": "ひる"
+        },
+        {
+          "t": "ご"
+        },
+        {
+          "t": "飯",
+          "r": "はん"
+        },
+        {
+          "t": "は"
+        },
+        {
+          "t": "食",
+          "r": "た"
+        },
+        {
+          "t": "べてきたんですか。"
+        }
+      ],
+      "vi": "Hôm nay bạn đã ăn cơm trưa trước khi tới đây chưa?",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q2_p.mp3",
+      "durationSec": 3.1
+    },
+    {
+      "id": "m4_q2_a",
+      "speakerLabel": "M4 Câu 2 · Đáp án đúng (3)",
+      "jaPlain": "まだ食べていません。",
+      "jaKana": "まだたべていません。",
+      "jaRuby": [
+        {
+          "t": "まだ"
+        },
+        {
+          "t": "食",
+          "r": "た"
+        },
+        {
+          "t": "べていません。"
+        }
+      ],
+      "vi": "Tôi vẫn chưa ăn ạ.",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q2_a.mp3",
+      "durationSec": 1.54
+    },
+    {
+      "id": "m4_q3_p",
+      "speakerLabel": "M4 Câu 3 · Câu hỏi gốc",
+      "jaPlain": "受付の係、ご苦労様。少しわたしがかわるよ。",
+      "jaKana": "うけつけのかかり、ごくろうさま。すこしわたしがかわるよ。",
+      "jaRuby": [
+        {
+          "t": "受付",
+          "r": "うけつけ"
+        },
+        {
+          "t": "の"
+        },
+        {
+          "t": "係",
+          "r": "かかり"
+        },
+        {
+          "t": "、ご"
+        },
+        {
+          "t": "苦労様",
+          "r": "くろうさま"
+        },
+        {
+          "t": "。"
+        },
+        {
+          "t": "少",
+          "r": "すこ"
+        },
+        {
+          "t": "しわたしがかわるよ。"
+        }
+      ],
+      "vi": "Trực quầy lễ tân vất vả rồi! Để mình đổi ca làm thay cậu một lát nhé.",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q3_p.mp3",
+      "durationSec": 5.06
+    },
+    {
+      "id": "m4_q3_a",
+      "speakerLabel": "M4 Câu 3 · Đáp án đúng (1)",
+      "jaPlain": "ありがとうございます。でも大丈夫です。",
+      "jaKana": "ありがとうございます。でもだいじょうぶです。",
+      "jaRuby": [
+        {
+          "t": "ありがとうございます。でも"
+        },
+        {
+          "t": "大丈夫",
+          "r": "だいじょうぶ"
+        },
+        {
+          "t": "です。"
+        }
+      ],
+      "vi": "Cảm ơn bạn nhé. Nhưng mình ổn, không sao đâu.",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q3_a.mp3",
+      "durationSec": 3.5
+    },
+    {
+      "id": "m4_q4_p",
+      "speakerLabel": "M4 Câu 4 · Câu hỏi gốc",
+      "jaPlain": "あっ、トムさん、田中です。わたしのことを覚えていますか。",
+      "jaKana": "あっ、トムさん、たなかです。わたしのことをおぼえていますか。",
+      "jaRuby": [
+        {
+          "t": "あっ、トムさん、"
+        },
+        {
+          "t": "田中",
+          "r": "たなか"
+        },
+        {
+          "t": "です。わたしのことを"
+        },
+        {
+          "t": "覚",
+          "r": "おぼ"
+        },
+        {
+          "t": "えていますか。"
+        }
+      ],
+      "vi": "À anh Tom, tôi là Tanaka đây! Anh còn nhớ tôi không?",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q4_p.mp3",
+      "durationSec": 5.74
+    },
+    {
+      "id": "m4_q4_a",
+      "speakerLabel": "M4 Câu 4 · Đáp án đúng (2)",
+      "jaPlain": "ああ、お久しぶりです。",
+      "jaKana": "ああ、おひさしぶりです。",
+      "jaRuby": [
+        {
+          "t": "ああ、お"
+        },
+        {
+          "t": "久",
+          "r": "ひさ"
+        },
+        {
+          "t": "しぶりです。"
+        }
+      ],
+      "vi": "Ồ, lâu lắm mới gặp anh!",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q4_a.mp3",
+      "durationSec": 1.96
+    },
+    {
+      "id": "m4_q5_p",
+      "speakerLabel": "M4 Câu 5 · Câu hỏi gốc",
+      "jaPlain": "この大学には、学生が全部でどのぐらいいますか。",
+      "jaKana": "このだいがくには、がくせいがぜんぶでどのぐらいいますか。",
+      "jaRuby": [
+        {
+          "t": "この"
+        },
+        {
+          "t": "大学",
+          "r": "だいがく"
+        },
+        {
+          "t": "には、"
+        },
+        {
+          "t": "学生",
+          "r": "がくせい"
+        },
+        {
+          "t": "が"
+        },
+        {
+          "t": "全部",
+          "r": "ぜんぶ"
+        },
+        {
+          "t": "でどのぐらいいますか。"
+        }
+      ],
+      "vi": "Trường đại học này có tổng cộng khoảng bao nhiêu sinh viên vậy?",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q5_p.mp3",
+      "durationSec": 5.18
+    },
+    {
+      "id": "m4_q5_a",
+      "speakerLabel": "M4 Câu 5 · Đáp án đúng (2)",
+      "jaPlain": "だいたい一万人です。",
+      "jaKana": "だいたいいちまんにんです。",
+      "jaRuby": [
+        {
+          "t": "だいたい"
+        },
+        {
+          "t": "一万人",
+          "r": "いちまんにん"
+        },
+        {
+          "t": "です。"
+        }
+      ],
+      "vi": "Khoảng mười nghìn (1 vạn) sinh viên ạ.",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q5_a.mp3",
+      "durationSec": 2.29
+    },
+    {
+      "id": "m4_q6_p",
+      "speakerLabel": "M4 Câu 6 · Câu hỏi gốc",
+      "jaPlain": "今日のパーティー、ジョンさん、来ないかもしれないよ。",
+      "jaKana": "きょうのパーティー、ジョンさん、こないかもしれないよ。",
+      "jaRuby": [
+        {
+          "t": "今日",
+          "r": "きょう"
+        },
+        {
+          "t": "のパーティー、ジョンさん、"
+        },
+        {
+          "t": "来",
+          "r": "こ"
+        },
+        {
+          "t": "ないかもしれないよ。"
+        }
+      ],
+      "vi": "Bữa tiệc hôm nay, có lẽ John sẽ KHÔNG đến đâu.",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q6_p.mp3",
+      "durationSec": 4.02
+    },
+    {
+      "id": "m4_q6_a",
+      "speakerLabel": "M4 Câu 6 · Đáp án đúng (1)",
+      "jaPlain": "えっ？昨日は来ると言っていたよ。",
+      "jaKana": "えっ？きのうはくるといっていたよ。",
+      "jaRuby": [
+        {
+          "t": "えっ？"
+        },
+        {
+          "t": "昨日",
+          "r": "きのう"
+        },
+        {
+          "t": "は"
+        },
+        {
+          "t": "来",
+          "r": "く"
+        },
+        {
+          "t": "ると"
+        },
+        {
+          "t": "言",
+          "r": "い"
+        },
+        {
+          "t": "っていたよ。"
+        }
+      ],
+      "vi": "Hả? Hôm qua cậu ấy bảo sẽ tới cơ mà!",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q6_a.mp3",
+      "durationSec": 1.75
+    },
+    {
+      "id": "m4_q7_p",
+      "speakerLabel": "M4 Câu 7 · Câu hỏi gốc",
+      "jaPlain": "日本に来て半年ですね。もう日本の生活に慣れましたか。",
+      "jaKana": "にほんにきてはんとしですね。もうにほんのせいかつになれましたか。",
+      "jaRuby": [
+        {
+          "t": "日本",
+          "r": "にほん"
+        },
+        {
+          "t": "に"
+        },
+        {
+          "t": "来",
+          "r": "き"
+        },
+        {
+          "t": "て"
+        },
+        {
+          "t": "半年",
+          "r": "はんとし"
+        },
+        {
+          "t": "ですね。もう"
+        },
+        {
+          "t": "日本",
+          "r": "にほん"
+        },
+        {
+          "t": "の"
+        },
+        {
+          "t": "生活",
+          "r": "せいかつ"
+        },
+        {
+          "t": "に"
+        },
+        {
+          "t": "慣",
+          "r": "な"
+        },
+        {
+          "t": "れましたか。"
+        }
+      ],
+      "vi": "Bạn sang Nhật được nửa năm rồi nhỉ. Đã quen với cuộc sống ở Nhật chưa?",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q7_p.mp3",
+      "durationSec": 5.5
+    },
+    {
+      "id": "m4_q7_a",
+      "speakerLabel": "M4 Câu 7 · Đáp án đúng (3)",
+      "jaPlain": "ええ、やっと。",
+      "jaKana": "ええ、やっと。",
+      "jaRuby": [
+        {
+          "t": "ええ、やっと。"
+        }
+      ],
+      "vi": "Vâng, cuối cùng cũng quen rồi ạ!",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q7_a.mp3",
+      "durationSec": 1.06
+    },
+    {
+      "id": "m4_q8_p",
+      "speakerLabel": "M4 Câu 8 · Câu hỏi gốc",
+      "jaPlain": "この資料を急いで課長に渡してきてくれますか。",
+      "jaKana": "このしりょうをいそいでかちょうにわたしてきてくれますか。",
+      "jaRuby": [
+        {
+          "t": "この"
+        },
+        {
+          "t": "資料",
+          "r": "しりょう"
+        },
+        {
+          "t": "を"
+        },
+        {
+          "t": "急",
+          "r": "いそ"
+        },
+        {
+          "t": "いで"
+        },
+        {
+          "t": "課長",
+          "r": "かちょう"
+        },
+        {
+          "t": "に"
+        },
+        {
+          "t": "渡",
+          "r": "わた"
+        },
+        {
+          "t": "してきてくれますか。"
+        }
+      ],
+      "vi": "Bạn mang gấp tập tài liệu này đưa cho trưởng ban giúp tôi được không?",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q8_p.mp3",
+      "durationSec": 4.42
+    },
+    {
+      "id": "m4_q8_a",
+      "speakerLabel": "M4 Câu 8 · Đáp án đúng (1)",
+      "jaPlain": "あっ、はい。すぐ届けます。",
+      "jaKana": "あっ、はい。すぐとどけます。",
+      "jaRuby": [
+        {
+          "t": "あっ、はい。すぐ"
+        },
+        {
+          "t": "届",
+          "r": "とど"
+        },
+        {
+          "t": "けます。"
+        }
+      ],
+      "vi": "Vâng ạ, tôi đi giao ngay đây ạ.",
+      "audioUrl": "/stories/jlpt-n4-2025-12-choukai/audio/dict/m4_q8_a.mp3",
+      "durationSec": 2.78
+    }
+  ]
+}

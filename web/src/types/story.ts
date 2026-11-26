@@ -60,7 +60,11 @@ export type SceneType =
   | "depato_counter_clue"
   | "depato_step_rain"
   | "depato_campus_reveal"
-  | "depato_outro";
+  | "depato_outro"
+  | "cinema_intro"
+  | "cinema_checklist"
+  | "cinema_reveal"
+  | "cinema_outro";
 
 export interface StoryArtAssets {
   backgrounds: Record<string, string>;
@@ -137,7 +141,7 @@ export interface QuizQuestion {
 
 export interface StoryData {
   id: string;
-  engine?: "procedural" | "hybrid";
+  engine?: "procedural" | "hybrid" | "cinema";
   assets?: StoryArtAssets;
   series: string;
   titleJa: string;

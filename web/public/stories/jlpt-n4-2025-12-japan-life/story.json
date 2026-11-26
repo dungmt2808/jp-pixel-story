@@ -1,0 +1,472 @@
+{
+  "id": "jlpt-n4-2025-12-japan-life",
+  "engine": "cinema",
+  "series": "JLPT N4 12/2025 · ĐỌC HIỂU 問題５",
+  "titleJa": "日本の生活",
+  "titleVi": "JLPT N4 12/2025 (問題5) · Tuần trải nghiệm cuộc sống Nhật Bản của Lisa",
+  "level": "JLPT N4 · 12/2025",
+  "author": "JLPT N4 12/2025 (問題5 · リサ・アンドラーダ)",
+  "palette": "ramen_midnight",
+  "assets": {
+    "backgrounds": {
+      "ofuro": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_ofuro.png",
+      "washitsu": "/stories/tsuru-ongaeshi/assets/bg_hearth.png"
+    },
+    "portraits": {
+      "lisa": "/stories/jlpt-n4-2025-12-japan-life/assets/portrait_lisa.png",
+      "haruko": "/stories/jlpt-n4-2025-12-japan-life/assets/portrait_haruko.png"
+    },
+    "items": {},
+    "cardPortrait": "/stories/jlpt-n4-2025-12-japan-life/assets/portrait_lisa.png"
+  },
+  "voices": {
+    "lisa": {
+      "label": "リサ (小夜/SAYO)",
+      "speakerId": 46,
+      "speedScale": 0.91,
+      "intonationScale": 1.12,
+      "pauseLengthScale": 1.12
+    },
+    "haruko": {
+      "label": "春子 (WhiteCUL)",
+      "speakerId": 23,
+      "speedScale": 0.91,
+      "intonationScale": 1.1,
+      "pauseLengthScale": 1.12
+    }
+  },
+  "characterCard": {
+    "nameJa": "JLPT N4 12/2025 · 問題５",
+    "subtitle": "NGUYÊN VĂN ĐỀ THI THẬT + 3 CÂU HỎI CHÍNH THỨC (25–27)",
+    "facts": [
+      {
+        "label": "SOURCE",
+        "value": "Đề thi chính thức JLPT N4 kỳ tháng 12/2025 — Đọc hiểu Trung văn (問題５「日本の生活」)"
+      },
+      {
+        "label": "HEARTWARMING",
+        "value": "Văn hóa hiếu khách Omotenashi của gia đình Nhật: cố tình nấu và chuẩn bị đúng những điều Lisa ước ao từ hồi bé xem anime!"
+      },
+      {
+        "label": "QUESTIONS",
+        "value": "Đủ 3 câu hỏi chính thức của đề thi thật (Câu 25, 26, 27) kèm giải thích chuẩn"
+      },
+      {
+        "label": "GRAMMAR",
+        "value": "〜てみたい / 〜てくれる / 〜より〜のほうが多い / 〜ために / 〜てうれしくなる"
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "dream_anime",
+      "type": "cinema_intro",
+      "bannerTitle": "日本の生活",
+      "locationBadge": "bg:washoku_table",
+      "actionLabel": "はじめる · BẮT ĐẦU",
+      "lines": [
+        {
+          "id": "l01_l01",
+          "voice": "lisa",
+          "speakerLabel": "リサ (Lisa)",
+          "jaPlain": "子どものとき、よく見ていた日本のアニメがあります。いつか日本に行って、和食を食べたり、お湯がたくさん入った風呂に入ったりしてみたいと思っていました。",
+          "jaRuby": "{子|こ}どものとき、よく{見|み}ていた{日本|にほん}のアニメがあります。いつか{日本|にほん}に{行|い}って、{和食|わしょく}を{食|た}べたり、お{湯|ゆ}がたくさん{入|はい}った{風呂|ふろ}に{入|はい}ったりしてみたいと{思|おも}っていました。",
+          "vi": "Hồi nhỏ tôi rất hay xem một bộ anime Nhật Bản. Tôi luôn ước một ngày nào đó được đến Nhật ăn món washoku và ngâm mình trong bồn nước nóng đầy ắp.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l01_l01.mp3",
+          "durationSec": 13.845
+        }
+      ]
+    },
+    {
+      "id": "haruko_home_experience",
+      "type": "cinema_checklist",
+      "locationBadge": "bg:ofuro",
+      "whoButtonLabel": "? Đề thi JLPT",
+      "instruction": "Bấm thử 2 trải nghiệm tại nhà Haruko!",
+      "actionLabel": "最後の日、空港へ向かう電車へ →",
+      "lines": [
+        {
+          "id": "l02_l01",
+          "voice": "haruko",
+          "speakerLabel": "春子 (Haruko)",
+          "jaPlain": "リサさん、夏休みにぜひうちに遊びに来ませんか。毎日、さしみやみそ汁を作って待っているよ！",
+          "jaRuby": "リサさん、{夏休|なつやす}みにぜひうちに{遊|あそ}びに{来|き}ませんか。{毎日|まいにち}、さしみやみそ{汁|しる}を{作|つく}って{待|ま}っているよ！",
+          "vi": "Lisa ơi, nghỉ hè nhất định sang nhà mình chơi nhé! Ngày nào nhà mình cũng nấu sashimi và súp miso chờ cậu đấy!",
+          "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l02_l01.mp3",
+          "durationSec": 9.003
+        },
+        {
+          "id": "l02_l02",
+          "voice": "lisa",
+          "speakerLabel": "リサ (Lisa)",
+          "jaPlain": "先月、一週間日本に行きました。春子さんの家では毎日和食を食べて、風呂にも入りました。アニメで見たのと同じ生活ができて、うれしかったです。",
+          "jaRuby": "{先月|せんげつ}、{一週間|いっしゅうかん}{日本|にほん}に{行|い}きました。{春子|はるこ}さんの{家|いえ}では{毎日|まいにち}{和食|わしょく}を{食|た}べて、{風呂|ふろ}にも{入|はい}りました。アニメで{見|み}たのと{同|おな}じ{生活|せいかつ}ができて、うれしかったです。",
+          "vi": "Tháng trước tôi đã sang Nhật 1 tuần. Ở nhà Haruko, ngày nào tôi cũng được ăn cơm Nhật và tắm bồn. Sống đúng như trong anime nên tôi vui vô cùng.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l02_l02.mp3",
+          "durationSec": 14.955
+        }
+      ],
+      "minigame": {
+        "prompt": "Hai trải nghiệm trong mơ của Lisa tại nhà Haruko:",
+        "choices": [
+          {
+            "id": "exp_washoku",
+            "labelJa": "🥢 毎日、和食を食べる (さしみ・みそ汁)",
+            "labelVi": "Ngày nào cũng ăn món Nhật (sashimi & súp miso)",
+            "effect": "check",
+            "responseLine": {
+              "id": "l02_c01",
+              "voice": "lisa",
+              "speakerLabel": "リサ",
+              "jaPlain": "わあ、さしみもみそ汁も本当においしい！",
+              "jaRuby": "わあ、さしみもみそ{汁|しる}も{本当|ほんとう}においしい！",
+              "vi": "Oa, cả sashimi lẫn súp miso đều ngon tuyệt vời!",
+              "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l02_c01.mp3",
+              "durationSec": 3.979
+            }
+          },
+          {
+            "id": "exp_ofuro",
+            "labelJa": "♨️ お湯がたくさん入った風呂に入る",
+            "labelVi": "Ngâm mình trong bồn nước nóng đầy ắp",
+            "effect": "check",
+            "responseLine": {
+              "id": "l02_c02",
+              "voice": "lisa",
+              "speakerLabel": "リサ",
+              "jaPlain": "あたたかいお湯、アニメで見たとおりで最高です！",
+              "jaRuby": "あたたかいお{湯|ゆ}、アニメで{見|み}たとおりで{最高|さいこう}です！",
+              "vi": "Nước ấm đúng hệt như trong anime, tuyệt quá!",
+              "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l02_c02.mp3",
+              "durationSec": 4.416
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "airport_train_twist",
+      "type": "cinema_reveal",
+      "locationBadge": "bg:airport_train",
+      "instruction": "So sánh cuộc sống thường ngày của nhà Haruko với tuần Lisa sang chơi!",
+      "actionLabel": "春子さんたちの気持ちを知る →",
+      "lines": [
+        {
+          "id": "l03_l01",
+          "voice": "lisa",
+          "speakerLabel": "リサ",
+          "jaPlain": "春子さん、一週間本当にありがとう！日本人の生活を経験できて、すごく楽しかったよ。",
+          "jaRuby": "{春子|はるこ}さん、{一週間|いっしゅうかん}{本当|ほんとう}にありがとう！{日本人|にほんじん}の{生活|せいかつ}を{経験|けいけん}できて、すごく{楽|たの}しかったよ。",
+          "vi": "Haruko ơi, cảm ơn cậu suốt 1 tuần qua nhé! Được trải nghiệm cuộc sống người Nhật vui thật đấy!",
+          "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l03_l01.mp3",
+          "durationSec": 9.547
+        },
+        {
+          "id": "l03_l02",
+          "voice": "haruko",
+          "speakerLabel": "春子",
+          "jaPlain": "えへへ、実はね…いつもはちょっと違うんだ。うちの家族は、和食はあまり食べないし、風呂に入るよりシャワーを使うことのほうが多いんだよ。",
+          "jaRuby": "えへへ、{実|じつ}はね…いつもはちょっと{違|ちが}うんだ。うちの{家族|かぞく}は、{和食|わしょく}はあまり{食|た}べないし、{風呂|ふろ}に{入|はい}るよりシャワーを{使|つか}うことのほうが{多|おお}いんだよ。",
+          "vi": "Hihi, thật ra thì... bình thường hơi khác chút đấy. Gia đình mình ít ăn món Nhật lắm, và cũng hay tắm vòi sen nhiều hơn là ngâm bồn cơ.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l03_l02.mp3",
+          "durationSec": 12.416
+        }
+      ]
+    },
+    {
+      "id": "warm_ending",
+      "type": "cinema_outro",
+      "locationBadge": "bg:airport_train",
+      "lines": [
+        {
+          "id": "l04_l01",
+          "voice": "lisa",
+          "speakerLabel": "リサ",
+          "jaPlain": "春子さんたちは、私を喜ばせるために、いつもはしていない「日本の生活」をしてくれたのです。私は、春子さんたちの気持ちを知って、うれしくなりました。",
+          "jaRuby": "{春子|はるこ}さんたちは、{私|わたし}を{喜|よろこ}ばせるために、いつもはしていない「{日本|にほん}の{生活|せいかつ}」をしてくれたのです。{私|わたし}は、{春子|はるこ}さんたちの{気持|きも}ちを{知|し}って、うれしくなりました。",
+          "vi": "Gia đình Haruko đã làm 'cuộc sống kiểu Nhật' mà bình thường họ chẳng làm, chỉ để khiến tôi vui. Hiểu được tấm lòng của họ, tôi càng thấy hạnh phúc hơn.",
+          "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l04_l01.mp3",
+          "durationSec": 16.224
+        }
+      ]
+    }
+  ],
+  "reading": {
+    "sectionTitle": "JLPT N4 12/2025 · 問題５ Nguyên văn bài đọc「日本の生活」& 3 câu hỏi thật",
+    "subtitle": "Bấm từng đoạn nguyên văn từ đề thi thật JLPT N4 12/2025 để nghe VOICEVOX, ôn từ vựng & ngữ pháp N4 và làm trọn bộ Câu 25–27.",
+    "sentences": [
+      {
+        "id": "lr_01",
+        "voice": "lisa",
+        "jaPlain": "子どものとき、よく見ていた日本のアニメがあります。アニメの中の日本の家族は、さしみやみそ汁などの和食を食べて、お湯がたくさん入った風呂に入っていました。",
+        "jaRuby": "{子|こ}どものとき、よく{見|み}ていた{日本|にほん}のアニメがあります。アニメの{中|なか}の{日本|にほん}の{家族|かぞく}は、さしみやみそ{汁|しる}などの{和食|わしょく}を{食|た}べて、お{湯|ゆ}がたくさん{入|はい}った{風呂|ふろ}に{入|はい}っていました。",
+        "vi": "Hồi nhỏ tôi có một bộ anime Nhật hay xem. Gia đình Nhật trong anime ăn các món truyền thống như sashimi, súp miso và ngâm mình trong bồn tắm đầy nước nóng.",
+        "highlightVocabIds": [
+          "washoku",
+          "furo"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_01.mp3",
+        "durationSec": 14.571
+      },
+      {
+        "id": "lr_02",
+        "voice": "lisa",
+        "jaPlain": "私の国では和食はなかなか食べられないし、シャワーしかないので、①いつか日本に行ってみたいと思っていました。",
+        "jaRuby": "{私|わたし}の{国|くに}では{和食|わしょく}はなかなか{食|た}べられないし、シャワーしかないので、①いつか{日本|にほん}に{行|い}ってみたいと{思|おも}っていました。",
+        "vi": "Ở nước tôi rất khó ăn món Nhật mà cũng chỉ có vòi sen, nên tôi vẫn luôn nghĩ ①một ngày nào đó muốn thử sang Nhật.",
+        "highlightVocabIds": [
+          "washoku",
+          "nakanaka"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_02.mp3",
+        "durationSec": 9.877
+      },
+      {
+        "id": "lr_03",
+        "voice": "lisa",
+        "jaPlain": "去年、日本人の春子さんとインターネットで友達になったので、日本でしたいと思っていることを話しました。少しあとで、春子さんが「夏休みにうちに来ませんか。」と言ってくれたので、先月、私は一週間日本に行きました。",
+        "jaRuby": "{去年|きょねん}、{日本人|にほんじん}の{春子|はるこ}さんとインターネットで{友達|ともだち}になったので、{日本|にほん}でしたいと{思|おも}っていることを{話|はな}しました。{少|すこ}しあとで、{春子|はるこ}さんが「{夏休|なつやす}みにうちに{来|き}ませんか。」と{言|い}ってくれたので、{先月|せんげつ}、{私|わたし}は{一週間|いっしゅうかん}{日本|にほん}に{行|い}きました。",
+        "vi": "Năm ngoái tôi kết bạn qua mạng với Haruko và kể những điều muốn làm ở Nhật. Ít lâu sau Haruko mời tôi sang nhà chơi dịp hè, nên tháng trước tôi đã đi Nhật 1 tuần.",
+        "highlightVocabIds": [
+          "keiken"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_03.mp3",
+        "durationSec": 21.707
+      },
+      {
+        "id": "lr_04",
+        "voice": "lisa",
+        "jaPlain": "春子さんの家では毎日和食を食べて、風呂にも入りました。アニメで見たのと同じ生活ができて、うれしかったです。",
+        "jaRuby": "{春子|はるこ}さんの{家|いえ}では{毎日|まいにち}{和食|わしょく}を{食|た}べて、{風呂|ふろ}にも{入|はい}りました。アニメで{見|み}たのと{同|おな}じ{生活|せいかつ}ができて、うれしかったです。",
+        "vi": "Ở nhà Haruko, ngày nào tôi cũng ăn washoku và tắm bồn. Được sống hệt như trong anime nên tôi rất vui.",
+        "highlightVocabIds": [
+          "seikatsu",
+          "furo"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_04.mp3",
+        "durationSec": 10.741
+      },
+      {
+        "id": "lr_05",
+        "voice": "lisa",
+        "jaPlain": "最後の日、春子さんが空港まで送ってくれたのですが、電車の中で、私は春子さんの話を聞いてびっくりしました。私が日本人の生活を経験できて楽しかったと言ったとき、春子さんは「いつもはちょっと違うんだ。」と言いました。",
+        "jaRuby": "{最後|さいご}の{日|ひ}、{春子|はるこ}さんが{空港|くうこう}まで{送|おく}ってくれたのですが、{電車|でんしゃ}の{中|なか}で、{私|わたし}は{春子|はるこ}さんの{話|はな}を{聞|き}いてびっくりしました。{私|わたし}が{日本人|にほんじん}の{生活|せいかつ}を{経験|けいけん}できて{楽|たの}しかったと{言|い}ったとき、{春子|はるこ}さんは「いつもはちょっと{違|ちが}うんだ。」と{言|い}いました。",
+        "vi": "Ngày cuối cùng Haruko tiễn tôi ra sân bay, trên tàu nghe cậu ấy kể mà tôi giật mình. Khi tôi nói rất vui vì được trải nghiệm cuộc sống người Nhật, Haruko bảo: 'Bình thường hơi khác chút đấy.'",
+        "highlightVocabIds": [
+          "keiken",
+          "chigau"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_05.mp3",
+        "durationSec": 21.845
+      },
+      {
+        "id": "lr_06",
+        "voice": "lisa",
+        "jaPlain": "春子さんの家族は、和食はあまり食べないし、風呂に入るよりシャワーを使うことのほうが多いのだそうです。",
+        "jaRuby": "{春子|はるこ}さんの{家族|かぞく}は、{和食|わしょく}はあまり{食|た}べないし、{風呂|ふろ}に{入|はい}るよりシャワーを{使|つか}うことのほうが{多|おお}いのだそうです。",
+        "vi": "Nghe nói gia đình Haruko bình thường ít ăn washoku, và dùng vòi sen nhiều hơn là tắm bồn.",
+        "highlightVocabIds": [
+          "washoku",
+          "furo"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_06.mp3",
+        "durationSec": 9.227
+      },
+      {
+        "id": "lr_07",
+        "voice": "lisa",
+        "jaPlain": "春子さんたちは、私を喜ばせるために、いつもはしていない「日本の生活」をしてくれたのです。私は、春子さんたちの気持ちを知って②うれしくなりました。",
+        "jaRuby": "{春子|はるこ}さんたちは、{私|わたし}を{喜|よろこ}ばせるために、いつもはしていない「{日本|にほん}の{生活|せいかつ}」をしてくれたのです。{私|わたし}は、{春子|はるこ}さんたちの{気持|きも}ちを{知|し}って②うれしくなりました。",
+        "vi": "Gia đình Haruko đã làm 'cuộc sống kiểu Nhật' mà bình thường họ không làm chỉ để khiến tôi vui. Hiểu tấm lòng của họ, tôi ②càng trở nên hạnh phúc hơn.",
+        "highlightVocabIds": [
+          "yorokobaseru",
+          "seikatsu"
+        ],
+        "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_07.mp3",
+        "durationSec": 15.477
+      }
+    ],
+    "vocab": [
+      {
+        "id": "washoku",
+        "word": "和食",
+        "reading": "わしょく",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Ẩm thực truyền thống Nhật Bản",
+        "note": "Đối lập với 洋食 (ようしょく — món Âu). Ví dụ: さしみ、みそ汁."
+      },
+      {
+        "id": "furo",
+        "word": "風呂 (お湯)",
+        "reading": "ふろ (おゆ)",
+        "level": "N5–N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Bồn tắm (nước nóng)",
+        "note": "風呂に入る (tắm bồn) ↔ シャワーを浴びる / 使う (tắm vòi sen)."
+      },
+      {
+        "id": "nakanaka",
+        "word": "なかなか〜ない",
+        "reading": "なかなか",
+        "level": "N4",
+        "partOfSpeech": "Phó từ",
+        "meaningVi": "Mãi không / rất khó có thể...",
+        "note": "Đi kèm thể phủ định: 和食はなかなか食べられない (rất khó mới được ăn món Nhật)."
+      },
+      {
+        "id": "seikatsu",
+        "word": "生活",
+        "reading": "せいかつ",
+        "level": "N4",
+        "partOfSpeech": "Danh từ / Động từ する",
+        "meaningVi": "Cuộc sống, sinh hoạt",
+        "note": "日本の生活 (cuộc sống ở Nhật)."
+      },
+      {
+        "id": "keiken",
+        "word": "経験",
+        "reading": "けいけん",
+        "level": "N4",
+        "partOfSpeech": "Danh từ / Động từ する",
+        "meaningVi": "Kinh nghiệm, trải nghiệm",
+        "note": "日本人の生活を経験する (trải nghiệm cuộc sống người Nhật)."
+      },
+      {
+        "id": "chigau",
+        "word": "違う",
+        "reading": "ちがう",
+        "level": "N5–N4",
+        "partOfSpeech": "Động từ nhóm I",
+        "meaningVi": "Khác biệt, không giống",
+        "note": "いつもはちょっと違うんだ (bình thường hơi khác một chút đấy)."
+      },
+      {
+        "id": "yorokobaseru",
+        "word": "喜ばせる",
+        "reading": "よろこばせる",
+        "level": "N4",
+        "partOfSpeech": "Động từ sai khiến",
+        "meaningVi": "Làm cho (ai đó) vui mừng",
+        "note": "Thể sai khiến của 喜ぶ (よろこぶ): 私を喜ばせるために (để làm tôi vui)."
+      }
+    ],
+    "grammar": [
+      {
+        "id": "lg_shika",
+        "pattern": "N + しか + V-ない",
+        "level": "N4",
+        "meaningVi": "Chỉ có N mà thôi (sắc thái ít ỏi)",
+        "explanation": "Luôn đi kèm động từ thể phủ định ở cuối câu.",
+        "exampleJa": "私の国ではシャワーしかないので、風呂に入ってみたかったです。",
+        "exampleRuby": "{私|わたし}の{国|くに}ではシャワーしかないので、{風呂|ふろ}に{入|はい}ってみたかったです。",
+        "exampleVi": "Vì nước tôi chỉ có vòi sen nên tôi rất muốn thử tắm bồn."
+      },
+      {
+        "id": "lg_temitai",
+        "pattern": "V-て + みたい",
+        "level": "N4",
+        "meaningVi": "Muốn làm thử V",
+        "explanation": "Kết hợp V-てみる (làm thử) + たい (muốn).",
+        "exampleJa": "いつか日本に行ってみたいと思っていました。",
+        "exampleRuby": "いつか{日本|にほん}に{行|い}ってみたいと{思|おも}っていました。",
+        "exampleVi": "Tôi vẫn luôn nghĩ một ngày nào đó muốn thử đi Nhật."
+      },
+      {
+        "id": "lg_tekureru",
+        "pattern": "V-て + くれる",
+        "level": "N4",
+        "meaningVi": "(Ai đó) làm V cho tôi (biết ơn)",
+        "explanation": "Xuất hiện liên tục 3 lần trong bài: 言ってくれた, 送ってくれた, してくれた!",
+        "exampleJa": "春子さんが空港まで送ってくれました。",
+        "exampleRuby": "{春子|はるこ}さんが{空港|くうこう}まで{送|おく}ってくれました。",
+        "exampleVi": "Haruko đã tiễn tôi ra tận sân bay."
+      },
+      {
+        "id": "lg_yori_hou",
+        "pattern": "A より B のほうが〜",
+        "level": "N5–N4",
+        "meaningVi": "So với A thì B hơn...",
+        "explanation": "So sánh 2 thói quen: tắm vòi sen nhiều hơn ngâm bồn.",
+        "exampleJa": "風呂に入るよりシャワーを使うことのほうが多いそうです。",
+        "exampleRuby": "{風呂|ふろ}に{入|はい}るよりシャワーを{使|つか}うことのほうが{多|おお}いそうです。",
+        "exampleVi": "Nghe nói dùng vòi sen nhiều hơn là ngâm bồn."
+      },
+      {
+        "id": "lg_saseru_tameni",
+        "pattern": "V-(さ)せる + ために",
+        "level": "N4",
+        "meaningVi": "Để làm cho ai đó cảm thấy/làm...",
+        "explanation": "Chìa khóa trực tiếp giải Câu 27 của đề thi thật: 「私を喜ばせるために」!",
+        "exampleJa": "春子さんたちは、私を喜ばせるために特別なことをしてくれました。",
+        "exampleRuby": "{春子|はるこ}さんたちは、{私|わたし}を{喜|よろこ}ばせるために{特別|とくべつ}なことをしてくれました。",
+        "exampleVi": "Gia đình Haruko đã làm điều đặc biệt để khiến tôi vui."
+      }
+    ],
+    "quiz": [
+      {
+        "id": "jlpt12_q25",
+        "questionJa": "【{問|とい}25】①いつか{日本|にほん}に{行|い}ってみたいと{思|おも}っていたのは、なぜですか。",
+        "questionVi": "Câu 25 (Đề thi thật): Tại sao Lisa từng nghĩ 'một ngày nào đó muốn thử đi Nhật'?",
+        "options": [
+          {
+            "ja": "1. {子|こ}どものときにアニメで{見|み}た{生活|せいかつ}を{自分|じぶん}もしてみたかったから"
+          },
+          {
+            "ja": "2. {子|こ}どものときに{日本|にほん}でしていた{生活|せいかつ}をもう{一度|いちど}したかったから"
+          },
+          {
+            "ja": "3. {春子|はるこ}さんから{聞|き}いた{日本|にほん}の{生活|せいかつ}を{自分|じぶん}もしてみたかったから"
+          },
+          {
+            "ja": "4. {春子|はるこ}さんが「{夏休|なつやす}みにうちに{来|き}ませんか。」と{言|い}ったから"
+          }
+        ],
+        "correctIndex": 0,
+        "explanationVi": "Đáp án chuẩn JLPT: 1. Đoạn 1 viết: hồi nhỏ xem anime thấy nhà Nhật ăn washoku & tắm bồn, nước mình không có nên ước được trải nghiệm cuộc sống như trong anime."
+      },
+      {
+        "id": "jlpt12_q26",
+        "questionJa": "【{問|とい}26】{春子|はるこ}さんたちは、いつもはどんな{生活|せいかつ}をしていますか。",
+        "questionVi": "Câu 26 (Đề thi thật): Bình thường gia đình Haruko sinh hoạt như thế nào?",
+        "options": [
+          {
+            "ja": "1. {毎日|まいにち}{和食|わしょく}を{食|た}べて、{毎日|まいにち}{風呂|ふろ}に{入|はい}る{生活|せいかつ}"
+          },
+          {
+            "ja": "2. {毎日|まいにち}{和食|わしょく}を{食|た}べるが、{風呂|ふろ}よりシャワーを{使|つか}うことが{多|おお}い{生活|せいかつ}"
+          },
+          {
+            "ja": "3. {和食|わしょく}はあまり{食|た}べないが、{風呂|ふろ}には{毎日|まいにち}{入|はい}る{生活|せいかつ}"
+          },
+          {
+            "ja": "4. {和食|わしょく}はあまり{食|た}べないし、{風呂|ふろ}よりシャワーを{使|つか}うことが{多|おお}い{生活|せいかつ}"
+          }
+        ],
+        "correctIndex": 3,
+        "explanationVi": "Đáp án chuẩn JLPT: 4. Nguyên văn đoạn 3: 「和食はあまり食べないし、風呂に入るよりシャワーを使うことのほうが多いのだそうです」."
+      },
+      {
+        "id": "jlpt12_q27",
+        "questionJa": "【{問|とい}27】②うれしくなりましたとありますが、どうしてうれしくなりましたか。",
+        "questionVi": "Câu 27 (Đề thi thật): Tại sao Lisa lại cảm thấy ②vui hơn ở cuối bài?",
+        "options": [
+          {
+            "ja": "1. {春子|はるこ}さんたちも「{日本|にほん}の{生活|せいかつ}」が{好|す}きなのだと{知|し}ったから"
+          },
+          {
+            "ja": "2. {春子|はるこ}さんたちが「{私|わたし}」の{国|くに}の{生活|せいかつ}に{興味|きょうみ}を{持|も}っていると{知|し}ったから"
+          },
+          {
+            "ja": "3. {春子|はるこ}さんたちが「{私|わたし}」を{本当|ほんとう}の{家族|かぞく}みたいだと{思|おも}っていると{知|し}ったから"
+          },
+          {
+            "ja": "4. {春子|はるこ}さんたちが「{私|わたし}」を{喜|よろこ}ばせるために{特別|とくべつ}なことをしていたと{知|し}ったから"
+          }
+        ],
+        "correctIndex": 3,
+        "explanationVi": "Đáp án chuẩn JLPT: 4. Câu cuối bài giải thích rõ: 「私を喜ばせるために、いつもはしていない日本の生活をしてくれたのです」 (họ đã làm điều đặc biệt để khiến mình vui)."
+      }
+    ]
+  }
+}
