@@ -20,9 +20,9 @@ export function buildAudioPlan(events, t0, resolveFile) {
   const clips = [];
   const missing = [];
   for (const ev of events) {
-    if (ev.type !== "voice" || !ev.audioUrl) continue;
+    if ((ev.type !== "voice" && ev.type !== "sfx") || !ev.audioUrl) continue;
     if (typeof ev.perfMs !== "number") {
-      throw new Error("voice event without perfMs: the stage is not on the shared runtime");
+      throw new Error(`${ev.type} event without perfMs: the stage is not on the shared runtime`);
     }
     const file = resolveFile(ev.audioUrl);
     if (!file) {
@@ -30,6 +30,7 @@ export function buildAudioPlan(events, t0, resolveFile) {
       continue;
     }
     clips.push({
+      kind: ev.type,
       lineId: ev.lineId ?? null,
       audioUrl: ev.audioUrl,
       file,
@@ -46,8 +47,10 @@ export function buildAudioPlan(events, t0, resolveFile) {
  * fixed 2 s when autoplay was blocked, so 9-15 s clips were mixed on top of each other.
  * Returns the overlapping pairs (allowing `toleranceMs` for MP3 padding).
  */
-export function findOverlaps(clips, toleranceMs = 60) {
+export function findOverlaps(allClips, toleranceMs = 60) {
   const overlaps = [];
+  // sound effects may ring under a voice on purpose; only voices must never overlap
+  const clips = allClips.filter((c) => (c.kind ?? "voice") === "voice");
   for (let i = 0; i + 1 < clips.length; i++) {
     const a = clips[i];
     const b = clips[i + 1];
@@ -59,18 +62,56 @@ export function findOverlaps(clips, toleranceMs = 60) {
   return overlaps;
 }
 
-/** FFmpeg args that place every clip at its offset and pad/trim the mix to the video length. */
-export function buildMuxArgs(videoPath, clips, outPath) {
+/**
+ * BGM segments from "bgm" events: each theme plays from its event until the next one (or the
+ * end of the video). `"none"` segments are dropped.
+ * @returns {Array<{theme:string, offsetMs:number, durationMs:number}>}
+ */
+export function buildBgmPlan(events, t0, totalMs) {
+  const marks = events
+    .filter((ev) => ev.type === "bgm" && ev.theme && typeof ev.perfMs === "number")
+    .map((ev) => ({ theme: ev.theme, offsetMs: Math.max(0, Math.round(ev.perfMs - t0)) }))
+    .sort((a, b) => a.offsetMs - b.offsetMs);
+  const segs = [];
+  marks.forEach((m, i) => {
+    const end = i + 1 < marks.length ? marks[i + 1].offsetMs : totalMs;
+    if (m.theme !== "none" && end - m.offsetMs > 50) segs.push({ ...m, durationMs: end - m.offsetMs });
+  });
+  return segs;
+}
+
+/**
+ * FFmpeg args that place every clip at its offset and pad/trim the mix to the video length.
+ * Optional `bgm` segments ({file, offsetMs, durationMs}, already rendered to the exact length)
+ * are faded at their edges, lowered and side-chain ducked under the voices.
+ */
+export function buildMuxArgs(videoPath, clips, outPath, bgm = [], { bgmVolume = 0.32 } = {}) {
   const args = ["-y", "-v", "error", "-i", videoPath];
   for (const c of clips) args.push("-i", c.file);
-  if (clips.length === 0) {
+  for (const b of bgm) args.push("-i", b.file);
+  if (clips.length === 0 && bgm.length === 0) {
     return [...args, "-c:v", "copy", "-an", outPath];
   }
-  const parts = clips.map(
-    (c, i) => `[${i + 1}:a]aresample=44100,aformat=channel_layouts=stereo,adelay=${c.offsetMs}|${c.offsetMs}[a${i}]`
-  );
-  const inputs = clips.map((_, i) => `[a${i}]`).join("");
-  parts.push(`${inputs}amix=inputs=${clips.length}:normalize=0:dropout_transition=0,apad[aout]`);
+  const fmt = "aresample=44100,aformat=channel_layouts=stereo";
+  const parts = clips.map((c, i) => `[${i + 1}:a]${fmt},adelay=${c.offsetMs}|${c.offsetMs}[a${i}]`);
+  bgm.forEach((b, j) => {
+    const fadeOut = Math.max(0, b.durationMs / 1000 - 0.4).toFixed(3);
+    parts.push(
+      `[${clips.length + j + 1}:a]${fmt},afade=t=in:d=0.4,afade=t=out:st=${fadeOut}:d=0.4,adelay=${b.offsetMs}|${b.offsetMs}[b${j}]`
+    );
+  });
+  const fgInputs = clips.map((_, i) => `[a${i}]`).join("");
+  const bgInputs = bgm.map((_, j) => `[b${j}]`).join("");
+  if (bgm.length === 0) {
+    parts.push(`${fgInputs}amix=inputs=${clips.length}:normalize=0:dropout_transition=0,apad[aout]`);
+  } else if (clips.length === 0) {
+    parts.push(`${bgInputs}amix=inputs=${bgm.length}:normalize=0:dropout_transition=0,volume=${bgmVolume},apad[aout]`);
+  } else {
+    parts.push(`${fgInputs}amix=inputs=${clips.length}:normalize=0:dropout_transition=0,apad,asplit=2[fg][sc]`);
+    parts.push(`${bgInputs}amix=inputs=${bgm.length}:normalize=0:dropout_transition=0,volume=${bgmVolume}[bgraw]`);
+    parts.push(`[bgraw][sc]sidechaincompress=threshold=0.02:ratio=6:attack=20:release=400[bgd]`);
+    parts.push(`[fg][bgd]amix=inputs=2:normalize=0:dropout_transition=0:duration=first[aout]`);
+  }
   return [
     ...args,
     "-filter_complex",

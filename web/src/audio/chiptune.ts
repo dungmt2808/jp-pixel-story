@@ -3,6 +3,9 @@
  * Zero external audio assets needed; supports automatic ducking while VOICEVOX speaks.
  */
 
+import { resolveAssetUrl } from "../utils/assetUrl";
+import { BGM_BASS_SEC, BGM_BASS_VOL, BGM_LEAD_SEC, BGM_STEP_MS, BGM_THEMES, resolveBgmTheme, sfxUrl } from "./themes";
+
 class RetroAudioEngine {
   private ctx: AudioContext | null = null;
   private masterGain: GainNode | null = null;
@@ -11,52 +14,7 @@ class RetroAudioEngine {
   private step = 0;
   private muted = false;
   private ducked = false;
-  private bgmTheme: "default" | "depato_sunny" | "depato_rain" = "default";
-
-  // Gentle nostalgic pentatonic midnight Tokyo melody (Hz)
-  private readonly melody: (number | null)[] = [
-    523.25, null, 659.25, 587.33, 523.25, null, 392.0, null,
-    440.0, null, 523.25, 587.33, 659.25, null, null, null,
-    587.33, null, 659.25, 783.99, 659.25, null, 523.25, null,
-    440.0, null, 392.0, 440.0, 523.25, null, null, null,
-  ];
-
-  private readonly bass: (number | null)[] = [
-    130.81, null, null, null, 196.0, null, null, null,
-    174.61, null, null, null, 130.81, null, null, null,
-    146.83, null, null, null, 196.0, null, null, null,
-    174.61, null, 196.0, null, 130.81, null, null, null,
-  ];
-
-  // Bright, cheerful Japanese department store shopping melody (F Major waltz-chime)
-  private readonly depatoSunnyMelody: (number | null)[] = [
-    698.46, null, 880.0, 1046.5, 880.0, null, 783.99, null,
-    698.46, 783.99, 880.0, null, 659.25, null, null, null,
-    587.33, null, 698.46, 880.0, 783.99, null, 698.46, null,
-    659.25, 783.99, 1046.5, null, 698.46, null, null, null,
-  ];
-
-  private readonly depatoSunnyBass: (number | null)[] = [
-    174.61, null, null, null, 261.63, null, null, null,
-    233.08, null, null, null, 261.63, null, null, null,
-    146.83, null, null, null, 220.0, null, null, null,
-    196.0, null, 261.63, null, 174.61, null, null, null,
-  ];
-
-  // Special "Rain Signal" melody played by Japanese department stores (soft melancholic raindrop motif)
-  private readonly depatoRainMelody: (number | null)[] = [
-    659.25, null, 587.33, null, 523.25, null, 493.88, null,
-    440.0, null, 523.25, null, 659.25, null, null, null,
-    587.33, null, 523.25, null, 493.88, null, 440.0, null,
-    392.0, null, 440.0, 493.88, 440.0, null, null, null,
-  ];
-
-  private readonly depatoRainBass: (number | null)[] = [
-    110.0, null, null, null, 164.81, null, null, null,
-    130.81, null, null, null, 164.81, null, null, null,
-    146.83, null, null, null, 196.0, null, null, null,
-    130.81, null, 164.81, null, 110.0, null, null, null,
-  ];
+  private bgmTheme = "default";
 
   private ensureContext(): AudioContext | null {
     if (typeof window === "undefined") return null;
@@ -109,44 +67,37 @@ class RetroAudioEngine {
     this.step = 0;
   }
 
-  public startBgm(theme?: "default" | "depato_sunny" | "depato_rain"): void {
-    if (theme) this.bgmTheme = theme;
+  /** Start (or switch to) a BGM theme; mood aliases ("happy", "sad", "calm"...) and "none" work. */
+  public startBgm(theme?: string): void {
+    const resolved = resolveBgmTheme(theme ?? this.bgmTheme);
+    if (resolved === "none") {
+      this.stopBgm();
+      return;
+    }
+    if (resolved !== this.bgmTheme) this.step = 0;
+    this.bgmTheme = resolved;
     const ctx = this.ensureContext();
     if (!ctx || this.bgmTimer !== null) return;
 
     this.bgmTimer = window.setInterval(() => {
       if (!this.ctx || !this.bgmGain || this.muted) return;
       const now = this.ctx.currentTime;
-      const mel =
-        this.bgmTheme === "depato_sunny"
-          ? this.depatoSunnyMelody
-          : this.bgmTheme === "depato_rain"
-            ? this.depatoRainMelody
-            : this.melody;
-      const bas =
-        this.bgmTheme === "depato_sunny"
-          ? this.depatoSunnyBass
-          : this.bgmTheme === "depato_rain"
-            ? this.depatoRainBass
-            : this.bass;
-      const mFreq = mel[this.step % mel.length];
-      const bFreq = bas[this.step % bas.length];
+      const th = BGM_THEMES[this.bgmTheme] ?? BGM_THEMES.default;
+      const mFreq = th.melody[this.step % th.melody.length];
+      const bFreq = th.bass[this.step % th.bass.length];
       this.step += 1;
+      if (mFreq) this.playTone(mFreq, BGM_LEAD_SEC, th.wave, th.leadVol, this.bgmGain, now);
+      if (bFreq) this.playTone(bFreq, BGM_BASS_SEC, "triangle", BGM_BASS_VOL, this.bgmGain, now);
+    }, BGM_STEP_MS);
+  }
 
-      if (mFreq) {
-        const wave: OscillatorType =
-          this.bgmTheme === "depato_rain"
-            ? "sine"
-            : this.bgmTheme === "depato_sunny"
-              ? "triangle"
-              : "square";
-        const vol = this.bgmTheme === "depato_rain" ? 0.24 : 0.2;
-        this.playTone(mFreq, 0.26, wave, vol, this.bgmGain, now);
-      }
-      if (bFreq) {
-        this.playTone(bFreq, 0.38, "triangle", 0.32, this.bgmGain, now);
-      }
-    }, 280);
+  /** Sound effect from the shared set (same WAV the MP4 exporter mixes in). */
+  public playSfx(name: string): void {
+    const url = sfxUrl(name);
+    if (!url || this.muted || typeof Audio === "undefined") return;
+    const a = new Audio(resolveAssetUrl(url));
+    a.volume = 0.7;
+    void a.play().catch(() => {});
   }
 
   public stopBgm(): void {

@@ -10,7 +10,9 @@
   "assets": {
     "backgrounds": {
       "ofuro": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_ofuro.png",
-      "washitsu": "/stories/tsuru-ongaeshi/assets/bg_hearth.png"
+      "dining": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_dining.png",
+      "train": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_train.png",
+      "airport": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_airport.png"
     },
     "portraits": {
       "lisa": "/stories/jlpt-n4-2025-12-japan-life/assets/portrait_lisa.png",
@@ -36,12 +38,12 @@
     }
   },
   "characterCard": {
-    "nameJa": "JLPT N4 12/2025 · 問題５",
+    "nameJa": "JLPT N4 12/2025 · {問題|もんだい}５",
     "subtitle": "NGUYÊN VĂN ĐỀ THI THẬT + 3 CÂU HỎI CHÍNH THỨC (25–27)",
     "facts": [
       {
         "label": "SOURCE",
-        "value": "Đề thi chính thức JLPT N4 kỳ tháng 12/2025 — Đọc hiểu Trung văn (問題５「日本の生活」)"
+        "value": "Đề thi chính thức JLPT N4 kỳ tháng 12/2025 — Đọc hiểu Trung văn ({問題|もんだい}５「{日本|にほん}の{生活|せいかつ}」)"
       },
       {
         "label": "HEARTWARMING",
@@ -53,7 +55,7 @@
       },
       {
         "label": "GRAMMAR",
-        "value": "〜てみたい / 〜てくれる / 〜より〜のほうが多い / 〜ために / 〜てうれしくなる"
+        "value": "〜てみたい / 〜てくれる / 〜より〜のほうが{多|おお}い / 〜ために / 〜てうれしくなる"
       }
     ]
   },
@@ -73,11 +75,15 @@
           "vi": "Hồi nhỏ tôi rất hay xem một bộ anime Nhật Bản. Tôi luôn ước một ngày nào đó được đến Nhật ăn món washoku và ngâm mình trong bồn nước nóng đầy ắp.",
           "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l01_l01.mp3",
           "durationSec": 13.845,
-          "ttsHash": "98aa077fb9e5"
+          "ttsHash": "98aa077fb9e5",
+          "camera": "push",
+          "emote": "sparkle"
         }
       ],
-      "backdrop": "proc:washoku_table",
-      "bannerSubtitle": "JLPT N4 12/2025 · 問題５"
+      "backdrop": "bg:dining",
+      "bannerSubtitle": "JLPT N4 12/2025 · 問題５",
+      "light": "warm",
+      "bgm": "calm"
     },
     {
       "id": "haruko_home_experience",
@@ -95,7 +101,13 @@
           "vi": "Lisa ơi, nghỉ hè nhất định sang nhà mình chơi nhé! Ngày nào nhà mình cũng nấu sashimi và súp miso chờ cậu đấy!",
           "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l02_l01.mp3",
           "durationSec": 9.003,
-          "ttsHash": "4da0f19dcbce"
+          "ttsHash": "4da0f19dcbce",
+          "emote": "heart",
+          "telop": {
+            "text": "うちに{来|き}ませんか",
+            "sub": "〜ませんか: rủ ai đó cùng làm gì",
+            "color": "shu"
+          }
         },
         {
           "id": "l02_l02",
@@ -106,7 +118,9 @@
           "vi": "Tháng trước tôi đã sang Nhật 1 tuần. Ở nhà Haruko, ngày nào tôi cũng được ăn cơm Nhật và tắm bồn. Sống đúng như trong anime nên tôi vui vô cùng.",
           "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l02_l02.mp3",
           "durationSec": 14.955,
-          "ttsHash": "874ad4f2e77d"
+          "ttsHash": "874ad4f2e77d",
+          "camera": "push",
+          "emote": "sparkle"
         }
       ],
       "minigame": {
@@ -126,9 +140,16 @@
               "vi": "Oa, cả sashimi lẫn súp miso đều ngon tuyệt vời!",
               "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l02_c01.mp3",
               "durationSec": 3.979,
-              "ttsHash": "8e86fe55d3cf"
+              "ttsHash": "8e86fe55d3cf",
+              "emote": "heart",
+              "camera": "punch",
+              "telop": {
+                "text": "おいしい！",
+                "sub": "Ngon quá!",
+                "color": "gold"
+              }
             },
-            "backdrop": "proc:washoku_table"
+            "backdrop": "bg:dining"
           },
           {
             "id": "exp_ofuro",
@@ -144,13 +165,21 @@
               "vi": "Nước ấm đúng hệt như trong anime, tuyệt quá!",
               "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l02_c02.mp3",
               "durationSec": 4.416,
-              "ttsHash": "0c0ed4c6c50d"
+              "ttsHash": "0c0ed4c6c50d",
+              "emote": "note",
+              "telop": {
+                "text": "{最高|さいこう}！",
+                "sub": "Tuyệt nhất!",
+                "color": "gold"
+              }
             }
           }
         ]
       },
       "backdrop": "bg:ofuro",
-      "overlay": "bath_steam"
+      "overlay": "bath_steam",
+      "light": "warm",
+      "bgm": "happy"
     },
     {
       "id": "airport_train_twist",
@@ -167,7 +196,8 @@
           "vi": "Haruko ơi, cảm ơn cậu suốt 1 tuần qua nhé! Được trải nghiệm cuộc sống người Nhật vui thật đấy!",
           "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l03_l01.mp3",
           "durationSec": 9.547,
-          "ttsHash": "e55360dbdf0b"
+          "ttsHash": "e55360dbdf0b",
+          "emote": "sparkle"
         },
         {
           "id": "l03_l02",
@@ -178,10 +208,18 @@
           "vi": "Hihi, thật ra thì... bình thường hơi khác chút đấy. Gia đình mình ít ăn món Nhật lắm, và cũng hay tắm vòi sen nhiều hơn là ngâm bồn cơ.",
           "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l03_l02.mp3",
           "durationSec": 12.416,
-          "ttsHash": "5e4566947055"
+          "ttsHash": "5e4566947055",
+          "emote": "shock",
+          "emoteSide": "left",
+          "camera": "punch",
+          "telop": {
+            "text": "いつもはちょっと{違|ちが}う！？",
+            "sub": "Bình thường… khác cơ á!?",
+            "color": "ai"
+          }
         }
       ],
-      "backdrop": "proc:airport_train",
+      "backdrop": "bg:train",
       "revealNote": [
         {
           "label": "Thường ngày nhà Haruko:",
@@ -193,7 +231,9 @@
           "text": "Ngày nào cũng ăn washoku 🥢 & pha bồn nước nóng ♨️ (Để Lisa vui!)",
           "color": "#63d9b4"
         }
-      ]
+      ],
+      "light": "golden",
+      "bgm": "calm"
     },
     {
       "id": "warm_ending",
@@ -208,14 +248,18 @@
           "vi": "Gia đình Haruko đã làm 'cuộc sống kiểu Nhật' mà bình thường họ chẳng làm, chỉ để khiến tôi vui. Hiểu được tấm lòng của họ, tôi càng thấy hạnh phúc hơn.",
           "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l04_l01.mp3",
           "durationSec": 16.224,
-          "ttsHash": "c4ed29fe51fd"
+          "ttsHash": "c4ed29fe51fd",
+          "emote": "heart",
+          "camera": "push"
         }
       ],
-      "backdrop": "proc:airport_train",
+      "backdrop": "bg:airport",
       "outroLabels": {
         "reading": "📖 ĐỌC BÀI & LÀM CÂU 25–27 →",
         "card": "THẺ ĐỀ THI"
-      }
+      },
+      "light": "dusk",
+      "bgm": "tender"
     }
   ],
   "reading": {
@@ -328,7 +372,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ",
         "meaningVi": "Ẩm thực truyền thống Nhật Bản",
-        "note": "Đối lập với 洋食 (ようしょく — món Âu). Ví dụ: さしみ、みそ汁."
+        "note": "Đối lập với 洋食 (ようしょく — món Âu). Ví dụ: さしみ、みそ汁.",
+        "hanViet": "HÒA THỰC"
       },
       {
         "id": "furo",
@@ -337,7 +382,12 @@
         "level": "N5–N4",
         "partOfSpeech": "Danh từ",
         "meaningVi": "Bồn tắm (nước nóng)",
-        "note": "風呂に入る (tắm bồn) ↔ シャワーを浴びる / 使う (tắm vòi sen)."
+        "note": "風呂に入る (tắm bồn) ↔ シャワーを浴びる / 使う (tắm vòi sen).",
+        "hanViet": "PHONG LỮ",
+        "forms": [
+          "風呂",
+          "お湯"
+        ]
       },
       {
         "id": "nakanaka",
@@ -346,7 +396,10 @@
         "level": "N4",
         "partOfSpeech": "Phó từ",
         "meaningVi": "Mãi không / rất khó có thể...",
-        "note": "Đi kèm thể phủ định: 和食はなかなか食べられない (rất khó mới được ăn món Nhật)."
+        "note": "Đi kèm thể phủ định: 和食はなかなか食べられない (rất khó mới được ăn món Nhật).",
+        "forms": [
+          "なかなか"
+        ]
       },
       {
         "id": "seikatsu",
@@ -355,7 +408,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ / Động từ する",
         "meaningVi": "Cuộc sống, sinh hoạt",
-        "note": "日本の生活 (cuộc sống ở Nhật)."
+        "note": "日本の生活 (cuộc sống ở Nhật).",
+        "hanViet": "SINH HOẠT"
       },
       {
         "id": "keiken",
@@ -364,7 +418,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ / Động từ する",
         "meaningVi": "Kinh nghiệm, trải nghiệm",
-        "note": "日本人の生活を経験する (trải nghiệm cuộc sống người Nhật)."
+        "note": "日本人の生活を経験する (trải nghiệm cuộc sống người Nhật).",
+        "hanViet": "KINH NGHIỆM"
       },
       {
         "id": "chigau",
@@ -373,7 +428,8 @@
         "level": "N5–N4",
         "partOfSpeech": "Động từ nhóm I",
         "meaningVi": "Khác biệt, không giống",
-        "note": "いつもはちょっと違うんだ (bình thường hơi khác một chút đấy)."
+        "note": "いつもはちょっと違うんだ (bình thường hơi khác một chút đấy).",
+        "hanViet": "VI"
       },
       {
         "id": "yorokobaseru",
@@ -382,7 +438,8 @@
         "level": "N4",
         "partOfSpeech": "Động từ sai khiến",
         "meaningVi": "Làm cho (ai đó) vui mừng",
-        "note": "Thể sai khiến của 喜ぶ (よろこぶ): 私を喜ばせるために (để làm tôi vui)."
+        "note": "Thể sai khiến của 喜ぶ (よろこぶ): 私を喜ばせるために (để làm tôi vui).",
+        "hanViet": "HỶ"
       }
     ],
     "grammar": [
@@ -500,6 +557,47 @@
         ],
         "correctIndex": 3,
         "explanationVi": "Đáp án chuẩn JLPT: 4. Câu cuối bài giải thích rõ: 「私を喜ばせるために、いつもはしていない日本の生活をしてくれたのです」 (họ đã làm điều đặc biệt để khiến mình vui)."
+      }
+    ],
+    "chapters": [
+      {
+        "id": "ch1",
+        "title": "アニメの{中|なか}の{日本|にほん}",
+        "titleVi": "Nước Nhật trong phim hoạt hình",
+        "sentenceIds": [
+          "lr_01",
+          "lr_02"
+        ],
+        "scene": "dream_anime"
+      },
+      {
+        "id": "ch2",
+        "title": "{春子|はるこ}さんの{家|いえ}で",
+        "titleVi": "Ở nhà chị Haruko",
+        "sentenceIds": [
+          "lr_03",
+          "lr_04"
+        ],
+        "scene": "haruko_home_experience"
+      },
+      {
+        "id": "ch3",
+        "title": "{電車|でんしゃ}の{中|なか}で",
+        "titleVi": "Trên chuyến tàu",
+        "sentenceIds": [
+          "lr_05",
+          "lr_06"
+        ],
+        "scene": "airport_train_twist"
+      },
+      {
+        "id": "ch4",
+        "title": "{本当|ほんとう}の{気持|きも}ち",
+        "titleVi": "Tấm lòng thật sự",
+        "sentenceIds": [
+          "lr_07"
+        ],
+        "scene": "warm_ending"
       }
     ]
   },

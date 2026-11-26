@@ -24,7 +24,7 @@ import fs from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildAudioPlan, buildMuxArgs, findOverlaps, frameStepMs, parseArgs } from "./lib/timeline.mjs";
+import { buildAudioPlan, buildBgmPlan, buildMuxArgs, findOverlaps, frameStepMs, parseArgs } from "./lib/timeline.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..");
@@ -66,8 +66,11 @@ async function startPreview() {
  */
 async function pinStageSize(page, width) {
   const height = Math.round((width * 200) / 320);
+  // Player v2 (cine-player): pin the whole player width; the stage inside keeps 16:10 = exact 3x.
   await page.addStyleTag({
-    content: `.canvas-viewport{width:${width}px!important;height:${height}px!important;max-width:none!important;aspect-ratio:auto!important;flex:none!important}`,
+    content:
+      `.cine-player{width:${width}px!important;max-width:none!important}` +
+      `.canvas-viewport{width:${width}px!important;height:${height}px!important;max-width:none!important;aspect-ratio:auto!important;flex:none!important}`,
   });
   const box = await page.evaluate(() => {
     const r = document.querySelector(".canvas-viewport")?.getBoundingClientRect();
@@ -123,7 +126,8 @@ async function main() {
     if (!opts.check) await pinStageSize(page, opts.width);
     const t0 = await page.evaluate(() => performance.now());
 
-    const el = await page.$(".canvas-viewport");
+    // record the whole cinematic player (tool bar + stage + caption bar) when present
+    const el = (await page.$(".cine-player")) ?? (await page.$(".canvas-viewport"));
     let ffmpeg = null;
     const tmpVideo = `${outPath}.video.mp4`;
     if (!opts.check) {
@@ -174,13 +178,23 @@ async function main() {
     const { clips, missing } = buildAudioPlan(events, t0, resolveAudio);
     const overlaps = findOverlaps(clips);
     const durationSec = frames / stepFps;
+    const bgmPlan = buildBgmPlan(events, t0, Math.round(durationSec * 1000));
 
     if (ffmpeg) {
       ffmpeg.stdin.end();
       const code = ffmpeg.exitCode_ !== null ? ffmpeg.exitCode_ : await new Promise((r) => ffmpeg.on("close", r));
       if (code !== 0) throw new Error(`ffmpeg (video) exited with ${code}`);
-      execFileSync("ffmpeg", buildMuxArgs(tmpVideo, clips, outPath), { stdio: "inherit" });
+      // render each BGM segment at its exact length with the same synth/tables as the web player
+      const { renderBgm, encodeWav } = await import("../web/scripts/audio_synth.mjs");
+      const bgmFiles = [];
+      for (const [j, seg] of bgmPlan.entries()) {
+        const file = `${outPath}.bgm${j}.wav`;
+        fs.writeFileSync(file, encodeWav(await renderBgm(seg.theme, seg.durationMs / 1000)));
+        bgmFiles.push({ ...seg, file });
+      }
+      execFileSync("ffmpeg", buildMuxArgs(tmpVideo, clips, outPath, bgmFiles), { stdio: "inherit" });
       fs.rmSync(tmpVideo, { force: true });
+      for (const b of bgmFiles) fs.rmSync(b.file, { force: true });
     }
 
     report = {
@@ -189,7 +203,9 @@ async function main() {
       fps: stepFps,
       frames,
       durationSec: Number(durationSec.toFixed(3)),
-      voiceClips: clips.length,
+      voiceClips: clips.filter((c) => c.kind === "voice").length,
+      sfxClips: clips.filter((c) => c.kind === "sfx").length,
+      bgm: bgmPlan,
       clips,
       missingAudio: missing,
       overlaps,
@@ -212,7 +228,8 @@ async function main() {
     ...report.overlaps.map((o) => `voices overlap: ${o.a} / ${o.b} by ${o.overlapMs}ms`),
   ];
   console.log(
-    `${report.story}: ${report.durationSec}s, ${report.frames} frames, ${report.voiceClips} voice clips` +
+    `${report.story}: ${report.durationSec}s, ${report.frames} frames, ${report.voiceClips} voice clips, ` +
+      `${report.sfxClips} sfx, ${report.bgm.length} bgm segment(s)` +
       (report.output ? ` -> ${report.output}` : "")
   );
   if (problems.length) {

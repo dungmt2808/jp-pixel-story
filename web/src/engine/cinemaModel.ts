@@ -40,19 +40,21 @@ export function visibleActors(scene: Pick<StoryScene, "type" | "actors">): Side[
 
 /**
  * Talking / highlighted state of one actor. The listener stays lit while a narrator speaks;
- * whoever is not speaking during a cast member's line is dimmed.
+ * whoever is not speaking during an on-stage cast member's line is dimmed. `onStage` lists the
+ * sides currently visible: a line spoken by an off-stage character never dims the one on screen.
  */
 export function actorFocus(
   side: Side,
   cast: Partial<Record<Side, CinemaActor>>,
-  speakingVoice: string | null
-): { talking: boolean; active: boolean } {
+  speakingVoice: string | null,
+  onStage: Side[] = ["left", "right"]
+): { talking: boolean; active: boolean; listening: boolean } {
   const me = cast[side];
-  if (!me) return { talking: false, active: false };
+  if (!me) return { talking: false, active: false, listening: false };
   const talking = speakingVoice !== null && speakingVoice === me.voice;
-  const castVoices = [cast.left?.voice, cast.right?.voice].filter(Boolean);
+  const castVoices = onStage.map((s) => cast[s]?.voice).filter(Boolean);
   const castSpeaking = speakingVoice !== null && castVoices.includes(speakingVoice);
-  return { talking, active: talking || !castSpeaking };
+  return { talking, active: talking || !castSpeaking, listening: castSpeaking && !talking };
 }
 
 /** Backdrop reference for a scene: checklist override > scene.backdrop > legacy locationBadge. */

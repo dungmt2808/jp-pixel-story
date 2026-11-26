@@ -25,6 +25,7 @@ async function loadTsModule(relPath) {
 
 const ruby = await loadTsModule("src/utils/ruby.ts");
 const dict = await loadTsModule("src/utils/dictation.ts");
+const rd = await loadTsModule("src/utils/readingText.ts");
 
 let passed = 0;
 function test(name, fn) {
@@ -114,6 +115,72 @@ test("splitRubyIntoTiles + shuffleTiles produces deterministic non-trivial phras
     s1.map((t) => t.id),
     s2.map((t) => t.id)
   );
+});
+
+
+const plainOf = (chunk) => chunk.segs.map((s) => s.t).join("");
+
+test("chunkByVocab wraps vocab words and keeps ruby groups whole", () => {
+  const vocab = [
+    { id: "hanami", word: "お花見" },
+    { id: "rainen", word: "来年" },
+  ];
+  const chunks = rd.chunkByVocab("{来年|らいねん}もお{花見|はなみ}をしたい。", vocab);
+  assert.deepEqual(
+    chunks.map((c) => [plainOf(c), c.vocabId ?? null]),
+    [["来年", "rainen"], ["も", null], ["お花見", "hanami"], ["をしたい。", null]]
+  );
+  // furigana of the wrapped kanji group survives
+  assert.deepEqual(chunks[2].segs, [{ t: "お" }, { t: "花見", r: "はなみ" }]);
+  // every character is kept, in order
+  assert.equal(chunks.map(plainOf).join(""), "来年もお花見をしたい。");
+});
+
+test("chunkByVocab widens a match that cuts a ruby group and prefers the longest spelling", () => {
+  // 弁 alone would cut {弁当|べんとう}; the chunk must contain the whole group
+  const chunks = rd.chunkByVocab("お{弁当|べんとう}です", [{ id: "ben", word: "弁" }]);
+  assert.deepEqual(chunks.map((c) => [plainOf(c), c.vocabId ?? null]), [["お", null], ["弁当", "ben"], ["です", null]]);
+  const longest = rd.chunkByVocab("{和食|わしょく}を", [
+    { id: "wa", word: "和" },
+    { id: "washoku", word: "和食" },
+  ]);
+  assert.equal(longest[0].vocabId, "washoku");
+});
+
+test("vocabNeedles strips notes and tails, adds explicit forms", () => {
+  assert.deepEqual(rd.vocabNeedles({ id: "f", word: "風呂 (お湯)" }), ["風呂"]);
+  assert.deepEqual(rd.vocabNeedles({ id: "n", word: "なかなか〜ない" }), ["なかなか"]);
+  assert.deepEqual(rd.vocabNeedles({ id: "c", word: "違う", forms: ["違って"] }), ["違って", "違う"]);
+  const chunks = rd.chunkByVocab("{生活|せいかつ}と{違|ちが}って", [{ id: "c", word: "違う", forms: ["違って"] }]);
+  assert.equal(chunks.find((c) => c.vocabId === "c") && plainOf(chunks.find((c) => c.vocabId === "c")), "違って");
+});
+
+test("readingChapters falls back to one chapter; chapterImage resolves the scene backdrop", () => {
+  const story = {
+    scenes: [
+      { id: "s1", backdrop: "proc:airport_train" },
+      { id: "s2", backdrop: "bg:park" },
+    ],
+    assets: { backgrounds: { park: "/bg/park.png" }, portraits: {} },
+    reading: { sectionTitle: "T", sentences: [{ id: "a" }, { id: "b" }], vocab: [] },
+  };
+  const [only] = rd.readingChapters(story);
+  assert.deepEqual(only.sentenceIds, ["a", "b"]);
+  assert.equal(rd.chapterImage(only, story), "/bg/park.png");
+  assert.equal(rd.chapterImage({ id: "x", title: "", sentenceIds: [], scene: "s1" }, story), undefined);
+  // declared chapters drop unknown sentence ids and empty chapters
+  story.reading.chapters = [
+    { id: "c1", title: "一", sentenceIds: ["a", "zzz"] },
+    { id: "c2", title: "二", sentenceIds: ["nope"] },
+  ];
+  assert.deepEqual(rd.readingChapters(story).map((c) => [c.id, c.sentenceIds]), [["c1", ["a"]]]);
+  assert.equal(rd.sceneIndex(story, "s2"), 1);
+  assert.equal(rd.sceneIndex(story, undefined), -1);
+});
+
+test("quizScore counts only the first answer of each question", () => {
+  const quiz = [{ id: "q1", correctIndex: 1 }, { id: "q2", correctIndex: 0 }, { id: "q3", correctIndex: 2 }];
+  assert.deepEqual(rd.quizScore({ q1: 1, q2: 2 }, quiz), { correct: 1, answered: 2, total: 3 });
 });
 
 console.log(`\nALL ${passed} FRONTEND TESTS PASSED!`);

@@ -50,6 +50,13 @@
       "loop": true
     }
   },
-  "scale": 0.206593,
-  "registration": "bust"
+  "scale": 0.20614,
+  "registration": "bust",
+  "expressionRegion": [
+    20,
+    1,
+    72,
+    53
+  ],
+  "lockedToFrame": 0
 }

@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "assets": {
+    "rig": {
+      "steps": [
+        {
+          "op": "build_rig",
+          "params": {
+            "neck_row": null,
+            "neck_extension": 3
+          },
+          "input": {
+            "path": "web/public/stories/hanami-first/assets/sprites/yui",
+            "sha": "69428826e4cf6a67"
+          },
+          "at": "2026-11-26T14:55:53+00:00"
+        }
+      ],
+      "output": {
+        "sha": "3502edb6082eb02d"
+      }
+    }
+  }
+}

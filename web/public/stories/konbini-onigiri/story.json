@@ -629,7 +629,11 @@
         "level": "N4",
         "partOfSpeech": "Động từ nhóm II (Tha động từ)",
         "meaningVi": "Hâm nóng, làm ấm (đồ ăn, đồ uống)",
-        "note": "Trong konbini, nhân viên thường dùng dạng lịch sự 「温めますか？」 (Có hâm nóng không ạ?)."
+        "note": "Trong konbini, nhân viên thường dùng dạng lịch sự 「温めますか？」 (Có hâm nóng không ạ?).",
+        "forms": [
+          "温めます",
+          "温めて"
+        ]
       },
       {
         "id": "tenin",

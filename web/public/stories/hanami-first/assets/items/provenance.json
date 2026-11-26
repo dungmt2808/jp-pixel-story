@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "assets": {
+    "bento.png": {
+      "steps": [
+        {
+          "op": "process_pixel_sprite",
+          "params": {
+            "target_width": 40,
+            "target_height": 30,
+            "palette_name": "jp_story_master",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "align_bottom": false,
+            "fit_mode": "bbox",
+            "grid": "auto",
+            "cleanup": true,
+            "outline_color": "#241712"
+          },
+          "input": {
+            "path": "art-src/hanami-first/raw_item_bento.png",
+            "sha": "246b1a41afe39dfd"
+          },
+          "at": "2026-11-26T14:55:53+00:00",
+          "source": {
+            "tool": "make_raw_items.py stand-in (code-drawn, AI-like defects)",
+            "note": "replace with your generator's prompt/seed"
+          }
+        }
+      ],
+      "output": {
+        "sha": "4bdbc00b66ad7ea8"
+      }
+    },
+    "teapot.png": {
+      "steps": [
+        {
+          "op": "process_pixel_sprite",
+          "params": {
+            "target_width": 28,
+            "target_height": 28,
+            "palette_name": "jp_story_master",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "align_bottom": false,
+            "fit_mode": "bbox",
+            "grid": "auto",
+            "cleanup": true,
+            "outline_color": "#241712"
+          },
+          "input": {
+            "path": "art-src/hanami-first/raw_item_teapot.png",
+            "sha": "bd3e2e6da5d58ade"
+          },
+          "at": "2026-11-26T14:55:54+00:00",
+          "source": {
+            "tool": "make_raw_items.py stand-in (code-drawn, AI-like defects)",
+            "note": "replace with your generator's prompt/seed"
+          }
+        }
+      ],
+      "output": {
+        "sha": "2fe3abde991847aa"
+      }
+    },
+    "sakura.png": {
+      "steps": [
+        {
+          "op": "process_pixel_sprite",
+          "params": {
+            "target_width": 15,
+            "target_height": 15,
+            "palette_name": "jp_story_master",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "align_bottom": false,
+            "fit_mode": "bbox",
+            "grid": "auto",
+            "cleanup": true,
+            "outline_color": "#241712"
+          },
+          "input": {
+            "path": "art-src/hanami-first/raw_item_sakura.png",
+            "sha": "ac31906604b01831"
+          },
+          "at": "2026-11-26T14:55:54+00:00",
+          "source": {
+            "tool": "make_raw_items.py stand-in (code-drawn, AI-like defects)",
+            "note": "replace with your generator's prompt/seed"
+          }
+        }
+      ],
+      "output": {
+        "sha": "5bf19e356d1b1f91"
+      }
+    }
+  }
+}

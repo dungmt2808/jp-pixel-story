@@ -209,6 +209,52 @@ def test_validator_catches_compact_ruby_errors(tmp_path: Path) -> None:
     assert "Ruby on non-Kanji" in joined
 
 
+def _v2_story(story_id: str, *, strict: bool) -> dict:
+    story = {
+        "id": story_id,
+        "engine": "cinema",
+        "characterCard": {
+            "nameJa": "ゆい",
+            "subtitle": "東京の学生",  # kanji without ruby
+            "facts": [{"label": "SECRET", "value": "卵焼き", "locked": True}],
+        },
+        "scenes": [
+            {
+                "id": "sc1",
+                "titleCard": {"title": "お花見"},
+                "labels": [{"text": "桜", "x": 10, "y": 10}],
+                "summary": "{今日|きょう}は楽しかった",
+                "lines": [],
+            }
+        ],
+        "reading": {"sentences": [], "grammar": [], "quiz": []},
+    }
+    if strict:
+        story["artQuality"] = {"minOutlineCompliance": 0.9}
+    return story
+
+
+def test_validator_checks_player_v2_furigana(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "v2-ruby", category="story")
+    (sdir / "story.json").write_text(json.dumps(_v2_story("v2-ruby", strict=True), ensure_ascii=False), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    joined = " | ".join(res["issues"])
+    assert res["ok"] is False
+    for where in ("sc1/titleCard", "sc1/labels[0]", "sc1/summary", "characterCard.subtitle", "characterCard.facts[0]"):
+        assert where in joined, where
+    assert "characterCard.nameJa" not in joined  # pure kana needs no ruby
+
+
+def test_validator_card_ruby_is_a_warning_for_legacy_stories(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "legacy-card", category="story")
+    story = _v2_story("legacy-card", strict=False)
+    story["scenes"][0].update({"titleCard": {"title": "{花見|はなみ}"}, "labels": [], "summary": "{今日|きょう}"})
+    (sdir / "story.json").write_text(json.dumps(story, ensure_ascii=False), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    assert not any("characterCard" in i for i in res["issues"])
+    assert any("characterCard.subtitle" in w for w in res["warnings"])
+
+
 def test_validator_catches_dokkai_issues(tmp_path: Path) -> None:
     pub, sdir = _setup_mock_catalog(tmp_path, "bad-dokkai")
     (sdir / "dokkai.json").write_text(
@@ -313,3 +359,50 @@ def test_validator_catches_choukai_issues(tmp_path: Path) -> None:
     assert "Missing/Empty Image" in joined
     assert "Invalid choukai correctIndex" in joined
     assert "Missing Furigana" in joined
+
+
+def test_vibe_names_match_the_web_engine() -> None:
+    """The validator's vibe-kit name sets must mirror the TypeScript sources."""
+    import re
+
+    import content_validator as cv
+
+    web = Path(__file__).resolve().parents[2] / "web" / "src"
+    vibe = (web / "engine" / "cinemaVibe.ts").read_text(encoding="utf-8")
+    themes = (web / "audio" / "themes.ts").read_text(encoding="utf-8")
+
+    def quoted(block: str) -> set[str]:
+        return set(re.findall(r'"([a-z_]+)"', block))
+
+    emotes = quoted(re.search(r"EMOTE_NAMES = \[(.*?)\]", vibe, re.S).group(1))
+    cameras = quoted(re.search(r"export type CameraMove = (.*?);", vibe, re.S).group(1))
+    lights = set(re.findall(r"^\s{2}([a-z_]+): \{", re.search(r"LIGHTS: Record<string, Grade> = \{(.*?)\n\};", vibe, re.S).group(1), re.M))
+    sfx = quoted(re.search(r"SFX_NAMES = \[(.*?)\]", themes, re.S).group(1))
+    assert emotes == cv.VIBE_EMOTES
+    assert cameras == cv.VIBE_CAMERAS
+    assert lights == cv.VIBE_LIGHTS
+    assert sfx == cv.VIBE_SFX
+
+
+def test_validator_flags_unknown_vibe_names_and_telop_furigana(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "vibe-bad", category="story")
+    story = {
+        "id": "vibe-bad",
+        "engine": "cinema",
+        "scenes": [
+            {
+                "id": "sc1",
+                "light": "neon",
+                "lines": [
+                    {"id": "l1", "voice": "narrator", "jaPlain": "あ", "jaRuby": "あ", "vi": "a",
+                     "emote": "facepalm", "camera": "dolly", "sfx": "boom", "telop": "約束"},
+                ],
+            }
+        ],
+        "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []},
+    }
+    (sdir / "story.json").write_text(json.dumps(story, ensure_ascii=False), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    joined = " | ".join(res["issues"])
+    for tag in ("[Unknown Emote]", "[Unknown Camera]", "[Unknown SFX]", "[Unknown Light]", "l1/telop"):
+        assert tag in joined, tag

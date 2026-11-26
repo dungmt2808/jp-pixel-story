@@ -121,6 +121,7 @@ export function App() {
   );
   const [autoplay, setAutoplay] = useState<boolean>(initialAutoplay);
   const [mode, setMode] = useState<AppMode>(initialMode);
+  const [stageStartScene, setStageStartScene] = useState(0);
   const [story, setStory] = useState<StoryData | null>(null);
   const [dictationPack, setDictationPack] = useState<DictationPack | null>(null);
   const [choukaiExam, setChoukaiExam] = useState<ChoukaiExamData | null>(null);
@@ -380,6 +381,7 @@ export function App() {
     updateUrl(storyId, "stage", isAutoplay);
     setAutoplay(isAutoplay);
     setMode("stage");
+    setStageStartScene(0);
     setSelectedStoryId(storyId);
   }, []);
 
@@ -583,7 +585,26 @@ export function App() {
 
   return (
     <div className="app-shell">
-      {mode === "stage" ? (
+      {mode === "stage" && resolveStageEngine(story) === "cinema" ? (
+        <CinemaStage
+          key={`${story.id}-${autoplay ? "auto" : "play"}-${stageStartScene}`}
+          story={story}
+          startScene={stageStartScene}
+          showFurigana={showFurigana}
+          showVi={showVi}
+          muted={muted}
+          autoplay={autoplay}
+          onToggleFurigana={() => setShowFurigana((v) => !v)}
+          onToggleVi={() => setShowVi((v) => !v)}
+          onToggleMute={() => setMuted((m) => !m)}
+          onClose={handleOpenLibrary}
+          onOpenReading={() => {
+            updateUrl(story.id, "reading", false);
+            setMode("reading");
+          }}
+          onOpenDictation={() => handleOpenDictation(story.id)}
+        />
+      ) : mode === "stage" ? (
         <div className={`stage-frame ${showVi ? "" : "hide-vi"}`}>
           <div className="stage-topbar">
             <div className="topbar-meta">
@@ -656,8 +677,6 @@ export function App() {
             switch (resolveStageEngine(story)) {
               case "tsuru":
                 return <TsuruStage key={stageKey} {...common} onOpenDictation={onOpenDictation} />;
-              case "cinema":
-                return <CinemaStage key={stageKey} {...common} onOpenDictation={onOpenDictation} />;
               case "depato":
                 return <DepatoStage key={stageKey} {...common} onOpenDictation={onOpenDictation} />;
               case "hybrid":
@@ -674,7 +693,8 @@ export function App() {
           showVi={showVi}
           onToggleFurigana={() => setShowFurigana((v) => !v)}
           onToggleVi={() => setShowVi((v) => !v)}
-          onBackToStory={() => {
+          onBackToStory={(sceneIdx) => {
+            setStageStartScene(sceneIdx ?? 0);
             updateUrl(story.id, "stage", false);
             setMode("stage");
           }}

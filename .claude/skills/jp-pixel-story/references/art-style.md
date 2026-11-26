@@ -37,8 +37,38 @@ Runtime rules (enforced by the engine helpers, never bypass them with raw `ctx.d
   `drawSpriteFrame` takes an integer scale; camera zooms use `drawPixelZoom` (1× → 2× snap, no sub-pixel Ken Burns).
 - The stage draws into a 320×200 buffer and presents it at an integer multiple, so pixels stay square at any window size.
 
+## 3b. Craft Quality Gate (Mini-PixelLab Step 1)
+
+- **Outline:** every silhouette edge uses `#241712`. `cleanup=True` recolours dark edges and adds a 1px outline outside light
+  edges (light clothes keep their colour); frame borders (busts cut by the cell) never get an outline.
+- **Pixel-perfect lines:** L-shaped double corners on outlines are removed.
+- **Noise:** isolated specks close to their surroundings are removed; high-contrast details (eye highlights, buttons) stay.
+- **True pixels:** AI images drawn as big fake pixels are depixelized on their detected grid before any resize.
+- **Provenance:** keep raw sources in `art-src/` and pass `source=` so `pixellab_reprocess` can rebuild assets byte-for-byte.
+
 ## 4. Style & Character Anchor Reference Rule
 
 - Store verified master references in `web/public/assets/style-ref/` (`ref_background.png`, `ref_minh.png`).
 - Whenever generating a new background, secondary character, or item set, ALWAYS pass the anchor reference image alongside the prompt with:
   > *"Match the EXACT pixel art style, warm espresso outline color (#241712), pixel density, and shading warmth of the attached reference image."*
+
+## 5. Vibe Over Detail — One World Per Story
+
+A video feels finished when everything in it belongs to the same world, not when one asset is very
+detailed. Rules (the validator enforces the first one):
+
+1. **One detail level per story.** Never mix painted `bg:` backgrounds with code-drawn `proc:` backdrops
+   in one cinema story (`[Style Mix]` warning). Missing art goes in `art-src/<story>/art.json` + `PROMPTS.md`
+   (house-style prompt prefix, negative prompt, one prompt per background) and is applied with
+   `pixellab_apply_art_manifest` (or `uv run python art_manifest.py ../art-src/<story>/art.json`).
+   Pass an existing background of the story as the style reference image.
+2. **Light, not repainting.** Set `scene.light` (`morning`, `golden`, `dusk`, `night`, `rain`, `warm`) so the
+   backdrop, characters and items share one time of day — art from different sources then reads as one place.
+3. **Acting over polish** (limited animation, like short-form anime channels): per line, at most one
+   `emote` (manga symbol) and one `camera` move; use `punch` + `shock`/`sweat` for comedic beats, `push` for
+   emotional lines, `shake` for surprises. Leave most lines plain so the accents land.
+4. **Telop for the lesson.** `telop` (big caption) only for the key phrase / grammar of the scene
+   (`うちに{来|き}ませんか`, `{約束|やくそく}！`), 1–2 per scene, with a short Vietnamese `sub`.
+5. **Sound sells it.** Each scene may set `bgm` (`calm`, `happy`, `tender`/`sad`, `none`); emotes bring a
+   default sound effect (`sfx` overrides, `"none"` silences). The MP4 exporter renders the same BGM and
+   SFX, ducked under the voices.

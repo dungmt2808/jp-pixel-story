@@ -41,7 +41,7 @@ Every lesson lives in `web/public/stories/<id>/` and is registered in `web/publi
 
 | Content Type | `kind` / `engine` | Data File | Engine Component | Audio / Image MCP Tools |
 | :--- | :--- | :--- | :--- | :--- |
-| **NEW animated story / situation / JLPT 問題5** | `"engine"` + `story.engine: "cinema"` | `story.json` | `CinemaStage` (100% data-driven: backdrops, overlays, animated sprite cast) + `ReadingView` + auto `DictationView` | `pixellab_clean_background`, `pixellab_slice_spritesheet(registration="bust")`, `voicevox_generate_story_audio` |
+| **NEW animated story / situation / JLPT 問題5** | `"engine"` + `story.engine: "cinema"` | `story.json` | `CinemaStage` player v2 (100% data-driven: top bar + caption bar, title card, stamps, leader-line labels, drag/tap/hold mini-games, info card, backdrops, overlays, rig/sprite cast) + `ReadingView` + auto `DictationView` | `pixellab_clean_background`, `pixellab_slice_spritesheet(registration="bust")`, `voicevox_generate_story_audio` |
 | Legacy bespoke stages | `story.engine`: `"tsuru"`, `"depato"`, `"hybrid"`, `"pixel"` | `story.json` | `TsuruStage`, `DepatoStage`, `HybridStage`, `PixelStage` (all on the shared `useStageRuntime`) | same |
 | **JLPT Listening (`聴解`)** | `"jlpt-choukai"` | `choukai.json` + `dictation.json` | `JlptChoukaiView` + native `DictationView` | `jlpt_clean_exam_image` + FFmpeg slice |
 | **JLPT Reading (`読解 問題4・6`)** | `"jlpt-dokkai"` | `dokkai.json` | `JlptDokkaiView` + auto `DictationView` | `voicevox_generate_dokkai_audio` |
@@ -50,6 +50,11 @@ Every lesson lives in `web/public/stories/<id>/` and is registered in `web/publi
 
 **Never write a new per-story stage component.** New stories use `engine: "cinema"`; if a scene needs a new
 look, add ONE reusable entry to `web/src/engine/cinemaBackdrops.ts` (`PROCEDURAL_BACKDROPS` / `OVERLAYS`).
+Make scenes feel like a cinematic lesson, not a slideshow: give most scenes a `stamp` or `labels`, and add one
+`interaction` (drag / tap / hold) every 2–3 scenes with a voiced `doneLine` (see story-schema.md "Cinematic player v2").
+Vibe over detail: keep ONE art source per story (never mix `bg:` and `proc:` backdrops — `[Style Mix]`), set `light`
+and `bgm` per scene, and give key lines an `emote` / `camera` / `telop` (story-schema.md "Vibe kit"; art-style.md §5).
+Missing art: write `art-src/<story>/art.json` + `PROMPTS.md`, then `pixellab_apply_art_manifest`.
 Stages are routed by `story.engine` (`web/src/engine/stageEngines.ts`), never by story id.
 
 Read schema references before creating files:
@@ -60,14 +65,18 @@ Read schema references before creating files:
 ## Workflow Steps
 
 1. **Author compact JSON** using `{漢字|かんじ}` strings (~75% fewer tokens than segment arrays). Reference example: `web/public/stories/hanami-first/story.json`.
-2. **Process Art & Exam Cards** (master palette `jp_story_master`, the tools' default):
+2. **Process Art & Exam Cards** (master palette `jp_story_master`, the tools' default). Keep raw sources in `art-src/<story-id>/` and pass `source={"prompt": ..., "model": ..., "seed": ...}` so every asset gets a `provenance.json` record and can be rebuilt with `pixellab_reprocess`.
+   - AI "pixel art" inputs: `grid="auto"` (default) detects the fake-pixel grid and rebuilds the TRUE pixels first (`pixellab_detect_grid` / `pixellab_depixelize` to inspect). Non-pixel-art images are left alone automatically.
    - Backgrounds: `pixellab_clean_background(...)` -> `320x200`.
-   - Characters: generate ONE expression sheet per character on pure `#00FF00` (frames: neutral, talk, blink, happy) and run
-     `pixellab_slice_spritesheet(frame_width=96, frame_height=96, bg_mode="chroma_green", registration="bust", clips={"idle": {"frames": [0,0,0,0,0,0,0,0,0,0,0,2], "fps": 4}, "talk": {"frames": [1,0], "fps": 7}, "happy": [3]})`.
-     All frames share one scale + anchor; `registration="bust"` removes AI drift for portraits cut by the frame edge (`"centroid"` for full-body sprites).
-     Reference the sheet as `assets.sprites.<key> = ".../meta.json"` and in `cast.left/right.sprite`.
-   - Single props/portraits: `pixellab_clean_sprite` (keeps aspect ratio). Existing off-palette PNGs: `pixellab_relock_palette`.
-   - Never scale pixel art by fractions in code: use `drawPixelImage` / `drawSpriteFrame` / `drawPixelZoom` (whole-number scales only).
+   - Characters (recommended, best animation): ONE expression sheet per character on pure `#00FF00` (frames: neutral, talk, blink, happy):
+     1. `pixellab_slice_spritesheet(frame_width=96, frame_height=96, bg_mode="chroma_green", registration="bust", cleanup=True, lock_expressions=True, clips={"idle": {"frames": [0,0,0,0,0,0,0,0,0,0,0,2], "fps": 4}, "talk": {"frames": [1,0], "fps": 7}, "happy": [3]})`
+        - shared scale + anchor (no stretch/jitter), cleanup = despeckle + `#241712` outline + pixel-perfect corners, lock = clothes/hair identical in every frame (no flicker).
+     2. `pixellab_build_rig(sheet_dir)` -> `rig/rig.json` (head frames + body with hidden neck extension).
+     3. story.json: `assets.rigs.<key> = ".../rig/rig.json"` and `cast.left/right.rig = "<key>"` -> breathing, nodding while listening, head bob + mouth while talking (whole pixels only).
+     - More expressions later: `pixellab_add_expression(sheet_dir, patch_path, x, y, clip="sad")` (base frame + small eyes/mouth patch), then rebuild the rig.
+   - Single props/portraits: `pixellab_clean_sprite` (keeps aspect ratio, `cleanup=True` by default). Existing sprites: `pixellab_cleanup_sprite`; off-palette PNGs: `pixellab_relock_palette`; check with `pixellab_sprite_quality`.
+   - New mood palette (e.g. underwater, night): `pixellab_extract_palette(image_paths, n_colors, base_palette="jp_story_master", save_as="...")`.
+   - Never scale pixel art by fractions in code: use `drawPixelImage` / `drawSpriteFrame` / `drawPixelZoom` / `drawRig` (whole-number scales only).
    - JLPT Listening/Reading cards: strip colored watermarks with `jlpt_clean_exam_image`.
 3. **Generate VOICEVOX MP3 Audio** (hash-aware: re-running only re-synthesizes new or edited lines; `force=True` only when switching engines/voices globally):
    - `story.json` -> `voicevox_generate_story_audio(audio_format="mp3")`
@@ -76,7 +85,8 @@ Read schema references before creating files:
 4. **Register in `web/public/stories/index.json`** with accurate counts and `category`.
 5. **Mandatory Verification Gate (Before Commit / Push):**
    - Run MCP tool **`story_validate_catalog`** on `web/public/stories` (must return `ok: true`, `total_issues: 0`, `orphan_folders: []`).
-     It now also fails on `[Off-Palette Asset]`, `[Missing Asset]`, broken sprite `meta.json`, and `[Stale Audio]` (text edited after synthesis).
+     It also fails on `[Off-Palette Asset]`, `[Missing Asset]`, broken sprite `meta.json` / `rig.json`, and `[Stale Audio]` (text edited after synthesis).
+     Sprite craft (`[Outline]`, `[Noise]`, `[Colors]`) and `[No Provenance]` are warnings, but become errors for stories that declare `"artQuality"` (do this for every NEW story).
    - Run backend tests: `cd mcp-server && PYTHONPATH=. uv run pytest -v`
    - Run frontend tests & build: `cd web && npm test && npm run build`
    - Play every animated story end-to-end on a virtual clock: `cd exporter && npm run check:all -- --url <preview url>`

@@ -1,6 +1,6 @@
 /** Unit tests for the deterministic exporter's timeline / audio plan (no browser needed). */
 import assert from "node:assert/strict";
-import { buildAudioPlan, buildMuxArgs, findOverlaps, frameStepMs, parseArgs } from "../lib/timeline.mjs";
+import { buildAudioPlan, buildBgmPlan, buildMuxArgs, findOverlaps, frameStepMs, parseArgs } from "../lib/timeline.mjs";
 
 let passed = 0;
 function test(name, fn) {
@@ -58,6 +58,45 @@ test("findOverlaps catches the old recorder bug (scenes advancing every ~2.4 s o
   assert.deepEqual(findOverlaps(fixed), []);
   // MP3 encoder padding (a few ms) is tolerated
   assert.deepEqual(findOverlaps([{ offsetMs: 0, durationMs: 1030 }, { offsetMs: 1000, durationMs: 500 }]), []);
+});
+
+test("sound effects join the mix but never count as voices talking over each other", () => {
+  const events = [
+    { type: "voice", perfMs: 1000, audioUrl: "/v1.mp3", durationSec: 3 },
+    { type: "sfx", perfMs: 1010, audioUrl: "/audio/sfx/shock.wav", lineId: "l1" },
+    { type: "voice", perfMs: 4500, audioUrl: "/v2.mp3", durationSec: 2 },
+  ];
+  const { clips } = buildAudioPlan(events, 1000, (u) => `/abs${u}`);
+  assert.deepEqual(clips.map((c) => [c.kind, c.offsetMs]), [["voice", 0], ["sfx", 10], ["voice", 3500]]);
+  assert.deepEqual(findOverlaps(clips), []);
+});
+
+test("buildBgmPlan turns theme changes into back-to-back segments and drops silence", () => {
+  const events = [
+    { type: "bgm", perfMs: 1000, theme: "default" },
+    { type: "voice", perfMs: 1200, audioUrl: "/a.mp3" },
+    { type: "bgm", perfMs: 21000, theme: "none" },
+    { type: "bgm", perfMs: 31000, theme: "depato_rain" },
+  ];
+  assert.deepEqual(buildBgmPlan(events, 1000, 60000), [
+    { theme: "default", offsetMs: 0, durationMs: 20000 },
+    { theme: "depato_rain", offsetMs: 30000, durationMs: 30000 },
+  ]);
+  assert.deepEqual(buildBgmPlan([], 0, 1000), []);
+});
+
+test("buildMuxArgs ducks the BGM under the voices with a side-chain compressor", () => {
+  const args = buildMuxArgs("v.mp4", [{ file: "a.mp3", offsetMs: 500 }], "out.mp4", [
+    { file: "bgm0.wav", offsetMs: 0, durationMs: 20000 },
+  ]);
+  const filter = args[args.indexOf("-filter_complex") + 1];
+  assert.ok(args.includes("bgm0.wav"));
+  assert.match(filter, /\[2:a\][^;]*afade=t=in[^;]*afade=t=out:st=19\.600[^;]*\[b0\]/);
+  assert.match(filter, /sidechaincompress/);
+  assert.match(filter, /\[fg\]\[bgd\]amix=inputs=2[^;]*\[aout\]/);
+  // BGM alone (a story without voices) still produces an audio track
+  const onlyBgm = buildMuxArgs("v.mp4", [], "o.mp4", [{ file: "b.wav", offsetMs: 0, durationMs: 1000 }]);
+  assert.match(onlyBgm[onlyBgm.indexOf("-filter_complex") + 1], /volume=0\.32,apad\[aout\]/);
 });
 
 test("buildMuxArgs delays every clip by its offset and pads audio to the video length", () => {

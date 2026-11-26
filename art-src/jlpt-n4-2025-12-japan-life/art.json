@@ -1,0 +1,9 @@
+{
+  "story": "jlpt-n4-2025-12-japan-life",
+  "palette": "jp_story_master",
+  "backgrounds": [
+    { "key": "dining", "raw": "raw_bg_dining.png", "use": ["dream_anime", "haruko_home_experience/exp_washoku"] },
+    { "key": "train", "raw": "raw_bg_train.png", "use": ["airport_train_twist"] },
+    { "key": "airport", "raw": "raw_bg_airport.png", "use": ["warm_ending"] }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "assets": {
+    "rig": {
+      "steps": [
+        {
+          "op": "build_rig",
+          "params": {
+            "neck_row": null,
+            "neck_extension": 3
+          },
+          "input": {
+            "path": "web/public/stories/hanami-first/assets/sprites/minh",
+            "sha": "7a40e4a17954f764"
+          },
+          "at": "2026-11-26T14:55:50+00:00"
+        }
+      ],
+      "output": {
+        "sha": "e13591d96e592aa4"
+      }
+    }
+  }
+}

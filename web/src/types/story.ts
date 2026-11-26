@@ -23,6 +23,26 @@ export interface DialogueLine {
   durationSec?: number;
   /** Fingerprint of text + voice settings written by the VOICEVOX tools (stale-audio check). */
   ttsHash?: string;
+  /** Vibe kit: manga symbol over the speaker ("sweat", "anger", "heart", "sparkle", "shock", "question", "note", "dots", "gloom"). */
+  emote?: string;
+  /** Which actor the emote belongs to (default: the speaker). */
+  emoteSide?: "left" | "right";
+  /** Vibe kit: camera move while the line plays ("push", "punch", "close", "shake", "pan_left", "pan_right"). */
+  camera?: string;
+  /** Vibe kit: big variety-show caption over the stage (ruby allowed). */
+  telop?: string | LineTelop;
+  /** Vibe kit: sound effect at the start of the line (default comes from the emote; "none" = silent). */
+  sfx?: string;
+}
+
+export interface LineTelop {
+  text: string;
+  /** Vietnamese under the telop (hidden when VI is off). */
+  sub?: string;
+  color?: "shu" | "gold" | "ai" | "white";
+  /** Position in % of the stage (default 50 / 24). */
+  x?: number;
+  y?: number;
 }
 
 export interface MiniGameChoice {
@@ -78,6 +98,8 @@ export interface StoryArtAssets {
   items?: Record<string, string>;
   /** key -> URL of a `meta.json` written by `pixellab_slice_spritesheet` (frame animation). */
   sprites?: Record<string, string>;
+  /** key -> URL of a `rig.json` written by `pixellab_build_rig` (head/body cutout animation). */
+  rigs?: Record<string, string>;
   cardPortrait?: string;
 }
 
@@ -87,8 +109,10 @@ export interface CinemaActor {
   voice: string;
   /** Static portrait key in `assets.portraits` ... */
   portrait?: string;
-  /** ... or an animated sprite key in `assets.sprites` (preferred). */
+  /** ... or an animated sprite key in `assets.sprites` ... */
   sprite?: string;
+  /** ... or a head/body rig key in `assets.rigs` (best: expressions + breathing / nodding). */
+  rig?: string;
   idleClip?: string;
   talkClip?: string;
   /** Whole-number pixel scale (1 = native texel density). */
@@ -96,6 +120,80 @@ export interface CinemaActor {
   flipX?: boolean;
   /** Horizontal pivot position on the 320px stage (defaults: left 56, right 264). */
   x?: number;
+}
+
+/** In-scene pixel tag (reference player style): term + optional translation, optional leader line. */
+export interface StageLabel {
+  /** Main text; Japanese may use compact ruby `{弁当|べんとう}`. */
+  text: string;
+  /** Translation shown under the term (hidden when the VI subtitle mode is off). */
+  sub?: string;
+  /** Centre of the tag in virtual 320x200 coordinates. */
+  x: number;
+  y: number;
+  /** Draws a crisp 1px leader line from the tag to this point. */
+  to?: [number, number];
+  /** Only show once line N (0-based) of the scene has started. */
+  afterLine?: number;
+  style?: "tag" | "letter";
+}
+
+export interface SceneStamp {
+  text: string;
+  x?: number;
+  y?: number;
+}
+
+export interface DragItem {
+  id: string;
+  /** Key in assets.items (palette-locked sprite). */
+  item: string;
+  from: [number, number];
+  to: [number, number];
+  label?: string;
+  labelVi?: string;
+}
+
+export interface TapSpot {
+  id: string;
+  x: number;
+  y: number;
+  r?: number;
+  /** Optional sprite drawn at the spot (assets.items key). */
+  item?: string;
+  label?: string;
+  labelVi?: string;
+  /** Optional voice line played when found. */
+  line?: DialogueLine;
+}
+
+export interface HoldGauge {
+  label: string;
+  x: number;
+  y: number;
+  durationSec: number;
+  /** Optional sprite drawn while holding (assets.items key), e.g. a teapot. */
+  item?: string;
+  /** Particle stream from the item to this point while holding (pouring, watering...). */
+  streamTo?: [number, number];
+}
+
+/** Data-driven mini-game of a scene (played after the scene's lines). */
+export interface SceneInteraction {
+  type: "drag" | "tap" | "hold";
+  /** Vietnamese instruction; shown uppercase in the caption bar with progress. */
+  hint: string;
+  items?: DragItem[];
+  spots?: TapSpot[];
+  hold?: HoldGauge;
+  /** Voice line played when the interaction is completed. */
+  doneLine?: DialogueLine;
+}
+
+export interface CinemaTitleCard {
+  title?: string;
+  subtitle?: string;
+  credit?: string;
 }
 
 export interface CinemaRevealNote {
@@ -125,6 +223,22 @@ export interface StoryScene {
   /** Cinema: which actors are on stage (default both; legacy outro shows only the left actor). */
   actors?: Array<"left" | "right">;
   revealNote?: CinemaRevealNote[];
+  /** Player v2: location / date stamp, e.g. "SHINJUKU GYOEN · 4月". */
+  stamp?: string | SceneStamp;
+  /** Player v2: pixel tags placed in the scene. */
+  labels?: StageLabel[];
+  /** Player v2: mini-game played after the lines. */
+  interaction?: SceneInteraction;
+  /** Player v2: intro title panel (defaults to bannerTitle / bannerSubtitle). */
+  titleCard?: CinemaTitleCard;
+  /** Additional atmospheric overlays drawn in order (e.g. ["light_rays", "petals"]). */
+  overlays?: string[];
+  /** Outro: one-line recap shown above the end buttons in the caption bar. */
+  summary?: string;
+  /** Vibe kit: light grade over the whole frame ("day", "morning", "golden", "dusk", "night", "rain", "warm"). */
+  light?: string;
+  /** Vibe kit: BGM mood from this scene on ("calm", "happy", "sad", "none" or a theme name). */
+  bgm?: string;
   outroLabels?: CinemaOutroLabels;
   whoButtonLabel?: string;
   actionLabel?: string;
@@ -136,6 +250,8 @@ export interface StoryScene {
 export interface CharacterFact {
   label: string;
   value: string;
+  /** Shown as "??? — hoàn thành truyện để mở khoá" until the outro is reached. */
+  locked?: boolean;
 }
 
 export interface CharacterCard {
@@ -165,6 +281,23 @@ export interface VocabItem {
   partOfSpeech: string;
   meaningVi: string;
   note: string;
+  /** Sino-Vietnamese reading of the kanji, e.g. 約束 -> "ƯỚC THÚC". */
+  hanViet?: string;
+  /** Spellings to find in the text when it differs from `word` (conjugations, kana spelling...). */
+  forms?: string[];
+}
+
+/** One chapter of the reading page: a run of sentences + the stage scene it retells. */
+export interface ReadingChapter {
+  id: string;
+  /** Ruby allowed: "{桜|さくら}の{公園|こうえん}". */
+  title: string;
+  titleVi?: string;
+  sentenceIds: string[];
+  /** Scene id from `scenes[]`; its `bg:` backdrop becomes the chapter illustration. */
+  scene?: string;
+  /** Explicit illustration (overrides the scene backdrop). */
+  image?: string;
 }
 
 export interface GrammarItem {
@@ -195,6 +328,12 @@ export interface StoryData {
   assets?: StoryArtAssets;
   /** Cinema engine cast (falls back to the first two portraits, keyed by voice). */
   cast?: { left?: CinemaActor; right?: CinemaActor };
+  /** Strict sprite craft checks for the validator (outline colour / noise / colour count). */
+  artQuality?: { outlineColor?: string; minOutlineCompliance?: number; maxOrphanRatio?: number; maxColorsPerSprite?: number };
+  /** Player v2 watermark shown in the stage corner. */
+  brand?: string;
+  /** Player v2 look: subtle dithered corner vignette (off by default). */
+  look?: { vignette?: boolean };
   /** Chiptune BGM theme started when the story begins. */
   bgm?: "default" | "depato_sunny" | "depato_rain";
   series: string;
@@ -220,6 +359,8 @@ export interface StoryData {
     sectionTitle: string;
     subtitle: string;
     sentences: ReadingSentence[];
+    /** Optional chapters (TOC + illustration); default: one chapter with every sentence. */
+    chapters?: ReadingChapter[];
     vocab: VocabItem[];
     grammar?: GrammarItem[];
     quiz?: QuizQuestion[];

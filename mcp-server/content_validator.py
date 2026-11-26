@@ -11,10 +11,30 @@ import numpy as np
 from PIL import Image
 
 from palettes import PALETTES, get_palette_rgb
-from tts_spec import dokkai_sentence_spec, iter_story_lines, standalone_spec, story_line_spec
+from pixel_quality import quality_metrics
+from tts_spec import braced_to_plain, dokkai_sentence_spec, iter_story_lines, standalone_spec, story_line_spec
 
 KANJI_RE = re.compile(r"[\u4e00-\u9faf]")
 RUBY_BRACE_RE = re.compile(r"\{([^|}]+)\|([^}]+)\}")
+
+
+# Names the cinema "vibe kit" understands (keep in sync with cinemaVibe.ts / audio/themes.ts).
+VIBE_EMOTES = {"sweat", "anger", "heart", "sparkle", "shock", "question", "note", "dots", "gloom"}
+VIBE_CAMERAS = {"push", "punch", "close", "shake", "pan_left", "pan_right"}
+VIBE_SFX = {"pop", "ding", "whoosh", "boing", "shock", "sparkle", "thud", "gloom", "heart"}
+VIBE_LIGHTS = {"day", "morning", "golden", "dusk", "night", "rain", "warm"}
+VIBE_BGM = {"default", "depato_sunny", "depato_rain", "calm", "night", "happy", "bright", "sad", "tender", "rain", "none"}
+
+
+def vocab_needles(v: dict[str, Any]) -> list[str]:
+    """Spellings the reading page looks for (mirror of web/src/utils/readingText.ts vocabNeedles)."""
+    base = re.sub(r"\s*[(（][^)）]*[)）]\s*", "", str(v.get("word", "")))
+    base = re.split(r"[〜~]", base)[0].strip()
+    out: list[str] = []
+    for n in [*(v.get("forms") or []), base]:
+        if n and n not in out:
+            out.append(n)
+    return out
 
 
 def _check_ruby_segments(label: str, segs: str | list[dict[str, Any]], issues: list[str]) -> None:
@@ -58,6 +78,38 @@ def _resolve_palette(story: dict[str, Any], catalog_entry: dict[str, Any] | None
     return str(name)
 
 
+DEFAULT_ART_QUALITY = {"outlineColor": "#241712", "minOutlineCompliance": 0.9, "maxOrphanRatio": 0.08}
+
+
+def _check_art_quality(
+    sprite_pngs: dict[str, Path],
+    public_root: Path,
+    art_quality: dict[str, Any] | None,
+    issues: list[str],
+    warnings: list[str],
+    stats: dict[str, int],
+) -> None:
+    """Sprite craft quality. Stories declaring `artQuality` are strict (issues); others get warnings."""
+    rules = {**DEFAULT_ART_QUALITY, **(art_quality or {})}
+    sink = issues if art_quality else warnings
+    for fp in sprite_pngs.values():
+        with Image.open(fp) as im:
+            if im.mode != "RGBA" or im.getextrema()[3][0] == 255:
+                continue  # not a cut-out sprite
+            q = quality_metrics(im, rules["outlineColor"])
+        stats["sprites_quality_checked"] = stats.get("sprites_quality_checked", 0) + 1
+        rel = fp.relative_to(public_root) if fp.is_relative_to(public_root) else fp
+        if q["outline_compliance"] < rules["minOutlineCompliance"]:
+            sink.append(
+                f"[Outline] {rel}: {q['outline_compliance'] * 100:.0f}% of the silhouette uses {rules['outlineColor']} "
+                f"(< {rules['minOutlineCompliance'] * 100:.0f}%; run pixellab_cleanup_sprite)"
+            )
+        if q["orphan_ratio"] > rules["maxOrphanRatio"]:
+            sink.append(f"[Noise] {rel}: {q['orphan_ratio'] * 100:.1f}% isolated pixels (> {rules['maxOrphanRatio'] * 100:.0f}%)")
+        if rules.get("maxColorsPerSprite") and q["colors"] > rules["maxColorsPerSprite"]:
+            sink.append(f"[Colors] {rel}: {q['colors']} colours (> {rules['maxColorsPerSprite']})")
+
+
 def _check_story_assets(
     data: dict[str, Any],
     sdir: Path,
@@ -65,6 +117,7 @@ def _check_story_assets(
     catalog_entry: dict[str, Any] | None,
     issues: list[str],
     stats: dict[str, int],
+    warnings: list[str] | None = None,
 ) -> None:
     """Every referenced asset exists, sprite metas are consistent, and PNGs obey the palette lock."""
     palette = _resolve_palette(data, catalog_entry)
@@ -73,6 +126,7 @@ def _check_story_assets(
         palette = None
 
     pngs: dict[str, Path] = {}
+    sprite_pngs: dict[str, Path] = {}
     assets = data.get("assets") or {}
     for group in ("backgrounds", "portraits", "items"):
         for key, url in (assets.get(group) or {}).items():
@@ -107,6 +161,41 @@ def _check_story_assets(
         if meta.get("palette") and palette and meta["palette"] != palette:
             issues.append(f"[Sprite Palette Mismatch] sprites/{key}: '{meta['palette']}' != story '{palette}'")
         pngs[str(sheet_fp)] = sheet_fp
+        sprite_pngs[str(sheet_fp)] = sheet_fp
+
+    for key, url in (assets.get("rigs") or {}).items():
+        rig_fp = public_root / str(url).lstrip("/")
+        if not rig_fp.exists():
+            issues.append(f"[Missing Rig] rigs/{key}: {url}")
+            continue
+        rig = json.loads(rig_fp.read_text(encoding="utf-8"))
+        body_fp = rig_fp.parent / rig.get("body", {}).get("image", "body.png")
+        head_fp = rig_fp.parent / rig.get("head", {}).get("sheet", "head.png")
+        if not body_fp.exists() or not head_fp.exists():
+            issues.append(f"[Missing Rig Part] rigs/{key}: body/head image not found")
+            continue
+        fw, fh = int(rig.get("frameWidth", 0)), int(rig.get("frameHeight", 0))
+        n, hh = int(rig["head"].get("frameCount", 0)), int(rig["head"].get("frameHeight", 0))
+        with Image.open(body_fp) as b, Image.open(head_fp) as h:
+            if b.size != (fw, fh) or h.size != (fw * n, hh):
+                issues.append(f"[Rig Size Mismatch] rigs/{key}: body {b.size} / head {h.size} vs {fw}x{fh}, {n} head frames")
+        for clip, spec in (rig.get("clips") or {}).items():
+            frames = spec.get("frames", []) if isinstance(spec, dict) else spec
+            if not frames or any(not (0 <= int(f) < n) for f in frames):
+                issues.append(f"[Invalid Rig Clip] rigs/{key}.{clip}: {frames} (head frames={n})")
+        for fp in (body_fp, head_fp):
+            # palette-checked; craft quality is judged on the source spritesheet (the neck cut of
+            # body.png is a hidden seam, not a silhouette edge that needs an outline)
+            pngs[str(fp)] = fp
+
+    for group in ("portraits", "items"):
+        for url in (assets.get(group) or {}).values():
+            fp = public_root / str(url).lstrip("/")
+            if fp.exists() and fp.suffix.lower() == ".png":
+                sprite_pngs[str(fp)] = fp
+    if warnings is not None:
+        _check_art_quality(sprite_pngs, public_root, data.get("artQuality"), issues, warnings, stats)
+        _check_provenance(pngs, warnings, stats)
 
     assets_dir = sdir / "assets"
     if assets_dir.is_dir():
@@ -126,6 +215,27 @@ def _check_story_assets(
                 f"[Off-Palette Asset] {rel}: {off} colours outside '{palette}' "
                 "(re-run pixellab_clean_* with this palette)"
             )
+
+
+def _check_provenance(pngs: dict[str, Path], warnings: list[str], stats: dict[str, int]) -> None:
+    """Count assets with a provenance record; warn (never fail) about the ones without."""
+    missing = 0
+    for fp in pngs.values():
+        found = False
+        for parent in (fp.parent, fp.parent.parent):
+            mf = parent / "provenance.json"
+            if mf.exists():
+                assets = json.loads(mf.read_text(encoding="utf-8")).get("assets", {})
+                key = fp.name if parent == fp.parent else fp.parent.name
+                if key in assets:
+                    found = True
+                    break
+        if found:
+            stats["assets_with_provenance"] = stats.get("assets_with_provenance", 0) + 1
+        else:
+            missing += 1
+    if missing:
+        warnings.append(f"[No Provenance] {missing} asset(s) have no provenance.json record (cannot be rebuilt exactly)")
 
 
 def _check_tts_hash(label: str, obj: dict[str, Any], spec: Any, issues: list[str], stats: dict[str, int]) -> None:
@@ -153,6 +263,7 @@ def validate_story_folder(
         else sdir.parent.parent
     )
     issues: list[str] = []
+    warnings: list[str] = []
     stats: dict[str, int] = {"audio_checked": 0, "kanji_blocks_checked": 0}
 
     def check_audio_ref(label: str, audio_url: str | None) -> None:
@@ -181,7 +292,7 @@ def validate_story_folder(
 
     if story_json.exists():
         data = json.loads(story_json.read_text(encoding="utf-8"))
-        _check_story_assets(data, sdir, public_root, catalog_entry, issues, stats)
+        _check_story_assets(data, sdir, public_root, catalog_entry, issues, stats, warnings)
         voices = data.get("voices", {})
         for line, default_id in iter_story_lines(data):
             _check_tts_hash(f"story/{line.get('id') or default_id}", line, story_line_spec(line, voices), issues, stats)
@@ -190,6 +301,35 @@ def validate_story_folder(
                 stats["kanji_blocks_checked"] += 1
                 _check_ruby_segments(f"{sc['id']}/{ln['id']}", ln.get("jaRuby", []), issues)
                 check_audio_ref(f"{sc['id']}/{ln['id']}", ln.get("audioUrl"))
+            inter = sc.get("interaction")
+            if isinstance(inter, dict):
+                extra = [("done", inter.get("doneLine"))] + [
+                    (f"spot{i}", sp.get("line")) for i, sp in enumerate(inter.get("spots") or [])
+                ]
+                for tag, ln in extra:
+                    if isinstance(ln, dict):
+                        stats["kanji_blocks_checked"] += 1
+                        _check_ruby_segments(f"{sc['id']}/{tag}", ln.get("jaRuby", []), issues)
+                        check_audio_ref(f"{sc['id']}/{tag}", ln.get("audioUrl"))
+                texts = [it.get("label") for it in inter.get("items") or []]
+                texts += [sp.get("label") for sp in inter.get("spots") or []]
+                texts += [(inter.get("hold") or {}).get("label")]
+                for i, txt in enumerate(x for x in texts if x):
+                    _check_ruby_segments(f"{sc['id']}/interaction.label[{i}]", txt, issues)
+                for key, grp in (("items", inter.get("items") or []), ("spots", inter.get("spots") or [])):
+                    for it in grp:
+                        ref = it.get("item")
+                        if ref and ref not in ((data.get("assets") or {}).get("items") or {}):
+                            issues.append(f"[Missing Item] {sc['id']}/{key}: '{ref}' is not in assets.items")
+                hold_item = (inter.get("hold") or {}).get("item")
+                if hold_item and hold_item not in ((data.get("assets") or {}).get("items") or {}):
+                    issues.append(f"[Missing Item] {sc['id']}/hold: '{hold_item}' is not in assets.items")
+            for i, lab in enumerate(sc.get("labels") or []):
+                _check_ruby_segments(f"{sc['id']}/labels[{i}]", lab.get("text", ""), issues)
+            if sc.get("summary"):
+                _check_ruby_segments(f"{sc['id']}/summary", sc["summary"], issues)
+            if (sc.get("titleCard") or {}).get("title"):
+                _check_ruby_segments(f"{sc['id']}/titleCard", sc["titleCard"]["title"], issues)
             mg = sc.get("minigame")
             if isinstance(mg, dict):
                 for ch in mg.get("choices", []):
@@ -199,6 +339,54 @@ def validate_story_folder(
                     if isinstance(rl, dict):
                         _check_ruby_segments(f"{sc['id']}/{ch['id']}.resp", rl.get("jaRuby", []), issues)
                         check_audio_ref(f"{sc['id']}/{ch['id']}.resp", rl.get("audioUrl"))
+
+        # vibe kit (web/src/engine/cinemaVibe.ts + web/src/audio/themes.ts)
+        for line, default_id in iter_story_lines(data):
+            lid = line.get("id", default_id)
+            if line.get("emote") and line["emote"] not in VIBE_EMOTES:
+                issues.append(f"[Unknown Emote] {lid}: '{line['emote']}' (use one of {sorted(VIBE_EMOTES)})")
+            if line.get("camera") and line["camera"] not in VIBE_CAMERAS:
+                issues.append(f"[Unknown Camera] {lid}: '{line['camera']}' (use one of {sorted(VIBE_CAMERAS)})")
+            if line.get("sfx") and line["sfx"] not in VIBE_SFX | {"none"}:
+                issues.append(f"[Unknown SFX] {lid}: '{line['sfx']}' (use one of {sorted(VIBE_SFX)} or 'none')")
+            telop = line.get("telop")
+            if telop:
+                text = telop if isinstance(telop, str) else telop.get("text", "")
+                _check_ruby_segments(f"{lid}/telop", text, issues)
+        # style consistency: painted pixel backgrounds and code-drawn (proc:) backdrops look like
+        # two different worlds in one video, so mixing them is flagged
+        if data.get("engine") == "cinema":
+            refs: list[tuple[str, str]] = []
+            for sc in data.get("scenes", []):
+                if sc.get("backdrop"):
+                    refs.append((sc.get("id", "?"), sc["backdrop"]))
+                for ch in (sc.get("minigame") or {}).get("choices", []) or []:
+                    if ch.get("backdrop"):
+                        refs.append((f"{sc.get('id', '?')}/{ch.get('id', '?')}", ch["backdrop"]))
+            painted = [r for r in refs if r[1].startswith("bg:")]
+            coded = [r for r in refs if r[1].startswith("proc:")]
+            if painted and coded and not (data.get("look") or {}).get("allowMixedBackdrops"):
+                warnings.append(
+                    "[Style Mix] painted backgrounds (" + ", ".join(sorted({r[1] for r in painted})) + ") and code-drawn "
+                    "backdrops (" + ", ".join(f"{sid}: {ref}" for sid, ref in coded) + ") in one story; replace the proc: "
+                    "scenes with pixel backgrounds from the same art source (see art-src/<story>/PROMPTS.md)"
+                )
+
+        for sc in data.get("scenes", []):
+            if sc.get("light") and sc["light"] not in VIBE_LIGHTS:
+                issues.append(f"[Unknown Light] {sc.get('id')}: '{sc['light']}' (use one of {sorted(VIBE_LIGHTS)})")
+            if sc.get("bgm") and sc["bgm"] not in VIBE_BGM:
+                warnings.append(f"[Unknown BGM] {sc.get('id')}: '{sc['bgm']}' falls back to 'default'")
+
+        card = data.get("characterCard") or {}
+        card_issues: list[str] = []
+        for key in ("nameJa", "subtitle"):
+            if card.get(key):
+                _check_ruby_segments(f"characterCard.{key}", card[key], card_issues)
+        for i, fact in enumerate(card.get("facts") or []):
+            _check_ruby_segments(f"characterCard.facts[{i}]", fact.get("value", ""), card_issues)
+        # strict for stories that opt into the v2 quality gate, a warning for legacy cards
+        (issues if data.get("artQuality") else warnings).extend(card_issues)
 
         reading = data.get("reading", {})
         for sent in reading.get("sentences", []):
@@ -216,6 +404,29 @@ def validate_story_folder(
             cidx = q.get("correctIndex", -1)
             if not (0 <= cidx < len(opts)):
                 issues.append(f"[Invalid quiz correctIndex] {q['id']}: {cidx}")
+
+        # reading page v2: chapters + tappable vocab
+        sent_ids = {sent.get("id") for sent in reading.get("sentences", [])}
+        scene_ids = {sc.get("id") for sc in data.get("scenes", [])}
+        for ch in reading.get("chapters", []) or []:
+            cid = ch.get("id", "?")
+            _check_ruby_segments(f"reading.chapter/{cid}", ch.get("title", ""), issues)
+            unknown = [sid for sid in ch.get("sentenceIds", []) if sid not in sent_ids]
+            if unknown or not ch.get("sentenceIds"):
+                issues.append(f"[Bad Reading Chapter] {cid}: unknown/empty sentenceIds {unknown}")
+            if ch.get("scene") and ch["scene"] not in scene_ids:
+                issues.append(f"[Bad Reading Chapter] {cid}: unknown scene '{ch['scene']}'")
+            if ch.get("image") and not (public_root / ch["image"].lstrip("/")).exists():
+                issues.append(f"[Missing Asset] reading.chapter/{cid}: {ch['image']}")
+        def _plain(ruby: Any) -> str:
+            if isinstance(ruby, list):
+                return "".join(str(seg.get("t", "")) for seg in ruby if isinstance(seg, dict))
+            return braced_to_plain(str(ruby or ""))
+
+        plain_text = "".join(_plain(sent.get("jaRuby")) for sent in reading.get("sentences", []))
+        for v in reading.get("vocab", []):
+            if not any(n in plain_text for n in vocab_needles(v)):
+                warnings.append(f"[Vocab Not In Text] {v.get('id')}: '{v.get('word')}' is never found in the reading, so it cannot be tapped (add `forms`)")
 
     if dictation_json.exists():
         ddata = json.loads(dictation_json.read_text(encoding="utf-8"))
@@ -391,6 +602,7 @@ def validate_story_folder(
         "stats": stats,
         "issue_count": len(issues),
         "issues": issues,
+        "warnings": warnings,
     }
 
 
@@ -426,6 +638,7 @@ def validate_catalog(
     total_kanji = 0
     total_palette = 0
     total_hash = 0
+    total_warnings = 0
 
     for entry in entries:
         sid = entry["id"]
@@ -437,6 +650,7 @@ def validate_catalog(
         total_kanji += res["stats"]["kanji_blocks_checked"]
         total_palette += res["stats"].get("palette_assets_checked", 0)
         total_hash += res["stats"].get("tts_hash_checked", 0)
+        total_warnings += len(res.get("warnings", []))
         if not res["ok"]:
             failed.append(sid)
 
@@ -457,5 +671,6 @@ def validate_catalog(
         "total_kanji_blocks_checked": total_kanji,
         "total_palette_assets_checked": total_palette,
         "total_tts_hashes_checked": total_hash,
+        "total_warnings": total_warnings,
         "results": results,
     }

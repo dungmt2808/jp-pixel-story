@@ -28,6 +28,10 @@ const px = await loadTsModule("src/engine/pixelScale.ts");
 const sprite = await loadTsModule("src/engine/spriteAnimator.ts");
 const cinema = await loadTsModule("src/engine/cinemaModel.ts");
 const engines = await loadTsModule("src/engine/stageEngines.ts");
+const vibe = await loadTsModule("src/engine/cinemaVibe.ts");
+const themes = await loadTsModule("src/audio/themes.ts");
+const rig = await loadTsModule("src/engine/rigAnimator.ts");
+const ui = await loadTsModule("src/engine/cinemaUi.ts");
 
 let passed = 0;
 function test(name, fn) {
@@ -205,16 +209,134 @@ test("visibleActors: none in intro, left only in outro, explicit override wins",
 
 test("actorFocus dims only the listener during a cast line; narrator keeps both lit", () => {
   const cast = { left: { voice: "minh" }, right: { voice: "yui" } };
-  assert.deepEqual(cinema.actorFocus("left", cast, "minh"), { talking: true, active: true });
-  assert.deepEqual(cinema.actorFocus("right", cast, "minh"), { talking: false, active: false });
-  assert.deepEqual(cinema.actorFocus("right", cast, "narrator"), { talking: false, active: true });
-  assert.deepEqual(cinema.actorFocus("left", cast, null), { talking: false, active: true });
+  assert.deepEqual(cinema.actorFocus("left", cast, "minh"), { talking: true, active: true, listening: false });
+  assert.deepEqual(cinema.actorFocus("right", cast, "minh"), { talking: false, active: false, listening: true });
+  assert.deepEqual(cinema.actorFocus("right", cast, "narrator"), { talking: false, active: true, listening: false });
+  assert.deepEqual(cinema.actorFocus("left", cast, null), { talking: false, active: true, listening: false });
+  // an off-stage speaker (e.g. a voice-over from the left while only the right actor is shown) dims nobody
+  assert.deepEqual(cinema.actorFocus("right", cast, "minh", ["right"]), { talking: false, active: true, listening: false });
 });
 
 test("sceneBackdropRef: checklist override > backdrop > legacy locationBadge", () => {
   assert.equal(cinema.sceneBackdropRef({ backdrop: "bg:park", locationBadge: "bg:x" }, null), "bg:park");
   assert.equal(cinema.sceneBackdropRef({ locationBadge: "bg:ofuro" }, null), "bg:ofuro");
   assert.equal(cinema.sceneBackdropRef({ backdrop: "bg:park" }, "proc:washoku_table"), "proc:washoku_table");
+});
+
+// --- head/body rig ---------------------------------------------------------------------------
+
+const rigData = rig.normalizeRig({
+  frameWidth: 96,
+  frameHeight: 96,
+  neckRow: 57,
+  neckExtension: 3,
+  pivot: { x: 47, y: 95 },
+  body: { image: "body.png" },
+  head: { sheet: "head.png", frameHeight: 57, frameCount: 4 },
+  fps: 6,
+  clips: { idle: { frames: [0, 0, 0, 2], fps: 4 }, talk: { frames: [1, 0], fps: 7 } },
+});
+
+test("normalizeRig exposes head frames as a sprite meta and validates the neck", () => {
+  assert.equal(rigData.head.frameHeight, 57);
+  assert.equal(rigData.head.frameCount, 4);
+  assert.deepEqual(rigData.head.clips.talk.frames, [1, 0]);
+  assert.throws(() => rig.normalizeRig({ frameWidth: 96, frameHeight: 96, neckRow: 120 }));
+});
+
+test("rigPose only ever moves parts by whole pixels, within the hidden neck extension", () => {
+  for (let i = 0; i < 400; i++) {
+    const t = i * 0.037;
+    for (const st of [{ talking: true, listening: false }, { talking: false, listening: true }, { talking: false, listening: false }]) {
+      const p = rig.rigPose(st, t);
+      for (const v of [p.bodyDy, p.headDx, p.headDy]) assert.ok(Number.isInteger(v));
+      assert.ok(p.bodyDy >= -1 && p.bodyDy <= 0);
+      assert.ok(p.headDy >= -1 && p.headDy <= 1 && -p.headDy <= rigData.neckExtension);
+    }
+  }
+});
+
+test("rigPose: breathing for everyone, bobbing only when talking, nodding only when listening", () => {
+  const ts = Array.from({ length: 300 }, (_, i) => i * 0.01);
+  const dys = (st) => new Set(ts.map((t) => rig.rigPose(st, t).headDy));
+  assert.deepEqual([...dys({ talking: true, listening: false })].sort(), [-1, 0]);
+  assert.deepEqual([...dys({ talking: false, listening: true })].sort(), [0, 1]);
+  assert.deepEqual([...dys({ talking: false, listening: false })], [0]);
+  assert.ok(new Set(Array.from({ length: 400 }, (_, i) => rig.rigPose({ talking: false, listening: false }, i * 0.01).bodyDy)).size === 2);
+  // two actors breathe out of sync thanks to the phase offset
+  const same = ts.filter((t) => rig.rigPose({ talking: false, listening: false }, t).bodyDy === rig.rigPose({ talking: false, listening: false }, t, 1.3).bodyDy);
+  assert.ok(same.length < ts.length);
+});
+
+test("rigHeadFrame plays the talk clip while talking and the idle (blink) clip otherwise", () => {
+  assert.equal(rig.rigHeadFrame(rigData, true, 0), 1);
+  assert.equal(rig.rigHeadFrame(rigData, true, 0.15), 0);
+  assert.equal(rig.rigHeadFrame(rigData, false, 0.8), 2);
+  assert.equal(rig.rigHeadFrame(rigData, false, 0.1), 0);
+});
+
+// --- cinematic player v2 -------------------------------------------------------------------
+
+test("toPct maps virtual 320x200 coordinates onto the stage", () => {
+  assert.deepEqual(ui.toPct(160, 100), { left: "50%", top: "50%" });
+  assert.deepEqual(ui.toPct(0, 200), { left: "0%", top: "100%" });
+});
+
+test("pixelLine is a gap-free 1px line including both ends", () => {
+  const pts = ui.pixelLine([2, 3], [9, 6]);
+  assert.deepEqual(pts[0], [2, 3]);
+  assert.deepEqual(pts.at(-1), [9, 6]);
+  for (let i = 1; i < pts.length; i++) {
+    assert.ok(Math.abs(pts[i][0] - pts[i - 1][0]) <= 1 && Math.abs(pts[i][1] - pts[i - 1][1]) <= 1);
+  }
+  assert.equal(new Set(pts.map((p) => p[0])).size, 8); // one pixel per column on a shallow line
+});
+
+test("arcDots draws an integer arc above the straight path, excluding the ends", () => {
+  const dots = ui.arcDots([10, 100], [90, 100], 7, 20);
+  assert.equal(dots.length, 7);
+  assert.ok(dots.every(([x, y]) => Number.isInteger(x) && Number.isInteger(y) && y < 100 && x > 10 && x < 90));
+  assert.equal(Math.min(...dots.map((d) => d[1])), 80); // apex lifted by `lift`
+});
+
+test("hintText uppercases Vietnamese and appends progress", () => {
+  assert.equal(ui.hintText("kéo hộp cơm lên tấm bạt", 0, 1), "KÉO HỘP CƠM LÊN TẤM BẠT");
+  assert.equal(ui.hintText("tìm cánh hoa", 1, 3), "TÌM CÁNH HOA · 1/3");
+});
+
+test("drag: pick the item under the pointer, snap onto the target or return home", () => {
+  let items = ui.initDrag([{ id: "a", from: [40, 150], to: [160, 130] }, { id: "b", from: [80, 150], to: [200, 130] }]);
+  assert.equal(ui.pickDragItem(items, [42, 148]), 0);
+  assert.equal(ui.pickDragItem(items, [300, 10]), -1);
+  let r = ui.dropDragItem(items, 0, [100, 100]);
+  assert.equal(r.placed, false);
+  assert.deepEqual(r.items[0].pos, [40, 150]);
+  r = ui.dropDragItem(items, 0, [165, 134]);
+  assert.equal(r.placed, true);
+  assert.deepEqual(r.items[0].pos, [160, 130]);
+  items = r.items;
+  assert.equal(ui.pickDragItem(items, [160, 130]), -1); // placed items can't be picked again
+});
+
+test("tap spots are found once, hold gauge fills while held and drains slowly", () => {
+  const spots = [{ id: "p1", x: 50, y: 50 }, { id: "p2", x: 100, y: 60, r: 6 }];
+  assert.equal(ui.hitTapSpot(spots, [], [55, 52]), "p1");
+  assert.equal(ui.hitTapSpot(spots, ["p1"], [55, 52]), null);
+  assert.equal(ui.hitTapSpot(spots, [], [108, 60]), null);
+  let p = 0;
+  for (let i = 0; i < 30; i++) p = ui.stepHold(p, true, 0.1, 2);
+  assert.equal(p, 1);
+  const after = ui.stepHold(0.5, false, 0.1, 2);
+  assert.ok(after < 0.5 && after > 0.45);
+  assert.equal(ui.stepHold(0, false, 1, 2), 0);
+});
+
+test("ditherDissolve keeps more of the old frame as amount grows, none at 0, all at 1", () => {
+  const w = 8, h = 8;
+  const mk = (v) => new Uint8ClampedArray(w * h * 4).fill(v);
+  const count = (a) => { let n = 0; for (let i = 0; i < a.length; i += 4) if (a[i] === 200) n++; return n; };
+  const results = [0, 0.25, 0.5, 1].map((amt) => { const cur = mk(10); ui.ditherDissolve(cur, mk(200), w, h, amt, 1); return count(cur); });
+  assert.deepEqual(results, [0, 16, 32, 64]);
 });
 
 // --- engine routing ------------------------------------------------------------------------
@@ -225,6 +347,46 @@ test("resolveStageEngine routes by story.engine, not by hard-coded story ids", (
   assert.equal(engines.resolveStageEngine({ scenes: [{ type: "depato_intro" }] }), "depato");
   assert.equal(engines.resolveStageEngine({ scenes: [{ type: "cinema_intro" }] }), "cinema");
   assert.equal(engines.resolveStageEngine({ scenes: [{ type: "skyline_intro" }] }), "pixel");
+});
+
+
+test("camera: identity by default, push eases in toward the speaker, crops stay inside the frame", () => {
+  assert.deepEqual(vibe.cameraAt(undefined, 1, [60, 80]), vibe.IDENTITY_VIEW);
+  const start = vibe.cameraAt("push", 0, [60, 80]);
+  const end = vibe.cameraAt("push", 5, [60, 80]);
+  assert.equal(start.zoom, 1);
+  assert.ok(end.zoom > 1.15 && end.zoom <= 1.2);
+  assert.ok(end.cx < 160, "moves toward the left speaker");
+  for (const view of [end, vibe.cameraAt("close", 0, [2, 2]), vibe.cameraAt("punch", 0.05, [318, 198])]) {
+    const r = vibe.cameraSourceRect(view);
+    assert.ok(r.sx >= 0 && r.sy >= 0 && r.sx + r.sw <= 320.0001 && r.sy + r.sh <= 200.0001, JSON.stringify(r));
+  }
+  // shake settles back to the centre with whole-pixel offsets
+  const shaking = vibe.cameraAt("shake", 0.1, [0, 0]);
+  assert.ok(Number.isInteger(shaking.cx - 160) && Number.isInteger(shaking.cy - 100));
+  assert.deepEqual([vibe.cameraAt("shake", 2, [0, 0]).cx, vibe.cameraAt("shake", 2, [0, 0]).cy], [160, 100]);
+});
+
+test("lineSfx: explicit sfx wins, 'none' silences, emotes bring a default sound", () => {
+  assert.equal(vibe.lineSfx({ emote: "shock" }), "shock");
+  assert.equal(vibe.lineSfx({ emote: "shock", sfx: "ding" }), "ding");
+  assert.equal(vibe.lineSfx({ emote: "shock", sfx: "none" }), null);
+  assert.equal(vibe.lineSfx({ emote: "dots" }), null);
+  assert.equal(vibe.lineSfx(null), null);
+  // every default sound exists in the shared SFX set
+  for (const e of vibe.EMOTE_NAMES) {
+    const name = vibe.lineSfx({ emote: e });
+    if (name) assert.ok(themes.sfxUrl(name), `${e} -> ${name}`);
+  }
+});
+
+test("BGM moods resolve to real themes; unknown names fall back to default", () => {
+  assert.equal(themes.resolveBgmTheme("happy"), "depato_sunny");
+  assert.equal(themes.resolveBgmTheme("tender"), "depato_rain");
+  assert.equal(themes.resolveBgmTheme("none"), "none");
+  assert.equal(themes.resolveBgmTheme("polka"), "default");
+  assert.equal(themes.resolveBgmTheme(undefined), "default");
+  for (const th of Object.values(themes.BGM_THEMES)) assert.equal(th.melody.length, th.bass.length);
 });
 
 console.log(`\nALL ${passed} ENGINE TESTS PASSED!`);
