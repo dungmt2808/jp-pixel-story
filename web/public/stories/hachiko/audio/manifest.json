@@ -3,107 +3,149 @@
     "{東京|とうきょう}の{渋谷|しぶや}に、{上野|うえの}{先生|せんせい}という{大学|だいがく}の{先生|せんせい}が{住|す}んでいました。": {
       "file": "audio/line_00.mp3",
       "durationSec": 5.184,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "a3ffec1ebb19"
     },
     "1924{年|ねん}、{先生|せんせい}の{家|いえ}に{秋田犬|あきたいぬ}の{子犬|こいぬ}が{来|き}ました。": {
       "file": "audio/line_01.mp3",
       "durationSec": 5.035,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "4f873e924b8e"
     },
     "{名前|なまえ}は「ハチ」。{先生|せんせい}はハチをとてもかわいがりました。": {
       "file": "audio/line_02.mp3",
       "durationSec": 4.608,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "16b433c96df6"
     },
     "{毎朝|まいあさ}、ハチは{先生|せんせい}といっしょに{渋谷駅|しぶやえき}まで{歩|ある}きました。": {
       "file": "audio/line_03.mp3",
       "durationSec": 4.576,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "b77fdc7523c1"
     },
     "{先生|せんせい}は{電車|でんしゃ}で{大学|だいがく}へ{行|い}きました。": {
       "file": "audio/line_04.mp3",
       "durationSec": 2.741,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "d2ecc3c16fe9"
     },
     "{夕方|ゆうがた}になると、ハチは{駅|えき}の{前|まえ}で{先生|せんせい}を{待|ま}っていました。": {
       "file": "audio/line_05.mp3",
       "durationSec": 4.405,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "a655b5b8bf98"
     },
     "「おかえりなさい!」{毎日|まいにち}、ハチはとてもうれしそうでした。": {
       "file": "audio/line_06.mp3",
       "durationSec": 4.597,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "d8db2e2ad03a"
     },
     "ところが、1925{年|ねん}5{月|がつ}、{先生|せんせい}は{大学|だいがく}で{急|きゅう}に{亡|な}くなってしまいました。": {
       "file": "audio/line_07.mp3",
       "durationSec": 6.645,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "c00cea5fd978"
     },
     "その{日|ひ}も、ハチは{駅|えき}で{先生|せんせい}を{待|ま}っていました。": {
       "file": "audio/line_08.mp3",
       "durationSec": 3.531,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "bc2dab88207f"
     },
     "いくら{待|ま}っても、{先生|せんせい}は{帰|かえ}ってきませんでした。": {
       "file": "audio/line_09.mp3",
       "durationSec": 3.669,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "00f69d7da57a"
     },
     "それから、ハチは{毎日|まいにち}{駅|えき}へ{行|い}って、{先生|せんせい}を{待|ま}つようになりました。": {
       "file": "audio/line_10.mp3",
       "durationSec": 5.205,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "b579ff2bbc30"
     },
     "{雨|あめ}の{日|ひ}も、{雪|ゆき}の{日|ひ}も、ハチは{待|ま}ちつづけました。": {
       "file": "audio/line_11.mp3",
       "durationSec": 3.872,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "72380c18ac54"
     },
     "はじめは、ハチをじゃまだと{思|おも}う{人|ひと}もいました。": {
       "file": "audio/line_12.mp3",
       "durationSec": 3.403,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "e359e68a961c"
     },
     "1932{年|ねん}、{新聞|しんぶん}がハチの{話|はなし}を{書|か}くと、ハチは{日本中|にほんじゅう}で{有名|ゆうめい}になりました。": {
       "file": "audio/line_13.mp3",
       "durationSec": 7.125,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "c874b67c815e"
     },
     "たくさんの{人|ひと}が、ハチに{会|あ}いに{来|き}ました。": {
       "file": "audio/line_14.mp3",
       "durationSec": 2.987,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "d0185d24f12a"
     },
     "1934{年|ねん}、{駅|えき}の{前|まえ}にハチの{銅像|どうぞう}が{作|つく}られました。": {
       "file": "audio/line_15.mp3",
       "durationSec": 5.003,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "308573a9e324"
     },
     "ハチも、そこにいました。": {
       "file": "audio/line_16.mp3",
       "durationSec": 2.112,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "e813658f94c4"
     },
     "1935{年|ねん}3{月|がつ}、ハチは{死|し}にました。11さいでした。": {
       "file": "audio/line_17.mp3",
       "durationSec": 5.621,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "741353626db3"
     },
     "{先生|せんせい}を10{年|ねん}{近|ちか}く{待|ま}ちつづけたのです。": {
       "file": "audio/line_18.mp3",
       "durationSec": 3.008,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "30b733cb653f"
     },
     "{今|いま}、ハチ{公|こう}{像|ぞう}は{人気|にんき}の{待|ま}ち{合|あ}わせ{場所|ばしょ}です。": {
       "file": "audio/line_19.mp3",
       "durationSec": 3.701,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "3c8b8a7d3980"
     },
     "「ハチ{公|こう}{前|まえ}で{会|あ}おう!」": {
       "file": "audio/line_20.mp3",
       "durationSec": 1.557,
-      "speakerId": 8
+      "speakerId": 8,
+      "speedScale": 0.91,
+      "ttsHash": "2a56b3c30e97"
     },
     "{先生|せんせい}は、{来|き}ません…": {
       "file": "audio/msg_21.mp3",
@@ -130,32 +172,44 @@
     "para_0": {
       "file": "audio/para_00.mp3",
       "durationSec": 16.0,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "9ca6c25d231d"
     },
     "para_1": {
       "file": "audio/para_01.mp3",
       "durationSec": 10.347,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "7b898416e003"
     },
     "para_2": {
       "file": "audio/para_02.mp3",
       "durationSec": 11.157,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "73cf0fa077cf"
     },
     "para_3": {
       "file": "audio/para_03.mp3",
       "durationSec": 11.84,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "5dc02080bd86"
     },
     "para_4": {
       "file": "audio/para_04.mp3",
       "durationSec": 12.587,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "f3e715c4f770"
     },
     "para_5": {
       "file": "audio/para_05.mp3",
       "durationSec": 12.171,
-      "speakerId": 13
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "ttsHash": "f019ac9ca017"
     }
   }
 }

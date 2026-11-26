@@ -6,7 +6,7 @@
   "titleVi": "JLPT N4 12/2025 (問題5) · Tuần trải nghiệm cuộc sống Nhật Bản của Lisa",
   "level": "JLPT N4 · 12/2025",
   "author": "JLPT N4 12/2025 (問題5 · リサ・アンドラーダ)",
-  "palette": "ramen_midnight",
+  "palette": "jp_story_master",
   "assets": {
     "backgrounds": {
       "ofuro": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_ofuro.png",
@@ -73,7 +73,8 @@
           "jaRuby": "{子|こ}どものとき、よく{見|み}ていた{日本|にほん}のアニメがあります。いつか{日本|にほん}に{行|い}って、{和食|わしょく}を{食|た}べたり、お{湯|ゆ}がたくさん{入|はい}った{風呂|ふろ}に{入|はい}ったりしてみたいと{思|おも}っていました。",
           "vi": "Hồi nhỏ tôi rất hay xem một bộ anime Nhật Bản. Tôi luôn ước một ngày nào đó được đến Nhật ăn món washoku và ngâm mình trong bồn nước nóng đầy ắp.",
           "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l01_l01.mp3",
-          "durationSec": 13.845
+          "durationSec": 13.845,
+          "ttsHash": "98aa077fb9e5"
         }
       ]
     },
@@ -93,7 +94,8 @@
           "jaRuby": "リサさん、{夏休|なつやす}みにぜひうちに{遊|あそ}びに{来|き}ませんか。{毎日|まいにち}、さしみやみそ{汁|しる}を{作|つく}って{待|ま}っているよ！",
           "vi": "Lisa ơi, nghỉ hè nhất định sang nhà mình chơi nhé! Ngày nào nhà mình cũng nấu sashimi và súp miso chờ cậu đấy!",
           "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l02_l01.mp3",
-          "durationSec": 9.003
+          "durationSec": 9.003,
+          "ttsHash": "4da0f19dcbce"
         },
         {
           "id": "l02_l02",
@@ -103,7 +105,8 @@
           "jaRuby": "{先月|せんげつ}、{一週間|いっしゅうかん}{日本|にほん}に{行|い}きました。{春子|はるこ}さんの{家|いえ}では{毎日|まいにち}{和食|わしょく}を{食|た}べて、{風呂|ふろ}にも{入|はい}りました。アニメで{見|み}たのと{同|おな}じ{生活|せいかつ}ができて、うれしかったです。",
           "vi": "Tháng trước tôi đã sang Nhật 1 tuần. Ở nhà Haruko, ngày nào tôi cũng được ăn cơm Nhật và tắm bồn. Sống đúng như trong anime nên tôi vui vô cùng.",
           "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l02_l02.mp3",
-          "durationSec": 14.955
+          "durationSec": 14.955,
+          "ttsHash": "874ad4f2e77d"
         }
       ],
       "minigame": {
@@ -122,7 +125,8 @@
               "jaRuby": "わあ、さしみもみそ{汁|しる}も{本当|ほんとう}においしい！",
               "vi": "Oa, cả sashimi lẫn súp miso đều ngon tuyệt vời!",
               "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l02_c01.mp3",
-              "durationSec": 3.979
+              "durationSec": 3.979,
+              "ttsHash": "8e86fe55d3cf"
             }
           },
           {
@@ -138,7 +142,8 @@
               "jaRuby": "あたたかいお{湯|ゆ}、アニメで{見|み}たとおりで{最高|さいこう}です！",
               "vi": "Nước ấm đúng hệt như trong anime, tuyệt quá!",
               "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l02_c02.mp3",
-              "durationSec": 4.416
+              "durationSec": 4.416,
+              "ttsHash": "0c0ed4c6c50d"
             }
           }
         ]
@@ -159,7 +164,8 @@
           "jaRuby": "{春子|はるこ}さん、{一週間|いっしゅうかん}{本当|ほんとう}にありがとう！{日本人|にほんじん}の{生活|せいかつ}を{経験|けいけん}できて、すごく{楽|たの}しかったよ。",
           "vi": "Haruko ơi, cảm ơn cậu suốt 1 tuần qua nhé! Được trải nghiệm cuộc sống người Nhật vui thật đấy!",
           "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l03_l01.mp3",
-          "durationSec": 9.547
+          "durationSec": 9.547,
+          "ttsHash": "e55360dbdf0b"
         },
         {
           "id": "l03_l02",
@@ -169,7 +175,8 @@
           "jaRuby": "えへへ、{実|じつ}はね…いつもはちょっと{違|ちが}うんだ。うちの{家族|かぞく}は、{和食|わしょく}はあまり{食|た}べないし、{風呂|ふろ}に{入|はい}るよりシャワーを{使|つか}うことのほうが{多|おお}いんだよ。",
           "vi": "Hihi, thật ra thì... bình thường hơi khác chút đấy. Gia đình mình ít ăn món Nhật lắm, và cũng hay tắm vòi sen nhiều hơn là ngâm bồn cơ.",
           "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l03_l02.mp3",
-          "durationSec": 12.416
+          "durationSec": 12.416,
+          "ttsHash": "5e4566947055"
         }
       ]
     },
@@ -186,7 +193,8 @@
           "jaRuby": "{春子|はるこ}さんたちは、{私|わたし}を{喜|よろこ}ばせるために、いつもはしていない「{日本|にほん}の{生活|せいかつ}」をしてくれたのです。{私|わたし}は、{春子|はるこ}さんたちの{気持|きも}ちを{知|し}って、うれしくなりました。",
           "vi": "Gia đình Haruko đã làm 'cuộc sống kiểu Nhật' mà bình thường họ chẳng làm, chỉ để khiến tôi vui. Hiểu được tấm lòng của họ, tôi càng thấy hạnh phúc hơn.",
           "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/l04_l01.mp3",
-          "durationSec": 16.224
+          "durationSec": 16.224,
+          "ttsHash": "c4ed29fe51fd"
         }
       ]
     }
@@ -206,7 +214,8 @@
           "furo"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_01.mp3",
-        "durationSec": 14.571
+        "durationSec": 14.571,
+        "ttsHash": "58ab97c57b46"
       },
       {
         "id": "lr_02",
@@ -219,7 +228,8 @@
           "nakanaka"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_02.mp3",
-        "durationSec": 9.877
+        "durationSec": 9.877,
+        "ttsHash": "bae19a7950e7"
       },
       {
         "id": "lr_03",
@@ -231,7 +241,8 @@
           "keiken"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_03.mp3",
-        "durationSec": 21.707
+        "durationSec": 21.707,
+        "ttsHash": "b676a21542b2"
       },
       {
         "id": "lr_04",
@@ -244,7 +255,8 @@
           "furo"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_04.mp3",
-        "durationSec": 10.741
+        "durationSec": 10.741,
+        "ttsHash": "0f23b639fff7"
       },
       {
         "id": "lr_05",
@@ -257,7 +269,8 @@
           "chigau"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_05.mp3",
-        "durationSec": 21.845
+        "durationSec": 21.845,
+        "ttsHash": "52a51aa62fb9"
       },
       {
         "id": "lr_06",
@@ -270,7 +283,8 @@
           "furo"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_06.mp3",
-        "durationSec": 9.227
+        "durationSec": 9.227,
+        "ttsHash": "e82d7b8ebc5e"
       },
       {
         "id": "lr_07",
@@ -283,7 +297,8 @@
           "seikatsu"
         ],
         "audioUrl": "/stories/jlpt-n4-2025-12-japan-life/audio/lr_07.mp3",
-        "durationSec": 15.477
+        "durationSec": 15.477,
+        "ttsHash": "46ecf7e8efc8"
       }
     ],
     "vocab": [

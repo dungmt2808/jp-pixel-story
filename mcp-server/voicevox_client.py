@@ -14,6 +14,17 @@ from typing import Any
 
 import httpx
 
+from tts_spec import (
+    RUBY_BRACE_RE,
+    TtsSpec,
+    braced_to_plain,
+    cache_decision,
+    dokkai_sentence_spec,
+    iter_story_lines,
+    standalone_spec,
+    story_line_spec,
+)
+
 DEFAULT_VOICEVOX_URL = os.environ.get("VOICEVOX_URL", "http://127.0.0.1:50021")
 
 
@@ -46,6 +57,28 @@ def get_wav_duration_sec(wav_path: Path) -> float:
         frames = wf.getnframes()
         rate = wf.getframerate()
         return round(frames / float(rate), 3) if rate > 0 else 0.0
+
+
+def get_audio_duration_sec(path: Path) -> float | None:
+    """Duration of a WAV (exact) or any FFmpeg-readable file (via ffprobe); None if unknown."""
+    if path.suffix.lower() == ".wav":
+        try:
+            return get_wav_duration_sec(path)
+        except (wave.Error, EOFError):
+            pass
+    ffprobe = shutil.which("ffprobe")
+    if not ffprobe:
+        return None
+    try:
+        out = subprocess.run(
+            [ffprobe, "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        return round(float(out), 3)
+    except (subprocess.CalledProcessError, ValueError):
+        return None
 
 
 async def check_voicevox_health(base_url: str = DEFAULT_VOICEVOX_URL) -> dict[str, Any]:
@@ -142,6 +175,69 @@ async def synthesize_line(
     }
 
 
+async def _render_clip(spec: TtsSpec, out_path: Path, ext: str, base_url: str) -> float:
+    """Synthesize one clip to WAV (or WAV->MP3) and return its exact duration in seconds."""
+    if ext == "mp3":
+        with tempfile.TemporaryDirectory() as td:
+            tmp_wav = Path(td) / f"{out_path.stem}.wav"
+            res = await synthesize_line(output_path=tmp_wav, base_url=base_url, **spec.synth_kwargs())
+            _convert_wav_to_mp3(tmp_wav, out_path)
+            return float(res["duration_sec"])
+    res = await synthesize_line(output_path=out_path, base_url=base_url, **spec.synth_kwargs())
+    return float(res["duration_sec"])
+
+
+class _ClipCache:
+    """Bookkeeping shared by every batch generator (generated / kept / backfilled)."""
+
+    def __init__(self, audio_dir: Path, ext: str, force: bool, base_url: str) -> None:
+        self.audio_dir = audio_dir
+        self.ext = ext
+        self.force = force
+        self.base_url = base_url
+        self.generated: list[dict[str, Any]] = []
+        self.skipped: list[str] = []
+        self.backfilled: list[str] = []
+
+    async def ensure(
+        self, clip_id: str, spec: TtsSpec, stored_hash: str | None, stored_duration: Any
+    ) -> tuple[str, float, str]:
+        """Return (file_name, duration_sec, ttsHash), synthesizing only when needed."""
+        out_name = f"{clip_id}.{self.ext}"
+        out_path = self.audio_dir / out_name
+        new_hash = spec.fingerprint()
+        decision = cache_decision(
+            exists=out_path.exists(), stored_hash=stored_hash, new_hash=new_hash, force=self.force
+        )
+        if decision in ("fresh", "legacy"):
+            duration = float(stored_duration) if stored_duration else (get_audio_duration_sec(out_path) or 0.0)
+            (self.backfilled if decision == "legacy" else self.skipped).append(out_name)
+            return out_name, duration, new_hash
+        duration = await _render_clip(spec, out_path, self.ext, self.base_url)
+        self.generated.append(
+            {
+                "file": out_name,
+                "reason": decision,
+                "speaker_id": spec.speaker_id,
+                "duration_sec": duration,
+                "text": spec.text,
+            }
+        )
+        return out_name, duration, new_hash
+
+    def summary(self) -> dict[str, Any]:
+        return {
+            "generated_count": len(self.generated),
+            "skipped_count": len(self.skipped),
+            "backfilled_count": len(self.backfilled),
+            "generated": self.generated,
+        }
+
+
+def _pick_ext(audio_format: str) -> str:
+    return "mp3" if (audio_format == "mp3" and shutil.which("ffmpeg")) else "wav"
+
+
 async def generate_story_audio(
     story_json_path: str | Path,
     *,
@@ -149,128 +245,43 @@ async def generate_story_audio(
     audio_format: str = "mp3",
     base_url: str = DEFAULT_VOICEVOX_URL,
 ) -> dict[str, Any]:
-    """Batch-generate VOICEVOX audio files (mp3 or wav) for all lines in story.json and update durations."""
+    """Batch-generate VOICEVOX audio (mp3 or wav) for every voiced line in story.json.
+
+    Writes `audioUrl`, `durationSec` and `ttsHash` back. A clip is re-synthesized when it is
+    missing, when `force=True`, or when its text/voice/prosody changed (hash mismatch).
+    """
     story_file = Path(story_json_path).expanduser().resolve()
     story = json.loads(story_file.read_text(encoding="utf-8"))
-
     story_dir = story_file.parent
     audio_dir = story_dir / "audio"
     audio_dir.mkdir(parents=True, exist_ok=True)
-
-    ext = "mp3" if (audio_format == "mp3" and shutil.which("ffmpeg")) else "wav"
     story_id = story.get("id", story_dir.name)
     voices: dict[str, dict[str, Any]] = story.get("voices", {})
-    generated: list[dict[str, Any]] = []
-    skipped: list[str] = []
+    cache = _ClipCache(audio_dir, _pick_ext(audio_format), force, base_url)
 
-    async def process_line_obj(line: dict[str, Any], default_id: str) -> None:
-        # Prefer natural Japanese with Kanji (`ttsText` only if explicitly overriding a misread word)
-        raw_ja = line.get("ja") if isinstance(line.get("ja"), str) else (
-            line.get("jaRuby") if isinstance(line.get("jaRuby"), str) else None
+    for line, default_id in iter_story_lines(story):
+        spec = story_line_spec(line, voices)
+        if spec is None:
+            continue
+        name, duration, tts_hash = await cache.ensure(
+            line.get("id") or default_id, spec, line.get("ttsHash"), line.get("durationSec")
         )
-        plain_from_ruby = _RUBY_BRACE_RE.sub(r"\1", raw_ja) if isinstance(raw_ja, str) else None
-        tts_text = line.get("ttsText") or line.get("jaPlain") or plain_from_ruby
-        if not tts_text:
-            return
-        line_id = line.get("id") or default_id
-        voice_key = line.get("voice", "narrator")
-        voice_cfg = voices.get(voice_key, {"speakerId": 13, "speedScale": 0.92})
-        speaker_id = int(line.get("speakerId", voice_cfg.get("speakerId", 13)))
-        speed_scale = float(line.get("speedScale", voice_cfg.get("speedScale", 0.92)))
-        pitch_scale = float(line.get("pitchScale", voice_cfg.get("pitchScale", 0.0)))
-        intonation_scale = float(line.get("intonationScale", voice_cfg.get("intonationScale", 1.12)))
-        pause_length_scale = float(line.get("pauseLengthScale", voice_cfg.get("pauseLengthScale", 1.12)))
+        line["audioUrl"] = f"/stories/{story_id}/audio/{name}"
+        line["durationSec"] = duration
+        line["ttsHash"] = tts_hash
 
-        out_name = f"{line_id}.{ext}"
-        out_path = audio_dir / out_name
-
-        if out_path.exists() and not force:
-            duration_sec = (
-                get_wav_duration_sec(out_path)
-                if ext == "wav"
-                else float(line.get("durationSec") or 0.0)
-            )
-            skipped.append(out_name)
-        else:
-            if ext == "mp3":
-                with tempfile.TemporaryDirectory() as td:
-                    tmp_wav = Path(td) / f"{line_id}.wav"
-                    res = await synthesize_line(
-                        text=tts_text,
-                        speaker_id=speaker_id,
-                        output_path=tmp_wav,
-                        speed_scale=speed_scale,
-                        pitch_scale=pitch_scale,
-                        intonation_scale=intonation_scale,
-                        pause_length_scale=pause_length_scale,
-                        base_url=base_url,
-                    )
-                    _convert_wav_to_mp3(tmp_wav, out_path)
-                    duration_sec = res["duration_sec"]
-            else:
-                res = await synthesize_line(
-                    text=tts_text,
-                    speaker_id=speaker_id,
-                    output_path=out_path,
-                    speed_scale=speed_scale,
-                    pitch_scale=pitch_scale,
-                    intonation_scale=intonation_scale,
-                    pause_length_scale=pause_length_scale,
-                    base_url=base_url,
-                )
-                duration_sec = res["duration_sec"]
-            generated.append(
-                {
-                    "file": out_name,
-                    "speaker_id": speaker_id,
-                    "duration_sec": duration_sec,
-                    "text": tts_text,
-                }
-            )
-
-        line["audioUrl"] = f"/stories/{story_id}/audio/{out_name}"
-        line["durationSec"] = duration_sec
-
-    # 1. Process scene lines & branch responses
-    for s_idx, scene in enumerate(story.get("scenes", [])):
-        for l_idx, line in enumerate(scene.get("lines", [])):
-            await process_line_obj(line, f"s{s_idx+1:02d}_l{l_idx+1:02d}")
-
-        minigame = scene.get("minigame")
-        if isinstance(minigame, dict):
-            for c_idx, choice in enumerate(minigame.get("choices", [])):
-                if isinstance(choice.get("responseLine"), dict):
-                    await process_line_obj(
-                        choice["responseLine"], f"s{s_idx+1:02d}_c{c_idx+1:02d}"
-                    )
-
-    # 2. Process reading passage sentences (for click-to-listen in ReadingView)
-    reading = story.get("reading")
-    if isinstance(reading, dict):
-        for p_idx, sent in enumerate(reading.get("sentences", [])):
-            await process_line_obj(sent, f"read_{p_idx+1:02d}")
-
-    story_file.write_text(
-        json.dumps(story, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
-    return {
-        "ok": True,
-        "story_json": str(story_file),
-        "audio_dir": str(audio_dir),
-        "generated_count": len(generated),
-        "skipped_count": len(skipped),
-        "generated": generated,
-    }
+    story_file.write_text(json.dumps(story, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return {"ok": True, "story_json": str(story_file), "audio_dir": str(audio_dir), **cache.summary()}
 
 
-_RUBY_BRACE_RE = re.compile(r"\{([^|}]+)\|([^}]+)\}")
+_RUBY_BRACE_RE = RUBY_BRACE_RE
 
 
 def _parse_braced_ruby(text: str) -> list[dict[str, str]]:
     """Convert `{漢字|かんじ}` markup into RubySegment list for DictationView."""
     segs: list[dict[str, str]] = []
     pos = 0
-    for m in _RUBY_BRACE_RE.finditer(text):
+    for m in RUBY_BRACE_RE.finditer(text):
         if m.start() > pos:
             segs.append({"t": text[pos : m.start()]})
         segs.append({"t": m.group(1), "r": m.group(2)})
@@ -282,8 +293,7 @@ def _parse_braced_ruby(text: str) -> list[dict[str, str]]:
 
 def _braced_to_tts_kanji(text: str) -> str:
     """Strip inline highlight tags and `{漢字|かんじ}` ruby to natural Kanji for authentic pitch accent."""
-    clean = re.sub(r"<<[a-z0-9]+:(.*?)>>", r"\1", text)
-    return _RUBY_BRACE_RE.sub(r"\1", clean)
+    return braced_to_plain(text)
 
 
 async def generate_dokkai_audio(
@@ -294,97 +304,30 @@ async def generate_dokkai_audio(
     base_url: str = DEFAULT_VOICEVOX_URL,
 ) -> dict[str, Any]:
     """Batch-generate VOICEVOX MP3/WAV audio for every sentence in a JLPT dokkai.json file
-    and write `audioUrl` + `durationSec` back automatically.
+    and write `audioUrl` + `durationSec` + `ttsHash` back (hash-aware cache, see generate_story_audio).
     """
     dokkai_file = Path(dokkai_json_path).expanduser().resolve()
     data = json.loads(dokkai_file.read_text(encoding="utf-8"))
     pack_id = data["id"]
     audio_dir = dokkai_file.parent / "audio"
     audio_dir.mkdir(parents=True, exist_ok=True)
-
-    ext = "mp3" if audio_format == "mp3" and shutil.which("ffmpeg") else "wav"
-    doc_default_speaker = {
-        "email": 46,      # 小夜/SAYO
-        "memo": 46,       # 小夜/SAYO
-        "essay": 23,      # WhiteCUL ノーマル
-        "notice": 13,     # 青山龍星 ノーマル
-        "info_table": 13, # 青山龍星 ノーマル
-    }
-
-    generated: list[dict[str, Any]] = []
-    skipped: list[str] = []
+    cache = _ClipCache(audio_dir, _pick_ext(audio_format), force, base_url)
 
     for passage in data.get("passages", []):
-        default_spk = doc_default_speaker.get(passage.get("docStyle", ""), 13)
         for s_idx, sent in enumerate(passage.get("sentences", [])):
-            sid = sent.get("id") or f"{passage['id']}_s{s_idx+1}"
-            raw_text = sent.get("ttsText") or sent.get("jaPlain") or ""
-            if not raw_text and isinstance(sent.get("jaRuby"), str):
-                raw_text = _braced_to_tts_kanji(sent["jaRuby"])
-            tts_text = raw_text.lstrip("※").strip()
-            if not tts_text:
+            spec = dokkai_sentence_spec(sent, passage)
+            if spec is None:
                 continue
+            sid = sent.get("id") or f"{passage['id']}_s{s_idx + 1}"
+            name, duration, tts_hash = await cache.ensure(
+                sid, spec, sent.get("ttsHash"), sent.get("durationSec")
+            )
+            sent["audioUrl"] = f"/stories/{pack_id}/audio/{name}"
+            sent["durationSec"] = round(duration, 2)
+            sent["ttsHash"] = tts_hash
 
-            speaker_id = int(sent.get("speakerId", default_spk))
-            speed_scale = float(sent.get("speedScale", 0.98))
-            intonation_scale = float(sent.get("intonationScale", 1.08))
-            out_name = f"{sid}.{ext}"
-            out_path = audio_dir / out_name
-
-            if out_path.exists() and not force:
-                duration_sec = (
-                    get_wav_duration_sec(out_path)
-                    if ext == "wav"
-                    else float(sent.get("durationSec") or 0.0)
-                )
-                skipped.append(out_name)
-            else:
-                if ext == "mp3":
-                    with tempfile.TemporaryDirectory() as td:
-                        tmp_wav = Path(td) / f"{sid}.wav"
-                        res = await synthesize_line(
-                            text=tts_text,
-                            speaker_id=speaker_id,
-                            output_path=tmp_wav,
-                            speed_scale=speed_scale,
-                            intonation_scale=intonation_scale,
-                            base_url=base_url,
-                        )
-                        _convert_wav_to_mp3(tmp_wav, out_path)
-                        duration_sec = res["duration_sec"]
-                else:
-                    res = await synthesize_line(
-                        text=tts_text,
-                        speaker_id=speaker_id,
-                        output_path=out_path,
-                        speed_scale=speed_scale,
-                        intonation_scale=intonation_scale,
-                        base_url=base_url,
-                    )
-                    duration_sec = res["duration_sec"]
-                generated.append(
-                    {
-                        "file": out_name,
-                        "speaker_id": speaker_id,
-                        "duration_sec": duration_sec,
-                        "text": tts_text,
-                    }
-                )
-
-            sent["audioUrl"] = f"/stories/{pack_id}/audio/{out_name}"
-            sent["durationSec"] = round(duration_sec, 2)
-
-    dokkai_file.write_text(
-        json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
-    return {
-        "ok": True,
-        "dokkai_json": str(dokkai_file),
-        "audio_dir": str(audio_dir),
-        "generated_count": len(generated),
-        "skipped_count": len(skipped),
-        "generated": generated,
-    }
+    dokkai_file.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return {"ok": True, "dokkai_json": str(dokkai_file), "audio_dir": str(audio_dir), **cache.summary()}
 
 
 async def generate_standalone_pack(
@@ -397,10 +340,15 @@ async def generate_standalone_pack(
     speaker_id: int = 13,
     speed_scale: float = 0.91,
     force: bool = False,
+    rebuild_dictation: bool = False,
     base_url: str = DEFAULT_VOICEVOX_URL,
 ) -> dict[str, Any]:
     """Scan a standalone interactive HTML story (using `sayW` & `PASSAGE` with `{漢字|かんじ}`),
     synthesize VOICEVOX MP3 clips + `audio/manifest.json`, and generate `dictation.json` for Daily Dictation.
+
+    Hash-aware: unchanged clips are reused (both MP3 and WAV), edited lines are re-synthesized.
+    Merge-safe: hand-made manifest entries and per-entry speakerId/speedScale overrides are kept,
+    and an existing dictation.json is only refreshed (pass rebuild_dictation=True to regenerate).
     """
     html_file = Path(html_path).expanduser().resolve()
     story_dir = html_file.parent
@@ -408,38 +356,36 @@ async def generate_standalone_pack(
     audio_dir.mkdir(parents=True, exist_ok=True)
     html = html_file.read_text(encoding="utf-8")
 
-    ext = "mp3" if shutil.which("ffmpeg") else "wav"
+    manifest_path = audio_dir / "manifest.json"
+    old_manifest: dict[str, Any] = {}
+    if manifest_path.exists():
+        old_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    cache = _ClipCache(audio_dir, _pick_ext("mp3"), force, base_url)
     manifest: dict[str, dict[str, Any]] = {"lines": {}, "paragraphs": {}}
     dictation_items: list[dict[str, Any]] = []
     seen_lines: set[str] = set()
 
-    async def synth_one(fid: str, tts_text: str) -> tuple[str, float]:
-        out_name = f"{fid}.{ext}"
-        out_path = audio_dir / out_name
-        if out_path.exists() and not force and ext == "wav":
-            return f"audio/{out_name}", get_wav_duration_sec(out_path)
-
-        if ext == "mp3":
-            with tempfile.TemporaryDirectory() as td:
-                tmp_wav = Path(td) / f"{fid}.wav"
-                res = await synthesize_line(
-                    tts_text,
-                    speaker_id=speaker_id,
-                    output_path=tmp_wav,
-                    speed_scale=speed_scale,
-                    base_url=base_url,
-                )
-                _convert_wav_to_mp3(tmp_wav, out_path)
-                return f"audio/{out_name}", res["duration_sec"]
-
-        res = await synthesize_line(
-            tts_text,
-            speaker_id=speaker_id,
-            output_path=out_path,
-            speed_scale=speed_scale,
-            base_url=base_url,
+    async def synth_one(fid: str, raw_ja: str, old: dict[str, Any] | None) -> dict[str, Any]:
+        old = old or {}
+        # Per-entry overrides curated by hand in manifest.json win over the pack defaults.
+        spk = int(old.get("speakerId", speaker_id))
+        spd = float(old.get("speedScale", speed_scale))
+        spec = standalone_spec(raw_ja, spk, spd)
+        expected_file = f"audio/{fid}.{cache.ext}"
+        same_file = old.get("file") == expected_file
+        name, duration, tts_hash = await cache.ensure(
+            fid,
+            spec,
+            old.get("ttsHash") if same_file else None,
+            old.get("durationSec") if same_file else None,
         )
-        return f"audio/{out_name}", res["duration_sec"]
+        return {
+            "file": f"audio/{name}",
+            "durationSec": duration,
+            "speakerId": spk,
+            "speedScale": spd,
+            "ttsHash": tts_hash,
+        }
 
     # 1. Extract sayW("jp","vi") dialogue/narration lines
     for m in re.finditer(r'sayW\("([^"]+)","([^"]+)"', html):
@@ -448,22 +394,18 @@ async def generate_standalone_pack(
             continue
         seen_lines.add(raw_jp)
         idx = len(dictation_items)
-        rel_file, dur = await synth_one(f"line_{idx:02d}", _braced_to_tts_kanji(raw_jp))
-        manifest["lines"][raw_jp] = {
-            "file": rel_file,
-            "durationSec": dur,
-            "speakerId": speaker_id,
-        }
+        entry = await synth_one(f"line_{idx:02d}", raw_jp, old_manifest.get("lines", {}).get(raw_jp))
+        manifest["lines"][raw_jp] = entry
         dictation_items.append(
             {
-                "id": f"{story_id}_{idx+1:02d}",
+                "id": f"{story_id}_{idx + 1:02d}",
                 "speakerLabel": "ナレーター",
-                "jaPlain": _RUBY_BRACE_RE.sub(r"\1", raw_jp),
-                "jaKana": _RUBY_BRACE_RE.sub(r"\2", raw_jp),
+                "jaPlain": RUBY_BRACE_RE.sub(r"\1", raw_jp),
+                "jaKana": RUBY_BRACE_RE.sub(r"\2", raw_jp),
                 "jaRuby": _parse_braced_ruby(raw_jp),
                 "vi": vi,
-                "audioUrl": f"/stories/{story_id}/{rel_file}",
-                "durationSec": dur,
+                "audioUrl": f"/stories/{story_id}/{entry['file']}",
+                "durationSec": entry["durationSec"],
             }
         )
 
@@ -471,36 +413,48 @@ async def generate_standalone_pack(
     m_pas = re.search(r"const PASSAGE=\[(.*?)\];", html, re.S)
     if m_pas:
         for p_idx, m in enumerate(re.finditer(r'\["([^"]+)","([^"]+)"\]', m_pas.group(1))):
-            raw_p = m.group(1)
-            rel_file, dur = await synth_one(f"para_{p_idx:02d}", _braced_to_tts_kanji(raw_p))
-            manifest["paragraphs"][f"para_{p_idx}"] = {
-                "file": rel_file,
-                "durationSec": dur,
-                "speakerId": speaker_id,
-            }
+            key = f"para_{p_idx}"
+            manifest["paragraphs"][key] = await synth_one(
+                f"para_{p_idx:02d}", m.group(1), old_manifest.get("paragraphs", {}).get(key)
+            )
 
-    manifest_path = audio_dir / "manifest.json"
-    manifest_path.write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
+    # Keep hand-made clips that the sayW/PASSAGE scan does not know about (e.g. custom messages).
+    preserved = 0
+    for section in ("lines", "paragraphs"):
+        for key, entry in old_manifest.get(section, {}).items():
+            if key not in manifest[section]:
+                manifest[section][key] = entry
+                preserved += 1
 
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     dictation_path = story_dir / "dictation.json"
-    dictation_pack = {
-        "id": story_id,
-        "titleJa": title_ja,
-        "titleVi": title_vi,
-        "level": level,
-        "items": dictation_items,
-    }
+    if dictation_path.exists() and not rebuild_dictation:
+        # Never clobber a curated dictation pack: only refresh audio refs of matching sentences.
+        existing = json.loads(dictation_path.read_text(encoding="utf-8"))
+        fresh = {it["jaPlain"]: it for it in dictation_items}
+        for item in existing.get("items", []):
+            src = fresh.get(item.get("jaPlain"))
+            if src:
+                item["audioUrl"] = src["audioUrl"]
+                item["durationSec"] = src["durationSec"]
+        dictation_pack = existing
+    else:
+        dictation_pack = {
+            "id": story_id,
+            "titleJa": title_ja,
+            "titleVi": title_vi,
+            "level": level,
+            "items": dictation_items,
+        }
     dictation_path.write_text(
-        json.dumps(dictation_pack, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
+        json.dumps(dictation_pack, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-
     return {
+        "preserved_manual_entries": preserved,
         "ok": True,
         "manifest_path": str(manifest_path),
         "dictation_json": str(dictation_path),
         "line_count": len(manifest["lines"]),
         "paragraph_count": len(manifest["paragraphs"]),
+        **cache.summary(),
     }

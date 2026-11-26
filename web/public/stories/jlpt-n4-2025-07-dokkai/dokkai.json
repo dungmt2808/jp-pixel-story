@@ -41,7 +41,8 @@
           "jaRuby": "{今日|きょう}、{先生|せんせい}に「グループ{研究|けんきゅう}で{何|なに}をするか{決|き}めましたか。{明日|あした}の3{時|じ}までですよ。」と{言|い}われました。",
           "vi": "Hôm nay thầy giáo có nói với mình: 'Các em đã quyết định sẽ làm gì cho bài nghiên cứu nhóm chưa? Hạn chót là 3 giờ ngày mai đấy nhé.'",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_1_s1.mp3",
-          "durationSec": 9.1
+          "durationSec": 9.1,
+          "ttsHash": "01dbc1b32694"
         },
         {
           "id": "d07_m4_1_s2",
@@ -50,7 +51,8 @@
           "jaRuby": "{先週|せんしゅう}{考|かんが}えた{二|ふた}つのアイデアのどちらにするか、{明日|あした}の{昼休|ひるやす}みに、{学生|がくせい}{食堂|しょくどう}で{食|た}べながら{決|き}めませんか。",
           "vi": "Giờ nghỉ trưa ngày mai, chúng ta vừa ăn ở căn-tin sinh viên vừa quyết định xem chọn ý tưởng nào trong hai ý tưởng đã nghĩ tuần trước nhé?",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_1_s2.mp3",
-          "durationSec": 9.02
+          "durationSec": 9.02,
+          "ttsHash": "1af22b32d1be"
         },
         {
           "id": "d07_m4_1_s3",
@@ -58,7 +60,8 @@
           "jaRuby": "{来|こ}られない{人|ひと}は、メールで{意見|いけん}を{知|し}らせてください。",
           "vi": "Bạn nào không đến được thì hãy nhắn ý kiến qua email giúp mình nhé.",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_1_s3.mp3",
-          "durationSec": 4.01
+          "durationSec": 4.01,
+          "ttsHash": "5e6e6c3c0f6b"
         }
       ],
       "questions": [
@@ -151,7 +154,8 @@
           "jaRuby": "{映画|えいが}を{見|み}てよく{泣|な}く{私|わたし}は、だれかと{一緒|いっしょ}に{映画|えいが}を{見|み}に{行|い}ったことがありません。",
           "vi": "Tôi là người hay khóc khi xem phim, nên chưa từng đi xem phim cùng ai bao giờ.",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_2_s1.mp3",
-          "durationSec": 5.7
+          "durationSec": 5.7,
+          "ttsHash": "4779eceb2e1c"
         },
         {
           "id": "d07_m4_2_s2",
@@ -160,7 +164,8 @@
           "jaRuby": "{知|し}っている{人|ひと}に{泣|な}いている{自分|じぶん}を{見|み}られるのが{嫌|いや}なので、いつも{映画館|えいがかん}へは{一人|ひとり}で{行|い}きます。",
           "vi": "Vì tôi ghét bị người quen nhìn thấy bộ dạng đang khóc của mình, nên tôi luôn đến rạp chiếu phim một mình.",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_2_s2.mp3",
-          "durationSec": 6.52
+          "durationSec": 6.52,
+          "ttsHash": "8e8fce65c00a"
         },
         {
           "id": "d07_m4_2_s3",
@@ -168,7 +173,8 @@
           "jaRuby": "ですから、もし{好|す}きな{人|ひと}に{映画|えいが}に{誘|さそ}われても、{一緒|いっしょ}に{行|い}かないかもしれません。",
           "vi": "Chính vì thế, giả sử có được người mình thích rủ đi xem phim đi chăng nữa, có lẽ tôi cũng sẽ không đi cùng đâu.",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_2_s3.mp3",
-          "durationSec": 6.11
+          "durationSec": 6.11,
+          "ttsHash": "6155329f8d2d"
         }
       ],
       "questions": [
@@ -261,7 +267,8 @@
           "jaRuby": "{水道|すいどう}{工事|こうじ}を{行|おこな}いますので、7{月|がつ}11{日|にち}（{水|すい}）は{営業|えいぎょう}{時間|じかん}が{変|か}わります。",
           "vi": "Do tiến hành thi công đường ống nước, giờ mở cửa ngày thứ Tư 11/7 sẽ thay đổi.",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_3_s1.mp3",
-          "durationSec": 6.67
+          "durationSec": 6.67,
+          "ttsHash": "a5bd7844d23d"
         },
         {
           "id": "d07_m4_3_s2",
@@ -270,7 +277,8 @@
           "jaRuby": "{営業|えいぎょう}{時間|じかん}：{午前|ごぜん}9{時|じ}〜{午後|ごご}10{時|じ} → {午後|ごご}1{時|じ}〜{午後|ごご}10{時|じ}",
           "vi": "Giờ mở cửa: 9:00 sáng ~ 10:00 tối → Đổi thành 1:00 chiều ~ 10:00 tối.",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_3_s2.mp3",
-          "durationSec": 5.82
+          "durationSec": 5.82,
+          "ttsHash": "3d0a2d903d65"
         },
         {
           "id": "d07_m4_3_s3",
@@ -279,7 +287,8 @@
           "jaRuby": "※{雨|あめ}のときは{工事|こうじ}を{行|おこな}いませんので、{営業|えいぎょう}{時間|じかん}は{変|か}わりません。",
           "vi": "※ Khi trời mưa sẽ không thi công, nên giờ mở cửa không thay đổi.",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_3_s3.mp3",
-          "durationSec": 4.71
+          "durationSec": 4.71,
+          "ttsHash": "486eff9d08f7"
         },
         {
           "id": "d07_m4_3_s4",
@@ -287,7 +296,8 @@
           "jaRuby": "よろしくお{願|ねが}いします。",
           "vi": "Xin cảm ơn quý khách đã thông cảm.",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m4_3_s4.mp3",
-          "durationSec": 1.7
+          "durationSec": 1.7,
+          "ttsHash": "1b219d843723"
         }
       ],
       "conditionSimulator": {
@@ -525,7 +535,8 @@
           "jaRuby": "{前山|まえやま}ガラス{美術館|びじゅつかん}では、お{皿|さら}やアクセサリーを{作|つく}る{教室|きょうしつ}を{開|ひら}いています。",
           "vi": "Tại Bảo tàng Thủy tinh Maeyama, chúng tôi có mở các lớp học làm đĩa và trang sức.",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m6_s1.mp3",
-          "durationSec": 5.49
+          "durationSec": 5.49,
+          "ttsHash": "55ce8f7e9d32"
         },
         {
           "id": "d07_m6_s2",
@@ -535,7 +546,8 @@
           "jaRuby": "{受|う}けたいクラスがある{日|ひ}の2{日前|かまえ}の12{時|じ}までに、{電話|でんわ}で{予約|よやく}してください。",
           "vi": "Hãy đặt chỗ qua điện thoại trước 12 giờ trưa của ngày cách buổi học 2 ngày.",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m6_s2.mp3",
-          "durationSec": 5.05
+          "durationSec": 5.05,
+          "ttsHash": "75a3da28ab2a"
         },
         {
           "id": "d07_m6_s3",
@@ -543,7 +555,8 @@
           "jaRuby": "{電話|でんわ}は{美術館|びじゅつかん}の{営業|えいぎょう}{時間|じかん}にお{願|ねが}いします。",
           "vi": "Vui lòng gọi điện trong giờ mở cửa của bảo tàng (8:30〜18:00).",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m6_s3.mp3",
-          "durationSec": 3.2
+          "durationSec": 3.2,
+          "ttsHash": "7240a6cd3f62"
         },
         {
           "id": "d07_m6_s4",
@@ -553,7 +566,8 @@
           "jaRuby": "クラスが{始|はじ}まる{時間|じかん}の10{分前|ぷんまえ}までに、{美術館|びじゅつかん}の{受付|うけつけ}に{来|き}てください。",
           "vi": "Hãy có mặt tại quầy lễ tân bảo tàng chậm nhất 10 phút trước giờ bắt đầu lớp học.",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m6_s4.mp3",
-          "durationSec": 5.07
+          "durationSec": 5.07,
+          "ttsHash": "444abb7cd598"
         },
         {
           "id": "d07_m6_s5",
@@ -562,7 +576,8 @@
           "jaRuby": "クラスで{作|つく}った{物|もの}は、ガラスの{温度|おんど}が{下|さ}がるまで{一晩|ひとばん}かかるので、{持|も}って{帰|かえ}ることができるのは、{次|つぎ}の{日|ひ}からです。{別|べつ}{料金|りょうきん}で、{家|いえ}に{送|おく}ることもできます。",
           "vi": "Đồ làm trong lớp cần qua một đêm để thủy tinh nguội xuống, nên bạn chỉ có thể mang về từ ngày hôm sau. Cũng có thể gửi về nhà (tính phí riêng).",
           "audioUrl": "/stories/jlpt-n4-2025-07-dokkai/audio/d07_m6_s5.mp3",
-          "durationSec": 11.32
+          "durationSec": 11.32,
+          "ttsHash": "44a522662361"
         }
       ],
       "questions": [

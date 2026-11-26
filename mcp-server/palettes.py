@@ -32,6 +32,27 @@ PALETTES: dict[str, dict[str, object]] = {
             "#8f56b8",  # accent retro violet
         ],
     },
+    "jp_story_master": {
+        "description": "MASTER 36-color palette for all new art: the 24 ramen_midnight colors + 12 neutral greys, slate blues and earth browns (tiles, stone, wood grain, hair) extracted from the Tsuru / JLPT story art. ramen_midnight is an exact subset, so ramen-era assets stay compliant.",
+        "colors": [
+            "#101322", "#1b223b", "#2a3559", "#41527d", "#6c80ad", "#a7bad9",
+            "#241712", "#45281c", "#6e3f27", "#995f39", "#c78b56", "#e8bc7d",
+            "#f6eed8", "#ffe38c", "#f4a442", "#d96934", "#b8382c", "#7a2024",
+            "#f2c6a0", "#d4956a", "#a66848", "#5a8c4e", "#2f5c3a", "#8f56b8",
+            "#100807",  # near-black warm ink
+            "#595d69",  # neutral tile grey
+            "#593829",  # walnut brown
+            "#3a485e",  # slate shadow
+            "#3a1a12",  # deep cedar
+            "#a09ca6",  # pale stone grey
+            "#845131",  # chestnut
+            "#af7e57",  # tan wood
+            "#62708a",  # rain-slate blue
+            "#cda876",  # straw / tatami
+            "#39373c",  # charcoal
+            "#76cdd6",  # clear sky cyan
+        ],
+    },
     "midnight_tokyo": {
         "description": "Deep indigo Tokyo night sky, warm konbini amber, soft sakura pink & cream highlights.",
         "colors": [
