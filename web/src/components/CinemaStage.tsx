@@ -254,6 +254,18 @@ export function CinemaStage({
 
   // Vibe kit: remember when each line starts and play its sound effect (logged for the MP4).
   const vibeRef = useRef<{ line: DialogueLine | null; start: number }>({ line: null, start: 0 });
+  // telop stays up while its line is spoken (also for checklist answers, which play in "ready")
+  const [telopOn, setTelopOn] = useState(false);
+  useEffect(() => {
+    if (!activeLine?.telop) {
+      setTelopOn(false);
+      return;
+    }
+    setTelopOn(true);
+    const id = window.setTimeout(() => setTelopOn(false), Math.round((activeLine.durationSec ?? 3) * 1000) + 300);
+    return () => window.clearTimeout(id);
+  }, [activeLine]);
+
   useEffect(() => {
     vibeRef.current = { line: activeLine, start: performance.now() };
     const name = lineSfx(activeLine);
@@ -759,7 +771,7 @@ export function CinemaStage({
             <RubyText segments={interaction.hold.label} showFurigana={showFurigana} />
           </div>
         )}
-        {telop && (phase === "lines" || phase === "doneLine") && (
+        {telop && telopOn && phase !== "interact" && (
           <div
             key={activeLine?.id}
             className={`cine-telop ${telop.color ?? "shu"}`}
