@@ -92,7 +92,8 @@ function drawActor(
   const scale = Math.max(1, Math.floor(actor.scale ?? 1));
 
   ctx.save();
-  if (!state.active) ctx.filter = "brightness(0.64) saturate(0.86)";
+  // gentle: a heavy brightness cut reads as a different skin tone on pixel portraits
+  if (!state.active) ctx.filter = "brightness(0.8) saturate(0.9)";
   ctx.globalAlpha = clamp01(ease);
   const rig = actor.rig ? res.rigs[actor.rig] : undefined;
   const sheet = actor.sprite ? res.sprites[actor.sprite] : undefined;
@@ -461,7 +462,7 @@ export function CinemaStage({
         sides.forEach((side, i) => {
           const actor = cast[side];
           if (!actor) return;
-          const focus = actorFocus(side, cast, speaking);
+          const focus = actorFocus(side, cast, speaking, sides);
           drawActor(ctx, side, actor, { imgs, sprites: spritesRef.current, rigs: rigsRef.current }, {
             ...focus,
             enterProgress: Math.min(elapsed / (0.5 + i * 0.1), 1),

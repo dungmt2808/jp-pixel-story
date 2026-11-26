@@ -211,6 +211,8 @@ test("actorFocus dims only the listener during a cast line; narrator keeps both 
   assert.deepEqual(cinema.actorFocus("right", cast, "minh"), { talking: false, active: false, listening: true });
   assert.deepEqual(cinema.actorFocus("right", cast, "narrator"), { talking: false, active: true, listening: false });
   assert.deepEqual(cinema.actorFocus("left", cast, null), { talking: false, active: true, listening: false });
+  // an off-stage speaker (e.g. a voice-over from the left while only the right actor is shown) dims nobody
+  assert.deepEqual(cinema.actorFocus("right", cast, "minh", ["right"]), { talking: false, active: true, listening: false });
 });
 
 test("sceneBackdropRef: checklist override > backdrop > legacy locationBadge", () => {
