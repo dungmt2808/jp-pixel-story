@@ -284,7 +284,8 @@ def pixellab_slice_spritesheet(
     """Slice a raw AI spritesheet grid into registered, palette-locked animation frames + spritesheet.png + meta.json.
 
     All frames share one scale and one anchor (no stretching or jitter). registration='centroid'
-    corrects AI sheets whose character drifts between cells. clips maps a name to frame indices,
+    corrects AI sheets whose character drifts between cells (full body); registration='bust' does the
+    same for portrait/expression sheets cut off at the cell edge (anchors on the head). clips maps a name to frame indices,
     e.g. {"idle": [0, 2], "talk": {"frames": [0, 1], "fps": 10}}; meta.json stores pivot, fps
     and clips for the web SpriteAnimator.
     """

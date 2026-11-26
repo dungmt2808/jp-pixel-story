@@ -237,3 +237,24 @@ def test_validator_flags_missing_asset_and_unknown_palette(tmp_path: Path) -> No
     joined = " | ".join(validate_story_folder(sdir, web_public_dir=pub)["issues"])
     assert "[Unknown Palette]" in joined
     assert "[Missing Asset] backgrounds/gone" in joined
+
+
+def test_progress_is_saved_when_engine_fails_mid_batch(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _, story_path = _story(tmp_path)
+    calls: list[str] = []
+
+    async def flaky(text: str, speaker_id: int, output_path: str | Path, **kw: Any) -> dict[str, Any]:
+        calls.append(text)
+        if len(calls) == 2:
+            raise RuntimeError("engine crashed")
+        _write_wav(Path(output_path), 1.0)
+        return {"ok": True, "duration_sec": 1.0}
+
+    monkeypatch.setattr(voicevox_client, "synthesize_line", flaky)
+    with pytest.raises(RuntimeError):
+        _run(story_path)
+    first = json.loads(story_path.read_text(encoding="utf-8"))["scenes"][0]["lines"][0]
+    assert first.get("ttsHash") and first["durationSec"] == 1.0  # finished clip was persisted
+
+    res = _run(story_path)  # re-run only synthesizes the clip that failed
+    assert res["generated_count"] == 1 and res["skipped_count"] == 1

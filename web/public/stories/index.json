@@ -146,6 +146,23 @@
       "theme": "jp_story_master"
     },
     {
+      "id": "hanami-first",
+      "category": "situation",
+      "kind": "engine",
+      "thumbStyle": "image",
+      "thumbImage": "stories/hanami-first/assets/bg_park.png",
+      "artBadge": "🌸 SPRITE ANIMATION",
+      "titleJa": "はじめてのお花見",
+      "titleVi": "Lần đầu ngắm hoa anh đào cùng Yui",
+      "level": "JLPT N4",
+      "description": "Truyện demo cho engine CinemaStage dữ liệu hoá: nhân vật hoạt hình theo frame (spritesheet + meta.json), bảng màu Master 40 màu, đổi phông khi chọn hoạt động picnic, Daily Dictation.",
+      "sceneCount": 5,
+      "vocabCount": 5,
+      "grammarCount": 3,
+      "quizCount": 2,
+      "theme": "jp_story_master"
+    },
+    {
       "id": "ramen-midnight",
       "category": "situation",
       "kind": "engine",

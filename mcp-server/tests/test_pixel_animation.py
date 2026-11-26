@@ -184,4 +184,40 @@ def test_relock_palette_keeps_size_and_alpha(tmp_path: Path) -> None:
 def test_master_palette_contains_ramen_midnight() -> None:
     # ramen-era assets must stay compliant with the new master palette.
     assert set(get_palette_rgb("ramen_midnight")) <= set(get_palette_rgb("jp_story_master"))
-    assert len(set(get_palette_rgb("jp_story_master"))) == 36
+    assert len(set(get_palette_rgb("jp_story_master"))) == 40
+
+
+def test_slicer_bust_registration_fixes_drift_of_cropped_portraits(tmp_path: Path) -> None:
+    """Expression sheets are usually busts cut by the cell edge: the bottom row is always the
+    cell edge, so only a head-anchored registration can remove vertical drift."""
+    w = 256
+    sheet = Image.new("RGB", (w * 4, w), GREEN)
+    draw = ImageDraw.Draw(sheet)
+    drift = [(0, 0), (-20, 12), (16, -14), (8, 20)]
+    for i, (dx, dy) in enumerate(drift):
+        ox = i * w + dx
+        draw.ellipse([ox + 78, 40 + dy, ox + 178, 140 + dy], fill=FACE)  # head
+        draw.rectangle([ox + 60, 130 + dy, ox + 196, 300], fill=BODY)  # torso runs off the cell
+    raw = tmp_path / "bust.png"
+    sheet.save(raw)
+
+    def head_boxes(folder: str) -> list[tuple[int, int, int, int]]:
+        face_rgb = np.array(get_palette_rgb("ramen_midnight"))[
+            nearest_palette_indices(np.array([FACE]), np.array(get_palette_rgb("ramen_midnight")))[0]
+        ]
+        out = []
+        for i in range(4):
+            a = np.array(Image.open(tmp_path / folder / f"frame_{i:02d}.png"))
+            m = (a[:, :, 3] > 0) & np.all(a[:, :, :3] == face_rgb, axis=-1)
+            ys, xs = np.where(m)
+            out.append((int(xs.min()), int(ys.min()), int(xs.max()), int(ys.max())))
+        return out
+
+    kw = dict(cols=4, frame_width=48, frame_height=48, bg_mode="chroma_green", palette_name="ramen_midnight")
+    process_sprite_sheet(raw, tmp_path / "cen", registration="centroid", **kw)
+    process_sprite_sheet(raw, tmp_path / "bust", registration="bust", **kw)
+    cen_tops = {b[1] for b in head_boxes("cen")}
+    bust = head_boxes("bust")
+    assert len(cen_tops) > 1  # bottom-anchored registration cannot see the vertical drift
+    assert max(b[1] for b in bust) - min(b[1] for b in bust) <= 1
+    assert max(b[0] for b in bust) - min(b[0] for b in bust) <= 1

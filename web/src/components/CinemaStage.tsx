@@ -240,8 +240,11 @@ export function CinemaStage({
         ctx.fillStyle = "#ffe69c";
         ctx.fillText(title, VIRTUAL_W / 2, 54);
         ctx.font = 'bold 9px "DotGothic16", monospace';
+        const subtitle = currentScene.bannerSubtitle ?? story.level;
+        ctx.fillStyle = "rgba(12, 15, 28, 0.9)"; // drop shadow keeps it readable on bright skies
+        ctx.fillText(subtitle, VIRTUAL_W / 2 + 1, 70);
         ctx.fillStyle = "#8ad4ff";
-        ctx.fillText(currentScene.bannerSubtitle ?? story.level, VIRTUAL_W / 2, 69);
+        ctx.fillText(subtitle, VIRTUAL_W / 2, 69);
         ctx.restore();
         return;
       }

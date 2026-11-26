@@ -33,7 +33,7 @@ PALETTES: dict[str, dict[str, object]] = {
         ],
     },
     "jp_story_master": {
-        "description": "MASTER 36-color palette for all new art: the 24 ramen_midnight colors + 12 neutral greys, slate blues and earth browns (tiles, stone, wood grain, hair) extracted from the Tsuru / JLPT story art. ramen_midnight is an exact subset, so ramen-era assets stay compliant.",
+        "description": "MASTER 40-color palette for all new art: the 24 ramen_midnight colors + 12 neutral greys, slate blues and earth browns (tiles, stone, wood grain, hair) extracted from the Tsuru / JLPT story art + 4 seasonal accents (sakura pinks, spring green). ramen_midnight is an exact subset, so ramen-era assets stay compliant.",
         "colors": [
             "#101322", "#1b223b", "#2a3559", "#41527d", "#6c80ad", "#a7bad9",
             "#241712", "#45281c", "#6e3f27", "#995f39", "#c78b56", "#e8bc7d",
@@ -51,6 +51,11 @@ PALETTES: dict[str, dict[str, object]] = {
             "#cda876",  # straw / tatami
             "#39373c",  # charcoal
             "#76cdd6",  # clear sky cyan
+            # seasonal accents (spring / hanami scenes)
+            "#fbe3e6",  # pale blossom
+            "#f4b6c2",  # sakura pink
+            "#e48aa0",  # deep sakura
+            "#93b85a",  # spring leaf green
         ],
     },
     "midnight_tokyo": {

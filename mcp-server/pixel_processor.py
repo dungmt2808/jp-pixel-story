@@ -396,9 +396,11 @@ def process_sprite_sheet(
       - 'cell'     : trust the source layout; every frame keeps its position inside its cell.
       - 'centroid' : AI sheets often drift; shift every frame so the silhouette centroid (x)
                      and the ground line (bottom y) line up before the shared crop.
+      - 'bust'     : like 'centroid' but anchored on the head (top row + head centroid-x), for
+                     portrait/expression sheets whose torso is cut off by the cell edge.
     """
-    if registration not in ("cell", "centroid"):
-        raise ValueError("registration must be 'cell' or 'centroid'.")
+    if registration not in ("cell", "centroid", "bust"):
+        raise ValueError("registration must be 'cell', 'centroid' or 'bust'.")
     inp = Path(input_path).expanduser().resolve()
     out_dir = Path(output_dir).expanduser().resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -418,17 +420,26 @@ def process_sprite_sheet(
             clean = remove_background(sub, mode=bg_mode, tolerance=tolerance)
             cells.append(np.array(clean, dtype=np.uint8))
 
-    # 2. Optional drift correction: align centroid-x and ground line across frames.
-    if registration == "centroid":
+    # 2. Optional drift correction across frames:
+    #    'centroid' -> silhouette centroid-x + ground line (bottom row): full-body sprites;
+    #    'bust'     -> head centroid-x (top 40% of the silhouette) + top row: busts/portraits
+    #                  that are cut off by the cell edge, so their bottom row cannot be trusted.
+    if registration in ("centroid", "bust"):
         anchors: list[tuple[float, int] | None] = []
         for arr in cells:
             mask = arr[:, :, 3] >= 128
             if not np.any(mask):
                 anchors.append(None)
                 continue
-            xs = np.where(mask)[1]
-            bottom = int(np.where(mask.any(axis=1))[0][-1])
-            anchors.append((float(xs.mean()), bottom))
+            rows = np.where(mask.any(axis=1))[0]
+            top, bottom = int(rows[0]), int(rows[-1])
+            if registration == "bust":
+                head_end = top + max(1, int((bottom - top + 1) * 0.4))
+                xs = np.where(mask[top:head_end])[1]
+                anchors.append((float(xs.mean()), top))
+            else:
+                xs = np.where(mask)[1]
+                anchors.append((float(xs.mean()), bottom))
         valid = [a for a in anchors if a is not None]
         if valid:
             ref_x = float(np.median([a[0] for a in valid]))

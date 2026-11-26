@@ -1,0 +1,419 @@
+{
+  "id": "hanami-first",
+  "engine": "cinema",
+  "series": "jp-pixel-story · DATA-DRIVEN CINEMA (sprite animation demo)",
+  "titleJa": "はじめてのお花見",
+  "titleVi": "Lần đầu ngắm hoa anh đào",
+  "level": "JLPT N4",
+  "author": "jp-pixel-studio",
+  "palette": "jp_story_master",
+  "bgm": "default",
+  "assets": {
+    "backgrounds": {
+      "park": "/stories/hanami-first/assets/bg_park.png",
+      "picnic": "/stories/hanami-first/assets/bg_picnic.png"
+    },
+    "portraits": {},
+    "sprites": {
+      "minh": "/stories/hanami-first/assets/sprites/minh/meta.json",
+      "yui": "/stories/hanami-first/assets/sprites/yui/meta.json"
+    },
+    "cardPortrait": "/stories/hanami-first/assets/sprites/yui/frame_03.png"
+  },
+  "cast": {
+    "left": {
+      "voice": "minh",
+      "sprite": "minh",
+      "idleClip": "idle",
+      "talkClip": "talk"
+    },
+    "right": {
+      "voice": "yui",
+      "sprite": "yui",
+      "idleClip": "idle",
+      "talkClip": "talk"
+    }
+  },
+  "voices": {
+    "narrator": {
+      "label": "ナレーター",
+      "speakerId": 13,
+      "speedScale": 0.92
+    },
+    "minh": {
+      "label": "ミン",
+      "speakerId": 11,
+      "speedScale": 0.95
+    },
+    "yui": {
+      "label": "ゆい",
+      "speakerId": 46,
+      "speedScale": 0.95
+    }
+  },
+  "characterCard": {
+    "nameJa": "ゆい (YUI)",
+    "subtitle": "ミンさんの友だち · 東京の大学生",
+    "facts": [
+      {
+        "label": "SHUMI",
+        "value": "お弁当を作ること (Thích tự làm cơm hộp)"
+      },
+      {
+        "label": "HANAMI",
+        "value": "毎年四月に友だちとお花見をします (Tháng Tư nào cũng đi ngắm hoa với bạn)"
+      },
+      {
+        "label": "TIP",
+        "value": "「〜ませんか」は相手をさそう言い方 (〜ませんか dùng để rủ rê)"
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "hanami_intro",
+      "type": "cinema_intro",
+      "backdrop": "bg:park",
+      "overlay": "petals",
+      "bannerTitle": "はじめてのお花見",
+      "bannerSubtitle": "JLPT N4 · Tình huống đời sống",
+      "actionLabel": "はじめる · BẮT ĐẦU",
+      "lines": [
+        {
+          "id": "h01",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "四月の日曜日、ミンさんは友だちのゆいさんと公園へお花見に行きました。",
+          "jaRuby": "{四月|しがつ}の{日曜日|にちようび}、ミンさんは{友|とも}だちのゆいさんと{公園|こうえん}へお{花見|はなみ}に{行|い}きました。",
+          "vi": "Một ngày Chủ nhật tháng Tư, Minh cùng bạn là Yui đến công viên ngắm hoa anh đào.",
+          "audioUrl": "/stories/hanami-first/audio/h01.mp3",
+          "durationSec": 7.44,
+          "ttsHash": "8ad470bf16c9"
+        }
+      ]
+    },
+    {
+      "id": "under_sakura",
+      "type": "cinema_dialogue",
+      "backdrop": "bg:park",
+      "overlay": "petals",
+      "instruction": "Nghe Yui và Minh nói chuyện dưới tán hoa anh đào",
+      "actionLabel": "お弁当を食べよう →",
+      "lines": [
+        {
+          "id": "h02",
+          "voice": "yui",
+          "speakerLabel": "ゆい",
+          "jaPlain": "ミンさん、見て！桜がとてもきれいですね。",
+          "jaRuby": "ミンさん、{見|み}て！{桜|さくら}がとてもきれいですね。",
+          "vi": "Minh ơi, nhìn kìa! Hoa anh đào đẹp quá nhỉ.",
+          "audioUrl": "/stories/hanami-first/audio/h02.mp3",
+          "durationSec": 4.68,
+          "ttsHash": "d0ed61219a95"
+        },
+        {
+          "id": "h03",
+          "voice": "minh",
+          "speakerLabel": "ミン",
+          "jaPlain": "本当にきれいですね。ベトナムでは、桜を見たことがありません。",
+          "jaRuby": "{本当|ほんとう}にきれいですね。ベトナムでは、{桜|さくら}を{見|み}たことがありません。",
+          "vi": "Đẹp thật đấy. Ở Việt Nam mình chưa từng được ngắm hoa anh đào.",
+          "audioUrl": "/stories/hanami-first/audio/h03.mp3",
+          "durationSec": 5.72,
+          "ttsHash": "0584d973f404"
+        }
+      ]
+    },
+    {
+      "id": "bento_time",
+      "type": "cinema_checklist",
+      "backdrop": "bg:park",
+      "overlay": "petals",
+      "instruction": "Bấm thử 2 hoạt động trong buổi picnic!",
+      "actionLabel": "もうすぐ夕方 →",
+      "lines": [
+        {
+          "id": "h04",
+          "voice": "yui",
+          "speakerLabel": "ゆい",
+          "jaPlain": "お弁当を作ってきました。いっしょに食べましょう。",
+          "jaRuby": "お{弁当|べんとう}を{作|つく}ってきました。いっしょに{食|た}べましょう。",
+          "vi": "Mình có làm cơm hộp mang theo đấy. Cùng ăn nhé.",
+          "audioUrl": "/stories/hanami-first/audio/h04.mp3",
+          "durationSec": 3.33,
+          "ttsHash": "3967ccf8469b"
+        }
+      ],
+      "minigame": {
+        "prompt": "Chọn hoạt động",
+        "choices": [
+          {
+            "id": "c_bento",
+            "labelJa": "🍱 お弁当を食べる",
+            "labelRuby": "🍱 お{弁当|べんとう}を{食|た}べる",
+            "labelVi": "Ăn cơm hộp",
+            "effect": "none",
+            "backdrop": "bg:picnic",
+            "responseLine": {
+              "id": "h05",
+              "voice": "minh",
+              "speakerLabel": "ミン",
+              "jaPlain": "この卵焼き、甘くておいしいです！",
+              "jaRuby": "この{卵焼|たまごや}き、{甘|あま}くておいしいです！",
+              "vi": "Món trứng cuộn này ngọt và ngon quá!",
+              "audioUrl": "/stories/hanami-first/audio/h05.mp3",
+              "durationSec": 3.8,
+              "ttsHash": "bf04f9ec9837"
+            }
+          },
+          {
+            "id": "c_tea",
+            "labelJa": "🍵 お茶を飲む",
+            "labelRuby": "🍵 お{茶|ちゃ}を{飲|の}む",
+            "labelVi": "Uống trà",
+            "effect": "none",
+            "backdrop": "bg:picnic",
+            "responseLine": {
+              "id": "h06",
+              "voice": "yui",
+              "speakerLabel": "ゆい",
+              "jaPlain": "温かいお茶もありますよ。どうぞ。",
+              "jaRuby": "{温|あたた}かいお{茶|ちゃ}もありますよ。どうぞ。",
+              "vi": "Có cả trà nóng nữa đấy. Mời cậu.",
+              "audioUrl": "/stories/hanami-first/audio/h06.mp3",
+              "durationSec": 2.9,
+              "ttsHash": "3daffaf894c9"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "promise",
+      "type": "cinema_dialogue",
+      "backdrop": "bg:park",
+      "overlay": "petals",
+      "actionLabel": "→",
+      "lines": [
+        {
+          "id": "h07",
+          "voice": "minh",
+          "speakerLabel": "ミン",
+          "jaPlain": "ゆいさん、来年もいっしょにお花見をしませんか。",
+          "jaRuby": "ゆいさん、{来年|らいねん}もいっしょにお{花見|はなみ}をしませんか。",
+          "vi": "Yui này, năm sau mình lại cùng đi ngắm hoa nhé?",
+          "audioUrl": "/stories/hanami-first/audio/h07.mp3",
+          "durationSec": 3.96,
+          "ttsHash": "a82bba7e4bca"
+        },
+        {
+          "id": "h08",
+          "voice": "yui",
+          "speakerLabel": "ゆい",
+          "jaPlain": "はい、ぜひ！約束ですよ。",
+          "jaRuby": "はい、ぜひ！{約束|やくそく}ですよ。",
+          "vi": "Ừ, nhất định rồi! Hứa đấy nhé.",
+          "audioUrl": "/stories/hanami-first/audio/h08.mp3",
+          "durationSec": 2.86,
+          "ttsHash": "0fdf7e03af46"
+        }
+      ]
+    },
+    {
+      "id": "hanami_outro",
+      "type": "cinema_outro",
+      "backdrop": "bg:park",
+      "overlay": "petals",
+      "actors": [
+        "left",
+        "right"
+      ],
+      "outroLabels": {
+        "reading": "📖 ĐỌC BÀI & LÀM QUIZ →",
+        "card": "THẺ NHÂN VẬT"
+      },
+      "lines": [
+        {
+          "id": "h09",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "桜の下で、二人は楽しい一日を過ごしました。",
+          "jaRuby": "{桜|さくら}の{下|した}で、{二人|ふたり}は{楽|たの}しい{一日|いちにち}を{過|す}ごしました。",
+          "vi": "Dưới tán hoa anh đào, hai người đã có một ngày thật vui.",
+          "audioUrl": "/stories/hanami-first/audio/h09.mp3",
+          "durationSec": 4.56,
+          "ttsHash": "221c97afe044"
+        }
+      ]
+    }
+  ],
+  "reading": {
+    "sectionTitle": "お花見の日",
+    "subtitle": "Bài đọc · Ngày ngắm hoa",
+    "sentences": [
+      {
+        "id": "hr1",
+        "voice": "narrator",
+        "speakerLabel": "ナレーター",
+        "jaPlain": "四月になると、日本の公園では桜がたくさん咲きます。",
+        "jaRuby": "{四月|しがつ}になると、{日本|にほん}の{公園|こうえん}では{桜|さくら}がたくさん{咲|さ}きます。",
+        "vi": "Đến tháng Tư, hoa anh đào nở rộ khắp các công viên ở Nhật.",
+        "highlightVocabIds": [
+          "sakura"
+        ],
+        "audioUrl": "/stories/hanami-first/audio/hr1.mp3",
+        "durationSec": 4.88,
+        "ttsHash": "e2da939e70d2"
+      },
+      {
+        "id": "hr2",
+        "voice": "narrator",
+        "speakerLabel": "ナレーター",
+        "jaPlain": "人びとは木の下でお弁当を食べたり、お茶を飲んだりします。",
+        "jaRuby": "{人|ひと}びとは{木|き}の{下|した}でお{弁当|べんとう}を{食|た}べたり、お{茶|ちゃ}を{飲|の}んだりします。",
+        "vi": "Mọi người ăn cơm hộp, uống trà dưới gốc cây.",
+        "highlightVocabIds": [
+          "bento"
+        ],
+        "highlightGrammarIds": [
+          "g_tari"
+        ],
+        "audioUrl": "/stories/hanami-first/audio/hr2.mp3",
+        "durationSec": 5.1,
+        "ttsHash": "aa81c186751d"
+      },
+      {
+        "id": "hr3",
+        "voice": "narrator",
+        "speakerLabel": "ナレーター",
+        "jaPlain": "ミンさんは初めてお花見をして、来年もまた来たいと思いました。",
+        "jaRuby": "ミンさんは{初|はじ}めてお{花見|はなみ}をして、{来年|らいねん}もまた{来|き}たいと{思|おも}いました。",
+        "vi": "Lần đầu đi ngắm hoa, Minh nghĩ năm sau cũng muốn lại đến.",
+        "highlightVocabIds": [
+          "hanami",
+          "rainen"
+        ],
+        "audioUrl": "/stories/hanami-first/audio/hr3.mp3",
+        "durationSec": 5.48,
+        "ttsHash": "c6380010aba0"
+      }
+    ],
+    "vocab": [
+      {
+        "id": "sakura",
+        "word": "桜",
+        "reading": "さくら",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Hoa anh đào",
+        "note": "Biểu tượng mùa xuân Nhật Bản, nở khoảng cuối tháng 3 – đầu tháng 4."
+      },
+      {
+        "id": "hanami",
+        "word": "お花見",
+        "reading": "おはなみ",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Ngắm hoa (anh đào)",
+        "note": "「お花見をする」: đi ngắm hoa, thường ngồi picnic dưới gốc cây."
+      },
+      {
+        "id": "bento",
+        "word": "お弁当",
+        "reading": "おべんとう",
+        "level": "N5",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Cơm hộp",
+        "note": "「お弁当を作る」: làm cơm hộp."
+      },
+      {
+        "id": "rainen",
+        "word": "来年",
+        "reading": "らいねん",
+        "level": "N5",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Năm sau",
+        "note": "今年 (năm nay) → 来年 (năm sau)."
+      },
+      {
+        "id": "yakusoku",
+        "word": "約束",
+        "reading": "やくそく",
+        "level": "N4",
+        "partOfSpeech": "Danh từ / する",
+        "meaningVi": "Lời hứa",
+        "note": "「約束ですよ」: Hứa rồi nhé!"
+      }
+    ],
+    "grammar": [
+      {
+        "id": "g_takoto",
+        "pattern": "V-た + ことがありません",
+        "level": "N4",
+        "meaningVi": "Chưa từng làm V",
+        "explanation": "Nói về trải nghiệm chưa từng có. Khẳng định: 〜たことがあります (đã từng).",
+        "exampleJa": "桜を見たことがありません。",
+        "exampleRuby": "{桜|さくら}を{見|み}たことがありません。",
+        "exampleVi": "Tôi chưa từng ngắm hoa anh đào."
+      },
+      {
+        "id": "g_masenka",
+        "pattern": "V-ませんか",
+        "level": "N5",
+        "meaningVi": "Cùng ... không? (rủ rê)",
+        "explanation": "Dùng để mời/rủ người nghe cùng làm gì một cách lịch sự.",
+        "exampleJa": "来年もいっしょにお花見をしませんか。",
+        "exampleRuby": "{来年|らいねん}もいっしょにお{花見|はなみ}をしませんか。",
+        "exampleVi": "Năm sau lại cùng đi ngắm hoa nhé?"
+      },
+      {
+        "id": "g_tari",
+        "pattern": "V1-たり V2-たりします",
+        "level": "N4",
+        "meaningVi": "Lúc thì V1, lúc thì V2 (liệt kê hành động)",
+        "explanation": "Liệt kê vài hành động tiêu biểu, không theo thứ tự.",
+        "exampleJa": "お弁当を食べたり、お茶を飲んだりします。",
+        "exampleRuby": "お{弁当|べんとう}を{食|た}べたり、お{茶|ちゃ}を{飲|の}んだりします。",
+        "exampleVi": "Ăn cơm hộp, uống trà..."
+      }
+    ],
+    "quiz": [
+      {
+        "id": "hq1",
+        "questionJa": "ミンさんはベトナムで{桜|さくら}を{見|み}たことがありますか。",
+        "questionVi": "Minh đã từng ngắm hoa anh đào ở Việt Nam chưa?",
+        "options": [
+          {
+            "ja": "はい、あります。"
+          },
+          {
+            "ja": "いいえ、ありません。"
+          },
+          {
+            "ja": "{毎年|まいとし}{見|み}ています。"
+          }
+        ],
+        "correctIndex": 1,
+        "explanationVi": "Minh nói: 「ベトナムでは、桜を見たことがありません」 → chưa từng."
+      },
+      {
+        "id": "hq2",
+        "questionJa": "{二人|ふたり}は{何|なに}を{約束|やくそく}しましたか。",
+        "questionVi": "Hai người đã hứa điều gì?",
+        "options": [
+          {
+            "ja": "{来年|らいねん}もいっしょにお{花見|はなみ}をする。"
+          },
+          {
+            "ja": "{毎日|まいにち}お{弁当|べんとう}を{作|つく}る。"
+          },
+          {
+            "ja": "いっしょにベトナムへ{行|い}く。"
+          }
+        ],
+        "correctIndex": 0,
+        "explanationVi": "Minh rủ 「来年もいっしょにお花見をしませんか」 và Yui đáp 「約束ですよ」."
+      }
+    ]
+  }
+}

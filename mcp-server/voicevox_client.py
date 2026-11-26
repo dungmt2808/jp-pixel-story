@@ -259,18 +259,21 @@ async def generate_story_audio(
     voices: dict[str, dict[str, Any]] = story.get("voices", {})
     cache = _ClipCache(audio_dir, _pick_ext(audio_format), force, base_url)
 
-    for line, default_id in iter_story_lines(story):
-        spec = story_line_spec(line, voices)
-        if spec is None:
-            continue
-        name, duration, tts_hash = await cache.ensure(
-            line.get("id") or default_id, spec, line.get("ttsHash"), line.get("durationSec")
-        )
-        line["audioUrl"] = f"/stories/{story_id}/audio/{name}"
-        line["durationSec"] = duration
-        line["ttsHash"] = tts_hash
-
-    story_file.write_text(json.dumps(story, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    try:
+        for line, default_id in iter_story_lines(story):
+            spec = story_line_spec(line, voices)
+            if spec is None:
+                continue
+            name, duration, tts_hash = await cache.ensure(
+                line.get("id") or default_id, spec, line.get("ttsHash"), line.get("durationSec")
+            )
+            line["audioUrl"] = f"/stories/{story_id}/audio/{name}"
+            line["durationSec"] = duration
+            line["ttsHash"] = tts_hash
+    finally:
+        # Persist progress even if the engine fails mid-batch: finished clips keep their hash,
+        # so a re-run only synthesizes what is still missing.
+        story_file.write_text(json.dumps(story, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return {"ok": True, "story_json": str(story_file), "audio_dir": str(audio_dir), **cache.summary()}
 
 
@@ -313,20 +316,21 @@ async def generate_dokkai_audio(
     audio_dir.mkdir(parents=True, exist_ok=True)
     cache = _ClipCache(audio_dir, _pick_ext(audio_format), force, base_url)
 
-    for passage in data.get("passages", []):
-        for s_idx, sent in enumerate(passage.get("sentences", [])):
-            spec = dokkai_sentence_spec(sent, passage)
-            if spec is None:
-                continue
-            sid = sent.get("id") or f"{passage['id']}_s{s_idx + 1}"
-            name, duration, tts_hash = await cache.ensure(
-                sid, spec, sent.get("ttsHash"), sent.get("durationSec")
-            )
-            sent["audioUrl"] = f"/stories/{pack_id}/audio/{name}"
-            sent["durationSec"] = round(duration, 2)
-            sent["ttsHash"] = tts_hash
-
-    dokkai_file.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    try:
+        for passage in data.get("passages", []):
+            for s_idx, sent in enumerate(passage.get("sentences", [])):
+                spec = dokkai_sentence_spec(sent, passage)
+                if spec is None:
+                    continue
+                sid = sent.get("id") or f"{passage['id']}_s{s_idx + 1}"
+                name, duration, tts_hash = await cache.ensure(
+                    sid, spec, sent.get("ttsHash"), sent.get("durationSec")
+                )
+                sent["audioUrl"] = f"/stories/{pack_id}/audio/{name}"
+                sent["durationSec"] = round(duration, 2)
+                sent["ttsHash"] = tts_hash
+    finally:
+        dokkai_file.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return {"ok": True, "dokkai_json": str(dokkai_file), "audio_dir": str(audio_dir), **cache.summary()}
 
 
