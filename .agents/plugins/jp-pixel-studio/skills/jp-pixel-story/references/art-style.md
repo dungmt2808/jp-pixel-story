@@ -37,6 +37,15 @@ Runtime rules (enforced by the engine helpers, never bypass them with raw `ctx.d
   `drawSpriteFrame` takes an integer scale; camera zooms use `drawPixelZoom` (1× → 2× snap, no sub-pixel Ken Burns).
 - The stage draws into a 320×200 buffer and presents it at an integer multiple, so pixels stay square at any window size.
 
+## 3b. Craft Quality Gate (Mini-PixelLab Step 1)
+
+- **Outline:** every silhouette edge uses `#241712`. `cleanup=True` recolours dark edges and adds a 1px outline outside light
+  edges (light clothes keep their colour); frame borders (busts cut by the cell) never get an outline.
+- **Pixel-perfect lines:** L-shaped double corners on outlines are removed.
+- **Noise:** isolated specks close to their surroundings are removed; high-contrast details (eye highlights, buttons) stay.
+- **True pixels:** AI images drawn as big fake pixels are depixelized on their detected grid before any resize.
+- **Provenance:** keep raw sources in `art-src/` and pass `source=` so `pixellab_reprocess` can rebuild assets byte-for-byte.
+
 ## 4. Style & Character Anchor Reference Rule
 
 - Store verified master references in `web/public/assets/style-ref/` (`ref_background.png`, `ref_minh.png`).

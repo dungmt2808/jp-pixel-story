@@ -78,6 +78,8 @@ export interface StoryArtAssets {
   items?: Record<string, string>;
   /** key -> URL of a `meta.json` written by `pixellab_slice_spritesheet` (frame animation). */
   sprites?: Record<string, string>;
+  /** key -> URL of a `rig.json` written by `pixellab_build_rig` (head/body cutout animation). */
+  rigs?: Record<string, string>;
   cardPortrait?: string;
 }
 
@@ -87,8 +89,10 @@ export interface CinemaActor {
   voice: string;
   /** Static portrait key in `assets.portraits` ... */
   portrait?: string;
-  /** ... or an animated sprite key in `assets.sprites` (preferred). */
+  /** ... or an animated sprite key in `assets.sprites` ... */
   sprite?: string;
+  /** ... or a head/body rig key in `assets.rigs` (best: expressions + breathing / nodding). */
+  rig?: string;
   idleClip?: string;
   talkClip?: string;
   /** Whole-number pixel scale (1 = native texel density). */
@@ -195,6 +199,8 @@ export interface StoryData {
   assets?: StoryArtAssets;
   /** Cinema engine cast (falls back to the first two portraits, keyed by voice). */
   cast?: { left?: CinemaActor; right?: CinemaActor };
+  /** Strict sprite craft checks for the validator (outline colour / noise / colour count). */
+  artQuality?: { outlineColor?: string; minOutlineCompliance?: number; maxOrphanRatio?: number; maxColorsPerSprite?: number };
   /** Chiptune BGM theme started when the story begins. */
   bgm?: "default" | "depato_sunny" | "depato_rain";
   series: string;

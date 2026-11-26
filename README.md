@@ -22,16 +22,20 @@
 - **`🇻🇳 Dịch ON/OFF`** trên **tất cả video tương tác** (kể cả Hachikō canvas), trang Bài đọc và phòng luyện JLPT.
 - **🎧 Daily Dictation (`DictationView`):** Chế độ gõ chép chính tả (chấp nhận cả Kanji lẫn Hiragana, diff từng ký tự) & chế độ ghép cụm từ trên điện thoại, phím tắt `Ctrl+Space` / `Alt+H`, tự lưu tiến độ trên trình duyệt.
 
-### 3. Local MCP Server 14 công cụ (`mcp-server/server.py`)
+### 3. Local MCP Server 23 công cụ (`mcp-server/server.py`)
 Dùng tự động cho cả **Antigravity** (`.agents/plugins/jp-pixel-studio/`) và **Claude Code** (`.mcp.json` & `.claude/skills/jp-pixel-story/`):
-- **VOICEVOX TTS (6 tools):** `voicevox_health`, `voicevox_list_speakers`, `voicevox_synthesize_line`, `voicevox_generate_story_audio`, `voicevox_generate_dokkai_audio`, `voicevox_generate_standalone_pack` — có **cache theo `ttsHash`** (sửa câu thoại là tự tổng hợp lại đúng câu đó, không cần `force`), lưu tiến độ khi engine lỗi giữa chừng, gói standalone không ghi đè manifest/dictation viết tay.
-- **Content QA (2 tools):** `story_validate_content`, `story_validate_catalog` (Furigana, MP3, `starOrder`, quiz, thư mục mồ côi **+ asset lệch bảng màu, asset thiếu, `meta.json` spritesheet hỏng, audio cũ so với text**).
-- **Mini-PixelLab & JLPT Image (6 tools):** `pixellab_list_palettes`, `pixellab_clean_background`, `pixellab_clean_sprite` (giữ tỉ lệ), `pixellab_slice_spritesheet` (mọi frame chung 1 tỉ lệ + 1 điểm neo, `registration="centroid"/"bust"` chống trôi, `meta.json` có `pivot`/`fps`/`clips`), `pixellab_relock_palette`, `jlpt_clean_exam_image`. So màu theo OKLab; bảng màu Master `jp_story_master` (40 màu).
+- **VOICEVOX TTS (6 tools):** `voicevox_health`, `voicevox_list_speakers`, `voicevox_synthesize_line`, `voicevox_generate_story_audio`, `voicevox_generate_dokkai_audio`, `voicevox_generate_standalone_pack` — cache theo `ttsHash`, lưu tiến độ khi engine lỗi giữa chừng, gói standalone không ghi đè dữ liệu viết tay.
+- **Content QA (2 tools):** `story_validate_content`, `story_validate_catalog` — Furigana, MP3, quiz, thư mục mồ côi, asset lệch bảng màu/thiếu, `meta.json`/`rig.json` hỏng, audio cũ; cảnh báo (hoặc lỗi nếu truyện khai báo `artQuality`) về viền, nhiễu, số màu, thiếu provenance.
+- **Mini-PixelLab — xử lý ảnh (9 tools):** `pixellab_clean_background`, `pixellab_clean_sprite`, `pixellab_slice_spritesheet` (chung tỉ lệ + điểm neo, chống trôi `centroid`/`bust`), `pixellab_detect_grid` + `pixellab_depixelize` (dò lưới pixel giả của ảnh AI → dựng lại pixel thật), `pixellab_cleanup_sprite` + `pixellab_sprite_quality` (dọn nhiễu, ép viền `#241712`, góc pixel-perfect), `pixellab_relock_palette`, `pixellab_list_palettes`.
+- **Mini-PixelLab — bảng màu & nguồn gốc (2 tools):** `pixellab_extract_palette` (trích/mở rộng bảng màu theo không khí cảnh), `pixellab_reprocess` (dựng lại asset từ `provenance.json`, kiểm tra trùng khớp từng byte).
+- **Mini-PixelLab — nhân vật (3 tools):** `pixellab_lock_expressions` (áo/tóc không rung giữa các frame), `pixellab_add_expression` (thêm biểu cảm từ mảnh mắt/miệng), `pixellab_build_rig` (tách đầu/thân → thở, gật đầu, nhún khi nói).
+- **JLPT (1 tool):** `jlpt_clean_exam_image`.
 
 ### 4. Engine hoạt hình dùng chung (`web/src/engine/`)
 - **`useStageRuntime`**: 1 runtime cho cả 5 stage (tải asset/sprite, phát giọng — nếu trình duyệt chặn autoplay vẫn giữ đúng `durationSec`, chuyển cảnh Bayer, vòng lặp render, tín hiệu cho exporter).
 - **Pixel-perfect**: vẽ vào buffer 320×200 rồi phóng **số nguyên** lên canvas; `drawPixelImage` / `drawSpriteFrame` / `drawPixelZoom` không bao giờ scale lẻ.
 - **`SpriteAnimator`**: hoạt hình theo frame từ `meta.json` (idle chớp mắt, talk mấp máy miệng khi nhân vật nói).
+- **`RigAnimator`**: nhân vật tách đầu/thân từ `rig.json` — thở, gật đầu khi nghe, nhún đầu khi nói, luôn theo bước nguyên pixel.
 - **`CinemaStage` dữ liệu hoá 100%**: phông (`bg:` / `proc:`), hiệu ứng (`petals`, `snow`, `rain`, `bath_steam`), dàn nhân vật, ghi chú, nhãn nút… đều khai báo trong `story.json`.
 
 ---
@@ -42,8 +46,9 @@ Dùng tự động cho cả **Antigravity** (`.agents/plugins/jp-pixel-studio/`)
 jp-pixel-story/
 ├── .agents/plugins/jp-pixel-studio/   # Antigravity Plugin (MCP + Rules + Skill v2.0 + References)
 ├── .claude/skills/jp-pixel-story/     # Bản đồng bộ 100% cho Claude Code
+├── art-src/                           # Ảnh gốc (không deploy) để dựng lại asset từ provenance.json
 ├── .github/workflows/deploy-pages.yml # CI tự chạy pytest + npm test + npm run build → GitHub Pages
-├── mcp-server/                        # Local Python MCP Server (14 tools + pytest)
+├── mcp-server/                        # Local Python MCP Server (23 tools + pytest)
 ├── web/                               # React + Vite + HTML5 Canvas App + unit tests (npm test)
 │   ├── public/stories/                # 12 bài học (index.json, story/choukai/dokkai/gengo.json, MP3)
 │   ├── src/engine/                    # useStageRuntime, pixelScale, spriteAnimator, cinemaBackdrops...

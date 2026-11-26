@@ -10,6 +10,7 @@ from typing import Any
 import numpy as np
 from PIL import Image
 
+import provenance
 from palettes import PALETTES, get_palette_rgb
 
 
@@ -301,6 +302,40 @@ def quantize_to_palette(img: Image.Image, palette_name: str) -> Image.Image:
     return Image.fromarray(out, mode="RGBA")
 
 
+def _maybe_depixelize(img: Image.Image, grid: str) -> tuple[Image.Image, dict[str, Any] | None]:
+    """grid='auto': rebuild true pixels of AI pixel-art inputs before any resizing."""
+    if grid not in ("auto", "none"):
+        raise ValueError("grid must be 'auto' or 'none'.")
+    if grid == "none":
+        return img, None
+    from pixel_quality import depixelize_image, detect_pixel_grid
+
+    g = detect_pixel_grid(img)
+    if not g["is_pixel_art"]:
+        return img, {**g, "applied": False}
+    small, g = depixelize_image(img, g)
+    if not g["fits"]:
+        return img, {**g, "applied": False}
+    return small, {**g, "applied": True}
+
+
+def _outline_for_palette(outline_color: str | None, palette_name: str) -> str | None:
+    """Snap the outline colour to the palette so cleanup never adds an off-palette colour."""
+    if not outline_color or palette_name == "none":
+        return outline_color
+    from palettes import hex_to_rgb
+
+    pal = np.array(get_palette_rgb(palette_name), dtype=np.uint8)
+    idx = nearest_palette_indices(np.array([hex_to_rgb(outline_color)], dtype=np.uint8), pal)[0]
+    return "#%02x%02x%02x" % tuple(int(v) for v in pal[idx])
+
+
+def _cleanup(img: Image.Image, outline_color: str | None, palette_name: str) -> tuple[Image.Image, dict[str, Any]]:
+    from pixel_quality import cleanup_sprite_image
+
+    return cleanup_sprite_image(img, outline_hex=_outline_for_palette(outline_color, palette_name))
+
+
 def _used_colors(img: Image.Image) -> int:
     arr = np.array(img.convert("RGBA"))
     vis = arr[arr[:, :, 3] > 0][:, :3]
@@ -318,24 +353,44 @@ def process_pixel_sprite(
     tolerance: int = 48,
     align_bottom: bool = True,
     fit_mode: str = "bbox",
+    grid: str = "none",
+    cleanup: bool = False,
+    outline_color: str | None = "#241712",
+    record_provenance: bool = True,
+    source: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Process a single AI-generated character/object image into a crisp pixel-art PNG.
 
     Proportions are always preserved (the subject is fitted, never stretched).
+    grid='auto' first rebuilds the true pixels of AI pixel-art inputs; cleanup=True runs
+    despeckle + Art Bible outline + pixel-perfect corners on the result.
     """
     inp = Path(input_path).expanduser().resolve()
     out = Path(output_path).expanduser().resolve()
     out.parent.mkdir(parents=True, exist_ok=True)
 
-    img = Image.open(inp)
+    img, grid_info = _maybe_depixelize(Image.open(inp), grid)
     clean = remove_background(img, mode=bg_mode, tolerance=tolerance)
     fitted = fit_sprite(
         clean, target_width, target_height, align_bottom=align_bottom, fit_mode=fit_mode
     )
     locked = quantize_to_palette(fitted, palette_name)
+    cleanup_report = None
+    if cleanup:
+        locked, cleanup_report = _cleanup(locked, outline_color, palette_name)
     locked.save(out, format="PNG")
+    if record_provenance:
+        provenance.record(
+            "process_pixel_sprite",
+            dict(target_width=target_width, target_height=target_height, palette_name=palette_name, bg_mode=bg_mode,
+                 tolerance=tolerance, align_bottom=align_bottom, fit_mode=fit_mode, grid=grid, cleanup=cleanup,
+                 outline_color=outline_color),
+            output=out, input_path=inp, source=source,
+        )
 
     return {
+        "grid": grid_info,
+        "cleanup": cleanup_report,
         "ok": True,
         "input_path": str(inp),
         "output_path": str(out),
@@ -386,6 +441,13 @@ def process_sprite_sheet(
     fps: float = 8.0,
     clips: dict[str, Any] | None = None,
     padding: int = 1,
+    grid: str = "none",
+    cleanup: bool = False,
+    outline_color: str | None = "#241712",
+    lock_expressions: bool = False,
+    expression_region: list[int] | None = None,
+    record_provenance: bool = True,
+    source: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Slice a raw AI spritesheet grid into registered, pixel-perfect animation frames.
 
@@ -405,7 +467,8 @@ def process_sprite_sheet(
     out_dir = Path(output_dir).expanduser().resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    raw = Image.open(inp).convert("RGBA")
+    raw_img, grid_info = _maybe_depixelize(Image.open(inp), grid)
+    raw = raw_img.convert("RGBA")
     src_w, src_h = raw.size
     cell_w = src_w // cols
     cell_h = src_h // rows
@@ -431,8 +494,8 @@ def process_sprite_sheet(
             if not np.any(mask):
                 anchors.append(None)
                 continue
-            rows = np.where(mask.any(axis=1))[0]
-            top, bottom = int(rows[0]), int(rows[-1])
+            filled_rows = np.where(mask.any(axis=1))[0]
+            top, bottom = int(filled_rows[0]), int(filled_rows[-1])
             if registration == "bust":
                 head_end = top + max(1, int((bottom - top + 1) * 0.4))
                 xs = np.where(mask[top:head_end])[1]
@@ -485,6 +548,8 @@ def process_sprite_sheet(
             small = _downsample_rgba(arr[uy0:uy1, ux0:ux1], out_w, out_h)
             canvas[off_y : off_y + out_h, off_x : off_x + out_w] = small
         locked = quantize_to_palette(Image.fromarray(canvas, mode="RGBA"), palette_name)
+        if cleanup:
+            locked, _ = _cleanup(locked, outline_color, palette_name)
         frame_path = out_dir / f"frame_{idx:02d}.png"
         locked.save(frame_path, format="PNG")
         frames.append(locked)
@@ -515,8 +580,25 @@ def process_sprite_sheet(
     meta_path = out_dir / "meta.json"
     meta_path.write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
 
+    lock_report = None
+    if lock_expressions:
+        from pixel_rig import lock_expressions as _lock
+
+        lock_report = _lock(out_dir, region=expression_region or "auto", record_provenance=False)
+    if record_provenance:
+        provenance.record(
+            "process_sprite_sheet",
+            dict(cols=cols, rows=rows, frame_width=frame_width, frame_height=frame_height, palette_name=palette_name,
+                 bg_mode=bg_mode, tolerance=tolerance, align_bottom=align_bottom, registration=registration, fps=fps,
+                 clips=clips, padding=padding, grid=grid, cleanup=cleanup, outline_color=outline_color,
+                 lock_expressions=lock_expressions, expression_region=expression_region),
+            output=out_dir, input_path=inp, source=source,
+        )
+
     return {
         "ok": True,
+        "grid": grid_info,
+        "expression_lock": lock_report,
         "spritesheet_path": str(strip_path),
         "meta_path": str(meta_path),
         "frame_count": len(frames),
@@ -534,6 +616,7 @@ def relock_palette(
     output_path: str | Path | None = None,
     *,
     palette_name: str = "jp_story_master",
+    record_provenance: bool = True,
 ) -> dict[str, Any]:
     """Re-lock an EXISTING pixel-art PNG to a palette without resizing (keeps alpha as-is)."""
     inp = Path(input_path).expanduser().resolve()
@@ -546,6 +629,8 @@ def relock_palette(
         locked = locked.convert("RGB")
     out.parent.mkdir(parents=True, exist_ok=True)
     locked.save(out, format="PNG")
+    if record_provenance:
+        provenance.record("relock_palette", {"palette_name": palette_name}, output=out, input_path=inp, in_place=out == inp)
     return {
         "ok": True,
         "input_path": str(inp),
@@ -587,6 +672,9 @@ def process_pixel_background(
     target_height: int = 200,
     palette_name: str = "jp_story_master",
     dither_strength: float = 18.0,
+    grid: str = "none",
+    record_provenance: bool = True,
+    source: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Convert an AI-generated environment illustration into a true crisp 320x200 pixel-art background
     locked strictly to a Master Palette with subtle retro Bayer ordered dithering for warm lighting.
@@ -595,7 +683,15 @@ def process_pixel_background(
     out = Path(output_path).expanduser().resolve()
     out.parent.mkdir(parents=True, exist_ok=True)
 
-    img = Image.open(inp).convert("RGB")
+    depix, grid_info = _maybe_depixelize(Image.open(inp), grid)
+    img = depix.convert("RGB")
+    if grid_info and grid_info.get("applied") and (img.width < target_width or img.height < target_height):
+        # true pixels smaller than the stage: whole-number nearest upscale, then crop (stay crisp)
+        k = int(np.ceil(max(target_width / img.width, target_height / img.height)))
+        img = img.resize((img.width * k, img.height * k), Image.Resampling.NEAREST)
+        left = (img.width - target_width) // 2
+        top = (img.height - target_height) // 2
+        img = img.crop((left, top, left + target_width, top + target_height))
     # Center-crop to exact target aspect ratio so nothing gets stretched
     src_w, src_h = img.size
     target_ratio = target_width / float(target_height)
@@ -612,8 +708,18 @@ def process_pixel_background(
     # Downscale crisply with BOX area sampling (clean pixel clusters without ringing)
     small = img.resize((target_width, target_height), resample=Image.Resampling.BOX)
 
+    def _record() -> None:
+        if record_provenance:
+            provenance.record(
+                "process_pixel_background",
+                dict(target_width=target_width, target_height=target_height, palette_name=palette_name,
+                     dither_strength=dither_strength, grid=grid),
+                output=out, input_path=inp, source=source,
+            )
+
     if palette_name == "none":
         small.save(out, format="PNG")
+        _record()
         return {
             "ok": True,
             "output_path": str(out),
@@ -633,8 +739,10 @@ def process_pixel_background(
     quantized = palette_rgb[nearest].reshape(h, w, 3).astype(np.uint8)
 
     Image.fromarray(quantized, mode="RGB").save(out, format="PNG")
+    _record()
     used = np.unique(quantized.reshape(-1, 3), axis=0)
     return {
+        "grid": grid_info,
         "ok": True,
         "input_path": str(inp),
         "output_path": str(out),

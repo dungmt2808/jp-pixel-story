@@ -7,6 +7,11 @@
   "level": "JLPT N4",
   "author": "jp-pixel-studio",
   "palette": "jp_story_master",
+  "artQuality": {
+    "outlineColor": "#241712",
+    "minOutlineCompliance": 0.98,
+    "maxOrphanRatio": 0.06
+  },
   "bgm": "default",
   "assets": {
     "backgrounds": {
@@ -18,20 +23,26 @@
       "minh": "/stories/hanami-first/assets/sprites/minh/meta.json",
       "yui": "/stories/hanami-first/assets/sprites/yui/meta.json"
     },
-    "cardPortrait": "/stories/hanami-first/assets/sprites/yui/frame_03.png"
+    "cardPortrait": "/stories/hanami-first/assets/sprites/yui/frame_03.png",
+    "rigs": {
+      "minh": "/stories/hanami-first/assets/sprites/minh/rig/rig.json",
+      "yui": "/stories/hanami-first/assets/sprites/yui/rig/rig.json"
+    }
   },
   "cast": {
     "left": {
       "voice": "minh",
       "sprite": "minh",
       "idleClip": "idle",
-      "talkClip": "talk"
+      "talkClip": "talk",
+      "rig": "minh"
     },
     "right": {
       "voice": "yui",
       "sprite": "yui",
       "idleClip": "idle",
-      "talkClip": "talk"
+      "talkClip": "talk",
+      "rig": "yui"
     }
   },
   "voices": {

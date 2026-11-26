@@ -28,6 +28,7 @@ const px = await loadTsModule("src/engine/pixelScale.ts");
 const sprite = await loadTsModule("src/engine/spriteAnimator.ts");
 const cinema = await loadTsModule("src/engine/cinemaModel.ts");
 const engines = await loadTsModule("src/engine/stageEngines.ts");
+const rig = await loadTsModule("src/engine/rigAnimator.ts");
 
 let passed = 0;
 function test(name, fn) {
@@ -205,16 +206,68 @@ test("visibleActors: none in intro, left only in outro, explicit override wins",
 
 test("actorFocus dims only the listener during a cast line; narrator keeps both lit", () => {
   const cast = { left: { voice: "minh" }, right: { voice: "yui" } };
-  assert.deepEqual(cinema.actorFocus("left", cast, "minh"), { talking: true, active: true });
-  assert.deepEqual(cinema.actorFocus("right", cast, "minh"), { talking: false, active: false });
-  assert.deepEqual(cinema.actorFocus("right", cast, "narrator"), { talking: false, active: true });
-  assert.deepEqual(cinema.actorFocus("left", cast, null), { talking: false, active: true });
+  assert.deepEqual(cinema.actorFocus("left", cast, "minh"), { talking: true, active: true, listening: false });
+  assert.deepEqual(cinema.actorFocus("right", cast, "minh"), { talking: false, active: false, listening: true });
+  assert.deepEqual(cinema.actorFocus("right", cast, "narrator"), { talking: false, active: true, listening: false });
+  assert.deepEqual(cinema.actorFocus("left", cast, null), { talking: false, active: true, listening: false });
 });
 
 test("sceneBackdropRef: checklist override > backdrop > legacy locationBadge", () => {
   assert.equal(cinema.sceneBackdropRef({ backdrop: "bg:park", locationBadge: "bg:x" }, null), "bg:park");
   assert.equal(cinema.sceneBackdropRef({ locationBadge: "bg:ofuro" }, null), "bg:ofuro");
   assert.equal(cinema.sceneBackdropRef({ backdrop: "bg:park" }, "proc:washoku_table"), "proc:washoku_table");
+});
+
+// --- head/body rig ---------------------------------------------------------------------------
+
+const rigData = rig.normalizeRig({
+  frameWidth: 96,
+  frameHeight: 96,
+  neckRow: 57,
+  neckExtension: 3,
+  pivot: { x: 47, y: 95 },
+  body: { image: "body.png" },
+  head: { sheet: "head.png", frameHeight: 57, frameCount: 4 },
+  fps: 6,
+  clips: { idle: { frames: [0, 0, 0, 2], fps: 4 }, talk: { frames: [1, 0], fps: 7 } },
+});
+
+test("normalizeRig exposes head frames as a sprite meta and validates the neck", () => {
+  assert.equal(rigData.head.frameHeight, 57);
+  assert.equal(rigData.head.frameCount, 4);
+  assert.deepEqual(rigData.head.clips.talk.frames, [1, 0]);
+  assert.throws(() => rig.normalizeRig({ frameWidth: 96, frameHeight: 96, neckRow: 120 }));
+});
+
+test("rigPose only ever moves parts by whole pixels, within the hidden neck extension", () => {
+  for (let i = 0; i < 400; i++) {
+    const t = i * 0.037;
+    for (const st of [{ talking: true, listening: false }, { talking: false, listening: true }, { talking: false, listening: false }]) {
+      const p = rig.rigPose(st, t);
+      for (const v of [p.bodyDy, p.headDx, p.headDy]) assert.ok(Number.isInteger(v));
+      assert.ok(p.bodyDy >= -1 && p.bodyDy <= 0);
+      assert.ok(p.headDy >= -1 && p.headDy <= 1 && -p.headDy <= rigData.neckExtension);
+    }
+  }
+});
+
+test("rigPose: breathing for everyone, bobbing only when talking, nodding only when listening", () => {
+  const ts = Array.from({ length: 300 }, (_, i) => i * 0.01);
+  const dys = (st) => new Set(ts.map((t) => rig.rigPose(st, t).headDy));
+  assert.deepEqual([...dys({ talking: true, listening: false })].sort(), [-1, 0]);
+  assert.deepEqual([...dys({ talking: false, listening: true })].sort(), [0, 1]);
+  assert.deepEqual([...dys({ talking: false, listening: false })], [0]);
+  assert.ok(new Set(Array.from({ length: 400 }, (_, i) => rig.rigPose({ talking: false, listening: false }, i * 0.01).bodyDy)).size === 2);
+  // two actors breathe out of sync thanks to the phase offset
+  const same = ts.filter((t) => rig.rigPose({ talking: false, listening: false }, t).bodyDy === rig.rigPose({ talking: false, listening: false }, t, 1.3).bodyDy);
+  assert.ok(same.length < ts.length);
+});
+
+test("rigHeadFrame plays the talk clip while talking and the idle (blink) clip otherwise", () => {
+  assert.equal(rig.rigHeadFrame(rigData, true, 0), 1);
+  assert.equal(rig.rigHeadFrame(rigData, true, 0.15), 0);
+  assert.equal(rig.rigHeadFrame(rigData, false, 0.8), 2);
+  assert.equal(rig.rigHeadFrame(rigData, false, 0.1), 0);
 });
 
 // --- engine routing ------------------------------------------------------------------------

@@ -53,15 +53,17 @@ Full example: `web/public/stories/hanami-first/story.json`.
   "id": "hanami-first",
   "engine": "cinema",
   "palette": "jp_story_master",
+  "artQuality": { "outlineColor": "#241712", "minOutlineCompliance": 0.98, "maxOrphanRatio": 0.06 },
   "bgm": "default",
   "assets": {
     "backgrounds": { "park": "/stories/hanami-first/assets/bg_park.png" },
     "portraits": {},
     "sprites": { "minh": "/stories/hanami-first/assets/sprites/minh/meta.json" },
+    "rigs": { "minh": "/stories/hanami-first/assets/sprites/minh/rig/rig.json" },
     "cardPortrait": "/stories/hanami-first/assets/sprites/yui/frame_03.png"
   },
   "cast": {
-    "left":  { "voice": "minh", "sprite": "minh", "idleClip": "idle", "talkClip": "talk" },
+    "left":  { "voice": "minh", "rig": "minh", "sprite": "minh", "idleClip": "idle", "talkClip": "talk" },
     "right": { "voice": "yui",  "portrait": "yui_static", "scale": 1 }
   },
   "scenes": [
@@ -82,8 +84,11 @@ Full example: `web/public/stories/hanami-first/story.json`.
   `cinema_checklist` / `cinema_explore` (clickable choices, each may switch `backdrop`), `cinema_outro` (reading / dictation / card / replay buttons).
 - `backdrop`: `"bg:<key>"` (a palette-locked PNG from `assets.backgrounds`) or `"proc:<name>"` from `PROCEDURAL_BACKDROPS`
   (`washoku_table`, `airport_train`). `overlay`: `bath_steam`, `snow`, `rain`, `petals` (`web/src/engine/cinemaBackdrops.ts`).
-- `cast.left/right`: `voice` (matches `lines[].voice` to animate talking), and either `sprite` (frame animation from a
-  `pixellab_slice_spritesheet` meta.json, playing `idleClip` / `talkClip`) or a static `portrait`. `scale` is a whole number.
+- `cast.left/right`: `voice` (matches `lines[].voice` to animate talking), and one of (best first):
+  `rig` (head/body cutout from `pixellab_build_rig`: expression clips on the head + breathing / nodding / bobbing),
+  `sprite` (frame animation from a `pixellab_slice_spritesheet` meta.json, playing `idleClip` / `talkClip`), or a static `portrait`.
+  `scale` is a whole number.
+- `artQuality`: strict validator thresholds for this story's sprites (outline colour compliance, isolated-pixel ratio, optional `maxColorsPerSprite`).
   Without `cast`, the first two `assets.portraits` are used (legacy).
 - `actors`: which sides are on stage (default: none in intro, both in dialogue/checklist, left only in outro).
 - `lines[]`: `{ id, voice, speakerLabel, jaPlain, ttsText?, jaRuby, vi, audioUrl, durationSec, ttsHash }` — the last three are written by `voicevox_generate_story_audio`.
@@ -98,6 +103,17 @@ Full example: `web/public/stories/hanami-first/story.json`.
              "talk": { "frames": [1,0], "fps": 7, "loop": true }, "happy": { "frames": [3], "fps": 6, "loop": true } } }
 ```
 The pivot is placed on the stage ground line, so every frame of every clip stays registered.
+`lock_expressions=True` adds `"expressionRegion": [x0, y0, x1, y1]` (the only area that differs between frames).
+
+### Rig `rig.json` (written by `pixellab_build_rig`, next to `body.png` + `head.png`)
+
+```json
+{ "version": 1, "frameWidth": 96, "frameHeight": 96, "neckRow": 56, "neckExtension": 3,
+  "pivot": { "x": 47, "y": 95 }, "palette": "jp_story_master",
+  "body": { "image": "body.png" }, "head": { "sheet": "head.png", "frameHeight": 56, "frameCount": 4 },
+  "fps": 6, "clips": { "idle": {...}, "talk": {...} } }
+```
+The engine draws body then head (current clip frame) with whole-pixel offsets only.
 
 ## 4. Standalone Daily Dictation Pack (`dictation.json`)
 

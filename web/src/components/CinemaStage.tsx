@@ -16,6 +16,7 @@ import {
 } from "../engine/cinemaModel";
 import { drawPixelImage } from "../engine/pixelScale";
 import { VIRTUAL_H, VIRTUAL_W } from "../engine/pixelRenderer";
+import { drawRig, rigHeadFrame, rigPose } from "../engine/rigAnimator";
 import { drawSpriteFrame, frameAt } from "../engine/spriteAnimator";
 import { useStageRuntime } from "../engine/useStageRuntime";
 import type { CinemaActor, MiniGameChoice, StoryData } from "../types/story";
@@ -57,8 +58,12 @@ function drawActor(
   ctx: CanvasRenderingContext2D,
   side: Side,
   actor: CinemaActor,
-  res: { imgs: Record<string, HTMLImageElement>; sprites: ReturnType<typeof useStageRuntime>["spritesRef"]["current"] },
-  state: { talking: boolean; active: boolean; enterProgress: number; t: number }
+  res: {
+    imgs: Record<string, HTMLImageElement>;
+    sprites: ReturnType<typeof useStageRuntime>["spritesRef"]["current"];
+    rigs: ReturnType<typeof useStageRuntime>["rigsRef"]["current"];
+  },
+  state: { talking: boolean; active: boolean; listening: boolean; enterProgress: number; t: number }
 ): void {
   const ease = easeOutCubic(state.enterProgress);
   const dir = side === "left" ? -1 : 1;
@@ -71,8 +76,14 @@ function drawActor(
   if (!state.active) ctx.filter = "brightness(0.64) saturate(0.86)";
   ctx.globalAlpha = clamp01(ease);
 
+  const rig = actor.rig ? res.rigs[actor.rig] : undefined;
   const sheet = actor.sprite ? res.sprites[actor.sprite] : undefined;
-  if (sheet) {
+  if (rig) {
+    // head/body cutout: expression frames on the head + whole-pixel breathing / nodding / bobbing
+    const pose = rigPose(state, state.t, side === "left" ? 0 : 1.3);
+    const frame = rigHeadFrame(rig.data, state.talking, state.t, actor.talkClip, actor.idleClip);
+    drawRig(ctx, rig, frame, x, VIRTUAL_H, pose, { scale, flipX: actor.flipX });
+  } else if (sheet) {
     const clip = state.talking ? actor.talkClip ?? "talk" : actor.idleClip ?? "idle";
     const frame = frameAt(sheet.meta, clip, state.t);
     drawSpriteFrame(ctx, sheet, frame, x, VIRTUAL_H, { scale, flipX: actor.flipX });
@@ -110,6 +121,7 @@ export function CinemaStage({
     canvasRef,
     imagesRef,
     spritesRef,
+    rigsRef,
     assetsReady,
     sceneIdx,
     activeLine,
@@ -255,7 +267,7 @@ export function CinemaStage({
         const actor = cast[side];
         if (!actor) return;
         const focus = actorFocus(side, cast, speaking);
-        drawActor(ctx, side, actor, { imgs, sprites: spritesRef.current }, {
+        drawActor(ctx, side, actor, { imgs, sprites: spritesRef.current, rigs: rigsRef.current }, {
           ...focus,
           enterProgress: Math.min(elapsed / (0.5 + i * 0.1), 1),
           t,
@@ -269,6 +281,7 @@ export function CinemaStage({
     currentScene,
     imagesRef,
     kind,
+    rigsRef,
     sceneStartRef,
     speakingRef,
     spritesRef,

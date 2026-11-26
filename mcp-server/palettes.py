@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 PALETTES: dict[str, dict[str, object]] = {
     "ramen_midnight": {
         "description": "Master 24-color cozy Japanese retro adventure palette: midnight indigo, espresso outlines, warm cedar wood, lantern amber, vermilion noren, soft cream & fresh scallion green.",
@@ -163,6 +166,31 @@ PALETTES: dict[str, dict[str, object]] = {
 }
 
 
+CUSTOM_PALETTES_FILE = Path(__file__).with_name("palettes_custom.json")
+
+
+def _load_custom() -> None:
+    """Palettes created with pixellab_extract_palette(save_as=...) live in palettes_custom.json."""
+    if CUSTOM_PALETTES_FILE.exists():
+        for name, info in json.loads(CUSTOM_PALETTES_FILE.read_text(encoding="utf-8")).items():
+            PALETTES.setdefault(name, info)
+
+
+def save_custom_palette(name: str, colors: list[str], description: str) -> None:
+    if name in PALETTES and name not in _custom_names():
+        raise ValueError(f"'{name}' is a built-in palette; choose another name.")
+    data = json.loads(CUSTOM_PALETTES_FILE.read_text(encoding="utf-8")) if CUSTOM_PALETTES_FILE.exists() else {}
+    data[name] = {"description": description, "colors": colors}
+    CUSTOM_PALETTES_FILE.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    PALETTES[name] = data[name]
+
+
+def _custom_names() -> set[str]:
+    if not CUSTOM_PALETTES_FILE.exists():
+        return set()
+    return set(json.loads(CUSTOM_PALETTES_FILE.read_text(encoding="utf-8")).keys())
+
+
 def hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
     """Convert a #RRGGBB hex string into an (R, G, B) tuple."""
     h = hex_color.lstrip("#")
@@ -177,3 +205,6 @@ def get_palette_rgb(name: str) -> list[tuple[int, int, int]]:
     colors = PALETTES[name]["colors"]
     assert isinstance(colors, list)
     return [hex_to_rgb(c) for c in colors]
+
+
+_load_custom()

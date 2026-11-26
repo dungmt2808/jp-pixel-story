@@ -4,6 +4,7 @@ import type { DialogueLine, StoryData } from "../types/story";
 import { resolveAssetUrl } from "../utils/assetUrl";
 import { drawBayerDitherOverlay } from "./bayerDither";
 import { VIRTUAL_H, VIRTUAL_W } from "./pixelRenderer";
+import { loadRig, type Rig } from "./rigAnimator";
 import { loadSpriteSheet, type SpriteSheet } from "./spriteAnimator";
 import {
   backingScale,
@@ -48,6 +49,7 @@ export function useStageRuntime({ story, muted }: { story: StoryData; muted: boo
   const voiceTimerRef = useRef<number | null>(null);
   const imagesRef = useRef<Record<string, HTMLImageElement>>({});
   const spritesRef = useRef<Record<string, SpriteSheet>>({});
+  const rigsRef = useRef<Record<string, Rig>>({});
   const mutedRef = useRef(muted);
 
   const [assetsReady, setAssetsReady] = useState(false);
@@ -66,6 +68,7 @@ export function useStageRuntime({ story, muted }: { story: StoryData; muted: boo
     window.__JP_STAGE_READY__ = false;
     const images: Record<string, HTMLImageElement> = {};
     const sprites: Record<string, SpriteSheet> = {};
+    const rigs: Record<string, Rig> = {};
     const jobs: Promise<void>[] = [];
     const addImage = (key: string, url: string) =>
       jobs.push(
@@ -96,11 +99,21 @@ export function useStageRuntime({ story, muted }: { story: StoryData; muted: boo
             .catch((err) => console.warn(`[stage] sprite "${k}" failed: ${String(err)}`))
         );
       }
+      for (const [k, v] of Object.entries(a.rigs ?? {})) {
+        jobs.push(
+          loadRig(resolveAssetUrl(v))
+            .then((r) => {
+              rigs[k] = r;
+            })
+            .catch((err) => console.warn(`[stage] rig "${k}" failed: ${String(err)}`))
+        );
+      }
     }
     void Promise.all(jobs).then(() => {
       if (cancelled) return;
       imagesRef.current = images;
       spritesRef.current = sprites;
+      rigsRef.current = rigs;
       stageStartRef.current = performance.now();
       setAssetsReady(true);
       window.__JP_STAGE_READY__ = true;
@@ -258,6 +271,7 @@ export function useStageRuntime({ story, muted }: { story: StoryData; muted: boo
     canvasRef,
     imagesRef,
     spritesRef,
+    rigsRef,
     assetsReady,
     sceneIdx,
     setSceneIdx,

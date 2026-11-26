@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "assets": {
+    "minh": {
+      "steps": [
+        {
+          "op": "process_sprite_sheet",
+          "params": {
+            "cols": 4,
+            "rows": 1,
+            "frame_width": 96,
+            "frame_height": 96,
+            "palette_name": "jp_story_master",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "align_bottom": true,
+            "registration": "bust",
+            "fps": 6,
+            "clips": {
+              "idle": {
+                "frames": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  2
+                ],
+                "fps": 4
+              },
+              "talk": {
+                "frames": [
+                  1,
+                  0
+                ],
+                "fps": 7
+              },
+              "happy": [
+                3
+              ]
+            },
+            "padding": 1,
+            "grid": "auto",
+            "cleanup": true,
+            "outline_color": "#241712",
+            "lock_expressions": true,
+            "expression_region": null
+          },
+          "input": {
+            "path": "art-src/hanami-first/raw_sheet_minh.png",
+            "sha": "a1bf27e073aca7f7"
+          },
+          "at": "2026-11-26T14:37:08+00:00",
+          "source": {
+            "tool": "make_raw_art.py stand-in (code-drawn, AI-like defects)",
+            "note": "replace with your generator's prompt/seed"
+          }
+        }
+      ],
+      "output": {
+        "sha": "a8318d0bf7b5cb02"
+      }
+    },
+    "yui": {
+      "steps": [
+        {
+          "op": "process_sprite_sheet",
+          "params": {
+            "cols": 4,
+            "rows": 1,
+            "frame_width": 96,
+            "frame_height": 96,
+            "palette_name": "jp_story_master",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "align_bottom": true,
+            "registration": "bust",
+            "fps": 6,
+            "clips": {
+              "idle": {
+                "frames": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  2
+                ],
+                "fps": 4
+              },
+              "talk": {
+                "frames": [
+                  1,
+                  0
+                ],
+                "fps": 7
+              },
+              "happy": [
+                3
+              ]
+            },
+            "padding": 1,
+            "grid": "auto",
+            "cleanup": true,
+            "outline_color": "#241712",
+            "lock_expressions": true,
+            "expression_region": null
+          },
+          "input": {
+            "path": "art-src/hanami-first/raw_sheet_yui.png",
+            "sha": "e4e2f0f7ba3924f3"
+          },
+          "at": "2026-11-26T14:37:10+00:00",
+          "source": {
+            "tool": "make_raw_art.py stand-in (code-drawn, AI-like defects)",
+            "note": "replace with your generator's prompt/seed"
+          }
+        }
+      ],
+      "output": {
+        "sha": "97a6390f1900a735"
+      }
+    }
+  }
+}

@@ -51,5 +51,12 @@
     }
   },
   "scale": 0.206593,
-  "registration": "bust"
+  "registration": "bust",
+  "expressionRegion": [
+    22,
+    1,
+    75,
+    54
+  ],
+  "lockedToFrame": 0
 }

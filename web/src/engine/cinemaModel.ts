@@ -46,13 +46,13 @@ export function actorFocus(
   side: Side,
   cast: Partial<Record<Side, CinemaActor>>,
   speakingVoice: string | null
-): { talking: boolean; active: boolean } {
+): { talking: boolean; active: boolean; listening: boolean } {
   const me = cast[side];
-  if (!me) return { talking: false, active: false };
+  if (!me) return { talking: false, active: false, listening: false };
   const talking = speakingVoice !== null && speakingVoice === me.voice;
   const castVoices = [cast.left?.voice, cast.right?.voice].filter(Boolean);
   const castSpeaking = speakingVoice !== null && castVoices.includes(speakingVoice);
-  return { talking, active: talking || !castSpeaking };
+  return { talking, active: talking || !castSpeaking, listening: castSpeaking && !talking };
 }
 
 /** Backdrop reference for a scene: checklist override > scene.backdrop > legacy locationBadge. */

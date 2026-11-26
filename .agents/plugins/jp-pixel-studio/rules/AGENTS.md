@@ -9,4 +9,5 @@
 - Always run `story_validate_catalog` (or `cd mcp-server && PYTHONPATH=. uv run pytest -v`) and `cd web && npm test && npm run build` before committing or pushing.
 - New animated stories use `"engine": "cinema"` (data-driven); never add a per-story stage component or route by story id.
 - Lock every asset to the master palette `jp_story_master` (validator fails on off-palette PNGs); never scale pixel art by fractions in code (`drawPixelImage` / `drawSpriteFrame` / `drawPixelZoom`).
-- Character animation = one expression spritesheet per character through `pixellab_slice_spritesheet` (`registration="bust"` for portraits) referenced as `assets.sprites` + `cast`.
+- Character animation = one expression spritesheet per character through `pixellab_slice_spritesheet(registration="bust", cleanup=True, lock_expressions=True)` + `pixellab_build_rig`, referenced as `assets.rigs` + `cast.*.rig`.
+- Keep raw art in `art-src/<story>/`, pass `source=` to the pixellab tools, and declare `"artQuality"` in every new story.json.

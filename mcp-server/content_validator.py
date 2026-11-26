@@ -11,6 +11,7 @@ import numpy as np
 from PIL import Image
 
 from palettes import PALETTES, get_palette_rgb
+from pixel_quality import quality_metrics
 from tts_spec import dokkai_sentence_spec, iter_story_lines, standalone_spec, story_line_spec
 
 KANJI_RE = re.compile(r"[\u4e00-\u9faf]")
@@ -58,6 +59,38 @@ def _resolve_palette(story: dict[str, Any], catalog_entry: dict[str, Any] | None
     return str(name)
 
 
+DEFAULT_ART_QUALITY = {"outlineColor": "#241712", "minOutlineCompliance": 0.9, "maxOrphanRatio": 0.08}
+
+
+def _check_art_quality(
+    sprite_pngs: dict[str, Path],
+    public_root: Path,
+    art_quality: dict[str, Any] | None,
+    issues: list[str],
+    warnings: list[str],
+    stats: dict[str, int],
+) -> None:
+    """Sprite craft quality. Stories declaring `artQuality` are strict (issues); others get warnings."""
+    rules = {**DEFAULT_ART_QUALITY, **(art_quality or {})}
+    sink = issues if art_quality else warnings
+    for fp in sprite_pngs.values():
+        with Image.open(fp) as im:
+            if im.mode != "RGBA" or im.getextrema()[3][0] == 255:
+                continue  # not a cut-out sprite
+            q = quality_metrics(im, rules["outlineColor"])
+        stats["sprites_quality_checked"] = stats.get("sprites_quality_checked", 0) + 1
+        rel = fp.relative_to(public_root) if fp.is_relative_to(public_root) else fp
+        if q["outline_compliance"] < rules["minOutlineCompliance"]:
+            sink.append(
+                f"[Outline] {rel}: {q['outline_compliance'] * 100:.0f}% of the silhouette uses {rules['outlineColor']} "
+                f"(< {rules['minOutlineCompliance'] * 100:.0f}%; run pixellab_cleanup_sprite)"
+            )
+        if q["orphan_ratio"] > rules["maxOrphanRatio"]:
+            sink.append(f"[Noise] {rel}: {q['orphan_ratio'] * 100:.1f}% isolated pixels (> {rules['maxOrphanRatio'] * 100:.0f}%)")
+        if rules.get("maxColorsPerSprite") and q["colors"] > rules["maxColorsPerSprite"]:
+            sink.append(f"[Colors] {rel}: {q['colors']} colours (> {rules['maxColorsPerSprite']})")
+
+
 def _check_story_assets(
     data: dict[str, Any],
     sdir: Path,
@@ -65,6 +98,7 @@ def _check_story_assets(
     catalog_entry: dict[str, Any] | None,
     issues: list[str],
     stats: dict[str, int],
+    warnings: list[str] | None = None,
 ) -> None:
     """Every referenced asset exists, sprite metas are consistent, and PNGs obey the palette lock."""
     palette = _resolve_palette(data, catalog_entry)
@@ -73,6 +107,7 @@ def _check_story_assets(
         palette = None
 
     pngs: dict[str, Path] = {}
+    sprite_pngs: dict[str, Path] = {}
     assets = data.get("assets") or {}
     for group in ("backgrounds", "portraits", "items"):
         for key, url in (assets.get(group) or {}).items():
@@ -107,6 +142,41 @@ def _check_story_assets(
         if meta.get("palette") and palette and meta["palette"] != palette:
             issues.append(f"[Sprite Palette Mismatch] sprites/{key}: '{meta['palette']}' != story '{palette}'")
         pngs[str(sheet_fp)] = sheet_fp
+        sprite_pngs[str(sheet_fp)] = sheet_fp
+
+    for key, url in (assets.get("rigs") or {}).items():
+        rig_fp = public_root / str(url).lstrip("/")
+        if not rig_fp.exists():
+            issues.append(f"[Missing Rig] rigs/{key}: {url}")
+            continue
+        rig = json.loads(rig_fp.read_text(encoding="utf-8"))
+        body_fp = rig_fp.parent / rig.get("body", {}).get("image", "body.png")
+        head_fp = rig_fp.parent / rig.get("head", {}).get("sheet", "head.png")
+        if not body_fp.exists() or not head_fp.exists():
+            issues.append(f"[Missing Rig Part] rigs/{key}: body/head image not found")
+            continue
+        fw, fh = int(rig.get("frameWidth", 0)), int(rig.get("frameHeight", 0))
+        n, hh = int(rig["head"].get("frameCount", 0)), int(rig["head"].get("frameHeight", 0))
+        with Image.open(body_fp) as b, Image.open(head_fp) as h:
+            if b.size != (fw, fh) or h.size != (fw * n, hh):
+                issues.append(f"[Rig Size Mismatch] rigs/{key}: body {b.size} / head {h.size} vs {fw}x{fh}, {n} head frames")
+        for clip, spec in (rig.get("clips") or {}).items():
+            frames = spec.get("frames", []) if isinstance(spec, dict) else spec
+            if not frames or any(not (0 <= int(f) < n) for f in frames):
+                issues.append(f"[Invalid Rig Clip] rigs/{key}.{clip}: {frames} (head frames={n})")
+        for fp in (body_fp, head_fp):
+            # palette-checked; craft quality is judged on the source spritesheet (the neck cut of
+            # body.png is a hidden seam, not a silhouette edge that needs an outline)
+            pngs[str(fp)] = fp
+
+    for group in ("portraits", "items"):
+        for url in (assets.get(group) or {}).values():
+            fp = public_root / str(url).lstrip("/")
+            if fp.exists() and fp.suffix.lower() == ".png":
+                sprite_pngs[str(fp)] = fp
+    if warnings is not None:
+        _check_art_quality(sprite_pngs, public_root, data.get("artQuality"), issues, warnings, stats)
+        _check_provenance(pngs, warnings, stats)
 
     assets_dir = sdir / "assets"
     if assets_dir.is_dir():
@@ -126,6 +196,27 @@ def _check_story_assets(
                 f"[Off-Palette Asset] {rel}: {off} colours outside '{palette}' "
                 "(re-run pixellab_clean_* with this palette)"
             )
+
+
+def _check_provenance(pngs: dict[str, Path], warnings: list[str], stats: dict[str, int]) -> None:
+    """Count assets with a provenance record; warn (never fail) about the ones without."""
+    missing = 0
+    for fp in pngs.values():
+        found = False
+        for parent in (fp.parent, fp.parent.parent):
+            mf = parent / "provenance.json"
+            if mf.exists():
+                assets = json.loads(mf.read_text(encoding="utf-8")).get("assets", {})
+                key = fp.name if parent == fp.parent else fp.parent.name
+                if key in assets:
+                    found = True
+                    break
+        if found:
+            stats["assets_with_provenance"] = stats.get("assets_with_provenance", 0) + 1
+        else:
+            missing += 1
+    if missing:
+        warnings.append(f"[No Provenance] {missing} asset(s) have no provenance.json record (cannot be rebuilt exactly)")
 
 
 def _check_tts_hash(label: str, obj: dict[str, Any], spec: Any, issues: list[str], stats: dict[str, int]) -> None:
@@ -153,6 +244,7 @@ def validate_story_folder(
         else sdir.parent.parent
     )
     issues: list[str] = []
+    warnings: list[str] = []
     stats: dict[str, int] = {"audio_checked": 0, "kanji_blocks_checked": 0}
 
     def check_audio_ref(label: str, audio_url: str | None) -> None:
@@ -181,7 +273,7 @@ def validate_story_folder(
 
     if story_json.exists():
         data = json.loads(story_json.read_text(encoding="utf-8"))
-        _check_story_assets(data, sdir, public_root, catalog_entry, issues, stats)
+        _check_story_assets(data, sdir, public_root, catalog_entry, issues, stats, warnings)
         voices = data.get("voices", {})
         for line, default_id in iter_story_lines(data):
             _check_tts_hash(f"story/{line.get('id') or default_id}", line, story_line_spec(line, voices), issues, stats)
@@ -391,6 +483,7 @@ def validate_story_folder(
         "stats": stats,
         "issue_count": len(issues),
         "issues": issues,
+        "warnings": warnings,
     }
 
 
@@ -426,6 +519,7 @@ def validate_catalog(
     total_kanji = 0
     total_palette = 0
     total_hash = 0
+    total_warnings = 0
 
     for entry in entries:
         sid = entry["id"]
@@ -437,6 +531,7 @@ def validate_catalog(
         total_kanji += res["stats"]["kanji_blocks_checked"]
         total_palette += res["stats"].get("palette_assets_checked", 0)
         total_hash += res["stats"].get("tts_hash_checked", 0)
+        total_warnings += len(res.get("warnings", []))
         if not res["ok"]:
             failed.append(sid)
 
@@ -457,5 +552,6 @@ def validate_catalog(
         "total_kanji_blocks_checked": total_kanji,
         "total_palette_assets_checked": total_palette,
         "total_tts_hashes_checked": total_hash,
+        "total_warnings": total_warnings,
         "results": results,
     }
