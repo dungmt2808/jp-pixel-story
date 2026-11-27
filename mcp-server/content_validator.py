@@ -25,6 +25,8 @@ VIBE_SFX = {"pop", "ding", "whoosh", "boing", "shock", "sparkle", "thud", "gloom
 VIBE_LIGHTS = {"day", "morning", "golden", "dusk", "night", "rain", "warm"}
 VIBE_BGM = {"default", "depato_sunny", "depato_rain", "calm", "night", "happy", "bright", "sad", "tender", "rain", "none"}
 MOTION_TYPES = {"scroll", "sweep", "glow", "shimmer", "steam", "mover", "rumble"}
+PERSON_KINDS = {"dog", "bronze-dog", "sensei", "person"}
+PROC_SETS = {"shibuya", "shibuya_today"}
 
 
 def vocab_needles(v: dict[str, Any]) -> list[str]:
@@ -305,6 +307,8 @@ def validate_story_folder(
             inter = sc.get("interaction")
             if isinstance(inter, dict):
                 extra = [("done", inter.get("doneLine"))] + [
+                    (f"done{i + 1}", ln) for i, ln in enumerate(inter.get("doneLines") or [])
+                ] + [
                     (f"spot{i}", sp.get("line")) for i, sp in enumerate(inter.get("spots") or [])
                 ]
                 for tag, ln in extra:
@@ -365,7 +369,7 @@ def validate_story_folder(
                     if ch.get("backdrop"):
                         refs.append((f"{sc.get('id', '?')}/{ch.get('id', '?')}", ch["backdrop"]))
             painted = [r for r in refs if r[1].startswith("bg:")]
-            coded = [r for r in refs if r[1].startswith("proc:")]
+            coded = [r for r in refs if r[1].startswith(("proc:", "set:"))]
             if painted and coded and not (data.get("look") or {}).get("allowMixedBackdrops"):
                 warnings.append(
                     "[Style Mix] painted backgrounds (" + ", ".join(sorted({r[1] for r in painted})) + ") and code-drawn "
@@ -392,6 +396,39 @@ def validate_story_folder(
                     issues.append(f"[Missing Asset] {where}: mover item '{fx.get('item')}' is not in assets.items")
                 if kind in ("scroll", "mover") and not painted:
                     warnings.append(f"[Motion Needs Painting] {where}: '{kind}' samples the painted bg: backdrop")
+
+        # route B: people + cues (web/src/engine/people.ts, cues.ts) and code-drawn set: backdrops
+        for sc in data.get("scenes", []):
+            people = sc.get("people") or {}
+            for pid, pdef in people.items():
+                kind = str(pdef.get("kind", ""))
+                if kind not in PERSON_KINDS and not kind.startswith("sprite:"):
+                    issues.append(f"[Unknown Person] {sc.get('id')}/{pid}: kind '{kind}' (use {sorted(PERSON_KINDS)} or sprite:<key>)")
+                if kind.startswith("sprite:") and kind[7:] not in ((data.get("assets") or {}).get("sprites") or {}):
+                    issues.append(f"[Missing Asset] {sc.get('id')}/{pid}: sprite '{kind[7:]}' is not in assets.sprites")
+            n_lines = len(sc.get("lines") or [])
+            inter = sc.get("interaction") or {}
+            n_done = (1 if inter.get("doneLine") else 0) + len(inter.get("doneLines") or [])
+            for ci, cue in enumerate(sc.get("cues") or []):
+                where = f"{sc.get('id')}/cues[{ci}]"
+                if "line" in cue and not 0 <= int(cue["line"]) < n_lines:
+                    issues.append(f"[Bad Cue] {where}: line {cue['line']} does not exist ({n_lines} lines)")
+                if "doneLine" in cue and not 0 <= int(cue["doneLine"]) < n_done:
+                    issues.append(f"[Bad Cue] {where}: doneLine {cue['doneLine']} does not exist ({n_done} done-lines)")
+                if cue.get("done") and not inter:
+                    issues.append(f"[Bad Cue] {where}: 'done' needs a scene interaction")
+                for mv in cue.get("people") or []:
+                    if mv.get("who") not in people:
+                        issues.append(f"[Bad Cue] {where}: person '{mv.get('who')}' is not in scene.people")
+            for item in inter.get("items") or []:
+                if item.get("person") and item["person"] not in people:
+                    issues.append(f"[Bad Interaction] {sc.get('id')}: drag person '{item['person']}' is not in scene.people")
+            for ln in [*(sc.get("lines") or []), *(inter.get("doneLines") or []), *([inter["doneLine"]] if inter.get("doneLine") else [])]:
+                if ln.get("emoteWho") and ln["emoteWho"] not in people:
+                    issues.append(f"[Bad Cue] {sc.get('id')}/{ln.get('id')}: emoteWho '{ln['emoteWho']}' is not in scene.people")
+            bd = str(sc.get("backdrop", ""))
+            if bd.startswith("set:") and bd[4:] not in PROC_SETS:
+                issues.append(f"[Unknown Set] {sc.get('id')}: '{bd}' (known: {sorted(PROC_SETS)})")
 
         for key, fxs in (data.get("backdropMotion") or {}).items():
             if key not in backgrounds:

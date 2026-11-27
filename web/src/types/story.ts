@@ -1,4 +1,6 @@
 import type { MotionFx } from "../engine/sceneMotion";
+import type { SceneCue } from "../engine/cues";
+import type { PersonDef } from "../engine/people";
 export interface RubySegment {
   /** Base Japanese text (Kanji or Kana). */
   t: string;
@@ -28,6 +30,8 @@ export interface DialogueLine {
   emote?: string;
   /** Which actor the emote belongs to (default: the speaker). */
   emoteSide?: "left" | "right";
+  /** Route B: the emote (and camera focus) goes to this person of `scene.people`. */
+  emoteWho?: string;
   /** Vibe kit: camera move while the line plays ("push", "punch", "close", "shake", "pan_left", "pan_right"). */
   camera?: string;
   /** Vibe kit: big variety-show caption over the stage (ruby allowed). */
@@ -148,7 +152,9 @@ export interface SceneStamp {
 export interface DragItem {
   id: string;
   /** Key in assets.items (palette-locked sprite). */
-  item: string;
+  item?: string;
+  /** Route B: drag this person of `scene.people` instead of an item sprite. */
+  person?: string;
   from: [number, number];
   to: [number, number];
   label?: string;
@@ -189,6 +195,10 @@ export interface SceneInteraction {
   hold?: HoldGauge;
   /** Voice line played when the interaction is completed. */
   doneLine?: DialogueLine;
+  /** Several lines after completion (cues can anchor on them with `doneLine: i`). */
+  doneLines?: DialogueLine[];
+  /** Wait this long after completion before the done-lines (let cues play: a train arriving...). */
+  doneDelaySec?: number;
 }
 
 export interface CinemaTitleCard {
@@ -242,6 +252,14 @@ export interface StoryScene {
   bgm?: string;
   /** Route C: motion layers that bring a painted background to life (see engine/sceneMotion.ts). */
   motion?: MotionFx[];
+  /** Route B: parameters of a code-drawn `set:<name>` backdrop (engine/proc/shibuya.ts...). */
+  set?: Record<string, unknown>;
+  /** Route B: full-body people in the shot (engine/people.ts). */
+  people?: Record<string, PersonDef>;
+  /** World changes tied to lines / the mini-game / time (engine/cues.ts). */
+  cues?: SceneCue[];
+  /** Minimum time on screen (s) — scenes without lines (a season passing) still breathe. */
+  holdSec?: number;
   outroLabels?: CinemaOutroLabels;
   whoButtonLabel?: string;
   actionLabel?: string;

@@ -166,6 +166,39 @@ Per scene: `light` (`day`, `morning`, `golden`, `dusk`, `night`, `rain`, `warm`)
 items; `bgm` (`calm`, `happy`, `tender`/`sad`, `none`, or a theme name) — switches the music from this scene on.
 The MP4 exporter renders the same BGM themes and SFX into the video, with the music ducked under the voices.
 
+### Route B — code-drawn worlds, full-body people, cues (`set:`, `people`, `cues`)
+
+Everything drawn in code from one style kit (`web/src/engine/proc/`), characters act in a wide shot, and
+the world changes with the story. Example: `hachiko` (ported from the old standalone page).
+
+```json
+{ "id": "every_evening", "type": "cinema_dialogue", "backdrop": "set:shibuya", "actors": [],
+  "set": { "sky": "dusk", "lamp": 1, "lit": 1, "clock": 4.8 },
+  "people": { "hachi": { "kind": "dog", "x": 214, "y": 150, "face": "right", "pose": "sit" },
+              "sensei": { "kind": "sensei", "x": 272, "y": 150, "hidden": true } },
+  "lines": [ ... ],
+  "cues": [ { "done": true, "set": { "clock": 5.5 } },
+            { "done": true, "delay": 1.0, "set": { "train": "go" } },
+            { "done": true, "delay": 4.9, "people": [ { "who": "sensei", "walkTo": 238, "speed": 16 } ] },
+            { "done": true, "delay": 6.6, "people": [ { "who": "hachi", "pose": "stand", "hop": 1.6 } ] } ],
+  "interaction": { "type": "tap", "hint": "Bấm vào đồng hồ", "spots": [ { "id": "clock", "x": 272, "y": 78, "r": 10 } ],
+                   "doneDelaySec": 7.4, "doneLines": [ { "id": "h07", "emote": "heart", "emoteWho": "hachi", ... } ] } }
+```
+
+- `backdrop: "set:<name>"` + `set` parameters: `shibuya` (sky morning|dusk|night|grey|winter blending 1.5 s, sun, moon, stars,
+  far, ground, tree spring|summer|autumn|winter, snow, lit, lamp, clock hour (hands ease), train go|loop, weather
+  sakura|rain|leaves|snow, crowd {n, seed}, statue {x}, cloth 1→0 unveils, paper [x, y]) and `shibuya_today`.
+  The world sits 20 px low: people stand on y = 150, the station clock is at (272, 78).
+- `people`: `{ kind: dog | bronze-dog | sensei | person | sprite:<key>, x, y, face, pose: stand|walk|sit|run, age, coat,
+  seed, hidden, hideWhileInteract }`. `sprite:<key>` uses an `assets.sprites` meta.json with clips idle / walk / sit / run
+  (PixelLab walk cycles go through `pixellab_slice_spritesheet`).
+- `cues`: `{ at | line | doneLine | done, delay, set: {...}, people: [{ who, walkTo, speed, then: pose|"exit", x, face,
+  pose, show, fadeOut, hop }] }` — anchors are recorded as the scene plays, so videos are deterministic.
+- Lines: `emoteWho` puts the emote (and camera focus) on a person. Interactions: `doneLines` (several lines after the
+  game, cues can anchor on them), `doneDelaySec` (let the cues play first), drag `items[].person` drags a person.
+- `holdSec`: minimum time on screen (scenes without lines, e.g. seasons passing).
+- The validator checks person kinds, cue anchors/people, `emoteWho`, set names; `set:` counts as code-drawn for `[Style Mix]`.
+
 ### Route C — motion layers on painted backgrounds (`scene.motion`)
 
 Painted art gives the detail, code gives the movement. All coordinates are virtual (320x200) and every

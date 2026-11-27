@@ -57,6 +57,8 @@ and `bgm` per scene, and give key lines an `emote` / `camera` / `telop` (story-s
 Missing art: write `art-src/<story>/art.json` + `PROMPTS.md`, then `pixellab_apply_art_manifest`.
 Make painted scenes move (route C): `scene.motion` layers + art.json `objects` to cut out vehicles/props
 (story-schema.md "Route C"; art-style.md §6 compares the three art routes).
+Route B (code-drawn worlds, full-body characters walking, the world changing with the story): `backdrop: "set:<name>"`,
+`people`, `cues` — story-schema.md "Route B"; new sets go in `web/src/engine/proc/` and `PROC_SETS`.
 Stages are routed by `story.engine` (`web/src/engine/stageEngines.ts`), never by story id.
 
 Read schema references before creating files:

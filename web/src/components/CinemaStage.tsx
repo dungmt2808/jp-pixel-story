@@ -41,6 +41,9 @@ import { drawSpriteFrame, frameAt } from "../engine/spriteAnimator";
 import { useStageRuntime } from "../engine/useStageRuntime";
 import { cameraAt, drawEmote, drawLightGrade, IDENTITY_VIEW, lineSfx } from "../engine/cinemaVibe";
 import { drawSceneMotion, sceneRumble } from "../engine/sceneMotion";
+import { cueMoves, setStateAt, type CueAnchors } from "../engine/cues";
+import { drawPerson, personAt, personBox, type PersonState } from "../engine/people";
+import { PROC_SETS } from "../engine/proc/shibuya";
 import { logStoryEvent } from "../engine/stageRuntime";
 import type { CinemaActor, DialogueLine, LineTelop, MiniGameChoice, SceneStamp, StoryData } from "../types/story";
 import { InfoCard } from "./cinema/InfoCard";
@@ -205,6 +208,9 @@ export function CinemaStage({
   const phaseRef = useRef<Phase>("lines");
   phaseRef.current = phase;
   const completingRef = useRef(false);
+  // cue anchors: scene time each line / done-line started and when the mini-game was completed
+  const anchorsRef = useRef<CueAnchors>({ lines: [], doneLines: [] });
+  const peopleStateRef = useRef<Record<string, PersonState>>({});
   const foundRef = useRef<string[]>([]);
 
   const go = useCallback((idx: number) => goToScene(idx, "dissolve"), [goToScene]);
@@ -214,6 +220,8 @@ export function CinemaStage({
     if (!assetsReady) return;
     let cancelled = false;
     sceneStartRef.current = performance.now();
+    anchorsRef.current = { lines: [], doneLines: [] };
+    peopleStateRef.current = {};
     setPhase("lines");
     setLineIdx(-1);
     setActiveLine(null);
@@ -234,10 +242,14 @@ export function CinemaStage({
       for (let i = 0; i < currentScene.lines.length; i++) {
         if (cancelled) return;
         setLineIdx(i);
+        anchorsRef.current.lines[i] = (performance.now() - sceneStartRef.current) / 1000;
         await playVoiceLine(currentScene.lines[i]);
         if (cancelled) return;
         await sleep(420);
       }
+      if (cancelled) return;
+      const holdLeft = (currentScene.holdSec ?? 0) * 1000 - (performance.now() - sceneStartRef.current);
+      if (holdLeft > 0) await sleep(holdLeft);
       if (cancelled) return;
       if (currentScene.interaction) {
         setPhase("interact");
@@ -314,9 +326,14 @@ export function CinemaStage({
     setPhase("doneLine");
     retroAudio.playFanfare();
     spawnBurst(particlesRef.current, [160, 90], ["#ffe38c", "#f6eed8", "#f4b6c2"], 18, 70);
-    const done = currentScene.interaction?.doneLine;
-    if (done) {
-      await playVoiceLine(done);
+    anchorsRef.current.done = (performance.now() - sceneStartRef.current) / 1000;
+    const inter = currentScene.interaction;
+    if (inter?.doneDelaySec) await sleep(inter.doneDelaySec * 1000);
+    // `doneLine` (if any) is done-line 0, then `doneLines` follow
+    const doneList = [...(inter?.doneLine ? [inter.doneLine] : []), ...(inter?.doneLines ?? [])];
+    for (let i = 0; i < doneList.length; i++) {
+      anchorsRef.current.doneLines[i] = (performance.now() - sceneStartRef.current) / 1000;
+      await playVoiceLine(doneList[i]);
       await sleep(300);
     }
     setPhase("ready");
@@ -538,9 +555,14 @@ export function CinemaStage({
       // the camera frames whoever reacts (emoteSide) or else the speaker
       const focusSide = vLine?.emoteSide && onStage.includes(vLine.emoteSide) ? vLine.emoteSide : speakerSide;
       const focusBox = focusSide ? actorBox(focusSide) : null;
-      const focus: [number, number] = focusBox
-        ? [focusBox.x, focusBox.top + focusBox.h * 0.3]
-        : [VIRTUAL_W / 2, VIRTUAL_H / 2];
+      const who = vLine?.emoteWho ? peopleStateRef.current[vLine.emoteWho] : undefined;
+      const whoDef = vLine?.emoteWho ? currentScene.people?.[vLine.emoteWho] : undefined;
+      const focus: [number, number] =
+        who && whoDef
+          ? [who.x, who.y - personBox(whoDef.kind).h / 2]
+          : focusBox
+            ? [focusBox.x, focusBox.top + focusBox.h * 0.3]
+            : [VIRTUAL_W / 2, VIRTUAL_H / 2];
       cameraRef.current = vLine?.camera ? cameraAt(vLine.camera, vAge, focus, vLine.durationSec ?? 3) : IDENTITY_VIEW;
 
       // route C: the world (backdrop + motion layers + actors) may bump 1 px on a rumble beat
@@ -556,12 +578,26 @@ export function CinemaStage({
       }
       ctx.save();
       if (bump) ctx.translate(0, bump);
-      if (!drawBackdrop(ctx, backdropRef, t, imgs)) {
+      const setName = backdropRef.startsWith("set:") ? backdropRef.slice(4) : "";
+      if (setName && PROC_SETS[setName]) {
+        PROC_SETS[setName](ctx, setStateAt(currentScene.set, currentScene.cues, anchorsRef.current, elapsed));
+      } else if (!drawBackdrop(ctx, backdropRef, t, imgs)) {
         ctx.fillStyle = "#101322";
         ctx.fillRect(0, 0, VIRTUAL_W, VIRTUAL_H);
       }
       drawSceneMotion(ctx, motion, elapsed, imgs, bgImg);
       for (const name of overlayNames) OVERLAYS[name]?.(ctx, t);
+
+      // route B: full-body people in the shot, moved by cues
+      if (currentScene.people) {
+        const moves = cueMoves(currentScene.cues, anchorsRef.current);
+        for (const [id, def] of Object.entries(currentScene.people)) {
+          const st = personAt(def, moves.filter((m) => m.move.who === id), elapsed);
+          peopleStateRef.current[id] = st;
+          if (def.hideWhileInteract && phaseRef.current === "interact") continue;
+          drawPerson(ctx, def, st, t, spritesRef.current);
+        }
+      }
 
       if (kind !== "intro") {
         const speaking = speakingRef.current;
@@ -593,9 +629,14 @@ export function CinemaStage({
           }
           if (interacting && dragging) drawTargetGlow(ctx, it.target, t);
           const pos = dragging ? pointerRef.current : it.pos;
+          const personDef = spec?.person ? currentScene.people?.[spec.person] : undefined;
           if (im) {
             const bob = !it.placed && !dragging && interacting ? Math.round(Math.sin(t * 4 + i) * 1) : 0;
             drawPixelImage(ctx, im, Math.round(pos[0] - im.naturalWidth / 2), Math.round(pos[1] - im.naturalHeight / 2) + bob, im.naturalWidth, im.naturalHeight);
+          } else if (personDef && interacting) {
+            // a person stand-in (its scene copy hides while the game runs); `pos` is its feet
+            const st: PersonState = { x: pos[0], y: pos[1], face: "right", pose: dragging ? "walk" : "stand", visible: true, alpha: 1, lift: 0 };
+            drawPerson(ctx, personDef, st, t, spritesRef.current);
           }
         });
       } else if (inter?.type === "tap") {
@@ -633,7 +674,10 @@ export function CinemaStage({
 
       // one light grade over the whole world layer (backdrop, actors, items) = one time of day
       drawLightGrade(ctx, currentScene.light);
-      if (vLine?.emote) {
+      if (vLine?.emote && who && whoDef) {
+        const box = personBox(whoDef.kind);
+        drawEmote(ctx, vLine.emote, who.x + (who.face === "right" ? 4 : -4), who.y - box.h - 2, vAge, 1);
+      } else if (vLine?.emote) {
         const emoteSide = vLine.emoteSide ?? speakerSide ?? onStage[0];
         const b = emoteSide ? actorBox(emoteSide) : null;
         if (b) {

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 from pathlib import Path
 
 import numpy as np
@@ -430,3 +431,33 @@ def test_validator_checks_motion_layers(tmp_path: Path) -> None:
     for tag in ("[Unknown Motion]", "[Bad Motion Rect]", "mover item 'plane'", "[Bad Backdrop Motion] 'nowhere'"):
         assert tag in joined, tag
     assert any("[Motion Needs Painting]" in w for w in res["warnings"])
+
+
+def test_done_lines_are_voiced_and_route_b_is_validated(tmp_path: Path) -> None:
+    from tts_spec import iter_story_lines
+
+    story = {"scenes": [{"id": "s", "lines": [], "interaction": {"type": "tap", "doneLines": [{"id": "a"}, {"id": "b"}]}}]}
+    assert [i for _, i in iter_story_lines(story)] == ["s01_done1", "s01_done2"]
+
+    import content_validator as cv
+
+    web = Path(__file__).resolve().parents[2] / "web" / "src" / "engine"
+    sets = (web / "proc" / "shibuya.ts").read_text(encoding="utf-8")
+    assert set(re.findall(r"^  (\w+): draw\w+,$", sets, re.M)) == cv.PROC_SETS
+
+    pub, sdir = _setup_mock_catalog(tmp_path, "route-b", category="story")
+    bad = {
+        "id": "route-b", "engine": "cinema", "assets": {"backgrounds": {}, "portraits": {}},
+        "scenes": [{
+            "id": "sc1", "backdrop": "set:tokyo_tower", "lines": [{"id": "l1", "voice": "narrator", "jaPlain": "あ", "jaRuby": "あ", "vi": "a", "emoteWho": "ghost"}],
+            "people": {"hachi": {"kind": "dog", "x": 10}, "robo": {"kind": "robot", "x": 20}},
+            "cues": [{"line": 3}, {"doneLine": 0}, {"done": True}, {"at": 1, "people": [{"who": "nobody", "walkTo": 5}]}],
+        }],
+        "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []},
+    }
+    (sdir / "story.json").write_text(json.dumps(bad), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    joined = " | ".join(res["issues"])
+    for tag in ("[Unknown Set]", "[Unknown Person] sc1/robo", "line 3 does not exist", "doneLine 0 does not exist",
+                "'done' needs a scene interaction", "person 'nobody'", "emoteWho 'ghost'"):
+        assert tag in joined, tag
