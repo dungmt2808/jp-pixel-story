@@ -200,16 +200,12 @@
           "ttsHash": "2327bb0ff204",
           "camera": "push",
           "emote": "dots",
-          "castPortrait": {
-            "left": "minh_thinking"
-          }
+          "emoteWho": "minh"
         }
       ],
       "backdrop": "bg:alley",
       "overlay": "rain",
-      "actors": [
-        "left"
-      ],
+      "actors": [],
       "stamp": "深夜のラーメン屋 · 路地裏の小さな店",
       "people": {
         "minh": {
@@ -1619,6 +1615,9 @@
     },
     "/stories/ramen-midnight/assets/item_chashu.png": {
       "noise": "marbled fat pattern of the pork slice (8.2% after cleanup, reviewed)"
+    },
+    "/stories/ramen-midnight/assets/sprites/minh_walk/spritesheet.png": {
+      "noise": "jacket folds and bag strap at 40x64 (12.6% after cleanup, reviewed)"
     }
   }
 }

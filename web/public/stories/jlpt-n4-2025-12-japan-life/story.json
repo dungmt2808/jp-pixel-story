@@ -261,7 +261,8 @@
           "durationSec": 16.224,
           "ttsHash": "c4ed29fe51fd",
           "emote": "heart",
-          "camera": "push"
+          "camera": "push",
+          "emoteWho": "lisa"
         }
       ],
       "backdrop": "bg:airport_empty",
@@ -408,7 +409,8 @@
             ]
           ]
         }
-      ]
+      ],
+      "actors": []
     }
   ],
   "reading": {
@@ -1002,6 +1004,12 @@
   "artExceptions": {
     "/stories/jlpt-n4-2025-12-japan-life/assets/items/plane.png": {
       "noise": "painted livery: the isolated pixels are the window row and highlights (cleanup removes only 1%) (19.5% after cleanup, reviewed)"
+    },
+    "/stories/jlpt-n4-2025-12-japan-life/assets/sprites/haruko/spritesheet.png": {
+      "noise": "hair shine and blouse folds of the generated sheet (8.3% after cleanup, reviewed)"
+    },
+    "/stories/jlpt-n4-2025-12-japan-life/assets/sprites/lisa_walk/spritesheet.png": {
+      "noise": "skirt pleats and shoulder-bag texture at 40x64 (14.7% after cleanup, reviewed)"
     }
   }
 }
