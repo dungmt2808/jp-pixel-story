@@ -90,6 +90,9 @@ Full example: `web/public/stories/hanami-first/story.json`.
   `sprite` (frame animation from a `pixellab_slice_spritesheet` meta.json, playing `idleClip` / `talkClip`), or a static `portrait`.
   `scale` is a whole number.
 - `artQuality`: strict validator thresholds for this story's sprites (outline colour compliance, isolated-pixel ratio, optional `maxColorsPerSprite`).
+  `artExceptions`: `{ "/stories/<id>/assets/item_cloth.png": { "noise": "woven silk texture (12.3% after cleanup, reviewed)" } }`
+  — a reviewed decision that one metric (`outline`, `noise`, `colors`) does not apply to one sprite; a written reason is
+  required and the validator counts them (`stats.art_exceptions`). Clean first (`pixellab_cleanup_sprite`), excuse last.
   Without `cast`, the first two `assets.portraits` are used (legacy).
 - `actors`: which sides are on stage (default: none in intro, both in dialogue/checklist, left only in outro).
 - Scene `cast`: `{ "right": { "voice": "kitamura", "portrait": "kitamura" } }` replaces the story cast for that side in

@@ -823,5 +823,13 @@
         "speed": 0.8
       }
     ]
+  },
+  "artExceptions": {
+    "/stories/tsuru-ongaeshi/assets/item_crane.png": {
+      "noise": "feather texture on the wings and tail (11.7% after cleanup, reviewed)"
+    },
+    "/stories/tsuru-ongaeshi/assets/item_cloth.png": {
+      "noise": "woven silk texture of the cloth roll (12.2% after cleanup, reviewed)"
+    }
   }
 }

@@ -91,6 +91,7 @@ Read schema references before creating files:
    - Run MCP tool **`story_validate_catalog`** on `web/public/stories` (must return `ok: true`, `total_issues: 0`, `orphan_folders: []`).
      It also fails on `[Off-Palette Asset]`, `[Missing Asset]`, broken sprite `meta.json` / `rig.json`, and `[Stale Audio]` (text edited after synthesis).
      Sprite craft (`[Outline]`, `[Noise]`, `[Colors]`) and `[No Provenance]` are warnings, but become errors for stories that declare `"artQuality"` (do this for every NEW story).
+     Old art without a raw source is kept as a `legacy_master` (`provenance.adopt_legacy`); a sprite whose leftover noise is real texture gets a reasoned `artExceptions` entry (see `art-src/README.md`).
    - Run backend tests: `cd mcp-server && PYTHONPATH=. uv run pytest -v`
    - Run frontend tests & build: `cd web && npm test && npm run build`
    - Play every animated story end-to-end on a virtual clock: `cd exporter && npm run check:all -- --url <preview url>`

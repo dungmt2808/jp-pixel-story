@@ -1529,5 +1529,13 @@
         "height": 20
       }
     ]
+  },
+  "artExceptions": {
+    "/stories/ramen-midnight/assets/item_egg.png": {
+      "noise": "dithered yolk gradient (10.4% after cleanup, reviewed)"
+    },
+    "/stories/ramen-midnight/assets/item_chashu.png": {
+      "noise": "marbled fat pattern of the pork slice (8.2% after cleanup, reviewed)"
+    }
   }
 }

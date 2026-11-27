@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "assets": {
+    "item_ramen_base.png": {
+      "steps": [
+        {
+          "op": "cleanup_sprite",
+          "params": {
+            "despeckle": true,
+            "outline_color": "#241712",
+            "pixel_perfect": true,
+            "max_colors": 0
+          },
+          "input": {
+            "path": "art-src/ramen-midnight/legacy/item_ramen_base.png",
+            "sha": "7b826eb6d9942314"
+          },
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "1bae8c0f923da3ec"
+      }
+    },
+    "item_chashu.png": {
+      "steps": [
+        {
+          "op": "cleanup_sprite",
+          "params": {
+            "despeckle": true,
+            "outline_color": "#241712",
+            "pixel_perfect": true,
+            "max_colors": 0
+          },
+          "input": {
+            "path": "art-src/ramen-midnight/legacy/item_chashu.png",
+            "sha": "0511bcab39dd0eed"
+          },
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "a5ef424a866552a1"
+      }
+    },
+    "item_egg.png": {
+      "steps": [
+        {
+          "op": "cleanup_sprite",
+          "params": {
+            "despeckle": true,
+            "outline_color": "#241712",
+            "pixel_perfect": true,
+            "max_colors": 0
+          },
+          "input": {
+            "path": "art-src/ramen-midnight/legacy/item_egg.png",
+            "sha": "f2ce6fc28bc3b703"
+          },
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "ed8224088fb148a6"
+      }
+    },
+    "bg_alley.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "4b00a0ec2744a753"
+      }
+    },
+    "bg_bowl_table.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "aa10781c437b1a4b"
+      }
+    },
+    "bg_counter.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "79f326d4a109bc39"
+      }
+    },
+    "item_nori.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "8ca34e80d67cdd02"
+      }
+    },
+    "portrait_chef_happy.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "3f3c916595072327"
+      }
+    },
+    "portrait_chef_warm.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "883aa1b5c6bbe63b"
+      }
+    },
+    "portrait_minh_happy.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "75b7b7d854b8a6f7"
+      }
+    },
+    "portrait_minh_neutral.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "10a2139fb1407852"
+      }
+    },
+    "portrait_minh_thinking.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "9374195dd3074f04"
+      }
+    }
+  }
+}

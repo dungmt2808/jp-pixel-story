@@ -84,6 +84,9 @@ def _resolve_palette(story: dict[str, Any], catalog_entry: dict[str, Any] | None
 DEFAULT_ART_QUALITY = {"outlineColor": "#241712", "minOutlineCompliance": 0.9, "maxOrphanRatio": 0.08}
 
 
+ART_EXCEPTION_METRICS = {"outline", "noise", "colors"}
+
+
 def _check_art_quality(
     sprite_pngs: dict[str, Path],
     public_root: Path,
@@ -91,10 +94,19 @@ def _check_art_quality(
     issues: list[str],
     warnings: list[str],
     stats: dict[str, int],
+    exceptions: dict[str, Any] | None = None,
 ) -> None:
-    """Sprite craft quality. Stories declaring `artQuality` are strict (issues); others get warnings."""
+    """Sprite craft quality. Stories declaring `artQuality` are strict (issues); others get warnings.
+
+    `exceptions` (story `artExceptions`): { "<url of the sprite>": { "noise": "why this is fine" } } —
+    a reviewed decision that a metric does not apply to one sprite (a woven texture IS isolated
+    pixels). Each needs a written reason; it is counted in stats, never silently dropped.
+    """
     rules = {**DEFAULT_ART_QUALITY, **(art_quality or {})}
     sink = issues if art_quality else warnings
+    by_path = {
+        (public_root / str(url).lstrip("/")).resolve(): spec for url, spec in (exceptions or {}).items()
+    }
     for fp in sprite_pngs.values():
         with Image.open(fp) as im:
             if im.mode != "RGBA" or im.getextrema()[3][0] == 255:
@@ -102,14 +114,21 @@ def _check_art_quality(
             q = quality_metrics(im, rules["outlineColor"])
         stats["sprites_quality_checked"] = stats.get("sprites_quality_checked", 0) + 1
         rel = fp.relative_to(public_root) if fp.is_relative_to(public_root) else fp
-        if q["outline_compliance"] < rules["minOutlineCompliance"]:
+        excused = by_path.get(fp.resolve()) or {}
+        for metric in list(excused):
+            if metric not in ART_EXCEPTION_METRICS or not str(excused[metric]).strip():
+                sink.append(f"[Art Exception] {rel}: '{metric}' needs one of {sorted(ART_EXCEPTION_METRICS)} and a written reason")
+                excused = {k: v for k, v in excused.items() if k != metric}
+        if excused:
+            stats["art_exceptions"] = stats.get("art_exceptions", 0) + len(excused)
+        if q["outline_compliance"] < rules["minOutlineCompliance"] and "outline" not in excused:
             sink.append(
                 f"[Outline] {rel}: {q['outline_compliance'] * 100:.0f}% of the silhouette uses {rules['outlineColor']} "
                 f"(< {rules['minOutlineCompliance'] * 100:.0f}%; run pixellab_cleanup_sprite)"
             )
-        if q["orphan_ratio"] > rules["maxOrphanRatio"]:
+        if q["orphan_ratio"] > rules["maxOrphanRatio"] and "noise" not in excused:
             sink.append(f"[Noise] {rel}: {q['orphan_ratio'] * 100:.1f}% isolated pixels (> {rules['maxOrphanRatio'] * 100:.0f}%)")
-        if rules.get("maxColorsPerSprite") and q["colors"] > rules["maxColorsPerSprite"]:
+        if rules.get("maxColorsPerSprite") and q["colors"] > rules["maxColorsPerSprite"] and "colors" not in excused:
             sink.append(f"[Colors] {rel}: {q['colors']} colours (> {rules['maxColorsPerSprite']})")
 
 
@@ -197,7 +216,12 @@ def _check_story_assets(
             if fp.exists() and fp.suffix.lower() == ".png":
                 sprite_pngs[str(fp)] = fp
     if warnings is not None:
-        _check_art_quality(sprite_pngs, public_root, data.get("artQuality"), issues, warnings, stats)
+        _check_art_quality(
+            sprite_pngs, public_root, data.get("artQuality"), issues, warnings, stats, data.get("artExceptions")
+        )
+        for url in data.get("artExceptions") or {}:
+            if str(public_root / str(url).lstrip("/")) not in {str(p) for p in sprite_pngs.values()}:
+                warnings.append(f"[Art Exception] '{url}' is not a portrait or item of this story")
         _check_provenance(pngs, warnings, stats)
 
     assets_dir = sdir / "assets"

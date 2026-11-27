@@ -108,6 +108,63 @@
       "output": {
         "sha": "10a52f10e093216d"
       }
+    },
+    "portrait_lisa.png": {
+      "steps": [
+        {
+          "op": "cleanup_sprite",
+          "params": {
+            "despeckle": true,
+            "outline_color": "#241712",
+            "pixel_perfect": true,
+            "max_colors": 0
+          },
+          "input": {
+            "path": "art-src/jlpt-n4-2025-12-japan-life/legacy/portrait_lisa.png",
+            "sha": "b8f6cda0e71b6966"
+          },
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "23ec5220d254d1c7"
+      }
+    },
+    "portrait_haruko.png": {
+      "steps": [
+        {
+          "op": "cleanup_sprite",
+          "params": {
+            "despeckle": true,
+            "outline_color": "#241712",
+            "pixel_perfect": true,
+            "max_colors": 0
+          },
+          "input": {
+            "path": "art-src/jlpt-n4-2025-12-japan-life/legacy/portrait_haruko.png",
+            "sha": "572a1c25b0fa21fc"
+          },
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "529b1221b3aec48c"
+      }
+    },
+    "bg_ofuro.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "143717dc8a83dd14"
+      }
     }
   }
 }

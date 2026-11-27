@@ -221,6 +221,20 @@ def test_provenance_records_and_reprocess_is_byte_identical(tmp_path: Path) -> N
     assert provenance.reprocess(out.parent / "provenance.json")["results"]["item.png"].startswith("missing source")
 
 
+def test_legacy_master_is_kept_as_its_own_source(tmp_path: Path) -> None:
+    bg = tmp_path / "assets" / "bg_old.png"
+    bg.parent.mkdir()
+    Image.new("RGB", (8, 8), (40, 50, 60)).save(bg)
+    provenance.adopt_legacy(bg, "made before provenance; prompt lost")
+    step = json.loads((bg.parent / "provenance.json").read_text(encoding="utf-8"))["assets"]["bg_old.png"]["steps"][0]
+    assert step["op"] == "legacy_master" and step["input"] is None and step["params"]["note"].startswith("made before")
+    res = provenance.reprocess(bg.parent / "provenance.json")
+    assert res["ok"] and res["results"]["bg_old.png"].startswith("legacy master")
+    Image.new("RGB", (8, 8), (1, 2, 3)).save(bg)  # edited after adoption
+    res = provenance.reprocess(bg.parent / "provenance.json")
+    assert not res["ok"] and res["results"]["bg_old.png"] == "file edited after adoption"
+
+
 # --------------------------------------------------------------------------------------------- step 2
 
 
@@ -332,6 +346,22 @@ def test_validator_art_quality_is_warning_by_default_and_strict_when_declared(tm
     (sdir / "story.json").write_text(json.dumps(story))
     res = validate_story_folder(sdir, web_public_dir=pub)
     assert res["ok"] is False and any(i.startswith("[Outline]") for i in res["issues"])
+
+
+def test_validator_art_exceptions_need_a_reason_and_a_real_sprite(tmp_path: Path) -> None:
+    pub, sdir = _story_dir(tmp_path, {})
+    Image.fromarray(_sprite(), "RGBA").save(sdir / "assets" / "p.png")
+    story = json.loads((sdir / "story.json").read_text())
+    story["assets"]["portraits"] = {"p": "/stories/q/assets/p.png"}
+    story["artExceptions"] = {"/stories/q/assets/p.png": {"outline": "soft painted edge, reviewed"}}
+    (sdir / "story.json").write_text(json.dumps(story))
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    assert not any(w.startswith("[Outline]") for w in res["warnings"])
+    assert res["stats"]["art_exceptions"] == 1
+    story["artExceptions"] = {"/stories/q/assets/p.png": {"outline": " "}, "/stories/q/assets/zz.png": {"noise": "x"}}
+    (sdir / "story.json").write_text(json.dumps(story))
+    joined = " | ".join(validate_story_folder(sdir, web_public_dir=pub)["warnings"])
+    assert "[Outline]" in joined and "needs one of" in joined and "'/stories/q/assets/zz.png' is not a portrait" in joined
 
 
 def test_validator_checks_rig_files(tmp_path: Path) -> None:

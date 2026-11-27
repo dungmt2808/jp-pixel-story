@@ -970,5 +970,10 @@
         "height": 22
       }
     ]
+  },
+  "artExceptions": {
+    "/stories/jlpt-n4-2025-12-japan-life/assets/items/plane.png": {
+      "noise": "painted livery: the isolated pixels are the window row and highlights (cleanup removes only 1%) (19.5% after cleanup, reviewed)"
+    }
   }
 }
