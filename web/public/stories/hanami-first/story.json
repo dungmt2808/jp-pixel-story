@@ -115,7 +115,7 @@
           "jaRuby": "{四月|しがつ}の{日曜日|にちようび}、ミンさんは{友|とも}だちのゆいさんと{公園|こうえん}へお{花見|はなみ}に{行|い}きました。",
           "vi": "Một ngày Chủ nhật tháng Tư, Minh cùng bạn là Yui đến công viên ngắm hoa anh đào.",
           "audioUrl": "/stories/hanami-first/audio/h01.mp3",
-          "durationSec": 7.44,
+          "durationSec": 5.643,
           "ttsHash": "8ad470bf16c9"
         }
       ],
@@ -208,7 +208,7 @@
           "jaRuby": "ミンさん、{見|み}て！{桜|さくら}がとてもきれいですね。",
           "vi": "Minh ơi, nhìn kìa! Hoa anh đào đẹp quá nhỉ.",
           "audioUrl": "/stories/hanami-first/audio/h02.mp3",
-          "durationSec": 4.68,
+          "durationSec": 4.736,
           "ttsHash": "d0ed61219a95",
           "emote": "sparkle",
           "camera": "push"
@@ -221,7 +221,7 @@
           "jaRuby": "{本当|ほんとう}にきれいですね。ベトナムでは、{桜|さくら}を{見|み}たことがありません。",
           "vi": "Đẹp thật đấy. Ở Việt Nam mình chưa từng được ngắm hoa anh đào.",
           "audioUrl": "/stories/hanami-first/audio/h03.mp3",
-          "durationSec": 5.72,
+          "durationSec": 4.683,
           "ttsHash": "0584d973f404",
           "emote": "dots"
         }
@@ -247,7 +247,7 @@
           "jaRuby": "お{弁当|べんとう}を{作|つく}ってきました。いっしょに{食|た}べましょう。",
           "vi": "Mình có làm cơm hộp mang theo đấy. Cùng ăn nhé.",
           "audioUrl": "/stories/hanami-first/audio/h04.mp3",
-          "durationSec": 3.33,
+          "durationSec": 4.235,
           "ttsHash": "3967ccf8469b",
           "emote": "note"
         }
@@ -279,7 +279,7 @@
           "jaRuby": "この{卵焼|たまごや}き、{甘|あま}くておいしいです！",
           "vi": "Món trứng cuộn này ngọt và ngon quá!",
           "audioUrl": "/stories/hanami-first/audio/h05.mp3",
-          "durationSec": 3.8,
+          "durationSec": 2.709,
           "ttsHash": "bf04f9ec9837",
           "emote": "heart",
           "camera": "punch",
@@ -321,7 +321,7 @@
           "jaRuby": "{温|あたた}かいお{茶|ちゃ}もありますよ。どうぞ。",
           "vi": "Có cả trà nóng nữa đấy. Mời cậu.",
           "audioUrl": "/stories/hanami-first/audio/h06.mp3",
-          "durationSec": 2.9,
+          "durationSec": 3.275,
           "ttsHash": "3daffaf894c9"
         }
       ],
@@ -400,7 +400,7 @@
           "jaRuby": "ゆいさん、{来年|らいねん}もいっしょにお{花見|はなみ}をしませんか。",
           "vi": "Yui này, năm sau mình lại cùng đi ngắm hoa nhé?",
           "audioUrl": "/stories/hanami-first/audio/h07.mp3",
-          "durationSec": 3.96,
+          "durationSec": 3.573,
           "ttsHash": "a82bba7e4bca",
           "emote": "sweat",
           "camera": "push",
@@ -418,7 +418,7 @@
           "jaRuby": "はい、ぜひ！{約束|やくそく}ですよ。",
           "vi": "Ừ, nhất định rồi! Hứa đấy nhé.",
           "audioUrl": "/stories/hanami-first/audio/h08.mp3",
-          "durationSec": 2.86,
+          "durationSec": 3.669,
           "ttsHash": "0fdf7e03af46",
           "emote": "heart",
           "sfx": "ding",
@@ -458,7 +458,7 @@
           "jaRuby": "{桜|さくら}の{下|した}で、{二人|ふたり}は{楽|たの}しい{一日|いちにち}を{過|す}ごしました。",
           "vi": "Dưới tán hoa anh đào, hai người đã có một ngày thật vui.",
           "audioUrl": "/stories/hanami-first/audio/h09.mp3",
-          "durationSec": 4.56,
+          "durationSec": 4.16,
           "ttsHash": "221c97afe044"
         }
       ],
@@ -481,7 +481,7 @@
           "sakura"
         ],
         "audioUrl": "/stories/hanami-first/audio/hr1.mp3",
-        "durationSec": 4.88,
+        "durationSec": 4.64,
         "ttsHash": "e2da939e70d2"
       },
       {
@@ -498,7 +498,7 @@
           "g_tari"
         ],
         "audioUrl": "/stories/hanami-first/audio/hr2.mp3",
-        "durationSec": 5.1,
+        "durationSec": 4.533,
         "ttsHash": "aa81c186751d"
       },
       {
@@ -513,7 +513,7 @@
           "rainen"
         ],
         "audioUrl": "/stories/hanami-first/audio/hr3.mp3",
-        "durationSec": 5.48,
+        "durationSec": 4.747,
         "ttsHash": "c6380010aba0"
       }
     ],
