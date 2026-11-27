@@ -595,7 +595,7 @@ export function CinemaStage({
       const whoDef = vLine?.emoteWho ? currentScene.people?.[vLine.emoteWho] : undefined;
       const focus: [number, number] =
         who && whoDef
-          ? [who.x, who.y - personBox(whoDef.kind).h / 2]
+          ? [who.x, who.y - personBox(whoDef.kind, spritesRef.current).h / 2]
           : focusBox
             ? [focusBox.x, focusBox.top + focusBox.h * 0.3]
             : [VIRTUAL_W / 2, VIRTUAL_H / 2];
@@ -724,7 +724,7 @@ export function CinemaStage({
       // one light grade over the whole world layer (backdrop, actors, items) = one time of day
       drawLightGrade(ctx, currentScene.light);
       if (vLine?.emote && who && whoDef) {
-        const box = personBox(whoDef.kind);
+        const box = personBox(whoDef.kind, spritesRef.current);
         drawEmote(ctx, vLine.emote, who.x + (who.face === "right" ? 4 : -4), who.y - box.h - 2, vAge, 1);
       } else if (vLine?.emote) {
         const emoteSide = vLine.emoteSide ?? speakerSide ?? onStage[0];

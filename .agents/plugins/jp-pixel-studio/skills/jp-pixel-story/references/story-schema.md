@@ -203,7 +203,11 @@ the world changes with the story. Example: `hachiko` (ported from the old standa
   The world sits 20 px low: people stand on y = 150, the station clock is at (272, 78).
 - `people`: `{ kind: dog | bronze-dog | sensei | person | sprite:<key>, x, y, face, pose: stand|walk|sit|run, age, coat,
   seed, hidden, hideWhileInteract }`. `sprite:<key>` uses an `assets.sprites` meta.json with clips idle / walk / sit / run
-  (PixelLab walk cycles go through `pixellab_slice_spritesheet`).
+  (PixelLab walk cycles go through `pixellab_slice_spritesheet` with `registration: "centroid"`, `facing: "right"` and a
+  walk clip `{ "frames": [0..7], "fps": 10, "stridePx": 24 }`: walk frames then follow the distance travelled, so the
+  feet stay planted at any `speed`; the sprite is mirrored when it faces the other way). People also work on painted
+  `bg:` scenes (e.g. `hanami-first` intro: Minh and Yui walk into the park; prompts in `art-src/hanami-first/PROMPTS-walk.md`).
+  The validator warns `[Sprite Clips]` (no idle / no walk clip) and `[Foot Slide]` (walk clip without `stridePx`).
 - `cues`: `{ at | line | doneLine | done | choice, ifChoice, delay, set: {...}, backdrop, people: [{ who, walkTo, speed,
   then: pose|"exit", x, face, pose, show, fadeOut, hop }] }` — anchors are recorded as the scene plays, so videos are
   deterministic. `choice: "<id>"` fires when that answer is picked; `ifChoice` keeps a cue only if that answer was picked

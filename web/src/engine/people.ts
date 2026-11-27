@@ -10,7 +10,7 @@
  * the moves that already started, so exported videos are deterministic.
  */
 import { clamp, mixc, R, SPRF, type Ctx } from "./proc/pixelKit";
-import { drawSpriteFrame, frameAt, type SpriteSheet } from "./spriteAnimator";
+import { drawSpriteFrame, frameAt, frameAtDistance, type SpriteSheet } from "./spriteAnimator";
 
 export type Pose = "stand" | "walk" | "sit" | "run" | "jump";
 export type Face = "left" | "right";
@@ -122,10 +122,13 @@ const PROF = ["..kkkk..", ".kkkkkk.", "kkkkkkkk", "..SSSS..", "..SESS..", "..SSS
 const PPAL = { k: "#1b1c22", S: "#d9a27c", E: "#2a1d16", G: "#3b3f4a", W: "#efe6d4", R: "#8e1f18" };
 
 /** Approximate size of a person (for emotes, camera focus, tap spots). */
-export function personBox(kind: string): { w: number; h: number } {
+export function personBox(kind: string, sprites?: Record<string, SpriteSheet>): { w: number; h: number } {
   if (kind === "dog") return { w: 17, h: 12 };
   if (kind === "sensei") return { w: 9, h: 21 };
   if (kind === "person") return { w: 8, h: 23 };
+  const sheet = kind.startsWith("sprite:") ? sprites?.[kind.slice(7)] : undefined;
+  // a sprite's feet are its pivot: the figure fills the frame above it
+  if (sheet) return { w: sheet.meta.frameWidth, h: sheet.meta.pivot.y };
   return { w: 24, h: 40 };
 }
 
@@ -188,8 +191,10 @@ export function drawPerson(
     if (sheet) {
       const clip = s.pose === "stand" ? "idle" : s.pose;
       const name = sheet.meta.clips[clip] ? clip : "idle";
-      drawSpriteFrame(c, sheet, frameAt(sheet.meta, name, t), Math.round(s.x), Math.round(s.y + s.lift), {
-        flipX: s.face === "left",
+      const moving = s.pose === "walk" || s.pose === "run";
+      const frame = moving ? frameAtDistance(sheet.meta, name, s.x, t) : frameAt(sheet.meta, name, t);
+      drawSpriteFrame(c, sheet, frame, Math.round(s.x), Math.round(s.y + s.lift), {
+        flipX: s.face !== (sheet.meta.facing ?? "right"),
       });
     }
   }

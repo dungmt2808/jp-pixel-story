@@ -451,8 +451,25 @@ def validate_story_folder(
                 kind = str(pdef.get("kind", ""))
                 if kind not in PERSON_KINDS and not kind.startswith("sprite:"):
                     issues.append(f"[Unknown Person] {sc.get('id')}/{pid}: kind '{kind}' (use {sorted(PERSON_KINDS)} or sprite:<key>)")
-                if kind.startswith("sprite:") and kind[7:] not in ((data.get("assets") or {}).get("sprites") or {}):
+                sprite_url = ((data.get("assets") or {}).get("sprites") or {}).get(kind[7:]) if kind.startswith("sprite:") else None
+                if kind.startswith("sprite:") and not sprite_url:
                     issues.append(f"[Missing Asset] {sc.get('id')}/{pid}: sprite '{kind[7:]}' is not in assets.sprites")
+                if sprite_url:
+                    meta_fp = public_root / str(sprite_url).lstrip("/")
+                    clips = json.loads(meta_fp.read_text(encoding="utf-8")).get("clips", {}) if meta_fp.exists() else {}
+                    walks = any(
+                        mv.get("who") == pid and mv.get("walkTo") is not None
+                        for cue in sc.get("cues") or [] for mv in cue.get("people") or []
+                    ) or pdef.get("pose") in ("walk", "run")
+                    if "idle" not in clips:
+                        warnings.append(f"[Sprite Clips] {sc.get('id')}/{pid}: '{kind[7:]}' has no 'idle' clip (standing still)")
+                    if walks and "walk" not in clips:
+                        warnings.append(f"[Sprite Clips] {sc.get('id')}/{pid}: walks but '{kind[7:]}' has no 'walk' clip")
+                    elif walks and not (clips.get("walk") or {}).get("stridePx"):
+                        warnings.append(
+                            f"[Foot Slide] {sc.get('id')}/{pid}: the 'walk' clip of '{kind[7:]}' has no stridePx "
+                            "(px per cycle), so frames follow time and the feet slide"
+                        )
             n_lines = len(sc.get("lines") or [])
             inter = sc.get("interaction") or {}
             n_done = (1 if inter.get("doneLine") else 0) + len(inter.get("doneLines") or [])

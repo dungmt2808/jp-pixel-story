@@ -429,6 +429,12 @@ def _normalize_clips(
             "fps": float(spec.get("fps", fps)),
             "loop": bool(spec.get("loop", True)),
         }
+        if spec.get("stridePx") is not None:
+            # walk / run cycles: px travelled per full cycle, so the player picks frames by distance
+            stride = float(spec["stridePx"])
+            if stride <= 0:
+                raise ValueError(f"Clip '{name}': stridePx must be > 0.")
+            result[name]["stridePx"] = stride
     return result
 
 
@@ -455,6 +461,7 @@ def process_sprite_sheet(
     expression_region: list[int] | None = None,
     record_provenance: bool = True,
     source: dict[str, Any] | None = None,
+    facing: str = "",
 ) -> dict[str, Any]:
     """Slice a raw AI spritesheet grid into registered, pixel-perfect animation frames.
 
@@ -470,6 +477,8 @@ def process_sprite_sheet(
     """
     if registration not in ("cell", "centroid", "bust"):
         raise ValueError("registration must be 'cell', 'centroid' or 'bust'.")
+    if facing not in ("", "left", "right"):
+        raise ValueError("facing must be 'left' or 'right' (the way a side-view character looks).")
     inp = Path(input_path).expanduser().resolve()
     out_dir = Path(output_dir).expanduser().resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -584,6 +593,8 @@ def process_sprite_sheet(
         "scale": round(float(scale), 6),
         "registration": registration,
     }
+    if facing:
+        meta["facing"] = facing
     meta_path = out_dir / "meta.json"
     meta_path.write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
 
@@ -598,7 +609,8 @@ def process_sprite_sheet(
             dict(cols=cols, rows=rows, frame_width=frame_width, frame_height=frame_height, palette_name=palette_name,
                  bg_mode=bg_mode, tolerance=tolerance, align_bottom=align_bottom, registration=registration, fps=fps,
                  clips=clips, padding=padding, grid=grid, cleanup=cleanup, outline_color=outline_color,
-                 lock_expressions=lock_expressions, expression_region=expression_region),
+                 lock_expressions=lock_expressions, expression_region=expression_region,
+                 **({"facing": facing} if facing else {})),
             output=out_dir, input_path=inp, source=source,
         )
 

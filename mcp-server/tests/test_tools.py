@@ -469,3 +469,32 @@ def test_done_lines_are_voiced_and_route_b_is_validated(tmp_path: Path) -> None:
     for tag in ("[Unknown Set]", "[Unknown Person] sc1/robo", "line 3 does not exist", "doneLine 0 does not exist",
                 "'done' needs a scene interaction", "person 'nobody'", "emoteWho 'ghost'"):
         assert tag in joined, tag
+
+
+def test_sprite_people_need_idle_and_a_walk_clip_with_a_stride(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "walker", category="story")
+    sp = sdir / "assets" / "sprites"
+    for key, clips in {
+        "sliding": {"idle": {"frames": [0]}, "walk": {"frames": [0, 1]}},
+        "static": {"talk": {"frames": [0]}},
+        "good": {"idle": {"frames": [0]}, "walk": {"frames": [0, 1], "stridePx": 24}},
+    }.items():
+        (sp / key).mkdir(parents=True)
+        (sp / key / "meta.json").write_text(json.dumps({"frameWidth": 8, "frameHeight": 8, "frameCount": 2, "clips": clips}))
+    story = {
+        "id": "walker", "engine": "cinema",
+        "assets": {"backgrounds": {}, "portraits": {},
+                   "sprites": {k: f"/stories/walker/assets/sprites/{k}/meta.json" for k in ("sliding", "static", "good")}},
+        "scenes": [{
+            "id": "sc1", "backdrop": "set:shibuya", "lines": [],
+            "people": {"a": {"kind": "sprite:sliding", "x": 0}, "b": {"kind": "sprite:static", "x": 0},
+                       "c": {"kind": "sprite:good", "x": 0}},
+            "cues": [{"at": 0, "people": [{"who": w, "walkTo": 100} for w in ("a", "b", "c")]}],
+        }],
+        "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []},
+    }
+    (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
+    warnings = " | ".join(validate_story_folder(sdir, web_public_dir=pub)["warnings"])
+    assert "[Foot Slide] sc1/a" in warnings
+    assert "sc1/b: 'static' has no 'idle' clip" in warnings and "sc1/b: walks but 'static' has no 'walk' clip" in warnings
+    assert "sc1/c" not in warnings

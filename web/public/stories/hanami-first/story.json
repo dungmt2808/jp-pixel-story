@@ -21,7 +21,9 @@
     "portraits": {},
     "sprites": {
       "minh": "/stories/hanami-first/assets/sprites/minh/meta.json",
-      "yui": "/stories/hanami-first/assets/sprites/yui/meta.json"
+      "yui": "/stories/hanami-first/assets/sprites/yui/meta.json",
+      "yui_walk": "/stories/hanami-first/assets/sprites/yui_walk/meta.json",
+      "minh_walk": "/stories/hanami-first/assets/sprites/minh_walk/meta.json"
     },
     "cardPortrait": "/stories/hanami-first/assets/sprites/yui/frame_03.png",
     "rigs": {
@@ -117,7 +119,63 @@
           "ttsHash": "8ad470bf16c9"
         }
       ],
-      "light": "morning"
+      "light": "morning",
+      "people": {
+        "minh": {
+          "kind": "sprite:minh_walk",
+          "x": -20,
+          "y": 184,
+          "face": "right"
+        },
+        "yui": {
+          "kind": "sprite:yui_walk",
+          "x": -60,
+          "y": 188,
+          "face": "right"
+        }
+      },
+      "cues": [
+        {
+          "line": 0,
+          "people": [
+            {
+              "who": "minh",
+              "walkTo": 70,
+              "speed": 24
+            },
+            {
+              "who": "yui",
+              "walkTo": 98,
+              "speed": 22
+            }
+          ]
+        },
+        {
+          "line": 0,
+          "delay": 4.0,
+          "people": [
+            {
+              "who": "minh",
+              "face": "left"
+            }
+          ]
+        },
+        {
+          "line": 0,
+          "delay": 7.4,
+          "people": [
+            {
+              "who": "minh",
+              "face": "right"
+            },
+            {
+              "who": "yui",
+              "face": "left"
+            }
+          ]
+        }
+      ],
+      "holdSec": 10
     },
     {
       "id": "under_sakura",

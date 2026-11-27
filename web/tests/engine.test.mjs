@@ -178,6 +178,24 @@ test("frameAt holds the last frame of one-shot clips and tolerates unknown clip 
   assert.equal(sprite.frameAt(meta, "nope", 0), 0);
 });
 
+test("walk clips with stridePx follow distance, so the feet never slide; facing is parsed", () => {
+  const walker = sprite.normalizeSpriteMeta({
+    frameWidth: 32, frameHeight: 48, frameCount: 10, facing: "right",
+    clips: { walk: { frames: [0, 1, 2, 3, 4, 5, 6, 7], fps: 10, stridePx: 24 }, idle: [8, 9] },
+  });
+  assert.equal(walker.facing, "right");
+  assert.equal(walker.clips.walk.stridePx, 24);
+  assert.equal(walker.clips.idle.stridePx, undefined);
+  // 8 frames per 24 px = one frame every 3 px, whatever the time
+  assert.equal(sprite.frameAtDistance(walker, "walk", 0, 5), 0);
+  assert.equal(sprite.frameAtDistance(walker, "walk", 2.9, 0), 0);
+  assert.equal(sprite.frameAtDistance(walker, "walk", 3, 0), 1);
+  assert.equal(sprite.frameAtDistance(walker, "walk", 24 + 7, 0), 2);
+  assert.equal(sprite.frameAtDistance(walker, "walk", -6, 0), 2);
+  // no stride -> time-based like frameAt
+  assert.equal(sprite.frameAtDistance(walker, "idle", 100, 0.6), sprite.frameAt(walker, "idle", 0.6));
+});
+
 test("spritesheetUrl resolves next to meta.json", () => {
   assert.equal(
     sprite.spritesheetUrl("./stories/x/assets/sprites/yui/meta.json", meta),
