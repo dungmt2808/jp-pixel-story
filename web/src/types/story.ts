@@ -1,3 +1,4 @@
+import type { MotionFx } from "../engine/sceneMotion";
 export interface RubySegment {
   /** Base Japanese text (Kanji or Kana). */
   t: string;
@@ -239,6 +240,8 @@ export interface StoryScene {
   light?: string;
   /** Vibe kit: BGM mood from this scene on ("calm", "happy", "sad", "none" or a theme name). */
   bgm?: string;
+  /** Route C: motion layers that bring a painted background to life (see engine/sceneMotion.ts). */
+  motion?: MotionFx[];
   outroLabels?: CinemaOutroLabels;
   whoButtonLabel?: string;
   actionLabel?: string;

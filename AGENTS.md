@@ -1,7 +1,7 @@
 # jp-pixel-story — Agent Guidelines (v2.0)
 
 This repository is an interactive **2D Pixel Art Japanese Learning Platform & Full JLPT Exam Studio** powered by:
-- **Local VOICEVOX + Mini-PixelLab + JLPT QA MCP Server** (`mcp-server/server.py`, 24 tools)
+- **Local VOICEVOX + Mini-PixelLab + JLPT QA MCP Server** (`mcp-server/server.py`, 25 tools)
 - **React + Vite + HTML5 Canvas Web App** (`web/`, shared stage engine in `web/src/engine/` — `useStageRuntime`, pixel-perfect scaling, `SpriteAnimator`, `RigAnimator`; data-driven `CinemaStage` for all new stories; `JlptChoukaiView`, `JlptDokkaiView`, `JlptGengoView` + `DictationView` + global `ふりがな` & `🇻🇳 Dịch` toggles)
 - **Deterministic Playwright (virtual clock) + FFmpeg MP4 Exporter & stage E2E check** (`exporter/`)
 - **Automated CI QA Gate** (`.github/workflows/deploy-pages.yml`)

@@ -30,6 +30,7 @@ const cinema = await loadTsModule("src/engine/cinemaModel.ts");
 const engines = await loadTsModule("src/engine/stageEngines.ts");
 const vibe = await loadTsModule("src/engine/cinemaVibe.ts");
 const themes = await loadTsModule("src/audio/themes.ts");
+const motion = await loadTsModule("src/engine/sceneMotion.ts");
 const rig = await loadTsModule("src/engine/rigAnimator.ts");
 const ui = await loadTsModule("src/engine/cinemaUi.ts");
 
@@ -404,6 +405,34 @@ test("BGM moods resolve to real themes; unknown names fall back to default", () 
   assert.equal(themes.resolveBgmTheme("polka"), "default");
   assert.equal(themes.resolveBgmTheme(undefined), "default");
   for (const th of Object.values(themes.BGM_THEMES)) assert.equal(th.melody.length, th.bass.length);
+});
+
+
+test("route C motion: paths, movers with delay/ease/loop, visibility, rumble beat, rounded windows", () => {
+  assert.equal(motion.wrap(-1, 10), 9);
+  assert.deepEqual(motion.pathPoint([[0, 0], [10, 0], [10, 10]], 0.75), [10, 5]);
+  assert.deepEqual(motion.pathPoint([[0, 0], [10, 0]], 2), [10, 0]);
+  const taxi = { path: [[196, 95], [140, 95]], durationSec: 14, delaySec: 2 };
+  assert.deepEqual(motion.moverAt(taxi, 0), [196, 95], "waits at the start before its delay");
+  assert.deepEqual(motion.moverAt(taxi, 9), [168, 95]);
+  assert.deepEqual(motion.moverAt(taxi, 99), [140, 95], "stays at the end");
+  const takeoff = { path: [[0, 0], [100, 0]], durationSec: 10, ease: "in" };
+  assert.ok(motion.moverAt(takeoff, 5)[0] < 50, "accelerates");
+  assert.deepEqual(motion.moverAt({ path: [[0, 0], [100, 0]], durationSec: 10, loop: true }, 12), [20, 0]);
+  const plane = { durationSec: 10, delaySec: 5, show: "moving" };
+  assert.equal(motion.moverVisible(plane, 4), false);
+  assert.equal(motion.moverVisible(plane, 9), true);
+  assert.equal(motion.moverVisible(plane, 16), false);
+  assert.equal(motion.moverVisible({ durationSec: 10 }, 99), true);
+  assert.equal(motion.rumbleOffset(0.02), 1);
+  assert.equal(motion.rumbleOffset(0.1), 0);
+  assert.equal(motion.rumbleOffset(0.9 + 0.18), 1);
+  // rounded window: corners keep the frame, the middle shows the scenery
+  assert.equal(motion.inRoundedRect(16, 56, [16, 56, 60, 56], 3), false);
+  assert.equal(motion.inRoundedRect(19, 56, [16, 56, 60, 56], 3), true);
+  assert.equal(motion.inRoundedRect(40, 80, [16, 56, 60, 56], 3), true);
+  assert.equal(motion.inRoundedRect(76, 80, [16, 56, 60, 56], 3), false);
+  assert.deepEqual([...motion.MOTION_TYPES].sort(), ["glow", "mover", "rumble", "scroll", "shimmer", "steam", "sweep"]);
 });
 
 console.log(`\nALL ${passed} ENGINE TESTS PASSED!`);

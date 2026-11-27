@@ -2,8 +2,154 @@
   "story": "jlpt-n4-2025-12-japan-life",
   "palette": "jp_story_master",
   "backgrounds": [
-    { "key": "dining", "raw": "raw_bg_dining.png", "use": ["dream_anime", "haruko_home_experience/exp_washoku"] },
-    { "key": "train", "raw": "raw_bg_train.png", "use": ["airport_train_twist"] },
-    { "key": "airport", "raw": "raw_bg_airport.png", "use": ["warm_ending"] }
+    {
+      "key": "dining",
+      "raw": "raw_bg_dining.png",
+      "use": [
+        "dream_anime",
+        "haruko_home_experience/exp_washoku"
+      ]
+    },
+    {
+      "key": "train",
+      "raw": "raw_bg_train.png",
+      "use": [
+        "airport_train_twist"
+      ]
+    },
+    {
+      "key": "airport",
+      "raw": "raw_bg_airport.png",
+      "use": [
+        "warm_ending"
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "key": "plane",
+      "from": "airport",
+      "rect": [
+        968,
+        466,
+        330,
+        125
+      ],
+      "polygon": [
+        [
+          1002,
+          472
+        ],
+        [
+          1022,
+          472
+        ],
+        [
+          1066,
+          526
+        ],
+        [
+          1150,
+          523
+        ],
+        [
+          1255,
+          523
+        ],
+        [
+          1272,
+          532
+        ],
+        [
+          1294,
+          550
+        ],
+        [
+          1289,
+          561
+        ],
+        [
+          1272,
+          566
+        ],
+        [
+          1268,
+          572
+        ],
+        [
+          1268,
+          587
+        ],
+        [
+          1248,
+          587
+        ],
+        [
+          1250,
+          571
+        ],
+        [
+          1206,
+          571
+        ],
+        [
+          1200,
+          574
+        ],
+        [
+          1172,
+          579
+        ],
+        [
+          1130,
+          579
+        ],
+        [
+          1132,
+          587
+        ],
+        [
+          1106,
+          587
+        ],
+        [
+          1108,
+          566
+        ],
+        [
+          1083,
+          563
+        ],
+        [
+          1020,
+          545
+        ],
+        [
+          973,
+          536
+        ],
+        [
+          973,
+          528
+        ],
+        [
+          1018,
+          528
+        ]
+      ],
+      "exclude": [
+        [
+          1083,
+          460,
+          13,
+          135
+        ]
+      ],
+      "max_gap": 16,
+      "clean": "airport_empty",
+      "use": [
+        "warm_ending"
+      ]
+    }
   ]
 }

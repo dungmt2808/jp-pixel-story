@@ -72,3 +72,16 @@ detailed. Rules (the validator enforces the first one):
 5. **Sound sells it.** Each scene may set `bgm` (`calm`, `happy`, `tender`/`sad`, `none`); emotes bring a
    default sound effect (`sfx` overrides, `"none"` silences). The MP4 exporter renders the same BGM and
    SFX, ducked under the voices.
+
+## 6. Three Art Routes (pick ONE per story)
+
+| Route | Art | Motion | Best for |
+| :--- | :--- | :--- | :--- |
+| **A — painted** | AI/PixelLab backgrounds via `art.json` + `PROMPTS.md` | vibe kit (emote, camera, telop, light) | dialogue-heavy JLPT stories |
+| **B — code** | everything drawn in code from one shared style (like `hachiko`) | full-body actors, living world | short stories with lots of action |
+| **C — painted + motion** | route A art, with objects cut out (`objects`) | `scene.motion`: scroll, sweep, glow, steam, shimmer, movers, rumble | travel, cities, weather: scenes that should feel alive |
+
+Route C prompt tip: ask for moving things (vehicles, clouds, people) as SEPARATE images on a green screen when
+possible; cutting them out of a finished painting works (lasso polygon on the raw image) but needs the outline.
+After 320x200 palette lock, objects whose colours match the background (a white plane on a pink sunset) merge
+into it — always cut from the RAW image, never from the processed background.

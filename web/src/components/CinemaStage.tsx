@@ -40,6 +40,7 @@ import { drawRig, rigHeadFrame, rigPose } from "../engine/rigAnimator";
 import { drawSpriteFrame, frameAt } from "../engine/spriteAnimator";
 import { useStageRuntime } from "../engine/useStageRuntime";
 import { cameraAt, drawEmote, drawLightGrade, IDENTITY_VIEW, lineSfx } from "../engine/cinemaVibe";
+import { drawSceneMotion, sceneRumble } from "../engine/sceneMotion";
 import { logStoryEvent } from "../engine/stageRuntime";
 import type { CinemaActor, DialogueLine, LineTelop, MiniGameChoice, SceneStamp, StoryData } from "../types/story";
 import { InfoCard } from "./cinema/InfoCard";
@@ -527,10 +528,18 @@ export function CinemaStage({
         : [VIRTUAL_W / 2, VIRTUAL_H / 2];
       cameraRef.current = vLine?.camera ? cameraAt(vLine.camera, vAge, focus, vLine.durationSec ?? 3) : IDENTITY_VIEW;
 
+      // route C: the world (backdrop + motion layers + actors) may bump 1 px on a rumble beat
+      const motion = backdropOverride ? undefined : currentScene.motion;
+      const bgImg = imgs[backdropRef.startsWith("bg:") ? backdropRef : `bg:${backdropRef}`];
+      const bump = sceneRumble(motion, elapsed);
+      if (bump) drawBackdrop(ctx, backdropRef, t, imgs); // fills the row the shift uncovers
+      ctx.save();
+      if (bump) ctx.translate(0, bump);
       if (!drawBackdrop(ctx, backdropRef, t, imgs)) {
         ctx.fillStyle = "#101322";
         ctx.fillRect(0, 0, VIRTUAL_W, VIRTUAL_H);
       }
+      drawSceneMotion(ctx, motion, elapsed, imgs, bgImg);
       for (const name of overlayNames) OVERLAYS[name]?.(ctx, t);
 
       if (kind !== "intro") {
@@ -546,6 +555,7 @@ export function CinemaStage({
           });
         });
       }
+      ctx.restore();
 
       // interaction layer
       const interacting = phaseRef.current === "interact";

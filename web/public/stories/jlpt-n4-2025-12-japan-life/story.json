@@ -12,13 +12,16 @@
       "ofuro": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_ofuro.png",
       "dining": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_dining.png",
       "train": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_train.png",
-      "airport": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_airport.png"
+      "airport": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_airport.png",
+      "airport_empty": "/stories/jlpt-n4-2025-12-japan-life/assets/bg_airport_empty.png"
     },
     "portraits": {
       "lisa": "/stories/jlpt-n4-2025-12-japan-life/assets/portrait_lisa.png",
       "haruko": "/stories/jlpt-n4-2025-12-japan-life/assets/portrait_haruko.png"
     },
-    "items": {},
+    "items": {
+      "plane": "/stories/jlpt-n4-2025-12-japan-life/assets/items/plane.png"
+    },
     "cardPortrait": "/stories/jlpt-n4-2025-12-japan-life/assets/portrait_lisa.png"
   },
   "voices": {
@@ -83,7 +86,77 @@
       "backdrop": "bg:dining",
       "bannerSubtitle": "JLPT N4 12/2025 · 問題５",
       "light": "warm",
-      "bgm": "calm"
+      "bgm": "calm",
+      "motion": [
+        {
+          "type": "steam",
+          "at": [
+            [
+              128,
+              117
+            ],
+            [
+              100,
+              136
+            ],
+            [
+              212,
+              121
+            ],
+            [
+              109,
+              122
+            ],
+            [
+              222,
+              135
+            ],
+            [
+              175,
+              110
+            ]
+          ],
+          "rate": 1.4,
+          "height": 18
+        },
+        {
+          "type": "glow",
+          "at": [
+            157,
+            19
+          ],
+          "r": 24,
+          "color": "#ffe2b0",
+          "period": 5,
+          "min": 0.2,
+          "max": 0.42
+        },
+        {
+          "type": "glow",
+          "at": [
+            299,
+            116
+          ],
+          "r": 16,
+          "color": "#ffd28a",
+          "period": 4,
+          "min": 0.2,
+          "max": 0.4
+        },
+        {
+          "type": "glow",
+          "at": [
+            45,
+            82
+          ],
+          "r": 14,
+          "color": "#c4b4ff",
+          "period": 2,
+          "min": 0.15,
+          "max": 0.32,
+          "flicker": true
+        }
+      ]
     },
     {
       "id": "haruko_home_experience",
@@ -233,7 +306,64 @@
         }
       ],
       "light": "golden",
-      "bgm": "calm"
+      "bgm": "calm",
+      "motion": [
+        {
+          "type": "scroll",
+          "speed": 26,
+          "radius": 3,
+          "rects": [
+            [
+              16,
+              56,
+              60,
+              56
+            ],
+            [
+              86,
+              56,
+              68,
+              56
+            ],
+            [
+              162,
+              56,
+              61,
+              56
+            ],
+            [
+              250,
+              57,
+              28,
+              56
+            ],
+            [
+              287,
+              57,
+              21,
+              56
+            ]
+          ]
+        },
+        {
+          "type": "sweep",
+          "rect": [
+            0,
+            118,
+            320,
+            82
+          ],
+          "speed": 26,
+          "spacing": 46,
+          "width": 12,
+          "slant": 0.6,
+          "alpha": 0.24
+        },
+        {
+          "type": "rumble",
+          "period": 0.9
+        }
+      ]
     },
     {
       "id": "warm_ending",
@@ -253,13 +383,178 @@
           "camera": "push"
         }
       ],
-      "backdrop": "bg:airport",
+      "backdrop": "bg:airport_empty",
       "outroLabels": {
         "reading": "📖 ĐỌC BÀI & LÀM CÂU 25–27 →",
         "card": "THẺ ĐỀ THI"
       },
       "light": "dusk",
-      "bgm": "tender"
+      "bgm": "tender",
+      "motion": [
+        {
+          "type": "glow",
+          "at": [
+            146,
+            97
+          ],
+          "r": 16,
+          "color": "#ffb070",
+          "period": 4,
+          "min": 0.15,
+          "max": 0.35
+        },
+        {
+          "type": "mover",
+          "item": "plane",
+          "path": [
+            [
+              250,
+              90
+            ],
+            [
+              150,
+              76
+            ],
+            [
+              20,
+              34
+            ]
+          ],
+          "durationSec": 11,
+          "delaySec": 5,
+          "ease": "in",
+          "flipX": true,
+          "scale": 0.5,
+          "front": [
+            [
+              53,
+              28,
+              3,
+              94
+            ],
+            [
+              107,
+              28,
+              3,
+              94
+            ],
+            [
+              161,
+              28,
+              3,
+              94
+            ],
+            [
+              219,
+              28,
+              2,
+              94
+            ],
+            [
+              276,
+              28,
+              3,
+              94
+            ],
+            [
+              53,
+              26,
+              267,
+              4
+            ],
+            [
+              53,
+              70,
+              226,
+              2
+            ],
+            [
+              250,
+              26,
+              64,
+              52
+            ],
+            [
+              0,
+              0,
+              53,
+              140
+            ]
+          ],
+          "show": "moving"
+        },
+        {
+          "type": "mover",
+          "item": "plane",
+          "path": [
+            [
+              196,
+              95
+            ],
+            [
+              140,
+              95
+            ]
+          ],
+          "durationSec": 15,
+          "delaySec": 2,
+          "front": [
+            [
+              161,
+              90,
+              3,
+              32
+            ],
+            [
+              107,
+              90,
+              3,
+              32
+            ],
+            [
+              176,
+              114,
+              42,
+              26
+            ]
+          ]
+        },
+        {
+          "type": "shimmer",
+          "rect": [
+            118,
+            128,
+            64,
+            72
+          ],
+          "minLuma": 150,
+          "speed": 1.6
+        },
+        {
+          "type": "glow",
+          "at": [
+            40,
+            54
+          ],
+          "r": 10,
+          "color": "#ffd28a",
+          "period": 3.5,
+          "min": 0.2,
+          "max": 0.38
+        },
+        {
+          "type": "glow",
+          "at": [
+            310,
+            82
+          ],
+          "r": 9,
+          "color": "#ffd28a",
+          "period": 3.1,
+          "min": 0.2,
+          "max": 0.38
+        }
+      ]
     }
   ],
   "reading": {

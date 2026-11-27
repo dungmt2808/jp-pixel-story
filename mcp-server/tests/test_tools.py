@@ -382,6 +382,8 @@ def test_vibe_names_match_the_web_engine() -> None:
     assert cameras == cv.VIBE_CAMERAS
     assert lights == cv.VIBE_LIGHTS
     assert sfx == cv.VIBE_SFX
+    motion = (web / "engine" / "sceneMotion.ts").read_text(encoding="utf-8")
+    assert quoted(re.search(r"MOTION_TYPES = \[(.*?)\]", motion, re.S).group(1)) == cv.MOTION_TYPES
 
 
 def test_validator_flags_unknown_vibe_names_and_telop_furigana(tmp_path: Path) -> None:
@@ -406,3 +408,24 @@ def test_validator_flags_unknown_vibe_names_and_telop_furigana(tmp_path: Path) -
     joined = " | ".join(res["issues"])
     for tag in ("[Unknown Emote]", "[Unknown Camera]", "[Unknown SFX]", "[Unknown Light]", "l1/telop"):
         assert tag in joined, tag
+
+
+def test_validator_checks_motion_layers(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "motion-bad", category="story")
+    story = {
+        "id": "motion-bad",
+        "engine": "cinema",
+        "assets": {"backgrounds": {}, "portraits": {}, "items": {}},
+        "scenes": [{"id": "sc1", "backdrop": "proc:airport_train", "lines": [], "motion": [
+            {"type": "teleport"},
+            {"type": "scroll", "speed": 10, "rects": [[300, 10, 40, 20]]},
+            {"type": "mover", "item": "plane", "path": [[0, 0]], "durationSec": 3},
+        ]}],
+        "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []},
+    }
+    (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    joined = " | ".join(res["issues"])
+    for tag in ("[Unknown Motion]", "[Bad Motion Rect]", "mover item 'plane'"):
+        assert tag in joined, tag
+    assert any("[Motion Needs Painting]" in w for w in res["warnings"])
