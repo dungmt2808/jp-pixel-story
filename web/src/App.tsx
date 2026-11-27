@@ -1,16 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { retroAudio } from "./audio/chiptune";
 import { CinemaStage } from "./components/CinemaStage";
-import { DepatoStage } from "./components/DepatoStage";
 import { DictationView } from "./components/DictationView";
-import { HybridStage } from "./components/HybridStage";
 import { JlptChoukaiView } from "./components/JlptChoukaiView";
 import { JlptDokkaiView } from "./components/JlptDokkaiView";
 import { JlptGengoView } from "./components/JlptGengoView";
-import { PixelStage } from "./components/PixelStage";
 import { ReadingView } from "./components/ReadingView";
 import { StoryLibrary } from "./components/StoryLibrary";
-import { TsuruStage } from "./components/TsuruStage";
 import type { StoryCatalog, StoryCatalogEntry } from "./types/catalog";
 import type { ChoukaiExamData } from "./types/choukai";
 import type { DictationItem, DictationPack } from "./types/dictation";
@@ -605,86 +601,13 @@ export function App() {
           onOpenDictation={() => handleOpenDictation(story.id)}
         />
       ) : mode === "stage" ? (
-        <div className={`stage-frame ${showVi ? "" : "hide-vi"}`}>
-          <div className="stage-topbar">
-            <div className="topbar-meta">
-              <span className="topbar-series">{story.series}</span>
-              <div className="topbar-title">
-                <span>
-                  {story.titleJa} — {story.titleVi}
-                </span>
-                <span className="level-pill">{story.level}</span>
-              </div>
-            </div>
-
-            <div className="topbar-controls">
-              <button
-                type="button"
-                className="pixel-icon-btn"
-                onClick={handleOpenLibrary}
-                title="Quay lại thư viện truyện"
-              >
-                📚 Thư viện
-              </button>
-              <button
-                type="button"
-                className="pixel-icon-btn"
-                onClick={() => handleOpenDictation(story.id)}
-                title="Chuyển sang chế độ luyện nghe chép chính tả"
-              >
-                🎧 Nghe chép
-              </button>
-              <button
-                type="button"
-                className={`pixel-icon-btn ${showFurigana ? "active" : ""}`}
-                onClick={() => setShowFurigana((v) => !v)}
-                title="Bật / Tắt Furigana"
-              >
-                ふりがな {showFurigana ? "ON" : "OFF"}
-              </button>
-              <button
-                type="button"
-                className={`pixel-icon-btn ${showVi ? "active" : ""}`}
-                onClick={() => setShowVi((v) => !v)}
-                title="Hiện / Ẩn phụ đề dịch tiếng Việt"
-              >
-                🇻🇳 Dịch {showVi ? "ON" : "OFF"}
-              </button>
-              <button
-                type="button"
-                className="pixel-icon-btn"
-                onClick={() => setMuted((m) => !m)}
-                title="Bật / Tắt âm thanh"
-              >
-                {muted ? "🔇 MUTED" : "🔊 SOUND"}
-              </button>
-            </div>
+        <div className="subtitle-box">
+          <div className="subtitle-ja">
+            「{story.engine ?? "?"}」ステージはもうサポートされていません。
           </div>
-
-          {(() => {
-            const stageKey = `${story.id}-${autoplay ? "auto" : "play"}`;
-            const common = {
-              story,
-              showFurigana,
-              muted,
-              autoplay,
-              onOpenReading: () => {
-                updateUrl(story.id, "reading", false);
-                setMode("reading");
-              },
-            };
-            const onOpenDictation = () => handleOpenDictation(story.id);
-            switch (resolveStageEngine(story)) {
-              case "tsuru":
-                return <TsuruStage key={stageKey} {...common} onOpenDictation={onOpenDictation} />;
-              case "depato":
-                return <DepatoStage key={stageKey} {...common} onOpenDictation={onOpenDictation} />;
-              case "hybrid":
-                return <HybridStage key={stageKey} {...common} onOpenDictation={onOpenDictation} />;
-              default:
-                return <PixelStage key={stageKey} {...common} />;
-            }
-          })()}
+          <div className="subtitle-vi">
+            Truyện này dùng stage cũ đã bị gỡ — chuyển story.json sang engine "cinema" (xem story-schema.md).
+          </div>
         </div>
       ) : (
         <ReadingView

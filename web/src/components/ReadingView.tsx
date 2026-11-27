@@ -4,6 +4,7 @@ import type { ReadingSentence, StoryData } from "../types/story";
 import { resolveAssetUrl } from "../utils/assetUrl";
 import { rubyToPlain } from "../utils/ruby";
 import { chapterImage, chunkByVocab, quizScore, readingChapters, sceneIndex } from "../utils/readingText";
+import { sceneSnapshotUrl } from "../engine/sceneSnapshot";
 import { WordCard } from "./reading/WordCard";
 import { RubyText } from "./RubyText";
 
@@ -85,7 +86,8 @@ export function ReadingView({
   const onQuiz = chapterIdx >= chapters.length && quizList.length > 0;
   const chapter = chapters[Math.min(chapterIdx, chapters.length - 1)];
   const chapterSentences = chapter.sentenceIds.map((id) => byId.get(id)).filter(Boolean) as ReadingSentence[];
-  const img = chapterImage(chapter, story);
+  // painted background of the chapter's scene, or a still of its code-drawn set (route B)
+  const img = chapterImage(chapter, story) ?? sceneSnapshotUrl(story, chapter.scene);
   const chapterScene = sceneIndex(story, chapter.scene);
 
   const updateSettings = (patch: Partial<ReaderSettings>) => {
@@ -351,11 +353,18 @@ export function ReadingView({
 
               {img && (
                 <figure className="rd-figure">
-                  <img src={resolveAssetUrl(img)} alt="" />
+                  <img src={img.startsWith("data:") ? img : resolveAssetUrl(img)} alt="" />
                   <figcaption>
                     <span>🎬 Cảnh bạn đã xem trong hoạt ảnh</span>
                     {chapterScene >= 0 && (
-                      <button type="button" className="rd-link" onClick={() => onBackToStory(chapterScene)}>
+                      <button
+                        type="button"
+                        className="rd-link"
+                        onClick={() => {
+                          retroAudio.playClick(); // a gesture: unlocks audio so the scene starts with its music
+                          onBackToStory(chapterScene);
+                        }}
+                      >
                         ▶ Xem lại cảnh này
                       </button>
                     )}

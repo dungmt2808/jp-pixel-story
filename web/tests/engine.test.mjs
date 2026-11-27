@@ -31,6 +31,10 @@ const engines = await loadTsModule("src/engine/stageEngines.ts");
 const vibe = await loadTsModule("src/engine/cinemaVibe.ts");
 const themes = await loadTsModule("src/audio/themes.ts");
 const motion = await loadTsModule("src/engine/sceneMotion.ts");
+const people = await loadTsModule("src/engine/people.ts");
+const cues = await loadTsModule("src/engine/cues.ts");
+const shibuya = await loadTsModule("src/engine/proc/shibuya.ts");
+const sets = await loadTsModule("src/engine/proc/sets.ts");
 const rig = await loadTsModule("src/engine/rigAnimator.ts");
 const ui = await loadTsModule("src/engine/cinemaUi.ts");
 
@@ -172,6 +176,24 @@ test("frameAt loops at the clip's own fps", () => {
 test("frameAt holds the last frame of one-shot clips and tolerates unknown clip names", () => {
   assert.equal(sprite.frameAt(meta, "wave", 10), 3);
   assert.equal(sprite.frameAt(meta, "nope", 0), 0);
+});
+
+test("walk clips with stridePx follow distance, so the feet never slide; facing is parsed", () => {
+  const walker = sprite.normalizeSpriteMeta({
+    frameWidth: 32, frameHeight: 48, frameCount: 10, facing: "right",
+    clips: { walk: { frames: [0, 1, 2, 3, 4, 5, 6, 7], fps: 10, stridePx: 24 }, idle: [8, 9] },
+  });
+  assert.equal(walker.facing, "right");
+  assert.equal(walker.clips.walk.stridePx, 24);
+  assert.equal(walker.clips.idle.stridePx, undefined);
+  // 8 frames per 24 px = one frame every 3 px, whatever the time
+  assert.equal(sprite.frameAtDistance(walker, "walk", 0, 5), 0);
+  assert.equal(sprite.frameAtDistance(walker, "walk", 2.9, 0), 0);
+  assert.equal(sprite.frameAtDistance(walker, "walk", 3, 0), 1);
+  assert.equal(sprite.frameAtDistance(walker, "walk", 24 + 7, 0), 2);
+  assert.equal(sprite.frameAtDistance(walker, "walk", -6, 0), 2);
+  // no stride -> time-based like frameAt
+  assert.equal(sprite.frameAtDistance(walker, "idle", 100, 0.6), sprite.frameAt(walker, "idle", 0.6));
 });
 
 test("spritesheetUrl resolves next to meta.json", () => {
@@ -433,6 +455,59 @@ test("route C motion: paths, movers with delay/ease/loop, visibility, rumble bea
   assert.equal(motion.inRoundedRect(40, 80, [16, 56, 60, 56], 3), true);
   assert.equal(motion.inRoundedRect(76, 80, [16, 56, 60, 56], 3), false);
   assert.deepEqual([...motion.MOTION_TYPES].sort(), ["glow", "mover", "rumble", "scroll", "shimmer", "steam", "sweep"]);
+});
+
+
+test("route B people: walk at a speed, face the way they go, then sit / exit; fades and hops", () => {
+  const def = { kind: "dog", x: 100, y: 150, face: "left", pose: "sit" };
+  const moves = [{ move: { who: "h", walkTo: 160, speed: 20, then: "sit" }, time: 2 }];
+  assert.deepEqual(people.personAt(def, moves, 1), { x: 100, y: 150, face: "left", pose: "sit", visible: true, alpha: 1, lift: 0 });
+  const mid = people.personAt(def, moves, 3.5);
+  assert.equal(mid.x, 130);
+  assert.equal(mid.pose, "walk");
+  assert.equal(mid.face, "right");
+  assert.equal(people.personAt(def, moves, 9).pose, "sit");
+  assert.equal(people.personAt(def, [{ move: { who: "h", walkTo: 200, speed: 50 }, time: 0 }], 1).pose, "run");
+  const exit = [{ move: { who: "s", walkTo: 268, speed: 26, then: "exit" }, time: 0 }];
+  assert.equal(people.personAt({ kind: "sensei", x: 200 }, exit, 1).visible, true);
+  assert.equal(people.personAt({ kind: "sensei", x: 200 }, exit, 9).visible, false);
+  const gone = people.personAt(def, [{ move: { who: "h", fadeOut: 2 }, time: 1 }], 2);
+  assert.equal(gone.alpha, 0.5);
+  assert.equal(people.personAt(def, [{ move: { who: "h", fadeOut: 2 }, time: 1 }], 5).visible, false);
+  assert.ok(people.personAt(def, [{ move: { who: "h", hop: 1 }, time: 0 }], 0.15).lift < 0);
+  assert.equal(people.personAt({ ...def, hidden: true }, [], 0).visible, false);
+});
+
+test("cues fire from line / done-line / interaction anchors; set state remembers when and what changed", () => {
+  const list = [
+    { at: 1, set: { sky: "morning" } },
+    { line: 1, delay: 0.5, set: { train: "go" } },
+    { done: true, set: { sky: "night", clock: 6 } },
+    { doneLine: 0, people: [{ who: "hachi", walkTo: 50 }] },
+  ];
+  const anchors = { lines: [0, 4], doneLines: [] };
+  assert.equal(cues.cueTime(list[1], anchors), 4.5);
+  assert.equal(cues.cueTime(list[2], anchors), null, "not completed yet");
+  const st = cues.setStateAt({ sky: "dusk", clock: 5 }, list, anchors, 5);
+  assert.equal(st.values.sky, "morning");
+  assert.equal(st.prev.sky, "dusk");
+  assert.equal(st.since.train, 4.5);
+  assert.equal(st.values.clock, 5);
+  const later = cues.setStateAt({ sky: "dusk", clock: 5 }, list, { ...anchors, done: 6 }, 7);
+  assert.deepEqual([later.values.sky, later.prev.sky, later.since.sky, later.values.clock], ["night", "morning", 6, 6]);
+  assert.deepEqual(cues.cueMoves(list, anchors), []);
+  assert.deepEqual(cues.cueMoves(list, { ...anchors, doneLines: [8] }), [{ move: { who: "hachi", walkTo: 50 }, time: 8 }]);
+});
+
+test("shibuya train: arrives, waits at the platform, leaves; nothing before its cue", () => {
+  assert.equal(shibuya.trainX("go", undefined, 3), null);
+  assert.equal(shibuya.trainX("go", 10, 9), null);
+  assert.equal(shibuya.trainX("go", 10, 13), 120, "stopped at the platform");
+  assert.ok(shibuya.trainX("go", 10, 15.5) > 120, "leaving");
+  assert.equal(shibuya.trainX("go", 10, 17), null, "gone");
+  assert.equal(typeof shibuya.trainX("loop", undefined, 3), "number");
+  assert.deepEqual(Object.keys(shibuya.SHIBUYA_SETS).sort(), ["shibuya", "shibuya_today"]);
+  for (const k of ["shibuya", "konbini_counter", "konbini_outro"]) assert.ok(sets.PROC_SETS[k], k);
 });
 
 console.log(`\nALL ${passed} ENGINE TESTS PASSED!`);

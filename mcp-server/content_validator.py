@@ -25,6 +25,8 @@ VIBE_SFX = {"pop", "ding", "whoosh", "boing", "shock", "sparkle", "thud", "gloom
 VIBE_LIGHTS = {"day", "morning", "golden", "dusk", "night", "rain", "warm"}
 VIBE_BGM = {"default", "depato_sunny", "depato_rain", "calm", "night", "happy", "bright", "sad", "tender", "rain", "none"}
 MOTION_TYPES = {"scroll", "sweep", "glow", "shimmer", "steam", "mover", "rumble"}
+PERSON_KINDS = {"dog", "bronze-dog", "sensei", "person"}
+PROC_SETS = {"shibuya", "shibuya_today", "konbini_skyline", "konbini_exterior", "konbini_interior", "konbini_counter", "konbini_closeup", "konbini_outro"}
 
 
 def vocab_needles(v: dict[str, Any]) -> list[str]:
@@ -82,6 +84,9 @@ def _resolve_palette(story: dict[str, Any], catalog_entry: dict[str, Any] | None
 DEFAULT_ART_QUALITY = {"outlineColor": "#241712", "minOutlineCompliance": 0.9, "maxOrphanRatio": 0.08}
 
 
+ART_EXCEPTION_METRICS = {"outline", "noise", "colors"}
+
+
 def _check_art_quality(
     sprite_pngs: dict[str, Path],
     public_root: Path,
@@ -89,10 +94,19 @@ def _check_art_quality(
     issues: list[str],
     warnings: list[str],
     stats: dict[str, int],
+    exceptions: dict[str, Any] | None = None,
 ) -> None:
-    """Sprite craft quality. Stories declaring `artQuality` are strict (issues); others get warnings."""
+    """Sprite craft quality. Stories declaring `artQuality` are strict (issues); others get warnings.
+
+    `exceptions` (story `artExceptions`): { "<url of the sprite>": { "noise": "why this is fine" } } —
+    a reviewed decision that a metric does not apply to one sprite (a woven texture IS isolated
+    pixels). Each needs a written reason; it is counted in stats, never silently dropped.
+    """
     rules = {**DEFAULT_ART_QUALITY, **(art_quality or {})}
     sink = issues if art_quality else warnings
+    by_path = {
+        (public_root / str(url).lstrip("/")).resolve(): spec for url, spec in (exceptions or {}).items()
+    }
     for fp in sprite_pngs.values():
         with Image.open(fp) as im:
             if im.mode != "RGBA" or im.getextrema()[3][0] == 255:
@@ -100,14 +114,21 @@ def _check_art_quality(
             q = quality_metrics(im, rules["outlineColor"])
         stats["sprites_quality_checked"] = stats.get("sprites_quality_checked", 0) + 1
         rel = fp.relative_to(public_root) if fp.is_relative_to(public_root) else fp
-        if q["outline_compliance"] < rules["minOutlineCompliance"]:
+        excused = by_path.get(fp.resolve()) or {}
+        for metric in list(excused):
+            if metric not in ART_EXCEPTION_METRICS or not str(excused[metric]).strip():
+                sink.append(f"[Art Exception] {rel}: '{metric}' needs one of {sorted(ART_EXCEPTION_METRICS)} and a written reason")
+                excused = {k: v for k, v in excused.items() if k != metric}
+        if excused:
+            stats["art_exceptions"] = stats.get("art_exceptions", 0) + len(excused)
+        if q["outline_compliance"] < rules["minOutlineCompliance"] and "outline" not in excused:
             sink.append(
                 f"[Outline] {rel}: {q['outline_compliance'] * 100:.0f}% of the silhouette uses {rules['outlineColor']} "
                 f"(< {rules['minOutlineCompliance'] * 100:.0f}%; run pixellab_cleanup_sprite)"
             )
-        if q["orphan_ratio"] > rules["maxOrphanRatio"]:
+        if q["orphan_ratio"] > rules["maxOrphanRatio"] and "noise" not in excused:
             sink.append(f"[Noise] {rel}: {q['orphan_ratio'] * 100:.1f}% isolated pixels (> {rules['maxOrphanRatio'] * 100:.0f}%)")
-        if rules.get("maxColorsPerSprite") and q["colors"] > rules["maxColorsPerSprite"]:
+        if rules.get("maxColorsPerSprite") and q["colors"] > rules["maxColorsPerSprite"] and "colors" not in excused:
             sink.append(f"[Colors] {rel}: {q['colors']} colours (> {rules['maxColorsPerSprite']})")
 
 
@@ -195,7 +216,12 @@ def _check_story_assets(
             if fp.exists() and fp.suffix.lower() == ".png":
                 sprite_pngs[str(fp)] = fp
     if warnings is not None:
-        _check_art_quality(sprite_pngs, public_root, data.get("artQuality"), issues, warnings, stats)
+        _check_art_quality(
+            sprite_pngs, public_root, data.get("artQuality"), issues, warnings, stats, data.get("artExceptions")
+        )
+        for url in data.get("artExceptions") or {}:
+            if str(public_root / str(url).lstrip("/")) not in {str(p) for p in sprite_pngs.values()}:
+                warnings.append(f"[Art Exception] '{url}' is not a portrait or item of this story")
         _check_provenance(pngs, warnings, stats)
 
     assets_dir = sdir / "assets"
@@ -305,6 +331,8 @@ def validate_story_folder(
             inter = sc.get("interaction")
             if isinstance(inter, dict):
                 extra = [("done", inter.get("doneLine"))] + [
+                    (f"done{i + 1}", ln) for i, ln in enumerate(inter.get("doneLines") or [])
+                ] + [
                     (f"spot{i}", sp.get("line")) for i, sp in enumerate(inter.get("spots") or [])
                 ]
                 for tag, ln in extra:
@@ -354,6 +382,29 @@ def validate_story_folder(
             if telop:
                 text = telop if isinstance(telop, str) else telop.get("text", "")
                 _check_ruby_segments(f"{lid}/telop", text, issues)
+            portraits = (data.get("assets") or {}).get("portraits") or {}
+            for side, key in (line.get("castPortrait") or {}).items():
+                if side not in ("left", "right"):
+                    issues.append(f"[Unknown Side] {lid}/castPortrait: '{side}' (use 'left' or 'right')")
+                elif key not in portraits:
+                    issues.append(f"[Missing Portrait] {lid}/castPortrait.{side}: '{key}' is not in assets.portraits")
+            if line.get("bgm") and line["bgm"] not in VIBE_BGM:
+                warnings.append(f"[Unknown BGM] {lid}: '{line['bgm']}' falls back to 'default'")
+            for side in line.get("castExit") or []:
+                if side not in ("left", "right"):
+                    issues.append(f"[Unknown Side] {lid}/castExit: '{side}' (use 'left' or 'right')")
+        # cast (story-wide and per scene): portraits must exist
+        if data.get("engine") == "cinema":
+            portraits = (data.get("assets") or {}).get("portraits") or {}
+            casts = [("cast", data.get("cast") or {})] + [
+                (f"{sc.get('id', '?')}/cast", sc.get("cast") or {}) for sc in data.get("scenes", [])
+            ]
+            for where, cast in casts:
+                for side, actor in cast.items():
+                    if side not in ("left", "right"):
+                        issues.append(f"[Unknown Side] {where}: '{side}' (use 'left' or 'right')")
+                    elif isinstance(actor, dict) and actor.get("portrait") and actor["portrait"] not in portraits:
+                        issues.append(f"[Missing Portrait] {where}.{side}: '{actor['portrait']}' is not in assets.portraits")
         # style consistency: painted pixel backgrounds and code-drawn (proc:) backdrops look like
         # two different worlds in one video, so mixing them is flagged
         if data.get("engine") == "cinema":
@@ -365,7 +416,7 @@ def validate_story_folder(
                     if ch.get("backdrop"):
                         refs.append((f"{sc.get('id', '?')}/{ch.get('id', '?')}", ch["backdrop"]))
             painted = [r for r in refs if r[1].startswith("bg:")]
-            coded = [r for r in refs if r[1].startswith("proc:")]
+            coded = [r for r in refs if r[1].startswith(("proc:", "set:"))]
             if painted and coded and not (data.get("look") or {}).get("allowMixedBackdrops"):
                 warnings.append(
                     "[Style Mix] painted backgrounds (" + ", ".join(sorted({r[1] for r in painted})) + ") and code-drawn "
@@ -375,9 +426,11 @@ def validate_story_folder(
 
         # route C motion layers (web/src/engine/sceneMotion.ts)
         items = (data.get("assets") or {}).get("items") or {}
-        for sc in data.get("scenes", []):
-            for i, fx in enumerate(sc.get("motion") or []):
-                where = f"{sc.get('id')}/motion[{i}]"
+        backgrounds = (data.get("assets") or {}).get("backgrounds") or {}
+
+        def check_motion(where_prefix: str, fxs: list[dict[str, Any]], painted: bool) -> None:
+            for i, fx in enumerate(fxs or []):
+                where = f"{where_prefix}[{i}]"
                 kind = fx.get("type")
                 if kind not in MOTION_TYPES:
                     issues.append(f"[Unknown Motion] {where}: '{kind}' (use one of {sorted(MOTION_TYPES)})")
@@ -388,8 +441,65 @@ def validate_story_folder(
                         issues.append(f"[Bad Motion Rect] {where}: {r} must lie inside the 320x200 frame")
                 if kind == "mover" and fx.get("item") not in items:
                     issues.append(f"[Missing Asset] {where}: mover item '{fx.get('item')}' is not in assets.items")
-                if kind in ("scroll", "mover") and not str(sc.get("backdrop", "")).startswith("bg:"):
+                if kind in ("scroll", "mover") and not painted:
                     warnings.append(f"[Motion Needs Painting] {where}: '{kind}' samples the painted bg: backdrop")
+
+        # route B: people + cues (web/src/engine/people.ts, cues.ts) and code-drawn set: backdrops
+        for sc in data.get("scenes", []):
+            people = sc.get("people") or {}
+            for pid, pdef in people.items():
+                kind = str(pdef.get("kind", ""))
+                if kind not in PERSON_KINDS and not kind.startswith("sprite:"):
+                    issues.append(f"[Unknown Person] {sc.get('id')}/{pid}: kind '{kind}' (use {sorted(PERSON_KINDS)} or sprite:<key>)")
+                sprite_url = ((data.get("assets") or {}).get("sprites") or {}).get(kind[7:]) if kind.startswith("sprite:") else None
+                if kind.startswith("sprite:") and not sprite_url:
+                    issues.append(f"[Missing Asset] {sc.get('id')}/{pid}: sprite '{kind[7:]}' is not in assets.sprites")
+                if sprite_url:
+                    meta_fp = public_root / str(sprite_url).lstrip("/")
+                    clips = json.loads(meta_fp.read_text(encoding="utf-8")).get("clips", {}) if meta_fp.exists() else {}
+                    walks = any(
+                        mv.get("who") == pid and mv.get("walkTo") is not None
+                        for cue in sc.get("cues") or [] for mv in cue.get("people") or []
+                    ) or pdef.get("pose") in ("walk", "run")
+                    if "idle" not in clips:
+                        warnings.append(f"[Sprite Clips] {sc.get('id')}/{pid}: '{kind[7:]}' has no 'idle' clip (standing still)")
+                    if walks and "walk" not in clips:
+                        warnings.append(f"[Sprite Clips] {sc.get('id')}/{pid}: walks but '{kind[7:]}' has no 'walk' clip")
+                    elif walks and not (clips.get("walk") or {}).get("stridePx"):
+                        warnings.append(
+                            f"[Foot Slide] {sc.get('id')}/{pid}: the 'walk' clip of '{kind[7:]}' has no stridePx "
+                            "(px per cycle), so frames follow time and the feet slide"
+                        )
+            n_lines = len(sc.get("lines") or [])
+            inter = sc.get("interaction") or {}
+            n_done = (1 if inter.get("doneLine") else 0) + len(inter.get("doneLines") or [])
+            for ci, cue in enumerate(sc.get("cues") or []):
+                where = f"{sc.get('id')}/cues[{ci}]"
+                if "line" in cue and not 0 <= int(cue["line"]) < n_lines:
+                    issues.append(f"[Bad Cue] {where}: line {cue['line']} does not exist ({n_lines} lines)")
+                if "doneLine" in cue and not 0 <= int(cue["doneLine"]) < n_done:
+                    issues.append(f"[Bad Cue] {where}: doneLine {cue['doneLine']} does not exist ({n_done} done-lines)")
+                if cue.get("done") and not inter:
+                    issues.append(f"[Bad Cue] {where}: 'done' needs a scene interaction")
+                for mv in cue.get("people") or []:
+                    if mv.get("who") not in people:
+                        issues.append(f"[Bad Cue] {where}: person '{mv.get('who')}' is not in scene.people")
+            for item in inter.get("items") or []:
+                if item.get("person") and item["person"] not in people:
+                    issues.append(f"[Bad Interaction] {sc.get('id')}: drag person '{item['person']}' is not in scene.people")
+            for ln in [*(sc.get("lines") or []), *(inter.get("doneLines") or []), *([inter["doneLine"]] if inter.get("doneLine") else [])]:
+                if ln.get("emoteWho") and ln["emoteWho"] not in people:
+                    issues.append(f"[Bad Cue] {sc.get('id')}/{ln.get('id')}: emoteWho '{ln['emoteWho']}' is not in scene.people")
+            bd = str(sc.get("backdrop", ""))
+            if bd.startswith("set:") and bd[4:] not in PROC_SETS:
+                issues.append(f"[Unknown Set] {sc.get('id')}: '{bd}' (known: {sorted(PROC_SETS)})")
+
+        for key, fxs in (data.get("backdropMotion") or {}).items():
+            if key not in backgrounds:
+                issues.append(f"[Bad Backdrop Motion] '{key}' is not in assets.backgrounds")
+            check_motion(f"backdropMotion.{key}", fxs, True)
+        for sc in data.get("scenes", []):
+            check_motion(f"{sc.get('id')}/motion", sc.get("motion") or [], str(sc.get("backdrop", "")).startswith("bg:"))
 
         for sc in data.get("scenes", []):
             if sc.get("light") and sc["light"] not in VIBE_LIGHTS:
@@ -443,9 +553,15 @@ def validate_story_folder(
             return braced_to_plain(str(ruby or ""))
 
         plain_text = "".join(_plain(sent.get("jaRuby")) for sent in reading.get("sentences", []))
+        # words met in the animation count too: they stay reachable from the word list
+        spoken = "".join(_plain(ln.get("jaRuby")) for ln, _ in iter_story_lines({"scenes": data.get("scenes", [])}))
+        spoken += str(data.get("titleJa", "")) + "".join(
+            _plain((sc.get("titleCard") or {}).get("title", "")) for sc in data.get("scenes", [])
+        )
         for v in reading.get("vocab", []):
-            if not any(n in plain_text for n in vocab_needles(v)):
-                warnings.append(f"[Vocab Not In Text] {v.get('id')}: '{v.get('word')}' is never found in the reading, so it cannot be tapped (add `forms`)")
+            needles = vocab_needles(v)
+            if not any(n in plain_text or n in spoken for n in needles):
+                warnings.append(f"[Vocab Not In Text] {v.get('id')}: '{v.get('word')}' appears neither in the reading nor in the dialogue (add `forms` or drop it)")
 
     if dictation_json.exists():
         ddata = json.loads(dictation_json.read_text(encoding="utf-8"))

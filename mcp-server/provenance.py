@@ -107,6 +107,18 @@ def record(
     manifest_path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+LEGACY_MASTER = "legacy_master"
+
+
+def adopt_legacy(path: str | Path, note: str = "") -> None:
+    """Record an asset made before provenance existed as its own master copy.
+
+    Nothing can rebuild it (its prompt and raw image are lost), so the honest record is "this
+    file IS the source": `reprocess` then only checks it was not edited since.
+    """
+    record(LEGACY_MASTER, {"note": note} if note else {}, output=path)
+
+
 def _ops() -> dict[str, Callable[..., Any]]:
     import pixel_extract as pe
     import pixel_processor as pp
@@ -141,6 +153,14 @@ def reprocess(manifest_path: str | Path, names: list[str] | None = None) -> dict
             target = Path(td) / name
             status = "identical"
             for step in entry["steps"]:
+                if step["op"] == "render_proc_item":
+                    status = "generated from code: re-run web/scripts/render_proc_items.mjs"
+                    break
+                if step["op"] == LEGACY_MASTER:
+                    # the file is its own source: nothing to replay, only check it was not edited
+                    same = path_sha(current) == entry["output"]["sha"]
+                    status = "legacy master (the file is its own source)" if same else "file edited after adoption"
+                    break
                 fn = ops.get(step["op"])
                 if fn is None:
                     status = f"unknown op {step['op']}"
@@ -171,4 +191,6 @@ def reprocess(manifest_path: str | Path, names: list[str] | None = None) -> dict
                 elif path_sha(current) != entry["output"]["sha"]:
                     status = "file edited after processing"
         results[name] = status
-    return {"manifest": str(mpath), "results": results, "ok": all(v == "identical" for v in results.values())}
+    # code-generated assets are rebuilt by their script, legacy masters are kept as they are
+    ok = all(v == "identical" or v.startswith(("generated from code", "legacy master")) for v in results.values())
+    return {"manifest": str(mpath), "results": results, "ok": ok}

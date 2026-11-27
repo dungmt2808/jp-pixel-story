@@ -85,6 +85,8 @@ export interface MoverFx {
   front?: Rect[];
   /** "always" (default: waits at the start, stays at the end) or "moving" (only while travelling). */
   show?: "always" | "moving";
+  /** Start counting `delaySec` from a cue anchor (e.g. { "done": true }) instead of the scene start. */
+  startOn?: import("./cues").SceneCue;
 }
 export interface RumbleFx {
   type: "rumble";
@@ -165,8 +167,6 @@ export function inRoundedRect(px: number, py: number, r: Rect, radius: number): 
 interface ScrollCache {
   strip: HTMLCanvasElement;
   period: number;
-  masks: HTMLCanvasElement[];
-  temp: HTMLCanvasElement;
 }
 const scrollCache = new WeakMap<HTMLImageElement, Map<string, ScrollCache>>();
 
@@ -179,7 +179,7 @@ function canvas(w: number, h: number): HTMLCanvasElement {
 
 /** Build (once) a strip: every rect's own pixels side by side, then mirrored -> seamless loop. */
 function scrollData(bg: HTMLImageElement, fx: ScrollFx): ScrollCache | null {
-  const key = JSON.stringify([fx.rects, fx.radius ?? 0]);
+  const key = JSON.stringify(fx.rects);
   let byImg = scrollCache.get(bg);
   if (!byImg) {
     byImg = new Map();
@@ -205,116 +205,192 @@ function scrollData(bg: HTMLImageElement, fx: ScrollFx): ScrollCache | null {
   sc.scale(-1, 1);
   sc.drawImage(strip, 0, 0, len, h, 0, 0, len, h);
   sc.restore();
-  const masks = fx.rects.map((r) => {
-    const m = canvas(r[2], r[3]);
-    const mc = m.getContext("2d");
-    if (mc) {
-      mc.fillStyle = "#000";
-      for (let py = 0; py < r[3]; py++) {
-        for (let px = 0; px < r[2]; px++) {
-          if (inRoundedRect(r[0] + px, r[1] + py, r, fx.radius ?? 0)) mc.fillRect(px, py, 1, 1);
-        }
-      }
-    }
-    return m;
-  });
-  const maxW = Math.max(...fx.rects.map((r) => r[2]));
-  const data = { strip, period: len * 2, masks, temp: canvas(maxW, h) };
+  const data = { strip, period: len * 2 };
   byImg.set(key, data);
   return data;
 }
 
+/**
+ * Scenery straight into each window (one or two drawImage calls, no per-frame compositing), then
+ * the rounded corners of the frame are copied back from the painting (radius x radius each).
+ */
 function drawScroll(ctx: CanvasRenderingContext2D, fx: ScrollFx, t: number, bg: HTMLImageElement | undefined): void {
   if (!bg) return;
   const d = scrollData(bg, fx);
   if (!d) return;
-  const tc = d.temp.getContext("2d");
-  if (!tc) return;
-  tc.imageSmoothingEnabled = false;
   const shift = Math.round(t * fx.speed);
-  fx.rects.forEach((r, i) => {
-    const [rx, ry, rw, rh] = r;
+  const rad = Math.max(0, Math.round(fx.radius ?? 0));
+  for (const [rx, ry, rw, rh] of fx.rects) {
     // the strip is indexed by SCREEN x, so the scenery runs continuously from window to window
     const sx = wrap(rx + shift, d.period);
-    tc.clearRect(0, 0, d.temp.width, d.temp.height);
     const first = Math.min(rw, d.period - sx);
-    tc.drawImage(d.strip, sx, 0, first, rh, 0, 0, first, rh);
-    if (first < rw) tc.drawImage(d.strip, 0, 0, rw - first, rh, first, 0, rw - first, rh);
-    tc.globalCompositeOperation = "destination-in";
-    tc.drawImage(d.masks[i], 0, 0);
-    tc.globalCompositeOperation = "source-over";
-    ctx.drawImage(d.temp, 0, 0, rw, rh, rx, ry, rw, rh);
-  });
+    ctx.drawImage(d.strip, sx, 0, first, rh, rx, ry, first, rh);
+    if (first < rw) ctx.drawImage(d.strip, 0, 0, rw - first, rh, rx + first, ry, rw - first, rh);
+    if (rad > 0) {
+      for (const [cx, cy] of [[rx, ry], [rx + rw - rad, ry], [rx, ry + rh - rad], [rx + rw - rad, ry + rh - rad]]) {
+        ctx.drawImage(bg, cx, cy, rad, rad, cx, cy, rad, rad);
+      }
+    }
+  }
+}
+
+// pre-rendered band pattern (one period wide), so a frame costs one or two drawImage calls
+const sweepCache = new Map<string, HTMLCanvasElement>();
+function sweepPattern(fx: SweepFx): HTMLCanvasElement {
+  const [, , w, h] = fx.rect;
+  const slant = fx.slant ?? 0.6;
+  const key = JSON.stringify([w, h, slant, fx.spacing, fx.width, fx.color ?? "#2a1a10"]);
+  const hit = sweepCache.get(key);
+  if (hit) return hit;
+  const c = canvas(w + fx.spacing * 2, h);
+  const g = c.getContext("2d");
+  if (g) {
+    g.fillStyle = fx.color ?? "#2a1a10";
+    for (let py = 0; py < h; py++) {
+      const rowShift = Math.round(py * slant);
+      for (let bx = -fx.spacing * 2 - rowShift; bx < c.width; bx += fx.spacing) {
+        const a = Math.max(0, Math.round(bx));
+        const b = Math.min(c.width, Math.round(bx + fx.width));
+        if (b > a) g.fillRect(a, py, b - a, 1);
+      }
+    }
+  }
+  sweepCache.set(key, c);
+  return c;
 }
 
 function drawSweep(ctx: CanvasRenderingContext2D, fx: SweepFx, t: number): void {
   const [x, y, w, h] = fx.rect;
-  const slant = fx.slant ?? 0.6;
+  const pattern = sweepPattern(fx);
+  const off = Math.round(wrap(-t * fx.speed, fx.spacing));
   ctx.save();
   ctx.globalAlpha = fx.alpha ?? 0.22;
-  ctx.fillStyle = fx.color ?? "#2a1a10";
-  const off = wrap(-t * fx.speed, fx.spacing);
-  for (let py = 0; py < h; py++) {
-    const rowShift = Math.round(py * slant);
-    for (let bx = off - fx.spacing - rowShift; bx < w + fx.spacing; bx += fx.spacing) {
-      const a = Math.max(0, Math.round(bx));
-      const b = Math.min(w, Math.round(bx + fx.width));
-      if (b > a) ctx.fillRect(x + a, y + py, b - a, 1);
-    }
-  }
+  ctx.drawImage(pattern, fx.spacing - off, 0, w, h, x, y, w, h);
   ctx.restore();
 }
 
-function drawGlow(ctx: CanvasRenderingContext2D, fx: GlowFx, t: number): void {
+// dithered halo sprites cached per light and per strength step (13 steps are plenty for pixel art)
+const glowCache = new Map<string, HTMLCanvasElement>();
+function glowSprite(fx: GlowFx, step: number): HTMLCanvasElement {
+  const [cx, cy] = fx.at;
+  const r = fx.r;
+  const key = JSON.stringify([cx, cy, r, fx.color ?? "#ffd9a0", step]);
+  const hit = glowCache.get(key);
+  if (hit) return hit;
+  const x0 = Math.floor(cx - r);
+  const y0 = Math.floor(cy - r);
+  const c = canvas(2 * r + 2, 2 * r + 2);
+  const g = c.getContext("2d");
+  if (g) {
+    g.fillStyle = fx.color ?? "#ffd9a0";
+    const k = step / 12;
+    for (let y = y0; y <= cy + r; y++) {
+      for (let x = x0; x <= cx + r; x++) {
+        const d = Math.hypot(x - cx, y - cy) / r;
+        if (d >= 1) continue;
+        // Bayer cell from SCREEN coordinates so the dots line up with every other dithered layer
+        if (BAYER[(y & 3) * 4 + (x & 3)] < (1 - d) * k * 16) g.fillRect(x - x0, y - y0, 1, 1);
+      }
+    }
+  }
+  glowCache.set(key, c);
+  return c;
+}
+
+/** Strength 0..1 of a glow at time t (pure, so it can be tested and cached by step). */
+export function glowStrength(fx: Pick<GlowFx, "period" | "min" | "max" | "flicker">, t: number): number {
   const period = fx.period ?? 3;
   const lo = fx.min ?? 0.25;
   const hi = fx.max ?? 0.55;
   let k = lo + (hi - lo) * (0.5 + 0.5 * Math.sin((t / period) * Math.PI * 2));
   if (fx.flicker) k *= 0.85 + 0.15 * Math.sin(t * 23.1) * Math.sin(t * 7.3);
-  const [cx, cy] = fx.at;
-  const r = fx.r;
+  return Math.max(0, Math.min(1, k));
+}
+
+function drawGlow(ctx: CanvasRenderingContext2D, fx: GlowFx, t: number): void {
+  const step = Math.round(glowStrength(fx, t) * 12);
+  if (step <= 0) return;
   ctx.save();
   ctx.globalCompositeOperation = "screen";
   ctx.globalAlpha = 0.55; // half-strength dots: a soft dithered halo, not a visible dot grid
-  ctx.fillStyle = fx.color ?? "#ffd9a0";
-  for (let y = Math.floor(cy - r); y <= cy + r; y++) {
-    for (let x = Math.floor(cx - r); x <= cx + r; x++) {
-      if (x < 0 || y < 0 || x >= VW || y >= VH) continue;
-      const d = Math.hypot(x - cx, y - cy) / r;
-      if (d >= 1) continue;
-      const level = (1 - d) * k * 16;
-      if (BAYER[(y & 3) * 4 + (x & 3)] < level) ctx.fillRect(x, y, 1, 1);
-    }
-  }
+  ctx.drawImage(glowSprite(fx, step), Math.floor(fx.at[0] - fx.r), Math.floor(fx.at[1] - fx.r));
   ctx.restore();
 }
 
-function drawShimmer(ctx: CanvasRenderingContext2D, fx: ShimmerFx, t: number): void {
+interface ShimmerCache {
+  idx: Int32Array; // pixel index inside the rect
+  phase: Float32Array; // wave phase of that pixel
+  rgba: Uint32Array; // its brightened colour (little-endian RGBA)
+  layer: HTMLCanvasElement;
+  data: ImageData | null;
+}
+const shimmerCache = new WeakMap<HTMLImageElement, Map<string, ShimmerCache>>();
+
+/** Bright pixels of the PAINTING inside the rect, found once; each frame only lights a subset. */
+function shimmerData(fx: ShimmerFx, bg: HTMLImageElement): ShimmerCache | null {
+  const key = JSON.stringify([fx.rect, fx.minLuma ?? 150]);
+  let byImg = shimmerCache.get(bg);
+  if (!byImg) {
+    byImg = new Map();
+    shimmerCache.set(bg, byImg);
+  }
+  const hit = byImg.get(key);
+  if (hit) return hit;
   const [x, y, w, h] = fx.rect;
-  let img: ImageData;
+  const probe = canvas(w, h);
+  const pc = probe.getContext("2d", { willReadFrequently: true });
+  if (!pc) return null;
+  pc.drawImage(bg, x, y, w, h, 0, 0, w, h);
+  let src: ImageData;
   try {
-    img = ctx.getImageData(x, y, w, h);
+    src = pc.getImageData(0, 0, w, h);
   } catch {
-    return;
+    return null;
   }
   const minLuma = fx.minLuma ?? 150;
-  const speed = fx.speed ?? 2.2;
-  const p = img.data;
+  const idx: number[] = [];
+  const phase: number[] = [];
+  const rgba: number[] = [];
   for (let py = 0; py < h; py++) {
     for (let px = 0; px < w; px++) {
       const i = (py * w + px) * 4;
-      const l = (p[i] * 299 + p[i + 1] * 587 + p[i + 2] * 114) / 1000;
-      if (l < minLuma) continue;
-      // a travelling wave: rows light up in turn, quantised to on/off like palette cycling
-      const wave = Math.sin(py * 0.9 - t * speed * 3 + px * 0.15);
-      if (wave > 0.72) {
-        p[i] = Math.min(255, p[i] + 38);
-        p[i + 1] = Math.min(255, p[i + 1] + 34);
-        p[i + 2] = Math.min(255, p[i + 2] + 22);
-      }
+      const [r, g, b] = [src.data[i], src.data[i + 1], src.data[i + 2]];
+      if ((r * 299 + g * 587 + b * 114) / 1000 < minLuma) continue;
+      idx.push(py * w + px);
+      phase.push(py * 0.9 + px * 0.15);
+      const R = Math.min(255, r + 38);
+      const G = Math.min(255, g + 34);
+      const B = Math.min(255, b + 22);
+      rgba.push(((255 << 24) | (B << 16) | (G << 8) | R) >>> 0);
     }
   }
-  ctx.putImageData(img, x, y);
+  const layer = canvas(w, h);
+  const lc = layer.getContext("2d");
+  const data = lc ? lc.createImageData(w, h) : null;
+  const out = { idx: Int32Array.from(idx), phase: Float32Array.from(phase), rgba: Uint32Array.from(rgba), layer, data };
+  byImg.set(key, out);
+  return out;
+}
+
+const TWO_PI = Math.PI * 2;
+// sin(v) > 0.72  <=>  v (mod 2*pi) lies in (asin 0.72, pi - asin 0.72): no Math.sin per pixel
+const SHIMMER_LO = Math.asin(0.72);
+const SHIMMER_HI = Math.PI - SHIMMER_LO;
+
+function drawShimmer(ctx: CanvasRenderingContext2D, fx: ShimmerFx, t: number, bg: HTMLImageElement | undefined): void {
+  if (!bg) return;
+  const d = shimmerData(fx, bg);
+  const lc = d?.layer.getContext("2d");
+  if (!d || !d.data || !lc) return;
+  const px32 = new Uint32Array(d.data.data.buffer);
+  px32.fill(0);
+  const shift = t * (fx.speed ?? 2.2) * 3;
+  for (let n = 0; n < d.idx.length; n++) {
+    const m = wrap(d.phase[n] - shift, TWO_PI);
+    if (m > SHIMMER_LO && m < SHIMMER_HI) px32[d.idx[n]] = d.rgba[n];
+  }
+  lc.putImageData(d.data, 0, 0);
+  ctx.drawImage(d.layer, fx.rect[0], fx.rect[1]);
 }
 
 function drawSteam(ctx: CanvasRenderingContext2D, fx: SteamFx, t: number): void {
@@ -390,7 +466,7 @@ export function drawSceneMotion(
         drawGlow(ctx, fx, t);
         break;
       case "shimmer":
-        drawShimmer(ctx, fx, t);
+        drawShimmer(ctx, fx, t, bg);
         break;
       case "steam":
         drawSteam(ctx, fx, t);

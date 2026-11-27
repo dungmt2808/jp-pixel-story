@@ -285,8 +285,14 @@ export function useStageRuntime({
         const ctx = buffer.getContext("2d", { willReadFrequently: true });
         if (ctx) {
           ctx.imageSmoothingEnabled = false;
+          const perf = window.__JP_PERF__;
+          const drawStart = perf ? performance.now() : 0;
           try {
             draw(ctx, now, dt);
+            if (perf) {
+              perf.frames += 1;
+              perf.drawMs += performance.now() - drawStart;
+            }
           } catch (err) {
             // one bad frame must never freeze the stage: report it once and keep the loop alive
             if (!loggedErr) {

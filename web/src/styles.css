@@ -39,31 +39,6 @@ body,
   padding: 16px;
 }
 
-.stage-frame {
-  width: 100%;
-  max-width: 960px;
-  background: #101422;
-  border: 2px solid #2b3556;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65);
-  overflow: hidden;
-}
-
-.stage-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
-  background: #0b0e1a;
-  border-bottom: 1px solid #242d4a;
-  gap: 12px;
-}
-
-.topbar-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
 .topbar-series {
   font-family: var(--font-jp);
   font-size: 11px;
@@ -88,12 +63,6 @@ body,
   color: var(--accent-amber);
   padding: 2px 7px;
   border: 1px solid #3c4d82;
-}
-
-.topbar-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .pixel-icon-btn {
@@ -329,38 +298,6 @@ rt {
   z-index: 25;
 }
 
-.char-card {
-  width: min(100%, 660px);
-  background: #f5ecd8;
-  color: #1f1b18;
-  border: 4px solid #2b2119;
-  box-shadow: 0 0 0 3px #f5ecd8, 8px 8px 0 rgba(0, 0, 0, 0.7);
-  padding: 18px 20px;
-  position: relative;
-}
-
-.char-card-close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 28px;
-  height: 28px;
-  background: #2b2119;
-  color: #f5ecd8;
-  border: none;
-  font-family: var(--font-pixel-en);
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.char-card-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding-bottom: 14px;
-  border-bottom: 2px solid #c9ba9b;
-}
-
 .char-portrait-box {
   width: 84px;
   height: 84px;
@@ -368,59 +305,6 @@ rt {
   background: #222c4a;
   flex-shrink: 0;
   overflow: hidden;
-}
-
-.char-card-name {
-  font-family: var(--font-jp);
-  font-size: 22px;
-  font-weight: 700;
-  margin: 0;
-  color: #1f1b18;
-}
-
-.char-card-sub {
-  font-family: var(--font-jp);
-  font-size: 12px;
-  color: #7c5838;
-  margin-top: 4px;
-}
-
-.char-facts {
-  margin-top: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.char-fact-row {
-  display: grid;
-  grid-template-columns: 110px 1fr;
-  gap: 10px;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.char-fact-label {
-  font-family: var(--font-jp);
-  font-weight: 700;
-  color: #7c5838;
-}
-
-.char-fact-value {
-  font-family: var(--font-vi);
-  color: #24201c;
-}
-
-.char-fact-highlight {
-  background: #a456d4;
-  color: #ffffff;
-  padding: 8px 10px;
-  margin-top: 4px;
-}
-
-.char-fact-highlight .char-fact-label,
-.char-fact-highlight .char-fact-value {
-  color: #ffffff;
 }
 
 /* Virtual cursor for ?autoplay=true */
@@ -1298,15 +1182,6 @@ rt {
   background: #ebe2ce;
   padding: 8px 12px;
   border-left: 3px solid #7c42a6;
-}
-
-/* =====================================================================
- * JLPT DOKKAI (READING 問題4 & 問題6) INTERACTIVE TRAINER
- * ===================================================================== */
-
-.stage-frame.hide-vi .subtitle-vi,
-.stage-frame.hide-vi .choice-vi {
-  display: none;
 }
 
 .dokkai-m5-btn {
@@ -3313,47 +3188,60 @@ rt {
   .rd-text.tate { height: 56vh; }
 }
 
-/* Vibe kit: variety-show telop (big caption over the stage) */
+/* Vibe kit: telop = a name-plate caption over the stage. One flat plate per caption: cream text
+   on a solid colour with a 1-pixel-style dark border — no text outline, no drop shadow (two
+   layers around each glyph read as a doubled, blurry print), set straight. The Vietnamese ribbon
+   hangs under it. */
 .cine-telop {
   position: absolute;
   z-index: 6;
-  transform: translate(-50%, -50%) rotate(-3deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%);
   text-align: center;
   pointer-events: none;
   animation: cine-telop-pop 0.32s steps(4) both;
+  --telop-bg: #c8442c;
+  --telop-fg: #fff8ea;
+  --telop-rt: #ffd9c9;
 }
+.cine-telop.gold { --telop-bg: #e8a93a; --telop-fg: #241712; --telop-rt: #5a3a12; }
+.cine-telop.ai { --telop-bg: #22365a; --telop-fg: #fff8ea; --telop-rt: #c9d6f0; }
+.cine-telop.white { --telop-bg: #fff8ea; --telop-fg: #241712; --telop-rt: #9a5b2e; }
 .cine-telop-t {
   font-family: "Shippori Mincho", var(--font-jp), serif;
   font-weight: 800;
-  font-size: max(22px, 5.4cqw);
-  line-height: 1.15;
-  color: #c8442c;
-  paint-order: stroke fill;
-  -webkit-text-stroke: max(4px, 0.9cqw) #fff8ea;
-  text-shadow: 0.5cqw 0.5cqw 0 #241712;
+  font-size: max(18px, 4.4cqw);
+  line-height: 1.2;
+  color: var(--telop-fg);
+  background: var(--telop-bg);
+  padding: 0.5cqw 1.6cqw 0.35cqw;
+  border: max(2px, 0.35cqw) solid #241712;
   white-space: nowrap;
 }
 .cine-telop-t rt {
-  font-size: 0.38em;
-  -webkit-text-stroke: max(2px, 0.4cqw) #fff8ea;
-  color: #241712;
+  font-size: 0.4em;
+  font-weight: 700;
+  color: var(--telop-rt);
 }
-.cine-telop.gold .cine-telop-t { color: #e8a93a; }
-.cine-telop.ai .cine-telop-t { color: #22365a; }
-.cine-telop.white .cine-telop-t { color: #fff8ea; -webkit-text-stroke-color: #241712; }
 .cine-telop-s {
   display: inline-block;
-  margin-top: 0.4cqw;
-  padding: 0.2cqw 0.9cqw;
+  max-width: 82cqw;
+  margin-top: calc(-1 * max(2px, 0.35cqw));
+  padding: 0.25cqw 1.1cqw;
   font-family: "Be Vietnam Pro", sans-serif;
-  font-weight: 800;
-  font-size: max(11px, 1.6cqw);
+  font-weight: 700;
+  font-size: max(10px, 1.45cqw);
+  line-height: 1.35;
   color: #fff8ea;
   background: #241712;
-  transform: rotate(3deg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 @keyframes cine-telop-pop {
-  0% { transform: translate(-50%, -50%) rotate(-3deg) scale(1.9); opacity: 0; }
-  60% { transform: translate(-50%, -50%) rotate(-3deg) scale(0.92); opacity: 1; }
-  100% { transform: translate(-50%, -50%) rotate(-3deg) scale(1); opacity: 1; }
+  0% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
+  60% { transform: translate(-50%, -50%) scale(0.95); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }

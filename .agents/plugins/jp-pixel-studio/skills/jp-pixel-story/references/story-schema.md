@@ -28,7 +28,7 @@
 
 - `category`: `"jlpt"` (`📝 Đề thi JLPT`) | `"situation"` (`💬 Tình huống`) | `"story"` (`📖 Câu chuyện`).
 - `kind`:
-  - `"engine"` — React interactive stage (`CinemaStage` when `"engine": "cinema"`, `HybridStage`, `TsuruStage`, `DepatoStage`, or `PixelStage`) + `ReadingView` + auto `DictationView`.
+  - `"engine"` — React interactive stage (`CinemaStage`, `"engine": "cinema"`) + `ReadingView` + auto `DictationView`.
   - `"standalone"` — custom HTML5 Canvas (`href: "stories/<id>/index.html"`) + `dictation.json`.
   - `"jlpt-choukai"` — `choukai.json` + optional native `dictation.json`.
   - `"jlpt-dokkai"` — `dokkai.json` + auto `DictationView`.
@@ -79,7 +79,8 @@ Full example: `web/public/stories/hanami-first/story.json`.
 }
 ```
 
-- `engine` (routes the stage, never the story id): `"cinema"` (default for new work) | legacy `"tsuru"`, `"depato"`, `"hybrid"`, `"pixel"`.
+- `engine`: `"cinema"` (the only stage; the former `"tsuru"`, `"depato"`, `"hybrid"`, `"pixel"` stages were removed after
+  their stories were ported — a story still using one shows a "no longer supported" notice).
 - Scene `type`: `cinema_intro` (title banner + start button), `cinema_dialogue` / `cinema_reveal` (lines + continue),
   `cinema_checklist` / `cinema_explore` (clickable choices, each may switch `backdrop`), `cinema_outro` (reading / dictation / card / replay buttons).
 - `backdrop`: `"bg:<key>"` (a palette-locked PNG from `assets.backgrounds`) or `"proc:<name>"` from `PROCEDURAL_BACKDROPS`
@@ -89,8 +90,13 @@ Full example: `web/public/stories/hanami-first/story.json`.
   `sprite` (frame animation from a `pixellab_slice_spritesheet` meta.json, playing `idleClip` / `talkClip`), or a static `portrait`.
   `scale` is a whole number.
 - `artQuality`: strict validator thresholds for this story's sprites (outline colour compliance, isolated-pixel ratio, optional `maxColorsPerSprite`).
+  `artExceptions`: `{ "/stories/<id>/assets/item_cloth.png": { "noise": "woven silk texture (12.3% after cleanup, reviewed)" } }`
+  — a reviewed decision that one metric (`outline`, `noise`, `colors`) does not apply to one sprite; a written reason is
+  required and the validator counts them (`stats.art_exceptions`). Clean first (`pixellab_cleanup_sprite`), excuse last.
   Without `cast`, the first two `assets.portraits` are used (legacy).
 - `actors`: which sides are on stage (default: none in intro, both in dialogue/checklist, left only in outro).
+- Scene `cast`: `{ "right": { "voice": "kitamura", "portrait": "kitamura" } }` replaces the story cast for that side in
+  this scene only (a new character in a new place). Line `bgm` switches the music when that line starts (the store's rain song).
 - `lines[]`: `{ id, voice, speakerLabel, jaPlain, ttsText?, jaRuby, vi, audioUrl, durationSec, ttsHash }` — the last three are written by `voicevox_generate_story_audio`.
 - `reading`: `{ sectionTitle, subtitle, sentences, vocab, grammar, quiz }`. Daily Dictation is built automatically from all voiced lines.
 
@@ -161,10 +167,58 @@ Per line (scene lines, `doneLine`, choice `responseLine`):
 - `telop`: big variety-show caption (string or `{ text, sub?, color?: "shu"|"gold"|"ai"|"white", x?, y? }`, % of stage).
 - `sfx`: `pop`, `ding`, `whoosh`, `boing`, `shock`, `sparkle`, `thud`, `gloom`, `heart` (`"none"` silences the emote sound).
   Files live in `web/public/audio/sfx/` (regenerate with `cd web && npm run render:audio`).
+- `castPortrait`: switch a cast member's expression from this line on (`{ "right": "otsu_plead" }`, keys of
+  `assets.portraits`); `castExit`: sides that slide off the stage when the line starts (`["right"]`, a farewell).
+
+Choices (`cinema_checklist`): `minigame.mode: "one"` makes the buttons a single pick (the others lock, the story goes on
+after one answer) — `"all"` (default) asks to try every answer. `autoPick` is the answer taken in autoplay / videos;
+`prompt` is shown in the caption bar until a choice is made.
 
 Per scene: `light` (`day`, `morning`, `golden`, `dusk`, `night`, `rain`, `warm`) — one grade over backdrop, actors and
 items; `bgm` (`calm`, `happy`, `tender`/`sad`, `none`, or a theme name) — switches the music from this scene on.
 The MP4 exporter renders the same BGM themes and SFX into the video, with the music ducked under the voices.
+
+### Route B — code-drawn worlds, full-body people, cues (`set:`, `people`, `cues`)
+
+Everything drawn in code from one style kit (`web/src/engine/proc/`), characters act in a wide shot, and
+the world changes with the story. Example: `hachiko` (ported from the old standalone page).
+
+```json
+{ "id": "every_evening", "type": "cinema_dialogue", "backdrop": "set:shibuya", "actors": [],
+  "set": { "sky": "dusk", "lamp": 1, "lit": 1, "clock": 4.8 },
+  "people": { "hachi": { "kind": "dog", "x": 214, "y": 150, "face": "right", "pose": "sit" },
+              "sensei": { "kind": "sensei", "x": 272, "y": 150, "hidden": true } },
+  "lines": [ ... ],
+  "cues": [ { "done": true, "set": { "clock": 5.5 } },
+            { "done": true, "delay": 1.0, "set": { "train": "go" } },
+            { "done": true, "delay": 4.9, "people": [ { "who": "sensei", "walkTo": 238, "speed": 16 } ] },
+            { "done": true, "delay": 6.6, "people": [ { "who": "hachi", "pose": "stand", "hop": 1.6 } ] } ],
+  "interaction": { "type": "tap", "hint": "Bấm vào đồng hồ", "spots": [ { "id": "clock", "x": 272, "y": 78, "r": 10 } ],
+                   "doneDelaySec": 7.4, "doneLines": [ { "id": "h07", "emote": "heart", "emoteWho": "hachi", ... } ] } }
+```
+
+- `backdrop: "set:<name>"` + `set` parameters: `shibuya` (sky morning|dusk|night|grey|winter blending 1.5 s, sun, moon, stars,
+  far, ground, tree spring|summer|autumn|winter, snow, lit, lamp, clock hour (hands ease), train go|loop, weather
+  sakura|rain|leaves|snow, crowd {n, seed}, statue {x}, cloth 1→0 unveils, paper [x, y]) and `shibuya_today`.
+  The world sits 20 px low: people stand on y = 150, the station clock is at (272, 78).
+- `people`: `{ kind: dog | bronze-dog | sensei | person | sprite:<key>, x, y, face, pose: stand|walk|sit|run, age, coat,
+  seed, hidden, hideWhileInteract }`. `sprite:<key>` uses an `assets.sprites` meta.json with clips idle / walk / sit / run
+  (PixelLab walk cycles go through `pixellab_slice_spritesheet` with `registration: "centroid"`, `facing: "right"` and a
+  walk clip `{ "frames": [0..7], "fps": 10, "stridePx": 24 }`: walk frames then follow the distance travelled, so the
+  feet stay planted at any `speed`; the sprite is mirrored when it faces the other way). People also work on painted
+  `bg:` scenes (e.g. `hanami-first` intro: Minh and Yui walk into the park; prompts in `art-src/hanami-first/PROMPTS-walk.md`).
+  The validator warns `[Sprite Clips]` (no idle / no walk clip) and `[Foot Slide]` (walk clip without `stridePx`).
+- `cues`: `{ at | line | doneLine | done | choice, ifChoice, delay, set: {...}, backdrop, people: [{ who, walkTo, speed,
+  then: pose|"exit", x, face, pose, show, fadeOut, hop }] }` — anchors are recorded as the scene plays, so videos are
+  deterministic. `choice: "<id>"` fires when that answer is picked; `ifChoice` keeps a cue only if that answer was picked
+  earlier in the story. `backdrop: "bg:loom"` cuts to another picture (a door slides open on another room); the scene's own
+  `motion` stays with the scene's backdrop, the new one brings its `backdropMotion`.
+- Other code-drawn sets: `konbini_skyline {title}`, `konbini_exterior`, `konbini_interior`, `konbini_counter {scanned}`,
+  `konbini_closeup {effect: "microwave"|"polite_bow"}`, `konbini_outro {warmed}` (story `konbini-onigiri`).
+- Lines: `emoteWho` puts the emote (and camera focus) on a person. Interactions: `doneLines` (several lines after the
+  game, cues can anchor on them), `doneDelaySec` (let the cues play first), drag `items[].person` drags a person.
+- `holdSec`: minimum time on screen (scenes without lines, e.g. seasons passing).
+- The validator checks person kinds, cue anchors/people, `emoteWho`, set names; `set:` counts as code-drawn for `[Style Mix]`.
 
 ### Route C — motion layers on painted backgrounds (`scene.motion`)
 
@@ -190,7 +244,9 @@ effect is a pure function of scene time, so videos stay deterministic. Example: 
 - `glow`: a breathing, dithered light (lamps, TV, the sun). `steam`: puffs rising from points. `shimmer`: bright
   pixels of a reflection sparkle in a travelling wave.
 - `mover`: an `assets.items` sprite along a `path` (top-left positions); `ease: "in"` accelerates (take-off),
-  `scale: 0.5` for far away, `show: "moving"` hides it before/after its trip, and the `front` rects of the
+  `scale: 0.5` for far away, `show: "moving"` hides it before/after its trip, `startOn` (a cue anchor such as
+  `{ "done": true }` or `{ "line": 1 }`) starts its `delaySec` from that moment (the crane takes off once the snare is
+  untied; until then it waits at its first point), and the `front` rects of the
   background are redrawn over it so it passes BEHIND mullions, bridges, planters...
 - Objects baked into a painting are cut out with art.json `objects` (lasso `polygon` + `exclude` occluders, in RAW
   image coordinates): `pixellab_apply_art_manifest` writes the sprite to `assets.items[key]`, an emptied background

@@ -41,6 +41,9 @@ import { drawSpriteFrame, frameAt } from "../engine/spriteAnimator";
 import { useStageRuntime } from "../engine/useStageRuntime";
 import { cameraAt, drawEmote, drawLightGrade, IDENTITY_VIEW, lineSfx } from "../engine/cinemaVibe";
 import { drawSceneMotion, sceneRumble } from "../engine/sceneMotion";
+import { backdropAt, cueMoves, cueTime, setStateAt, type CueAnchors } from "../engine/cues";
+import { drawPerson, personAt, personBox, type PersonState } from "../engine/people";
+import { PROC_SETS } from "../engine/proc/sets";
 import { logStoryEvent } from "../engine/stageRuntime";
 import type { CinemaActor, DialogueLine, LineTelop, MiniGameChoice, SceneStamp, StoryData } from "../types/story";
 import { InfoCard } from "./cinema/InfoCard";
@@ -185,7 +188,8 @@ export function CinemaStage({
 
   const currentScene = story.scenes[sceneIdx];
   const kind = cinemaSceneKind(currentScene.type);
-  const cast = useMemo(() => resolveCast(story), [story]);
+  // story cast, with the scene's own cast for a side if it has one (a new character in a new place)
+  const cast = useMemo(() => ({ ...resolveCast(story), ...(currentScene.cast ?? {}) }), [story, currentScene]);
   const interaction = currentScene.interaction;
   const total = interaction
     ? interaction.type === "drag"
@@ -205,6 +209,15 @@ export function CinemaStage({
   const phaseRef = useRef<Phase>("lines");
   phaseRef.current = phase;
   const completingRef = useRef(false);
+  // cue anchors: scene time each line / done-line started and when the mini-game was completed
+  const anchorsRef = useRef<CueAnchors>({ lines: [], doneLines: [] });
+  // every choice picked so far in the story (cues can react with `ifChoice`, even scenes later)
+  const pickedRef = useRef<string[]>([]);
+  // expression changes of the cast within the current scene (line `castPortrait`)
+  const portraitsRef = useRef<Partial<Record<Side, string>>>({});
+  // cast members leaving the stage within the current scene (line `castExit`): side -> start time
+  const exitRef = useRef<Partial<Record<Side, number>>>({});
+  const peopleStateRef = useRef<Record<string, PersonState>>({});
   const foundRef = useRef<string[]>([]);
 
   const go = useCallback((idx: number) => goToScene(idx, "dissolve"), [goToScene]);
@@ -214,6 +227,10 @@ export function CinemaStage({
     if (!assetsReady) return;
     let cancelled = false;
     sceneStartRef.current = performance.now();
+    anchorsRef.current = { lines: [], doneLines: [], choices: {}, picked: pickedRef.current };
+    portraitsRef.current = {};
+    exitRef.current = {};
+    peopleStateRef.current = {};
     setPhase("lines");
     setLineIdx(-1);
     setActiveLine(null);
@@ -234,10 +251,14 @@ export function CinemaStage({
       for (let i = 0; i < currentScene.lines.length; i++) {
         if (cancelled) return;
         setLineIdx(i);
+        anchorsRef.current.lines[i] = (performance.now() - sceneStartRef.current) / 1000;
         await playVoiceLine(currentScene.lines[i]);
         if (cancelled) return;
         await sleep(420);
       }
+      if (cancelled) return;
+      const holdLeft = (currentScene.holdSec ?? 0) * 1000 - (performance.now() - sceneStartRef.current);
+      if (holdLeft > 0) await sleep(holdLeft);
       if (cancelled) return;
       if (currentScene.interaction) {
         setPhase("interact");
@@ -268,6 +289,8 @@ export function CinemaStage({
   }, [activeLine]);
 
   useEffect(() => {
+    if (activeLine?.castPortrait) portraitsRef.current = { ...portraitsRef.current, ...activeLine.castPortrait };
+    for (const side of activeLine?.castExit ?? []) exitRef.current[side] ??= performance.now();
     vibeRef.current = { line: activeLine, start: performance.now() };
     const name = lineSfx(activeLine);
     const url = name ? sfxUrl(name) : null;
@@ -278,20 +301,45 @@ export function CinemaStage({
 
   // BGM mood per scene (scene.bgm > story.bgm); the exporter renders the same themes into the MP4.
   const bgmThemeRef = useRef<string | null>(null);
-  const bgmStartedRef = useRef(false);
+  // entering mid-story comes from a click (reading page), which already unlocked audio
+  const bgmStartedRef = useRef(startScene > 0);
+  const switchBgm = useCallback(
+    (name: string) => {
+      const theme = resolveBgmTheme(name);
+      if (theme === bgmThemeRef.current) return;
+      bgmThemeRef.current = theme;
+      logStoryEvent({ type: "bgm", theme }, stageStartRef.current);
+      if (bgmStartedRef.current && !recordMode) retroAudio.startBgm(theme);
+    },
+    [recordMode, stageStartRef]
+  );
   useEffect(() => {
     if (!assetsReady) return;
-    const theme = resolveBgmTheme(currentScene.bgm ?? story.bgm ?? "default");
-    if (theme === bgmThemeRef.current) return;
-    bgmThemeRef.current = theme;
-    logStoryEvent({ type: "bgm", theme }, stageStartRef.current);
-    if (bgmStartedRef.current && !recordMode) retroAudio.startBgm(theme);
-  }, [assetsReady, currentScene, recordMode, stageStartRef, story.bgm]);
+    switchBgm(currentScene.bgm ?? story.bgm ?? "default");
+  }, [assetsReady, currentScene, story.bgm, switchBgm]);
+  // a line may change the music when it starts (the store switches to its "rain" song mid-scene)
+  useEffect(() => {
+    if (assetsReady && activeLine?.bgm) switchBgm(activeLine.bgm);
+  }, [activeLine, assetsReady, switchBgm]);
   /** First user gesture (BEGIN) starts the music of the current scene. */
   const startMusic = useCallback(() => {
     bgmStartedRef.current = true;
     if (!recordMode) retroAudio.startBgm(bgmThemeRef.current ?? story.bgm ?? "default");
   }, [recordMode, story.bgm]);
+
+  // Entered past the title card (e.g. "watch this scene again" from the reading page): there is
+  // no BEGIN click, so the first tap / key press anywhere starts the music (browsers need a gesture).
+  useEffect(() => {
+    if (recordMode) return;
+    // startBgm is idempotent; calling it inside a gesture also resumes a suspended AudioContext
+    const onFirstGesture = () => startMusic();
+    window.addEventListener("pointerdown", onFirstGesture, { once: true });
+    window.addEventListener("keydown", onFirstGesture, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", onFirstGesture);
+      window.removeEventListener("keydown", onFirstGesture);
+    };
+  }, [recordMode, startMusic]);
 
   const completeInteraction = useCallback(async () => {
     if (completingRef.current) return;
@@ -299,9 +347,14 @@ export function CinemaStage({
     setPhase("doneLine");
     retroAudio.playFanfare();
     spawnBurst(particlesRef.current, [160, 90], ["#ffe38c", "#f6eed8", "#f4b6c2"], 18, 70);
-    const done = currentScene.interaction?.doneLine;
-    if (done) {
-      await playVoiceLine(done);
+    anchorsRef.current.done = (performance.now() - sceneStartRef.current) / 1000;
+    const inter = currentScene.interaction;
+    if (inter?.doneDelaySec) await sleep(inter.doneDelaySec * 1000);
+    // `doneLine` (if any) is done-line 0, then `doneLines` follow
+    const doneList = [...(inter?.doneLine ? [inter.doneLine] : []), ...(inter?.doneLines ?? [])];
+    for (let i = 0; i < doneList.length; i++) {
+      anchorsRef.current.doneLines[i] = (performance.now() - sceneStartRef.current) / 1000;
+      await playVoiceLine(doneList[i]);
       await sleep(300);
     }
     setPhase("ready");
@@ -379,6 +432,10 @@ export function CinemaStage({
   const selectChoice = useCallback(
     async (choice: MiniGameChoice) => {
       retroAudio.playClick();
+      const now = (performance.now() - sceneStartRef.current) / 1000;
+      anchorsRef.current.choices = { ...(anchorsRef.current.choices ?? {}), [choice.id]: now };
+      if (!pickedRef.current.includes(choice.id)) pickedRef.current = [...pickedRef.current, choice.id];
+      anchorsRef.current.picked = pickedRef.current;
       setBackdropOverride(choice.backdrop ?? null);
       setCheckedIds((prev) => (prev.includes(choice.id) ? prev : [...prev, choice.id]));
       await playVoiceLine(choice.responseLine);
@@ -386,7 +443,10 @@ export function CinemaStage({
     [playVoiceLine]
   );
   const checklistChoices = currentScene.minigame?.choices ?? [];
-  const allChecked = checklistChoices.length === 0 || checklistChoices.every((c) => checkedIds.includes(c.id));
+  // "one": a single answer (pick, hear the reply, continue); default: try every choice
+  const pickOne = currentScene.minigame?.mode === "one";
+  const allChecked =
+    checklistChoices.length === 0 || (pickOne ? checkedIds.length > 0 : checklistChoices.every((c) => checkedIds.includes(c.id)));
 
   // --- autoplay director (hands-free demo + deterministic MP4 export) ---------------------------
   const moveCursor = useCallback(async (to: Vec, ms: number, down: boolean, onStep?: (p: Vec) => void) => {
@@ -452,7 +512,11 @@ export function CinemaStage({
       if (phase !== "ready") return;
       c.visible = false;
       if (kind === "checklist") {
-        for (const choice of checklistChoices) {
+        const autoPick = currentScene.minigame?.autoPick;
+        const toPick = pickOne
+          ? [checklistChoices.find((ch) => ch.id === autoPick) ?? checklistChoices[0]].filter(Boolean)
+          : checklistChoices;
+        for (const choice of toPick) {
           if (cancelled) return;
           await sleep(700);
           if (cancelled) return;
@@ -489,10 +553,10 @@ export function CinemaStage({
 
   useEffect(() => {
     if (!assetsReady) return;
-    const backdropRef = sceneBackdropRef(currentScene, backdropOverride);
+    const baseBackdrop = sceneBackdropRef(currentScene, backdropOverride);
     const overlayNames = backdropOverride
       ? []
-      : [currentScene.overlay ?? LEGACY_BADGE_OVERLAY[backdropRef], ...(currentScene.overlays ?? [])].filter(Boolean) as string[];
+      : [currentScene.overlay ?? LEGACY_BADGE_OVERLAY[baseBackdrop], ...(currentScene.overlays ?? [])].filter(Boolean) as string[];
     const sides = visibleActors(currentScene);
     const inter = currentScene.interaction;
 
@@ -512,6 +576,10 @@ export function CinemaStage({
       const t = now / 1000;
       const elapsed = (now - sceneStartRef.current) / 1000;
       const imgs = imagesRef.current;
+      // a cue may switch the backdrop mid-scene (a door slides open on another room)
+      const backdropRef = backdropOverride
+        ? baseBackdrop
+        : backdropAt(baseBackdrop, currentScene.cues, anchorsRef.current, elapsed);
 
       // vibe kit: who is speaking, how long into the line
       const vibe = vibeRef.current;
@@ -523,34 +591,72 @@ export function CinemaStage({
       // the camera frames whoever reacts (emoteSide) or else the speaker
       const focusSide = vLine?.emoteSide && onStage.includes(vLine.emoteSide) ? vLine.emoteSide : speakerSide;
       const focusBox = focusSide ? actorBox(focusSide) : null;
-      const focus: [number, number] = focusBox
-        ? [focusBox.x, focusBox.top + focusBox.h * 0.3]
-        : [VIRTUAL_W / 2, VIRTUAL_H / 2];
+      const who = vLine?.emoteWho ? peopleStateRef.current[vLine.emoteWho] : undefined;
+      const whoDef = vLine?.emoteWho ? currentScene.people?.[vLine.emoteWho] : undefined;
+      const focus: [number, number] =
+        who && whoDef
+          ? [who.x, who.y - personBox(whoDef.kind, spritesRef.current).h / 2]
+          : focusBox
+            ? [focusBox.x, focusBox.top + focusBox.h * 0.3]
+            : [VIRTUAL_W / 2, VIRTUAL_H / 2];
       cameraRef.current = vLine?.camera ? cameraAt(vLine.camera, vAge, focus, vLine.durationSec ?? 3) : IDENTITY_VIEW;
 
       // route C: the world (backdrop + motion layers + actors) may bump 1 px on a rumble beat
-      const motion = backdropOverride ? undefined : currentScene.motion;
+      // ambient motion of the painting on screen + the scene's own scripted motion (movers...)
+      const bgKey = backdropRef.startsWith("bg:") ? backdropRef.slice(3) : "";
+      // the scene's own motion belongs to the scene's backdrop: a choice override or a cue that
+      // cuts to another room leaves it behind (that room brings its own backdropMotion)
+      const ownBackdrop = !backdropOverride && backdropRef === baseBackdrop;
+      const motion = [...(story.backdropMotion?.[bgKey] ?? []), ...(ownBackdrop ? currentScene.motion ?? [] : [])];
       const bgImg = imgs[backdropRef.startsWith("bg:") ? backdropRef : `bg:${backdropRef}`];
       const bump = sceneRumble(motion, elapsed);
-      if (bump) drawBackdrop(ctx, backdropRef, t, imgs); // fills the row the shift uncovers
+      if (bump) {
+        // the 1 px shift uncovers the top row: copy just that row from the painting
+        if (bgImg) ctx.drawImage(bgImg, 0, 0, VIRTUAL_W, bump, 0, 0, VIRTUAL_W, bump);
+        else drawBackdrop(ctx, backdropRef, t, imgs);
+      }
       ctx.save();
       if (bump) ctx.translate(0, bump);
-      if (!drawBackdrop(ctx, backdropRef, t, imgs)) {
+      const setName = backdropRef.startsWith("set:") ? backdropRef.slice(4) : "";
+      if (setName && PROC_SETS[setName]) {
+        PROC_SETS[setName](ctx, setStateAt(currentScene.set, currentScene.cues, anchorsRef.current, elapsed));
+      } else if (!drawBackdrop(ctx, backdropRef, t, imgs)) {
         ctx.fillStyle = "#101322";
         ctx.fillRect(0, 0, VIRTUAL_W, VIRTUAL_H);
       }
-      drawSceneMotion(ctx, motion, elapsed, imgs, bgImg);
+      const anchored = motion.map((fx) =>
+        fx.type === "mover" && fx.startOn
+          ? { ...fx, delaySec: (cueTime(fx.startOn, anchorsRef.current) ?? 1e9) + (fx.delaySec ?? 0) }
+          : fx
+      );
+      drawSceneMotion(ctx, anchored, elapsed, imgs, bgImg);
       for (const name of overlayNames) OVERLAYS[name]?.(ctx, t);
+
+      // route B: full-body people in the shot, moved by cues
+      if (currentScene.people) {
+        const moves = cueMoves(currentScene.cues, anchorsRef.current);
+        for (const [id, def] of Object.entries(currentScene.people)) {
+          const st = personAt(def, moves.filter((m) => m.move.who === id), elapsed);
+          peopleStateRef.current[id] = st;
+          if (def.hideWhileInteract && phaseRef.current === "interact") continue;
+          drawPerson(ctx, def, st, t, spritesRef.current);
+        }
+      }
 
       if (kind !== "intro") {
         const speaking = speakingRef.current;
         sides.forEach((side, i) => {
-          const actor = cast[side];
-          if (!actor) return;
+          const base = cast[side];
+          if (!base) return;
+          const actor = portraitsRef.current[side] ? { ...base, portrait: portraitsRef.current[side] } : base;
           const focus = actorFocus(side, cast, speaking, sides);
+          // line `castExit`: the actor slides back out the way it came in
+          const exitAt = exitRef.current[side];
+          const stay = exitAt === undefined ? 1 : clamp01(1 - (now - exitAt) / 600);
+          if (stay <= 0) return;
           drawActor(ctx, side, actor, { imgs, sprites: spritesRef.current, rigs: rigsRef.current }, {
             ...focus,
-            enterProgress: Math.min(elapsed / (0.5 + i * 0.1), 1),
+            enterProgress: Math.min(elapsed / (0.5 + i * 0.1), 1) * stay,
             t,
           });
         });
@@ -572,9 +678,14 @@ export function CinemaStage({
           }
           if (interacting && dragging) drawTargetGlow(ctx, it.target, t);
           const pos = dragging ? pointerRef.current : it.pos;
+          const personDef = spec?.person ? currentScene.people?.[spec.person] : undefined;
           if (im) {
             const bob = !it.placed && !dragging && interacting ? Math.round(Math.sin(t * 4 + i) * 1) : 0;
             drawPixelImage(ctx, im, Math.round(pos[0] - im.naturalWidth / 2), Math.round(pos[1] - im.naturalHeight / 2) + bob, im.naturalWidth, im.naturalHeight);
+          } else if (personDef && interacting) {
+            // a person stand-in (its scene copy hides while the game runs); `pos` is its feet
+            const st: PersonState = { x: pos[0], y: pos[1], face: "right", pose: dragging ? "walk" : "stand", visible: true, alpha: 1, lift: 0 };
+            drawPerson(ctx, personDef, st, t, spritesRef.current);
           }
         });
       } else if (inter?.type === "tap") {
@@ -612,7 +723,10 @@ export function CinemaStage({
 
       // one light grade over the whole world layer (backdrop, actors, items) = one time of day
       drawLightGrade(ctx, currentScene.light);
-      if (vLine?.emote) {
+      if (vLine?.emote && who && whoDef) {
+        const box = personBox(whoDef.kind, spritesRef.current);
+        drawEmote(ctx, vLine.emote, who.x + (who.face === "right" ? 4 : -4), who.y - box.h - 2, vAge, 1);
+      } else if (vLine?.emote) {
         const emoteSide = vLine.emoteSide ?? speakerSide ?? onStage[0];
         const b = emoteSide ? actorBox(emoteSide) : null;
         if (b) {
@@ -662,7 +776,10 @@ export function CinemaStage({
   const isLast = sceneIdx + 1 >= story.scenes.length;
 
   let caption: ReactNode = null;
-  if (phase === "interact" && interaction) {
+  const choicePrompt = kind === "checklist" && phase === "ready" && checkedIds.length === 0 ? currentScene.minigame?.prompt : undefined;
+  if (choicePrompt) {
+    caption = <div className="cine-cap-hint">{choicePrompt.toLocaleUpperCase("vi-VN")}</div>;
+  } else if (phase === "interact" && interaction) {
     caption = <div className="cine-cap-hint">{hintText(interaction.hint, progress, total)}</div>;
   } else if (kind === "outro" && phase === "ready") {
     caption = (
@@ -786,7 +903,8 @@ export function CinemaStage({
           <div
             key={activeLine?.id}
             className={`cine-telop ${telop.color ?? "shu"}`}
-            style={{ left: `${telop.x ?? 50}%`, top: `${telop.y ?? 24}%` }}
+            // default below the location stamp when the scene has one (they used to collide)
+            style={{ left: `${telop.x ?? 50}%`, top: `${telop.y ?? (stamp ? 32 : 24)}%` }}
           >
             <div className="cine-telop-t">
               <RubyText segments={telop.text} showFurigana={showFurigana} />
@@ -838,6 +956,7 @@ export function CinemaStage({
                 key={ch.id}
                 type="button"
                 className={`cine-choice ${checkedIds.includes(ch.id) ? "done" : ""}`}
+                disabled={pickOne && checkedIds.length > 0 && !checkedIds.includes(ch.id)}
                 onClick={() => void selectChoice(ch)}
               >
                 {checkedIds.includes(ch.id) ? "✓ " : ""}

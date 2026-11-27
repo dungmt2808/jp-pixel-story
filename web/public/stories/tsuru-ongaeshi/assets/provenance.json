@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "assets": {
+    "portrait_otsu_gentle.png": {
+      "steps": [
+        {
+          "op": "cleanup_sprite",
+          "params": {
+            "despeckle": true,
+            "outline_color": "#241712",
+            "pixel_perfect": true,
+            "max_colors": 0
+          },
+          "input": {
+            "path": "art-src/tsuru-ongaeshi/legacy/portrait_otsu_gentle.png",
+            "sha": "62193d27862aca21"
+          },
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "114fc02e89cbe6c9"
+      }
+    },
+    "portrait_otsu_plead.png": {
+      "steps": [
+        {
+          "op": "cleanup_sprite",
+          "params": {
+            "despeckle": true,
+            "outline_color": "#241712",
+            "pixel_perfect": true,
+            "max_colors": 0
+          },
+          "input": {
+            "path": "art-src/tsuru-ongaeshi/legacy/portrait_otsu_plead.png",
+            "sha": "256b0d632c68f4f0"
+          },
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "ea5dd914735f61e6"
+      }
+    },
+    "item_crane.png": {
+      "steps": [
+        {
+          "op": "cleanup_sprite",
+          "params": {
+            "despeckle": true,
+            "outline_color": "#241712",
+            "pixel_perfect": true,
+            "max_colors": 0
+          },
+          "input": {
+            "path": "art-src/tsuru-ongaeshi/legacy/item_crane.png",
+            "sha": "1e401502e8dbdf59"
+          },
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "39377bf7ad469078"
+      }
+    },
+    "item_cloth.png": {
+      "steps": [
+        {
+          "op": "cleanup_sprite",
+          "params": {
+            "despeckle": true,
+            "outline_color": "#241712",
+            "pixel_perfect": true,
+            "max_colors": 0
+          },
+          "input": {
+            "path": "art-src/tsuru-ongaeshi/legacy/item_cloth.png",
+            "sha": "fbd3a97144425a18"
+          },
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "3a2d4488526242a2"
+      }
+    },
+    "bg_hearth.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "6a0aa32cf1af7b7a"
+      }
+    },
+    "bg_loom.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "7fe270bb81ea7022"
+      }
+    },
+    "bg_snow.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "8c67455ef36dd5e9"
+      }
+    },
+    "portrait_yosaku.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "1a31d9432e07eff5"
+      }
+    }
+  }
+}

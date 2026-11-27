@@ -13,6 +13,8 @@ export interface SpriteClip {
   frames: number[];
   fps: number;
   loop: boolean;
+  /** Walk / run cycles: px travelled per full cycle; frames then follow distance, not time. */
+  stridePx?: number;
 }
 
 export interface SpriteMeta {
@@ -24,6 +26,8 @@ export interface SpriteMeta {
   fps: number;
   clips: Record<string, SpriteClip>;
   palette?: string;
+  /** Side-view sheets: the way the character looks in the source frames (default "right"). */
+  facing?: "left" | "right";
 }
 
 export interface SpriteSheet {
@@ -31,7 +35,7 @@ export interface SpriteSheet {
   image: HTMLImageElement;
 }
 
-type RawClip = number[] | { frames: number[]; fps?: number; loop?: boolean };
+type RawClip = number[] | { frames: number[]; fps?: number; loop?: boolean; stridePx?: number };
 
 /** Fill defaults and validate a raw meta.json object. Throws on inconsistent data. */
 export function normalizeSpriteMeta(raw: Record<string, unknown>): SpriteMeta {
@@ -56,6 +60,8 @@ export function normalizeSpriteMeta(raw: Record<string, unknown>): SpriteMeta {
       throw new Error(`clip "${name}" has frames outside 0..${frameCount - 1}`);
     }
     clips[name] = { frames, fps: Number(obj.fps ?? fps) || fps, loop: obj.loop ?? true };
+    const stride = "stridePx" in obj ? Number(obj.stridePx) : NaN;
+    if (stride > 0) clips[name].stridePx = stride;
   }
   if (Object.keys(clips).length === 0) {
     clips.all = { frames: Array.from({ length: frameCount }, (_, i) => i), fps, loop: true };
@@ -69,6 +75,7 @@ export function normalizeSpriteMeta(raw: Record<string, unknown>): SpriteMeta {
     fps,
     clips,
     palette: raw.palette ? String(raw.palette) : undefined,
+    facing: raw.facing === "left" ? "left" : raw.facing === "right" ? "right" : undefined,
   };
 }
 
@@ -77,6 +84,19 @@ export function normalizeSpriteMeta(raw: Record<string, unknown>): SpriteMeta {
  * Looping clips wrap; one-shot clips hold their last frame. Unknown clips fall back to the
  * first defined clip so a typo never crashes the render loop.
  */
+/**
+ * Walk-cycle frame for a character that has travelled `distPx` (its x on stage): a clip with
+ * `stridePx` advances one cycle per stride, so the feet stay planted however fast the walk is
+ * scripted; clips without it fall back to time (`tSec`).
+ */
+export function frameAtDistance(meta: SpriteMeta, clipName: string, distPx: number, tSec: number): number {
+  const clip = meta.clips[clipName];
+  if (!clip?.stridePx) return frameAt(meta, clipName, tSec);
+  const n = clip.frames.length;
+  const step = Math.floor((Math.abs(distPx) / clip.stridePx) * n + 1e-9);
+  return clip.frames[step % n];
+}
+
 export function frameAt(meta: SpriteMeta, clipName: string, tSec: number): number {
   const clip = meta.clips[clipName] ?? Object.values(meta.clips)[0];
   const n = clip.frames.length;

@@ -97,6 +97,9 @@ def iter_story_lines(story: dict[str, Any]):
         if isinstance(inter, dict):
             if isinstance(inter.get("doneLine"), dict):
                 yield inter["doneLine"], f"s{s_idx + 1:02d}_done"
+            for d_idx, done in enumerate(inter.get("doneLines", []) or []):
+                if isinstance(done, dict):
+                    yield done, f"s{s_idx + 1:02d}_done{d_idx + 1}"
             for t_idx, spot in enumerate(inter.get("spots", []) or []):
                 if isinstance(spot.get("line"), dict):
                     yield spot["line"], f"s{s_idx + 1:02d}_t{t_idx + 1:02d}"

@@ -78,7 +78,7 @@ detailed. Rules (the validator enforces the first one):
 | Route | Art | Motion | Best for |
 | :--- | :--- | :--- | :--- |
 | **A — painted** | AI/PixelLab backgrounds via `art.json` + `PROMPTS.md` | vibe kit (emote, camera, telop, light) | dialogue-heavy JLPT stories |
-| **B — code** | everything drawn in code from one shared style (like `hachiko`) | full-body actors, living world | short stories with lots of action |
+| **B — code** | `set:` worlds from `web/src/engine/proc/` + code-drawn `people` (like `hachiko`) | `people` + `cues`: walking, trains, sky and seasons changing with the story | short stories with lots of action |
 | **C — painted + motion** | route A art, with objects cut out (`objects`) | `scene.motion`: scroll, sweep, glow, steam, shimmer, movers, rumble | travel, cities, weather: scenes that should feel alive |
 
 Route C prompt tip: ask for moving things (vehicles, clouds, people) as SEPARATE images on a green screen when

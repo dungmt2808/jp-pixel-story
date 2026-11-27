@@ -304,6 +304,7 @@ def pixellab_slice_spritesheet(
     outline_color: str = "#241712",
     lock_expressions: bool = False,
     source: dict[str, Any] | None = None,
+    facing: str = "",
 ) -> str:
     """Slice a raw AI spritesheet grid into registered, palette-locked animation frames + spritesheet.png + meta.json.
 
@@ -313,6 +314,9 @@ def pixellab_slice_spritesheet(
     clips maps a name to frame indices, e.g. {"idle": [0, 2], "talk": {"frames": [0, 1], "fps": 10}}.
     lock_expressions=True (expression sheets) copies the base frame everywhere except the face
     region, so clothes/hair never flicker when frames swap. grid/cleanup as in pixellab_clean_sprite.
+    Full-body walkers (route B `sprite:<key>` people): registration='centroid', facing='right' (the way the
+    sheet looks) and a walk clip with stridePx, e.g. {"walk": {"frames": [0,1,2,3,4,5,6,7], "fps": 10,
+    "stridePx": 24}}: the player then picks walk frames by distance travelled, so feet never slide.
     """
     result = process_sprite_sheet(
         input_path=input_path,
@@ -333,6 +337,7 @@ def pixellab_slice_spritesheet(
         outline_color=outline_color or None,
         lock_expressions=lock_expressions,
         source=source,
+        facing=facing,
     )
     return json.dumps(result, ensure_ascii=False, indent=2)
 

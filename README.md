@@ -12,9 +12,9 @@
 - **📝 Đề thi JLPT (8 bài — trọn bộ 100% JLPT N4 năm 2025: 07/2025 & 12/2025, 170 câu thi thật):**
   - **漢 文字・語彙・文法 (`JlptGengoView`):** Đủ 49 câu/kỳ (28 Từ vựng + 21 Ngữ pháp), tự ẩn Furigana & dịch chống lộ đáp án câu Kanji, nháp ghép 4 mảnh câu `★` tương tác (`問題2`), đoạn văn đục lỗ bấm điền trực tiếp (`問題3`).
   - **📖 読解 問題4・6 (`JlptDokkaiView`):** Khung Email / Giấy nhắn / Thông báo / Bảng tra cứu chuẩn đề thật, có **bộ lọc điều kiện đồng bộ nhiều bảng** (`問題6`), **mô phỏng thời tiết nắng/mưa** & **trục thời gian mốc giờ** (`問題4`), giọng VOICEVOX từng câu + Daily Dictation.
-  - **🎬 読解 問題5 (`CinemaStage` / `DepatoStage`):** Chuyển thể nguyên văn bài đọc trung văn (`デパートの雨の音楽` & `日本の生活`) thành hoạt ảnh 2D pixel tương tác + câu 25–27 thi thật.
+  - **🎬 読解 問題5 (`CinemaStage`):** Chuyển thể nguyên văn bài đọc trung văn (`デパートの雨の音楽` & `日本の生活`) thành hoạt ảnh 2D pixel tương tác + câu 25–27 thi thật.
   - **🎧 聴解 (`JlptChoukaiView`):** Đủ 28 câu/kỳ cắt trực tiếp từ MP3 gốc phòng thi, tranh minh họa xóa sạch watermark, 2 chế độ **Thi thử / Học sâu**, Script đầy đủ `ふりがな` + **26 câu Daily Dictation giọng Nhật thật**.
-- **💬 Tình huống đời sống (`situation`):** `夜のコンビニ` (Mua cơm nắm nửa đêm), `深夜のラーメン屋` (Gọi mì Ramen đêm mưa — hybrid AI pixel art), `はじめてのお花見` (truyện demo engine `cinema` dữ liệu hoá + nhân vật hoạt hình theo frame).
+- **💬 Tình huống đời sống (`situation`):** `夜のコンビニ` (Mua cơm nắm nửa đêm), `深夜のラーメン屋` (Gọi mì Ramen đêm mưa), `はじめてのお花見` (truyện demo engine `cinema` dữ liệu hoá + nhân vật hoạt hình theo frame).
 - **📖 Câu chuyện & Đọc hiểu (`story`):** `鶴の恩返し` (Chim Hạc Trả Ơn — AI Pixel Art thống nhất bảng màu), `ハチ公の話` (Chú chó Hachikō ở ga Shibuya).
 
 ### 2. Trải nghiệm học Tiếng Nhật 3 trong 1 (không Romaji)
@@ -39,6 +39,7 @@ Dùng tự động cho cả **Antigravity** (`.agents/plugins/jp-pixel-studio/`)
 - **`CinemaStage` dữ liệu hoá 100%**: phông (`bg:` / `proc:`), hiệu ứng (`petals`, `snow`, `rain`, `bath_steam`), dàn nhân vật, ghi chú, nhãn nút… đều khai báo trong `story.json`.
 - **Player điện ảnh v2** (giao diện kiểu ClassMate): thanh công cụ trên (`?` thẻ nhân vật, `ふ`, `JA·VI`, âm thanh), phụ đề nằm *dưới* khung hình, title card, tem địa điểm, nhãn chữ có đường dẫn 1px, mini-game kéo / chạm / giữ (`interaction`) với con trỏ tự chơi khi xuất video, thẻ thông tin giấy cũ có mục bí mật mở khoá, chuyển cảnh hoà tan dither (`cinemaFx.ts`, `cinemaUi.ts`).
 - **Bộ "vibe"** (học từ hoạt hình ngắn kiểu パラ高 / Psych2Go): ký hiệu manga pixel trên nhân vật (`emote`), máy quay đẩy/giật/rung/lia (`camera`), chữ to kiểu show Nhật (`telop`), hiệu ứng âm thanh (`sfx`), ánh sáng theo giờ phủ cả khung (`light`), nhạc nền theo cảnh (`bgm`). Video MP4 có cả nhạc nền + SFX, nhạc tự nhỏ khi nhân vật nói.
+- **Tuyến B — thế giới vẽ bằng code** (`set:shibuya`, `people`, `cues`): nhân vật toàn thân đi/đứng/ngồi/chạy, trời đổi giờ, tàu vào ga, mùa và thời tiết đổi theo từng câu thoại hoặc mini-game; Hachikō đã chuyển lên engine theo cách này.
 - **Tuyến C — tranh + lớp chuyển động** (`scene.motion`): cảnh trôi sau cửa sổ tàu, vệt nắng lướt, rung toa, đèn "thở", khói bốc, sàn lấp lánh, vật tách ra từ tranh chạy theo đường đi và khuất sau khung kính (`sceneMotion.ts`).
 - **Trang đọc bài kiểu 文庫本**: mục lục chương, ảnh cảnh trong hoạt ảnh + nút xem lại cảnh, đọc cả chương có tô câu, chạm từ gạch chân → thẻ từ (âm Hán Việt, cấp độ, nghĩa, câu trong bài), giấy 和紙/古書/夜, 横書き/縦書き, bài kiểm tra có dấu 合格.
 
@@ -56,7 +57,7 @@ jp-pixel-story/
 ├── web/                               # React + Vite + HTML5 Canvas App + unit tests (npm test)
 │   ├── public/stories/                # 12 bài học (index.json, story/choukai/dokkai/gengo.json, MP3)
 │   ├── src/engine/                    # useStageRuntime, pixelScale, spriteAnimator, cinemaBackdrops...
-│   └── src/components/                # CinemaStage, TsuruStage, DepatoStage, Jlpt*View, DictationView
+│   └── src/components/                # CinemaStage, ReadingView, Jlpt*View, DictationView
 └── exporter/                          # Xuất MP4 tất định (đồng hồ ảo Playwright + FFmpeg) + E2E check
 ```
 

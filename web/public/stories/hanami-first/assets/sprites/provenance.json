@@ -132,6 +132,148 @@
       "output": {
         "sha": "69428826e4cf6a67"
       }
+    },
+    "yui_walk": {
+      "steps": [
+        {
+          "op": "process_sprite_sheet",
+          "params": {
+            "cols": 10,
+            "rows": 1,
+            "frame_width": 32,
+            "frame_height": 48,
+            "palette_name": "jp_story_master",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "align_bottom": true,
+            "registration": "centroid",
+            "fps": 10,
+            "clips": {
+              "walk": {
+                "frames": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "fps": 10,
+                "stridePx": 24
+              },
+              "idle": {
+                "frames": [
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  9
+                ],
+                "fps": 4
+              }
+            },
+            "padding": 1,
+            "grid": "none",
+            "cleanup": true,
+            "outline_color": "#241712",
+            "lock_expressions": false,
+            "expression_region": null,
+            "facing": "right"
+          },
+          "input": {
+            "path": "art-src/hanami-first/raw_walk_yui.png",
+            "sha": "f6f9e60771fed26a"
+          },
+          "at": "2026-11-27T07:30:51+00:00",
+          "source": {
+            "standin": "art-src/hanami-first/standin_walk.py",
+            "note": "code-drawn stand-in; replace with a generated sheet (PROMPTS-walk.md)"
+          }
+        }
+      ],
+      "output": {
+        "sha": "dc1db81fd2355ea0"
+      }
+    },
+    "minh_walk": {
+      "steps": [
+        {
+          "op": "process_sprite_sheet",
+          "params": {
+            "cols": 10,
+            "rows": 1,
+            "frame_width": 32,
+            "frame_height": 48,
+            "palette_name": "jp_story_master",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "align_bottom": true,
+            "registration": "centroid",
+            "fps": 10,
+            "clips": {
+              "walk": {
+                "frames": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "fps": 10,
+                "stridePx": 24
+              },
+              "idle": {
+                "frames": [
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  9
+                ],
+                "fps": 4
+              }
+            },
+            "padding": 1,
+            "grid": "none",
+            "cleanup": true,
+            "outline_color": "#241712",
+            "lock_expressions": false,
+            "expression_region": null,
+            "facing": "right"
+          },
+          "input": {
+            "path": "art-src/hanami-first/raw_walk_minh.png",
+            "sha": "0942c5937191efd6"
+          },
+          "at": "2026-11-27T07:30:52+00:00",
+          "source": {
+            "standin": "art-src/hanami-first/standin_walk.py",
+            "note": "code-drawn stand-in; replace with a generated sheet (PROMPTS-walk.md)"
+          }
+        }
+      ],
+      "output": {
+        "sha": "88fb1a3cf58d3b8c"
+      }
     }
   }
 }

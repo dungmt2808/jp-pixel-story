@@ -1,0 +1,1615 @@
+{
+  "id": "hachiko",
+  "engine": "cinema",
+  "titleJa": "ハチ公の話",
+  "titleVi": "Câu chuyện chú chó Hachikō ở ga Shibuya",
+  "level": "JLPT N4",
+  "palette": "jp_story_master",
+  "brand": "jp-pixel-story.vn",
+  "bgm": "calm",
+  "voices": {
+    "narrator": {
+      "speakerId": 13,
+      "speedScale": 0.91,
+      "intonationScale": 1.05,
+      "pauseLengthScale": 1.08
+    }
+  },
+  "assets": {
+    "backgrounds": {},
+    "portraits": {}
+  },
+  "cast": {},
+  "characterCard": {
+    "nameJa": "ハチ (HACHIKŌ)",
+    "subtitle": "1923 – 1935 · {秋田犬|あきたいぬ}",
+    "facts": [
+      {
+        "label": "うまれ",
+        "value": "1923{年|ねん}11{月|がつ}・{秋田県|あきたけん}{大館|おおだて} (Sinh tháng 11/1923 ở Ōdate, tỉnh Akita)"
+      },
+      {
+        "label": "しゅるい",
+        "value": "{秋田犬|あきたいぬ} (Giống chó Akita)"
+      },
+      {
+        "label": "かいぬし",
+        "value": "{上野|うえの}{先生|せんせい} (Chủ: thầy Ueno)"
+      },
+      {
+        "label": "ゆうめいなわけ",
+        "value": "??? · さいごまで{見|み}てね (??? · xem đến cuối nhé)"
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "title",
+      "type": "cinema_intro",
+      "backdrop": "set:shibuya",
+      "bgm": "calm",
+      "set": {
+        "sky": "night",
+        "stars": 1,
+        "far": "#222c44",
+        "ground": "#4a4440",
+        "lamp": 1,
+        "lit": 1,
+        "moon": 1,
+        "train": "loop",
+        "clock": 8.3
+      },
+      "people": {
+        "hachi": {
+          "kind": "dog",
+          "y": 150,
+          "x": 214,
+          "face": "right",
+          "pose": "sit"
+        }
+      },
+      "titleCard": {
+        "title": "ハチ{公|こう}の{話|はなし}",
+        "subtitle": "SHIBUYA · 1924 – 1935 · JLPT N4",
+        "credit": "Câu chuyện có thật · bài đọc tương tác"
+      },
+      "actionLabel": "はじめる · BẮT ĐẦU",
+      "lines": [],
+      "holdSec": 2.5
+    },
+    {
+      "id": "hachi_sensei",
+      "type": "cinema_dialogue",
+      "backdrop": "set:shibuya",
+      "actors": [],
+      "set": {
+        "sky": "morning",
+        "sun": 1,
+        "far": "#7a8aa0",
+        "clock": 8.2
+      },
+      "stamp": "SHIBUYA · 1924",
+      "people": {
+        "sensei": {
+          "kind": "sensei",
+          "x": 146,
+          "y": 150,
+          "face": "right"
+        },
+        "hachi": {
+          "kind": "dog",
+          "y": 150,
+          "x": 176,
+          "face": "left",
+          "pose": "sit"
+        }
+      },
+      "labels": [
+        {
+          "text": "{上野|うえの}{先生|せんせい}",
+          "sub": "thầy Ueno",
+          "x": 120,
+          "y": 110,
+          "to": [
+            142,
+            128
+          ],
+          "afterLine": 0
+        },
+        {
+          "text": "ハチ",
+          "sub": "chó Akita",
+          "x": 206,
+          "y": 118,
+          "to": [
+            180,
+            136
+          ],
+          "afterLine": 1
+        }
+      ],
+      "lines": [
+        {
+          "id": "h01",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "東京の渋谷に、上野先生という大学の先生が住んでいました。",
+          "jaRuby": "{東京|とうきょう}の{渋谷|しぶや}に、{上野|うえの}{先生|せんせい}という{大学|だいがく}の{先生|せんせい}が{住|す}んでいました。",
+          "vi": "Ở Shibuya, Tokyo, có một giáo sư đại học tên là Ueno.",
+          "audioUrl": "/stories/hachiko/audio/line_00.mp3",
+          "durationSec": 5.184,
+          "ttsHash": "a3ffec1ebb19"
+        },
+        {
+          "id": "h02",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "1924年、先生の家に秋田犬の子犬が来ました。",
+          "jaRuby": "1924{年|ねん}、{先生|せんせい}の{家|いえ}に{秋田犬|あきたいぬ}の{子犬|こいぬ}が{来|き}ました。",
+          "vi": "Năm 1924, một chú chó con giống Akita đến nhà thầy.",
+          "audioUrl": "/stories/hachiko/audio/line_01.mp3",
+          "durationSec": 5.035,
+          "ttsHash": "4f873e924b8e"
+        }
+      ],
+      "interaction": {
+        "type": "tap",
+        "hint": "Bấm vào Hachi",
+        "spots": [
+          {
+            "id": "hachi",
+            "x": 176,
+            "y": 143,
+            "r": 13
+          }
+        ],
+        "doneLine": {
+          "id": "h03",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "名前は「ハチ」。先生はハチをとてもかわいがりました。",
+          "jaRuby": "{名前|なまえ}は「ハチ」。{先生|せんせい}はハチをとてもかわいがりました。",
+          "vi": "Tên nó là Hachi. Thầy rất yêu thương Hachi.",
+          "audioUrl": "/stories/hachiko/audio/line_02.mp3",
+          "durationSec": 4.608,
+          "ttsHash": "16b433c96df6",
+          "emote": "heart",
+          "emoteWho": "hachi",
+          "camera": "push"
+        }
+      }
+    },
+    {
+      "id": "every_morning",
+      "type": "cinema_dialogue",
+      "backdrop": "set:shibuya",
+      "actors": [],
+      "set": {
+        "sky": "morning",
+        "sun": 1,
+        "far": "#7a8aa0",
+        "clock": 7.5
+      },
+      "stamp": "まいあさ · MỖI SÁNG",
+      "people": {
+        "sensei": {
+          "kind": "sensei",
+          "x": 84,
+          "y": 150,
+          "face": "right"
+        },
+        "hachi": {
+          "kind": "dog",
+          "y": 150,
+          "x": 104,
+          "face": "right",
+          "pose": "stand",
+          "hideWhileInteract": true
+        }
+      },
+      "lines": [
+        {
+          "id": "h04",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "毎朝、ハチは先生といっしょに渋谷駅まで歩きました。",
+          "jaRuby": "{毎朝|まいあさ}、ハチは{先生|せんせい}といっしょに{渋谷駅|しぶやえき}まで{歩|ある}きました。",
+          "vi": "Mỗi sáng, Hachi cùng thầy đi bộ đến ga Shibuya.",
+          "audioUrl": "/stories/hachiko/audio/line_03.mp3",
+          "durationSec": 4.576,
+          "ttsHash": "b77fdc7523c1"
+        }
+      ],
+      "cues": [
+        {
+          "line": 0,
+          "people": [
+            {
+              "who": "sensei",
+              "walkTo": 148,
+              "speed": 18
+            },
+            {
+              "who": "hachi",
+              "walkTo": 166,
+              "speed": 18
+            }
+          ]
+        },
+        {
+          "done": true,
+          "people": [
+            {
+              "who": "hachi",
+              "x": 232,
+              "face": "left",
+              "pose": "sit"
+            }
+          ]
+        },
+        {
+          "done": true,
+          "delay": 0.2,
+          "people": [
+            {
+              "who": "sensei",
+              "walkTo": 268,
+              "speed": 26,
+              "then": "exit"
+            }
+          ]
+        },
+        {
+          "done": true,
+          "delay": 1.8,
+          "set": {
+            "train": "go"
+          }
+        }
+      ],
+      "interaction": {
+        "type": "drag",
+        "hint": "Kéo Hachi đến nhà ga",
+        "doneDelaySec": 1.6,
+        "items": [
+          {
+            "id": "hachi",
+            "person": "hachi",
+            "from": [
+              166,
+              150
+            ],
+            "to": [
+              232,
+              150
+            ],
+            "label": "ハチ",
+            "labelVi": "kéo đến ga"
+          }
+        ],
+        "doneLines": [
+          {
+            "id": "h05",
+            "voice": "narrator",
+            "speakerLabel": "ナレーター",
+            "jaPlain": "先生は電車で大学へ行きました。",
+            "jaRuby": "{先生|せんせい}は{電車|でんしゃ}で{大学|だいがく}へ{行|い}きました。",
+            "vi": "Thầy đi tàu điện đến trường.",
+            "audioUrl": "/stories/hachiko/audio/line_04.mp3",
+            "durationSec": 2.741,
+            "ttsHash": "d2ecc3c16fe9"
+          }
+        ]
+      }
+    },
+    {
+      "id": "every_evening",
+      "type": "cinema_dialogue",
+      "backdrop": "set:shibuya",
+      "actors": [],
+      "set": {
+        "sky": "dusk",
+        "lamp": 1,
+        "lit": 1,
+        "far": "#3a3450",
+        "ground": "#7a6a5a",
+        "clock": 4.8
+      },
+      "stamp": "ゆうがた · CHIỀU TỐI",
+      "people": {
+        "hachi": {
+          "kind": "dog",
+          "y": 150,
+          "x": 214,
+          "face": "right",
+          "pose": "sit"
+        },
+        "sensei": {
+          "kind": "sensei",
+          "x": 272,
+          "y": 150,
+          "face": "left",
+          "hidden": true
+        }
+      },
+      "lines": [
+        {
+          "id": "h06",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "夕方になると、ハチは駅の前で先生を待っていました。",
+          "jaRuby": "{夕方|ゆうがた}になると、ハチは{駅|えき}の{前|まえ}で{先生|せんせい}を{待|ま}っていました。",
+          "vi": "Cứ đến chiều tối, Hachi lại đợi thầy trước nhà ga.",
+          "audioUrl": "/stories/hachiko/audio/line_05.mp3",
+          "durationSec": 4.405,
+          "ttsHash": "a655b5b8bf98"
+        }
+      ],
+      "cues": [
+        {
+          "done": true,
+          "set": {
+            "clock": 5.5
+          }
+        },
+        {
+          "done": true,
+          "delay": 1.0,
+          "set": {
+            "train": "go"
+          }
+        },
+        {
+          "done": true,
+          "delay": 3.4,
+          "set": {
+            "crowd": {
+              "n": 2,
+              "seed": 3
+            }
+          }
+        },
+        {
+          "done": true,
+          "delay": 4.9,
+          "people": [
+            {
+              "who": "sensei",
+              "walkTo": 238,
+              "speed": 16
+            }
+          ]
+        },
+        {
+          "done": true,
+          "delay": 6.6,
+          "people": [
+            {
+              "who": "hachi",
+              "pose": "stand",
+              "hop": 1.6
+            }
+          ]
+        }
+      ],
+      "interaction": {
+        "type": "tap",
+        "hint": "Bấm vào đồng hồ của nhà ga",
+        "spots": [
+          {
+            "id": "clock",
+            "x": 272,
+            "y": 78,
+            "r": 10
+          }
+        ],
+        "doneDelaySec": 7.4,
+        "doneLines": [
+          {
+            "id": "h07",
+            "voice": "narrator",
+            "speakerLabel": "ナレーター",
+            "jaPlain": "「おかえりなさい!」毎日、ハチはとてもうれしそうでした。",
+            "jaRuby": "「おかえりなさい!」{毎日|まいにち}、ハチはとてもうれしそうでした。",
+            "vi": "“Mừng thầy về!” Ngày nào Hachi cũng rất vui.",
+            "audioUrl": "/stories/hachiko/audio/line_06.mp3",
+            "durationSec": 4.597,
+            "ttsHash": "d8db2e2ad03a",
+            "emote": "heart",
+            "emoteWho": "hachi",
+            "sfx": "heart"
+          }
+        ]
+      }
+    },
+    {
+      "id": "may_1925",
+      "type": "cinema_dialogue",
+      "backdrop": "set:shibuya",
+      "actors": [],
+      "bgm": "tender",
+      "set": {
+        "sky": "dusk",
+        "lamp": 1,
+        "lit": 1,
+        "far": "#3a3450",
+        "ground": "#7a6a5a",
+        "clock": 4.8
+      },
+      "stamp": "21 · 5 · 1925",
+      "people": {
+        "hachi": {
+          "kind": "dog",
+          "y": 150,
+          "x": 214,
+          "face": "right",
+          "pose": "sit"
+        }
+      },
+      "lines": [
+        {
+          "id": "h08",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "ところが、1925年5月、先生は大学で急に亡くなってしまいました。",
+          "jaRuby": "ところが、1925{年|ねん}5{月|がつ}、{先生|せんせい}は{大学|だいがく}で{急|きゅう}に{亡|な}くなってしまいました。",
+          "vi": "Thế nhưng tháng 5/1925, thầy đột ngột qua đời ở trường.",
+          "audioUrl": "/stories/hachiko/audio/line_07.mp3",
+          "durationSec": 6.645,
+          "ttsHash": "c00cea5fd978",
+          "camera": "push",
+          "emoteWho": "hachi"
+        },
+        {
+          "id": "h09",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "その日も、ハチは駅で先生を待っていました。",
+          "jaRuby": "その{日|ひ}も、ハチは{駅|えき}で{先生|せんせい}を{待|ま}っていました。",
+          "vi": "Hôm đó, Hachi vẫn đợi thầy ở ga.",
+          "audioUrl": "/stories/hachiko/audio/line_08.mp3",
+          "durationSec": 3.531,
+          "ttsHash": "bc2dab88207f"
+        }
+      ],
+      "cues": [
+        {
+          "done": true,
+          "set": {
+            "clock": 5.8
+          }
+        },
+        {
+          "done": true,
+          "delay": 0.2,
+          "set": {
+            "sky": "grey"
+          }
+        },
+        {
+          "done": true,
+          "delay": 0.8,
+          "set": {
+            "train": "go"
+          }
+        },
+        {
+          "done": true,
+          "delay": 3.2,
+          "set": {
+            "crowd": {
+              "n": 3,
+              "seed": 10
+            }
+          }
+        },
+        {
+          "done": true,
+          "delay": 2.8,
+          "people": [
+            {
+              "who": "hachi",
+              "pose": "stand",
+              "face": "left"
+            }
+          ]
+        },
+        {
+          "done": true,
+          "delay": 6.0,
+          "people": [
+            {
+              "who": "hachi",
+              "pose": "sit",
+              "face": "right"
+            }
+          ]
+        },
+        {
+          "doneLine": 1,
+          "set": {
+            "clock": 6.8,
+            "sky": "night",
+            "stars": 1
+          }
+        },
+        {
+          "doneLine": 2,
+          "set": {
+            "weather": "rain"
+          }
+        }
+      ],
+      "interaction": {
+        "type": "tap",
+        "hint": "Bấm vào đồng hồ · chờ thầy về",
+        "spots": [
+          {
+            "id": "clock",
+            "x": 272,
+            "y": 78,
+            "r": 10
+          }
+        ],
+        "doneDelaySec": 5.6,
+        "doneLines": [
+          {
+            "id": "h10",
+            "voice": "narrator",
+            "speakerLabel": "ナレーター",
+            "jaPlain": "先生は、来ません…",
+            "jaRuby": "{先生|せんせい}は、{来|き}ません…",
+            "vi": "Thầy không đến…",
+            "audioUrl": "/stories/hachiko/audio/msg_21.mp3",
+            "durationSec": 2.24,
+            "emote": "dots",
+            "emoteWho": "hachi"
+          },
+          {
+            "id": "h11",
+            "voice": "narrator",
+            "speakerLabel": "ナレーター",
+            "jaPlain": "まだ来ません…",
+            "jaRuby": "まだ{来|き}ません…",
+            "vi": "Vẫn chưa đến…",
+            "audioUrl": "/stories/hachiko/audio/msg_22.mp3",
+            "durationSec": 1.195,
+            "emote": "question",
+            "emoteWho": "hachi"
+          },
+          {
+            "id": "h12",
+            "voice": "narrator",
+            "speakerLabel": "ナレーター",
+            "jaPlain": "夜になりました。",
+            "jaRuby": "{夜|よる}になりました。",
+            "vi": "Trời đã tối.",
+            "audioUrl": "/stories/hachiko/audio/msg_23.mp3",
+            "durationSec": 1.397
+          },
+          {
+            "id": "h13",
+            "voice": "narrator",
+            "speakerLabel": "ナレーター",
+            "jaPlain": "いくら待っても、先生は帰ってきませんでした。",
+            "jaRuby": "いくら{待|ま}っても、{先生|せんせい}は{帰|かえ}ってきませんでした。",
+            "vi": "Dù đợi bao lâu, thầy cũng không trở về.",
+            "audioUrl": "/stories/hachiko/audio/line_09.mp3",
+            "durationSec": 3.669,
+            "ttsHash": "00f69d7da57a",
+            "camera": "push",
+            "emote": "gloom",
+            "emoteWho": "hachi"
+          }
+        ]
+      }
+    },
+    {
+      "id": "years",
+      "type": "cinema_dialogue",
+      "backdrop": "set:shibuya",
+      "actors": [],
+      "bgm": "tender",
+      "set": {
+        "sky": "night",
+        "stars": 1,
+        "far": "#1a2030",
+        "ground": "#3e3a3a",
+        "lamp": 1,
+        "lit": 1,
+        "clock": 6.5
+      },
+      "stamp": "1925 → 1935",
+      "people": {
+        "hachi": {
+          "kind": "dog",
+          "y": 150,
+          "x": 214,
+          "face": "right",
+          "pose": "sit",
+          "age": 0.1
+        }
+      },
+      "lines": [
+        {
+          "id": "h14",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "それから、ハチは毎日駅へ行って、先生を待つようになりました。",
+          "jaRuby": "それから、ハチは{毎日|まいにち}{駅|えき}へ{行|い}って、{先生|せんせい}を{待|ま}つようになりました。",
+          "vi": "Từ đó, ngày nào Hachi cũng ra ga đợi thầy.",
+          "audioUrl": "/stories/hachiko/audio/line_10.mp3",
+          "durationSec": 5.205,
+          "ttsHash": "b579ff2bbc30"
+        }
+      ]
+    },
+    {
+      "id": "season_1",
+      "type": "cinema_dialogue",
+      "backdrop": "set:shibuya",
+      "actors": [],
+      "bgm": "tender",
+      "set": {
+        "sky": "morning",
+        "tree": "spring",
+        "weather": "sakura",
+        "far": "#7a8aa0",
+        "clock": 6.5
+      },
+      "stamp": "1926 · 春 · MÙA XUÂN",
+      "actionLabel": "つぎの きせつ →",
+      "people": {
+        "hachi": {
+          "kind": "dog",
+          "y": 150,
+          "x": 214,
+          "face": "right",
+          "pose": "sit",
+          "age": 0.15
+        }
+      },
+      "lines": [],
+      "holdSec": 2.8
+    },
+    {
+      "id": "season_2",
+      "type": "cinema_dialogue",
+      "backdrop": "set:shibuya",
+      "actors": [],
+      "bgm": "tender",
+      "set": {
+        "sky": "grey",
+        "tree": "summer",
+        "weather": "rain",
+        "far": "#4a5468",
+        "ground": "#6a6058",
+        "clock": 6.5
+      },
+      "stamp": "1928 · 梅雨 · MÙA MƯA",
+      "actionLabel": "つぎの きせつ →",
+      "people": {
+        "hachi": {
+          "kind": "dog",
+          "y": 150,
+          "x": 214,
+          "face": "right",
+          "pose": "sit",
+          "age": 0.37
+        }
+      },
+      "lines": [],
+      "holdSec": 2.8
+    },
+    {
+      "id": "season_3",
+      "type": "cinema_dialogue",
+      "backdrop": "set:shibuya",
+      "actors": [],
+      "bgm": "tender",
+      "set": {
+        "sky": "dusk",
+        "tree": "autumn",
+        "weather": "leaves",
+        "far": "#3a3450",
+        "ground": "#7a6a5a",
+        "lamp": 1,
+        "lit": 1,
+        "clock": 6.5
+      },
+      "stamp": "1930 · 秋 · MÙA THU",
+      "actionLabel": "つぎの きせつ →",
+      "people": {
+        "hachi": {
+          "kind": "dog",
+          "y": 150,
+          "x": 214,
+          "face": "right",
+          "pose": "sit",
+          "age": 0.59
+        }
+      },
+      "lines": [],
+      "holdSec": 2.8
+    },
+    {
+      "id": "season_4",
+      "type": "cinema_dialogue",
+      "backdrop": "set:shibuya",
+      "actors": [],
+      "bgm": "tender",
+      "set": {
+        "sky": "winter",
+        "tree": "winter",
+        "weather": "snow",
+        "far": "#6a7488",
+        "snow": 1,
+        "clock": 6.5
+      },
+      "stamp": "1931 · 冬 · MÙA ĐÔNG",
+      "people": {
+        "hachi": {
+          "kind": "dog",
+          "y": 150,
+          "x": 214,
+          "face": "right",
+          "pose": "sit",
+          "age": 0.81
+        }
+      },
+      "lines": [
+        {
+          "id": "h15",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "雨の日も、雪の日も、ハチは待ちつづけました。",
+          "jaRuby": "{雨|あめ}の{日|ひ}も、{雪|ゆき}の{日|ひ}も、ハチは{待|ま}ちつづけました。",
+          "vi": "Dù mưa hay tuyết, Hachi vẫn tiếp tục đợi.",
+          "audioUrl": "/stories/hachiko/audio/line_11.mp3",
+          "durationSec": 3.872,
+          "ttsHash": "72380c18ac54"
+        }
+      ]
+    },
+    {
+      "id": "famous",
+      "type": "cinema_dialogue",
+      "backdrop": "set:shibuya",
+      "actors": [],
+      "bgm": "tender",
+      "set": {
+        "sky": "winter",
+        "tree": "winter",
+        "weather": null,
+        "far": "#6a7488",
+        "snow": 1,
+        "clock": 6.5
+      },
+      "stamp": "1932",
+      "people": {
+        "hachi": {
+          "kind": "dog",
+          "y": 150,
+          "x": 214,
+          "face": "right",
+          "pose": "sit",
+          "age": 0.8
+        },
+        "p0": {
+          "kind": "person",
+          "x": -12,
+          "y": 150,
+          "coat": "#4a4038",
+          "seed": 0.1,
+          "hidden": true
+        },
+        "p1": {
+          "kind": "person",
+          "x": -12,
+          "y": 150,
+          "coat": "#2f3a46",
+          "seed": 0.27,
+          "hidden": true
+        },
+        "p2": {
+          "kind": "person",
+          "x": -12,
+          "y": 150,
+          "coat": "#5a4b3b",
+          "seed": 0.44,
+          "hidden": true
+        },
+        "p3": {
+          "kind": "person",
+          "x": -12,
+          "y": 150,
+          "coat": "#3a3326",
+          "seed": 0.61,
+          "hidden": true
+        },
+        "p4": {
+          "kind": "person",
+          "x": -12,
+          "y": 150,
+          "coat": "#40363a",
+          "seed": 0.78,
+          "hidden": true
+        }
+      },
+      "lines": [
+        {
+          "id": "h16",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "はじめは、ハチをじゃまだと思う人もいました。",
+          "jaRuby": "はじめは、ハチをじゃまだと{思|おも}う{人|ひと}もいました。",
+          "vi": "Lúc đầu, cũng có người thấy Hachi phiền phức.",
+          "audioUrl": "/stories/hachiko/audio/line_12.mp3",
+          "durationSec": 3.403,
+          "ttsHash": "e359e68a961c"
+        }
+      ],
+      "cues": [
+        {
+          "line": 0,
+          "set": {
+            "crowd": {
+              "n": 3,
+              "seed": 21
+            }
+          }
+        },
+        {
+          "line": 0,
+          "delay": 3.0,
+          "set": {
+            "paper": [
+              178,
+              142
+            ]
+          }
+        },
+        {
+          "delay": 3.5,
+          "people": [
+            {
+              "who": "p0",
+              "show": true,
+              "walkTo": 150,
+              "speed": 46
+            },
+            {
+              "who": "p1",
+              "show": true,
+              "walkTo": 166,
+              "speed": 46
+            },
+            {
+              "who": "p2",
+              "show": true,
+              "walkTo": 182,
+              "speed": 46
+            },
+            {
+              "who": "p3",
+              "show": true,
+              "walkTo": 240,
+              "speed": 46
+            },
+            {
+              "who": "p4",
+              "show": true,
+              "walkTo": 256,
+              "speed": 46
+            }
+          ],
+          "doneLine": 0
+        }
+      ],
+      "interaction": {
+        "type": "tap",
+        "hint": "Bấm vào tờ báo",
+        "spots": [
+          {
+            "id": "paper",
+            "x": 184,
+            "y": 146,
+            "r": 10
+          }
+        ],
+        "doneLines": [
+          {
+            "id": "h17",
+            "voice": "narrator",
+            "speakerLabel": "ナレーター",
+            "jaPlain": "1932年、新聞がハチの話を書くと、ハチは日本中で有名になりました。",
+            "jaRuby": "1932{年|ねん}、{新聞|しんぶん}がハチの{話|はなし}を{書|か}くと、ハチは{日本中|にほんじゅう}で{有名|ゆうめい}になりました。",
+            "vi": "Năm 1932, khi báo viết về Hachi, Hachi trở nên nổi tiếng khắp Nhật Bản.",
+            "audioUrl": "/stories/hachiko/audio/line_13.mp3",
+            "durationSec": 7.125,
+            "ttsHash": "c874b67c815e",
+            "telop": {
+              "text": "いとしや{老犬物語|ろうけんものがたり}",
+              "sub": "Chuyện chú chó già đáng thương · báo Asahi, 10/1932",
+              "color": "ai"
+            }
+          },
+          {
+            "id": "h18",
+            "voice": "narrator",
+            "speakerLabel": "ナレーター",
+            "jaPlain": "たくさんの人が、ハチに会いに来ました。",
+            "jaRuby": "たくさんの{人|ひと}が、ハチに{会|あ}いに{来|き}ました。",
+            "vi": "Rất nhiều người đến thăm Hachi.",
+            "audioUrl": "/stories/hachiko/audio/line_14.mp3",
+            "durationSec": 2.987,
+            "ttsHash": "d0185d24f12a",
+            "emote": "heart",
+            "emoteWho": "hachi",
+            "sfx": "heart"
+          }
+        ]
+      }
+    },
+    {
+      "id": "statue_1934",
+      "type": "cinema_dialogue",
+      "backdrop": "set:shibuya",
+      "actors": [],
+      "bgm": "happy",
+      "set": {
+        "sky": "morning",
+        "sun": 1,
+        "far": "#7a8aa0",
+        "tree": "spring",
+        "clock": 10,
+        "statue": {
+          "x": 150
+        },
+        "cloth": 1
+      },
+      "stamp": "4 · 1934",
+      "people": {
+        "c0": {
+          "kind": "person",
+          "x": 96,
+          "y": 150,
+          "coat": "#3b3f4a",
+          "seed": 0.2,
+          "face": "right"
+        },
+        "c1": {
+          "kind": "person",
+          "x": 112,
+          "y": 150,
+          "coat": "#4a4038",
+          "seed": 0.33,
+          "face": "right"
+        },
+        "c2": {
+          "kind": "person",
+          "x": 128,
+          "y": 150,
+          "coat": "#2f3a46",
+          "seed": 0.46,
+          "face": "right"
+        },
+        "c3": {
+          "kind": "person",
+          "x": 216,
+          "y": 150,
+          "coat": "#5a4b3b",
+          "seed": 0.59,
+          "face": "left"
+        },
+        "c4": {
+          "kind": "person",
+          "x": 232,
+          "y": 150,
+          "coat": "#3a3326",
+          "seed": 0.72,
+          "face": "left"
+        },
+        "c5": {
+          "kind": "person",
+          "x": 248,
+          "y": 150,
+          "coat": "#40363a",
+          "seed": 0.85,
+          "face": "left"
+        },
+        "hachi": {
+          "kind": "dog",
+          "y": 150,
+          "x": 196,
+          "face": "left",
+          "pose": "sit",
+          "age": 0.85
+        }
+      },
+      "lines": [],
+      "cues": [
+        {
+          "done": true,
+          "set": {
+            "cloth": 0
+          }
+        }
+      ],
+      "interaction": {
+        "type": "hold",
+        "hint": "Giữ để kéo tấm vải khánh thành tượng",
+        "hold": {
+          "label": "{引|ひ}く",
+          "x": 165,
+          "y": 104,
+          "durationSec": 1.6
+        },
+        "doneLines": [
+          {
+            "id": "h19",
+            "voice": "narrator",
+            "speakerLabel": "ナレーター",
+            "jaPlain": "1934年、駅の前にハチの銅像が作られました。",
+            "jaRuby": "1934{年|ねん}、{駅|えき}の{前|まえ}にハチの{銅像|どうぞう}が{作|つく}られました。",
+            "vi": "Năm 1934, tượng đồng của Hachi được dựng trước nhà ga.",
+            "audioUrl": "/stories/hachiko/audio/line_15.mp3",
+            "durationSec": 5.003,
+            "ttsHash": "308573a9e324",
+            "emote": "sparkle",
+            "emoteWho": "hachi",
+            "telop": {
+              "text": "ハチ{公|こう}{像|ぞう}",
+              "sub": "Tượng đồng Hachikō",
+              "color": "gold"
+            }
+          },
+          {
+            "id": "h20",
+            "voice": "narrator",
+            "speakerLabel": "ナレーター",
+            "jaPlain": "ハチも、そこにいました。",
+            "jaRuby": "ハチも、そこにいました。",
+            "vi": "Chính Hachi cũng có mặt ở đó.",
+            "audioUrl": "/stories/hachiko/audio/line_16.mp3",
+            "durationSec": 2.112,
+            "ttsHash": "e813658f94c4",
+            "camera": "push",
+            "emoteWho": "hachi",
+            "emote": "heart"
+          }
+        ]
+      }
+    },
+    {
+      "id": "goodbye_1935",
+      "type": "cinema_dialogue",
+      "backdrop": "set:shibuya",
+      "actors": [],
+      "bgm": "tender",
+      "set": {
+        "sky": "night",
+        "stars": 1,
+        "far": "#1a2030",
+        "ground": "#3e3a3a",
+        "lamp": 1,
+        "lit": 0,
+        "moon": 1,
+        "clock": 3,
+        "statue": {
+          "x": 150
+        },
+        "cloth": 0
+      },
+      "stamp": "8 · 3 · 1935",
+      "people": {
+        "hachi": {
+          "kind": "dog",
+          "y": 150,
+          "x": 196,
+          "face": "left",
+          "pose": "sit",
+          "age": 0.85
+        }
+      },
+      "cues": [
+        {
+          "at": 1.8,
+          "people": [
+            {
+              "who": "hachi",
+              "fadeOut": 2.5
+            }
+          ]
+        }
+      ],
+      "lines": [
+        {
+          "id": "h21",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "1935年3月、ハチは死にました。11さいでした。",
+          "jaRuby": "1935{年|ねん}3{月|がつ}、ハチは{死|し}にました。11さいでした。",
+          "vi": "Tháng 3/1935, Hachi qua đời. Nó 11 tuổi.",
+          "audioUrl": "/stories/hachiko/audio/line_17.mp3",
+          "durationSec": 5.621,
+          "ttsHash": "741353626db3"
+        },
+        {
+          "id": "h22",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "先生を10年近く待ちつづけたのです。",
+          "jaRuby": "{先生|せんせい}を10{年|ねん}{近|ちか}く{待|ま}ちつづけたのです。",
+          "vi": "Nó đã chờ thầy gần 10 năm.",
+          "audioUrl": "/stories/hachiko/audio/line_18.mp3",
+          "durationSec": 3.008,
+          "ttsHash": "30b733cb653f",
+          "camera": "push"
+        }
+      ]
+    },
+    {
+      "id": "today",
+      "type": "cinema_outro",
+      "backdrop": "set:shibuya_today",
+      "actors": [],
+      "bgm": "calm",
+      "set": {
+        "statue": {
+          "x": 146
+        }
+      },
+      "stamp": "SHIBUYA · HÔM NAY",
+      "lines": [
+        {
+          "id": "h23",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "今、ハチ公像は人気の待ち合わせ場所です。",
+          "jaRuby": "{今|いま}、ハチ{公|こう}{像|ぞう}は{人気|にんき}の{待|ま}ち{合|あ}わせ{場所|ばしょ}です。",
+          "vi": "Ngày nay, tượng Hachikō là điểm hẹn gặp nổi tiếng.",
+          "audioUrl": "/stories/hachiko/audio/line_19.mp3",
+          "durationSec": 3.701,
+          "ttsHash": "3c8b8a7d3980"
+        },
+        {
+          "id": "h24",
+          "voice": "narrator",
+          "speakerLabel": "渋谷の人たち",
+          "jaPlain": "「ハチ公前で会おう!」",
+          "jaRuby": "「ハチ{公|こう}{前|まえ}で{会|あ}おう!」",
+          "vi": "“Gặp nhau trước tượng Hachikō nhé!”",
+          "audioUrl": "/stories/hachiko/audio/line_20.mp3",
+          "durationSec": 1.557,
+          "speakerId": 8,
+          "ttsHash": "2a56b3c30e97",
+          "telop": {
+            "text": "ハチ{公|こう}{前|まえ}で{会|あ}おう！",
+            "sub": "Gặp nhau trước tượng Hachikō nhé!",
+            "color": "shu"
+          }
+        },
+        {
+          "id": "h25",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "ハチ、おつかれさま。先生をずっと待っていたね。",
+          "jaRuby": "ハチ、おつかれさま。{先生|せんせい}をずっと{待|ま}っていたね。",
+          "vi": "",
+          "audioUrl": "/stories/hachiko/audio/outro_end.mp3",
+          "durationSec": 4.309,
+          "emote": "heart"
+        }
+      ],
+      "summary": "ハチは{先生|せんせい}を10{年|ねん}{近|ちか}く{待|ま}ちつづけました。"
+    }
+  ],
+  "reading": {
+    "sectionTitle": "ハチ{公|こう}の{話|はなし}",
+    "subtitle": "Bài đọc · Chú chó Hachikō",
+    "sentences": [
+      {
+        "id": "p1",
+        "voice": "narrator",
+        "jaPlain": "東京の渋谷に、上野先生という大学の先生が住んでいました。1924年、先生の家に秋田犬の子犬が来ました。名前は「ハチ」です。先生はハチをとてもかわいがりました。",
+        "jaRuby": "{東京|とうきょう}の{渋谷|しぶや}に、{上野|うえの}{先生|せんせい}という{大学|だいがく}の{先生|せんせい}が{住|す}んでいました。1924{年|ねん}、{先生|せんせい}の{家|いえ}に{秋田犬|あきたいぬ}の{子犬|こいぬ}が{来|き}ました。{名前|なまえ}は「ハチ」です。{先生|せんせい}はハチをとてもかわいがりました。",
+        "vi": "Ở Shibuya, Tokyo, có một giáo sư đại học tên là Ueno. Năm 1924, một chú chó con giống Akita đến nhà thầy. Tên nó là “Hachi”. Thầy rất yêu thương Hachi.",
+        "audioUrl": "/stories/hachiko/audio/para_00.mp3",
+        "durationSec": 16.0,
+        "ttsHash": "9ca6c25d231d"
+      },
+      {
+        "id": "p2",
+        "voice": "narrator",
+        "jaPlain": "毎朝、ハチは先生といっしょに渋谷駅まで歩きました。そして、夕方になると、駅の前で先生が帰ってくるのを待っていました。",
+        "jaRuby": "{毎朝|まいあさ}、ハチは{先生|せんせい}といっしょに{渋谷駅|しぶやえき}まで{歩|ある}きました。そして、{夕方|ゆうがた}になると、{駅|えき}の{前|まえ}で{先生|せんせい}が{帰|かえ}ってくるのを{待|ま}っていました。",
+        "vi": "Mỗi sáng, Hachi cùng thầy đi bộ đến ga Shibuya. Và cứ đến chiều tối, nó lại đợi thầy trở về trước nhà ga.",
+        "audioUrl": "/stories/hachiko/audio/para_01.mp3",
+        "durationSec": 10.347,
+        "ttsHash": "7b898416e003"
+      },
+      {
+        "id": "p3",
+        "voice": "narrator",
+        "jaPlain": "ところが、1925年5月、先生は大学で急に亡くなってしまいました。その日、ハチはいくら待っても、先生に会えませんでした。",
+        "jaRuby": "ところが、1925{年|ねん}5{月|がつ}、{先生|せんせい}は{大学|だいがく}で{急|きゅう}に{亡|な}くなってしまいました。その{日|ひ}、ハチはいくら{待|ま}っても、{先生|せんせい}に{会|あ}えませんでした。",
+        "vi": "Thế nhưng, tháng 5/1925, thầy đột ngột qua đời ở trường đại học. Hôm đó, dù đợi bao lâu, Hachi cũng không gặp được thầy.",
+        "audioUrl": "/stories/hachiko/audio/para_02.mp3",
+        "durationSec": 11.157,
+        "ttsHash": "73cf0fa077cf"
+      },
+      {
+        "id": "p4",
+        "voice": "narrator",
+        "jaPlain": "それから、ハチは毎日駅へ行って、先生を待つようになりました。雨の日も雪の日も、ハチは待ちつづけました。はじめは、ハチをじゃまだと思う人もいました。",
+        "jaRuby": "それから、ハチは{毎日|まいにち}{駅|えき}へ{行|い}って、{先生|せんせい}を{待|ま}つようになりました。{雨|あめ}の{日|ひ}も{雪|ゆき}の{日|ひ}も、ハチは{待|ま}ちつづけました。はじめは、ハチをじゃまだと{思|おも}う{人|ひと}もいました。",
+        "vi": "Từ đó, ngày nào Hachi cũng ra ga đợi thầy. Dù mưa hay tuyết, Hachi vẫn tiếp tục đợi. Lúc đầu, cũng có người thấy Hachi phiền phức.",
+        "audioUrl": "/stories/hachiko/audio/para_03.mp3",
+        "durationSec": 11.84,
+        "ttsHash": "5dc02080bd86"
+      },
+      {
+        "id": "p5",
+        "voice": "narrator",
+        "jaPlain": "でも、1932年に新聞がハチの話を書くと、ハチは日本中で有名になりました。1934年には、駅の前にハチの銅像が作られました。",
+        "jaRuby": "でも、1932{年|ねん}に{新聞|しんぶん}がハチの{話|はなし}を{書|か}くと、ハチは{日本中|にほんじゅう}で{有名|ゆうめい}になりました。1934{年|ねん}には、{駅|えき}の{前|まえ}にハチの{銅像|どうぞう}が{作|つく}られました。",
+        "vi": "Nhưng năm 1932, khi một tờ báo viết về câu chuyện của Hachi, Hachi trở nên nổi tiếng khắp Nhật Bản. Năm 1934, tượng đồng Hachi được dựng trước nhà ga.",
+        "audioUrl": "/stories/hachiko/audio/para_04.mp3",
+        "durationSec": 12.587,
+        "ttsHash": "f3e715c4f770"
+      },
+      {
+        "id": "p6",
+        "voice": "narrator",
+        "jaPlain": "1935年3月、ハチは死にました。先生を10年近く待ちつづけたのです。今、渋谷駅のハチ公像は、人気の待ち合わせ場所です。",
+        "jaRuby": "1935{年|ねん}3{月|がつ}、ハチは{死|し}にました。{先生|せんせい}を10{年|ねん}{近|ちか}く{待|ま}ちつづけたのです。{今|いま}、{渋谷駅|しぶやえき}のハチ{公|こう}{像|ぞう}は、{人気|にんき}の{待|ま}ち{合|あ}わせ{場所|ばしょ}です。",
+        "vi": "Tháng 3/1935, Hachi qua đời. Nó đã chờ thầy gần 10 năm. Ngày nay, tượng Hachikō ở ga Shibuya là điểm hẹn gặp nổi tiếng.",
+        "audioUrl": "/stories/hachiko/audio/para_05.mp3",
+        "durationSec": 12.171,
+        "ttsHash": "f019ac9ca017"
+      }
+    ],
+    "chapters": [
+      {
+        "id": "ch1",
+        "title": "{上野|うえの}{先生|せんせい}とハチ",
+        "titleVi": "Thầy Ueno và Hachi",
+        "sentenceIds": [
+          "p1"
+        ],
+        "scene": "hachi_sensei"
+      },
+      {
+        "id": "ch2",
+        "title": "{毎日|まいにち}の{駅|えき}",
+        "titleVi": "Ga mỗi ngày",
+        "sentenceIds": [
+          "p2"
+        ],
+        "scene": "every_morning"
+      },
+      {
+        "id": "ch3",
+        "title": "1925{年|ねん}5{月|がつ}",
+        "titleVi": "Tháng 5 năm 1925",
+        "sentenceIds": [
+          "p3"
+        ],
+        "scene": "may_1925"
+      },
+      {
+        "id": "ch4",
+        "title": "{待|ま}ちつづける",
+        "titleVi": "Vẫn tiếp tục đợi",
+        "sentenceIds": [
+          "p4"
+        ],
+        "scene": "years"
+      },
+      {
+        "id": "ch5",
+        "title": "{有名|ゆうめい}になったハチ",
+        "titleVi": "Hachi nổi tiếng",
+        "sentenceIds": [
+          "p5"
+        ],
+        "scene": "famous"
+      },
+      {
+        "id": "ch6",
+        "title": "ハチ{公|こう}{像|ぞう}",
+        "titleVi": "Tượng Hachikō",
+        "sentenceIds": [
+          "p6"
+        ],
+        "scene": "today"
+      }
+    ],
+    "vocab": [
+      {
+        "id": "kawaigaru",
+        "word": "かわいがる",
+        "reading": "かわいがる",
+        "level": "N4",
+        "partOfSpeech": "Từ vựng",
+        "meaningVi": "yêu thương, cưng chiều",
+        "note": "Động từ nhóm I, đi với を. Dùng cho con vật, trẻ nhỏ, người dưới.",
+        "forms": [
+          "かわいがりました"
+        ]
+      },
+      {
+        "id": "yuugata",
+        "word": "夕方",
+        "reading": "ゆうがた",
+        "level": "N4",
+        "partOfSpeech": "Từ vựng",
+        "meaningVi": "chiều tối, lúc chạng vạng",
+        "note": "Nghe nói từ chiều tối trời sẽ mưa.",
+        "hanViet": "TỊCH PHƯƠNG",
+        "forms": [
+          "夕方"
+        ]
+      },
+      {
+        "id": "tokoroga",
+        "word": "ところが",
+        "reading": "ところが",
+        "level": "N4",
+        "partOfSpeech": "Từ vựng",
+        "meaningVi": "thế nhưng (kết quả bất ngờ)",
+        "note": "Dùng khi điều xảy ra sau đó trái với mong đợi.",
+        "forms": [
+          "ところが"
+        ]
+      },
+      {
+        "id": "kyuuni",
+        "word": "急に",
+        "reading": "きゅうに",
+        "level": "N4",
+        "partOfSpeech": "Từ vựng",
+        "meaningVi": "đột ngột, bất thình lình",
+        "note": "Trời đột ngột lạnh nhỉ.",
+        "hanViet": "CẤP",
+        "forms": [
+          "急に"
+        ]
+      },
+      {
+        "id": "nakunaru",
+        "word": "亡くなる",
+        "reading": "なくなる",
+        "level": "N4",
+        "partOfSpeech": "Từ vựng",
+        "meaningVi": "qua đời",
+        "note": "Cách nói nhẹ nhàng, lịch sự hơn 死ぬ.",
+        "hanViet": "VONG",
+        "forms": [
+          "亡くなって"
+        ]
+      },
+      {
+        "id": "jama",
+        "word": "じゃま(な)",
+        "reading": "じゃま(な)",
+        "level": "N4",
+        "partOfSpeech": "Từ vựng",
+        "meaningVi": "phiền, vướng víu, cản trở",
+        "note": "Tính từ đuôi な.",
+        "forms": [
+          "じゃま"
+        ]
+      },
+      {
+        "id": "yuumei",
+        "word": "有名(な)",
+        "reading": "ゆうめい(な)",
+        "level": "N4",
+        "partOfSpeech": "Từ vựng",
+        "meaningVi": "nổi tiếng",
+        "note": "Tính từ đuôi な. 有名になる: trở nên nổi tiếng.",
+        "hanViet": "HỮU DANH",
+        "forms": [
+          "有名"
+        ]
+      },
+      {
+        "id": "douzou",
+        "word": "銅像",
+        "reading": "どうぞう",
+        "level": "N3+",
+        "partOfSpeech": "Từ vựng",
+        "meaningVi": "tượng đồng",
+        "note": "Từ ngoài N4, chỉ để tham khảo.",
+        "hanViet": "ĐỒNG TƯỢNG",
+        "forms": [
+          "銅像"
+        ]
+      },
+      {
+        "id": "ninki",
+        "word": "人気",
+        "reading": "にんき",
+        "level": "N4",
+        "partOfSpeech": "Từ vựng",
+        "meaningVi": "được ưa chuộng, được yêu thích",
+        "note": "人気がある: được yêu thích.",
+        "hanViet": "NHÂN KHÍ",
+        "forms": [
+          "人気"
+        ]
+      },
+      {
+        "id": "machiawase",
+        "word": "待ち合わせ",
+        "reading": "まちあわせ",
+        "level": "N4",
+        "partOfSpeech": "Từ vựng",
+        "meaningVi": "cuộc hẹn gặp",
+        "note": "待ち合わせ場所: điểm hẹn gặp.",
+        "hanViet": "ĐÃI HỢP",
+        "forms": [
+          "待ち合わせ"
+        ]
+      }
+    ],
+    "grammar": [
+      {
+        "id": "toiu",
+        "pattern": "N + という + N",
+        "level": "N4",
+        "meaningVi": "(người / vật) tên là…",
+        "explanation": "Dùng để giới thiệu tên một người, một vật mà người nghe có thể chưa biết.",
+        "exampleJa": "「さくら」という店を知っていますか。",
+        "exampleRuby": "「さくら」という{店|みせ}を{知|し}っていますか。",
+        "exampleVi": "Bạn có biết cửa hàng tên là “Sakura” không?"
+      },
+      {
+        "id": "to",
+        "pattern": "V (thể từ điển) + と、…",
+        "level": "N4",
+        "meaningVi": "hễ / cứ… là…; khi… thì…",
+        "explanation": "Diễn tả kết quả tự nhiên, thói quen lặp lại, hoặc điều xảy ra ngay sau đó.",
+        "exampleJa": "春になると、桜が咲きます。",
+        "exampleRuby": "{春|はる}になると、{桜|さくら}が{咲|さ}きます。",
+        "exampleVi": "Cứ đến mùa xuân là hoa anh đào nở."
+      },
+      {
+        "id": "teshimau",
+        "pattern": "V-て + しまう",
+        "level": "N4",
+        "meaningVi": "…mất rồi (tiếc nuối)",
+        "explanation": "Nhấn mạnh việc đã xảy ra, thường kèm cảm giác tiếc nuối.",
+        "exampleJa": "電車に傘を忘れてしまいました。",
+        "exampleRuby": "{電車|でんしゃ}に{傘|かさ}を{忘|わす}れてしまいました。",
+        "exampleVi": "Tôi lỡ để quên ô trên tàu mất rồi."
+      },
+      {
+        "id": "ikura",
+        "pattern": "いくら + V-ても",
+        "level": "N4",
+        "meaningVi": "dù… bao nhiêu đi nữa (cũng…)",
+        "explanation": "Vế sau thường là kết quả không như mong muốn.",
+        "exampleJa": "いくら練習しても、上手になりません。",
+        "exampleRuby": "いくら{練習|れんしゅう}しても、{上手|じょうず}になりません。",
+        "exampleVi": "Dù luyện tập bao nhiêu cũng không giỏi lên."
+      },
+      {
+        "id": "youni",
+        "pattern": "V (thể từ điển) + ようになる",
+        "level": "N4",
+        "meaningVi": "bắt đầu (thành thói quen / có thể)…",
+        "explanation": "Diễn tả sự thay đổi dần dần.",
+        "exampleJa": "日本語が話せるようになりました。",
+        "exampleRuby": "{日本語|にほんご}が{話|はな}せるようになりました。",
+        "exampleVi": "Tôi đã nói được tiếng Nhật rồi."
+      },
+      {
+        "id": "tsuzukeru",
+        "pattern": "V-ます + つづける",
+        "level": "N4",
+        "meaningVi": "tiếp tục làm…",
+        "explanation": "待ちます → 待ちつづける.",
+        "exampleJa": "雨が三日降りつづけています。",
+        "exampleRuby": "{雨|あめ}が{三日|みっか}{降|ふ}りつづけています。",
+        "exampleVi": "Mưa liên tục suốt ba ngày nay."
+      },
+      {
+        "id": "ukemi",
+        "pattern": "Thể bị động · 作られる",
+        "level": "N4",
+        "meaningVi": "được làm, được dựng",
+        "explanation": "作る → 作られる (nhóm I: う → あ + れる).",
+        "exampleJa": "このお寺は千年前に建てられました。",
+        "exampleRuby": "このお{寺|てら}は{千年前|せんねんまえ}に{建|た}てられました。",
+        "exampleVi": "Ngôi chùa này được xây từ 1000 năm trước."
+      },
+      {
+        "id": "noda",
+        "pattern": "…のです / …んです",
+        "level": "N4",
+        "meaningVi": "giải thích, nhấn mạnh ý nghĩa",
+        "explanation": "Câu này tổng kết: “thì ra, nó đã đợi gần 10 năm”.",
+        "exampleJa": "今日は休みます。熱があるんです。",
+        "exampleRuby": "{今日|きょう}は{休|やす}みます。{熱|ねつ}があるんです。",
+        "exampleVi": "Hôm nay tôi xin nghỉ. Tôi bị sốt."
+      }
+    ],
+    "quiz": [
+      {
+        "id": "q1",
+        "questionJa": "ハチは{毎朝|まいあさ}{何|なに}をしましたか。",
+        "questionVi": "Mỗi sáng Hachi làm gì?",
+        "options": [
+          {
+            "ja": "{先生|せんせい}といっしょに{駅|えき}まで{歩|ある}いた"
+          },
+          {
+            "ja": "ひとりで{大学|だいがく}へ{行|い}った"
+          },
+          {
+            "ja": "{電車|でんしゃ}に{乗|の}った"
+          }
+        ],
+        "correctIndex": 0,
+        "explanationVi": "Đoạn 2: 毎朝、ハチは先生といっしょに渋谷駅まで歩きました。"
+      },
+      {
+        "id": "q2",
+        "questionJa": "1925{年|ねん}5{月|がつ}に{何|なに}がありましたか。",
+        "questionVi": "Tháng 5/1925 đã xảy ra chuyện gì?",
+        "options": [
+          {
+            "ja": "ハチが{生|う}まれた"
+          },
+          {
+            "ja": "{先生|せんせい}が{亡|な}くなった"
+          },
+          {
+            "ja": "{銅像|どうぞう}が{作|つく}られた"
+          }
+        ],
+        "correctIndex": 1,
+        "explanationVi": "Đoạn 3: 先生は大学で急に亡くなってしまいました。"
+      },
+      {
+        "id": "q3",
+        "questionJa": "ハチはどうして{有名|ゆうめい}になりましたか。",
+        "questionVi": "Vì sao Hachi trở nên nổi tiếng?",
+        "options": [
+          {
+            "ja": "テレビに{出|で}たから"
+          },
+          {
+            "ja": "{新聞|しんぶん}がハチの{話|はなし}を{書|か}いたから"
+          },
+          {
+            "ja": "{先生|せんせい}が{本|ほん}を{書|か}いたから"
+          }
+        ],
+        "correctIndex": 1,
+        "explanationVi": "Đoạn 5: 新聞がハチの話を書くと、ハチは日本中で有名になりました。"
+      },
+      {
+        "id": "q4",
+        "questionJa": "「{待|ま}ちつづけました」の{意味|いみ}はどれですか。",
+        "questionVi": "“待ちつづけました” nghĩa là gì?",
+        "options": [
+          {
+            "ja": "đã thôi không đợi nữa"
+          },
+          {
+            "ja": "đã tiếp tục đợi"
+          },
+          {
+            "ja": "đã bắt đầu đợi"
+          }
+        ],
+        "correctIndex": 1,
+        "explanationVi": "V-ます + つづける = tiếp tục làm."
+      }
+    ]
+  }
+}

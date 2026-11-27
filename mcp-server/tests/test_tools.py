@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 from pathlib import Path
 
 import numpy as np
@@ -391,13 +392,16 @@ def test_validator_flags_unknown_vibe_names_and_telop_furigana(tmp_path: Path) -
     story = {
         "id": "vibe-bad",
         "engine": "cinema",
+        "cast": {"left": {"voice": "a", "portrait": "ghost"}},
         "scenes": [
             {
                 "id": "sc1",
                 "light": "neon",
+                "cast": {"right": {"voice": "b", "portrait": "phantom"}},
                 "lines": [
                     {"id": "l1", "voice": "narrator", "jaPlain": "あ", "jaRuby": "あ", "vi": "a",
-                     "emote": "facepalm", "camera": "dolly", "sfx": "boom", "telop": "約束"},
+                     "emote": "facepalm", "camera": "dolly", "sfx": "boom", "telop": "約束",
+                     "castPortrait": {"left": "nobody", "top": "x"}, "castExit": ["middle"]},
                 ],
             }
         ],
@@ -406,7 +410,9 @@ def test_validator_flags_unknown_vibe_names_and_telop_furigana(tmp_path: Path) -
     (sdir / "story.json").write_text(json.dumps(story, ensure_ascii=False), encoding="utf-8")
     res = validate_story_folder(sdir, web_public_dir=pub)
     joined = " | ".join(res["issues"])
-    for tag in ("[Unknown Emote]", "[Unknown Camera]", "[Unknown SFX]", "[Unknown Light]", "l1/telop"):
+    for tag in ("[Unknown Emote]", "[Unknown Camera]", "[Unknown SFX]", "[Unknown Light]", "l1/telop",
+                "[Missing Portrait] l1/castPortrait.left", "[Unknown Side] l1/castPortrait", "[Unknown Side] l1/castExit",
+                "[Missing Portrait] cast.left", "[Missing Portrait] sc1/cast.right"):
         assert tag in joined, tag
 
 
@@ -421,11 +427,74 @@ def test_validator_checks_motion_layers(tmp_path: Path) -> None:
             {"type": "scroll", "speed": 10, "rects": [[300, 10, 40, 20]]},
             {"type": "mover", "item": "plane", "path": [[0, 0]], "durationSec": 3},
         ]}],
+        "backdropMotion": {"nowhere": [{"type": "glow", "at": [1, 1], "r": 3}]},
         "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []},
     }
     (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
     res = validate_story_folder(sdir, web_public_dir=pub)
     joined = " | ".join(res["issues"])
-    for tag in ("[Unknown Motion]", "[Bad Motion Rect]", "mover item 'plane'"):
+    for tag in ("[Unknown Motion]", "[Bad Motion Rect]", "mover item 'plane'", "[Bad Backdrop Motion] 'nowhere'"):
         assert tag in joined, tag
     assert any("[Motion Needs Painting]" in w for w in res["warnings"])
+
+
+def test_done_lines_are_voiced_and_route_b_is_validated(tmp_path: Path) -> None:
+    from tts_spec import iter_story_lines
+
+    story = {"scenes": [{"id": "s", "lines": [], "interaction": {"type": "tap", "doneLines": [{"id": "a"}, {"id": "b"}]}}]}
+    assert [i for _, i in iter_story_lines(story)] == ["s01_done1", "s01_done2"]
+
+    import content_validator as cv
+
+    web = Path(__file__).resolve().parents[2] / "web" / "src" / "engine"
+    names: set[str] = set()
+    for f in ("shibuya.ts", "konbini.ts"):
+        src = (web / "proc" / f).read_text(encoding="utf-8")
+        names |= set(re.findall(r"^  (\w+): (?:draw\w+,|\(c, st\))", src, re.M))
+    assert names == cv.PROC_SETS
+
+    pub, sdir = _setup_mock_catalog(tmp_path, "route-b", category="story")
+    bad = {
+        "id": "route-b", "engine": "cinema", "assets": {"backgrounds": {}, "portraits": {}},
+        "scenes": [{
+            "id": "sc1", "backdrop": "set:tokyo_tower", "lines": [{"id": "l1", "voice": "narrator", "jaPlain": "あ", "jaRuby": "あ", "vi": "a", "emoteWho": "ghost"}],
+            "people": {"hachi": {"kind": "dog", "x": 10}, "robo": {"kind": "robot", "x": 20}},
+            "cues": [{"line": 3}, {"doneLine": 0}, {"done": True}, {"at": 1, "people": [{"who": "nobody", "walkTo": 5}]}],
+        }],
+        "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []},
+    }
+    (sdir / "story.json").write_text(json.dumps(bad), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    joined = " | ".join(res["issues"])
+    for tag in ("[Unknown Set]", "[Unknown Person] sc1/robo", "line 3 does not exist", "doneLine 0 does not exist",
+                "'done' needs a scene interaction", "person 'nobody'", "emoteWho 'ghost'"):
+        assert tag in joined, tag
+
+
+def test_sprite_people_need_idle_and_a_walk_clip_with_a_stride(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "walker", category="story")
+    sp = sdir / "assets" / "sprites"
+    for key, clips in {
+        "sliding": {"idle": {"frames": [0]}, "walk": {"frames": [0, 1]}},
+        "static": {"talk": {"frames": [0]}},
+        "good": {"idle": {"frames": [0]}, "walk": {"frames": [0, 1], "stridePx": 24}},
+    }.items():
+        (sp / key).mkdir(parents=True)
+        (sp / key / "meta.json").write_text(json.dumps({"frameWidth": 8, "frameHeight": 8, "frameCount": 2, "clips": clips}))
+    story = {
+        "id": "walker", "engine": "cinema",
+        "assets": {"backgrounds": {}, "portraits": {},
+                   "sprites": {k: f"/stories/walker/assets/sprites/{k}/meta.json" for k in ("sliding", "static", "good")}},
+        "scenes": [{
+            "id": "sc1", "backdrop": "set:shibuya", "lines": [],
+            "people": {"a": {"kind": "sprite:sliding", "x": 0}, "b": {"kind": "sprite:static", "x": 0},
+                       "c": {"kind": "sprite:good", "x": 0}},
+            "cues": [{"at": 0, "people": [{"who": w, "walkTo": 100} for w in ("a", "b", "c")]}],
+        }],
+        "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []},
+    }
+    (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
+    warnings = " | ".join(validate_story_folder(sdir, web_public_dir=pub)["warnings"])
+    assert "[Foot Slide] sc1/a" in warnings
+    assert "sc1/b: 'static' has no 'idle' clip" in warnings and "sc1/b: walks but 'static' has no 'walk' clip" in warnings
+    assert "sc1/c" not in warnings

@@ -23,6 +23,8 @@ declare global {
     __JP_STORY_DONE__?: boolean;
     __JP_STAGE_READY__?: boolean;
     __JP_RECORD__?: boolean;
+    /** Opt-in perf probe (tests set it to {frames: 0, drawMs: 0}): time spent drawing the frame. */
+    __JP_PERF__?: { frames: number; drawMs: number };
   }
 }
 

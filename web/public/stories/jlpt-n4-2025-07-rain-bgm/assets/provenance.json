@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "assets": {
+    "portrait_student.png": {
+      "steps": [
+        {
+          "op": "cleanup_sprite",
+          "params": {
+            "despeckle": true,
+            "outline_color": "#241712",
+            "pixel_perfect": true,
+            "max_colors": 0
+          },
+          "input": {
+            "path": "art-src/jlpt-n4-2025-07-rain-bgm/legacy/portrait_student.png",
+            "sha": "50052b6f6b8080cd"
+          },
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "0c76b0e130d8dff6"
+      }
+    },
+    "portrait_clerk.png": {
+      "steps": [
+        {
+          "op": "cleanup_sprite",
+          "params": {
+            "despeckle": true,
+            "outline_color": "#241712",
+            "pixel_perfect": true,
+            "max_colors": 0
+          },
+          "input": {
+            "path": "art-src/jlpt-n4-2025-07-rain-bgm/legacy/portrait_clerk.png",
+            "sha": "a23eba512fff7424"
+          },
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "30aa771c63e7854f"
+      }
+    },
+    "portrait_kitamura.png": {
+      "steps": [
+        {
+          "op": "cleanup_sprite",
+          "params": {
+            "despeckle": true,
+            "outline_color": "#241712",
+            "pixel_perfect": true,
+            "max_colors": 0
+          },
+          "input": {
+            "path": "art-src/jlpt-n4-2025-07-rain-bgm/legacy/portrait_kitamura.png",
+            "sha": "67debba5f45a147e"
+          },
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "2a83042c6bc811e0"
+      }
+    },
+    "bg_campus.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "36d56aaab05486fc"
+      }
+    },
+    "bg_counter.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "91d6cc9f1687c30d"
+      }
+    },
+    "bg_rain.png": {
+      "steps": [
+        {
+          "op": "legacy_master",
+          "params": {
+            "note": "made before provenance records; prompt and raw image were not kept"
+          },
+          "input": null,
+          "at": "2026-11-27T07:24:04+00:00"
+        }
+      ],
+      "output": {
+        "sha": "4d0590d875312636"
+      }
+    }
+  }
+}

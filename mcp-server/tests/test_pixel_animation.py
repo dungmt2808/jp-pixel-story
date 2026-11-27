@@ -221,3 +221,20 @@ def test_slicer_bust_registration_fixes_drift_of_cropped_portraits(tmp_path: Pat
     assert len(cen_tops) > 1  # bottom-anchored registration cannot see the vertical drift
     assert max(b[1] for b in bust) - min(b[1] for b in bust) <= 1
     assert max(b[0] for b in bust) - min(b[0] for b in bust) <= 1
+
+
+def test_slicer_writes_walk_stride_and_facing(tmp_path: Path) -> None:
+    raw = tmp_path / "raw.png"
+    _make_sheet(raw, arm_frame=None)
+    process_sprite_sheet(
+        raw, tmp_path / "out", cols=4, frame_width=48, frame_height=64, bg_mode="chroma_green",
+        registration="centroid", facing="right",
+        clips={"walk": {"frames": [0, 1, 2, 3], "fps": 10, "stridePx": 24}, "idle": [0]},
+    )
+    meta = json.loads((tmp_path / "out" / "meta.json").read_text(encoding="utf-8"))
+    assert meta["facing"] == "right"
+    assert meta["clips"]["walk"]["stridePx"] == 24.0 and "stridePx" not in meta["clips"]["idle"]
+    with pytest.raises(ValueError):
+        process_sprite_sheet(raw, tmp_path / "bad", cols=4, clips={"walk": {"frames": [0], "stridePx": 0}})
+    with pytest.raises(ValueError):
+        process_sprite_sheet(raw, tmp_path / "bad2", cols=4, facing="up")

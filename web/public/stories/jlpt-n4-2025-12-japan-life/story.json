@@ -86,77 +86,7 @@
       "backdrop": "bg:dining",
       "bannerSubtitle": "JLPT N4 12/2025 · 問題５",
       "light": "warm",
-      "bgm": "calm",
-      "motion": [
-        {
-          "type": "steam",
-          "at": [
-            [
-              128,
-              117
-            ],
-            [
-              100,
-              136
-            ],
-            [
-              212,
-              121
-            ],
-            [
-              109,
-              122
-            ],
-            [
-              222,
-              135
-            ],
-            [
-              175,
-              110
-            ]
-          ],
-          "rate": 1.4,
-          "height": 18
-        },
-        {
-          "type": "glow",
-          "at": [
-            157,
-            19
-          ],
-          "r": 24,
-          "color": "#ffe2b0",
-          "period": 5,
-          "min": 0.2,
-          "max": 0.42
-        },
-        {
-          "type": "glow",
-          "at": [
-            299,
-            116
-          ],
-          "r": 16,
-          "color": "#ffd28a",
-          "period": 4,
-          "min": 0.2,
-          "max": 0.4
-        },
-        {
-          "type": "glow",
-          "at": [
-            45,
-            82
-          ],
-          "r": 14,
-          "color": "#c4b4ff",
-          "period": 2,
-          "min": 0.15,
-          "max": 0.32,
-          "flicker": true
-        }
-      ]
+      "bgm": "calm"
     },
     {
       "id": "haruko_home_experience",
@@ -306,64 +236,7 @@
         }
       ],
       "light": "golden",
-      "bgm": "calm",
-      "motion": [
-        {
-          "type": "scroll",
-          "speed": 26,
-          "radius": 3,
-          "rects": [
-            [
-              16,
-              56,
-              60,
-              56
-            ],
-            [
-              86,
-              56,
-              68,
-              56
-            ],
-            [
-              162,
-              56,
-              61,
-              56
-            ],
-            [
-              250,
-              57,
-              28,
-              56
-            ],
-            [
-              287,
-              57,
-              21,
-              56
-            ]
-          ]
-        },
-        {
-          "type": "sweep",
-          "rect": [
-            0,
-            118,
-            320,
-            82
-          ],
-          "speed": 26,
-          "spacing": 46,
-          "width": 12,
-          "slant": 0.6,
-          "alpha": 0.24
-        },
-        {
-          "type": "rumble",
-          "period": 0.9
-        }
-      ]
+      "bgm": "calm"
     },
     {
       "id": "warm_ending",
@@ -391,18 +264,6 @@
       "light": "dusk",
       "bgm": "tender",
       "motion": [
-        {
-          "type": "glow",
-          "at": [
-            146,
-            97
-          ],
-          "r": 16,
-          "color": "#ffb070",
-          "period": 4,
-          "min": 0.15,
-          "max": 0.35
-        },
         {
           "type": "mover",
           "item": "plane",
@@ -518,41 +379,6 @@
               26
             ]
           ]
-        },
-        {
-          "type": "shimmer",
-          "rect": [
-            118,
-            128,
-            64,
-            72
-          ],
-          "minLuma": 150,
-          "speed": 1.6
-        },
-        {
-          "type": "glow",
-          "at": [
-            40,
-            54
-          ],
-          "r": 10,
-          "color": "#ffd28a",
-          "period": 3.5,
-          "min": 0.2,
-          "max": 0.38
-        },
-        {
-          "type": "glow",
-          "at": [
-            310,
-            82
-          ],
-          "r": 9,
-          "color": "#ffd28a",
-          "period": 3.1,
-          "min": 0.2,
-          "max": 0.38
         }
       ]
     }
@@ -905,6 +731,249 @@
     "right": {
       "voice": "haruko",
       "portrait": "haruko"
+    }
+  },
+  "backdropMotion": {
+    "dining": [
+      {
+        "type": "steam",
+        "at": [
+          [
+            128,
+            117
+          ],
+          [
+            100,
+            136
+          ],
+          [
+            212,
+            121
+          ],
+          [
+            109,
+            122
+          ],
+          [
+            222,
+            135
+          ],
+          [
+            175,
+            110
+          ]
+        ],
+        "rate": 1.4,
+        "height": 18
+      },
+      {
+        "type": "glow",
+        "at": [
+          157,
+          19
+        ],
+        "r": 24,
+        "color": "#ffe2b0",
+        "period": 5,
+        "min": 0.2,
+        "max": 0.42
+      },
+      {
+        "type": "glow",
+        "at": [
+          299,
+          116
+        ],
+        "r": 16,
+        "color": "#ffd28a",
+        "period": 4,
+        "min": 0.2,
+        "max": 0.4
+      },
+      {
+        "type": "glow",
+        "at": [
+          45,
+          82
+        ],
+        "r": 14,
+        "color": "#c4b4ff",
+        "period": 2,
+        "min": 0.15,
+        "max": 0.32,
+        "flicker": true
+      }
+    ],
+    "train": [
+      {
+        "type": "scroll",
+        "speed": 26,
+        "radius": 3,
+        "rects": [
+          [
+            16,
+            56,
+            60,
+            56
+          ],
+          [
+            86,
+            56,
+            68,
+            56
+          ],
+          [
+            162,
+            56,
+            61,
+            56
+          ],
+          [
+            250,
+            57,
+            28,
+            56
+          ],
+          [
+            287,
+            57,
+            21,
+            56
+          ]
+        ]
+      },
+      {
+        "type": "sweep",
+        "rect": [
+          0,
+          118,
+          320,
+          82
+        ],
+        "speed": 26,
+        "spacing": 46,
+        "width": 12,
+        "slant": 0.6,
+        "alpha": 0.24
+      },
+      {
+        "type": "rumble",
+        "period": 0.9
+      }
+    ],
+    "airport_empty": [
+      {
+        "type": "glow",
+        "at": [
+          146,
+          97
+        ],
+        "r": 16,
+        "color": "#ffb070",
+        "period": 4,
+        "min": 0.15,
+        "max": 0.35
+      },
+      {
+        "type": "shimmer",
+        "rect": [
+          118,
+          128,
+          64,
+          72
+        ],
+        "minLuma": 150,
+        "speed": 1.6
+      },
+      {
+        "type": "glow",
+        "at": [
+          40,
+          54
+        ],
+        "r": 10,
+        "color": "#ffd28a",
+        "period": 3.5,
+        "min": 0.2,
+        "max": 0.38
+      },
+      {
+        "type": "glow",
+        "at": [
+          310,
+          82
+        ],
+        "r": 9,
+        "color": "#ffd28a",
+        "period": 3.1,
+        "min": 0.2,
+        "max": 0.38
+      }
+    ],
+    "ofuro": [
+      {
+        "type": "glow",
+        "at": [
+          289,
+          48
+        ],
+        "r": 22,
+        "color": "#ffd28a",
+        "period": 4.2,
+        "min": 0.22,
+        "max": 0.42
+      },
+      {
+        "type": "glow",
+        "at": [
+          128,
+          46
+        ],
+        "r": 18,
+        "color": "#c8d8ff",
+        "period": 6,
+        "min": 0.1,
+        "max": 0.22
+      },
+      {
+        "type": "shimmer",
+        "rect": [
+          176,
+          118,
+          128,
+          44
+        ],
+        "minLuma": 170,
+        "speed": 1.2
+      },
+      {
+        "type": "steam",
+        "at": [
+          [
+            212,
+            112
+          ],
+          [
+            196,
+            124
+          ],
+          [
+            252,
+            126
+          ],
+          [
+            292,
+            130
+          ]
+        ],
+        "rate": 1.1,
+        "height": 22
+      }
+    ]
+  },
+  "artExceptions": {
+    "/stories/jlpt-n4-2025-12-japan-life/assets/items/plane.png": {
+      "noise": "painted livery: the isolated pixels are the window row and highlights (cleanup removes only 1%) (19.5% after cleanup, reviewed)"
     }
   }
 }
