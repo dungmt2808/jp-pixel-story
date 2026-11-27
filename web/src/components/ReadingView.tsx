@@ -6,6 +6,13 @@ import { rubyToPlain } from "../utils/ruby";
 import { chapterImage, chunkByVocab, quizScore, readingChapters, sceneIndex } from "../utils/readingText";
 import { sceneSnapshotUrl } from "../engine/sceneSnapshot";
 import { WordCard } from "./reading/WordCard";
+import {
+  PixelFilmIcon,
+  PixelHeadphonesIcon,
+  PixelPlayIcon,
+  PixelResetIcon,
+  PixelStopIcon,
+} from "./PixelIcons";
 import { RubyText } from "./RubyText";
 
 interface ReadingViewProps {
@@ -269,8 +276,9 @@ export function ReadingView({
           >
             Aa
           </button>
-          <button type="button" className="rd-chip ai" onClick={onOpenDictation}>
-            🎧 Nghe chép
+          <button type="button" className="rd-chip ai px-inline-label" onClick={onOpenDictation}>
+            <PixelHeadphonesIcon size={13} />
+            <span>Nghe chép</span>
           </button>
         </div>
         {showSettings && (
@@ -355,17 +363,21 @@ export function ReadingView({
                 <figure className="rd-figure">
                   <img src={img.startsWith("data:") ? img : resolveAssetUrl(img)} alt="" />
                   <figcaption>
-                    <span>🎬 Cảnh bạn đã xem trong hoạt ảnh</span>
+                    <span className="px-inline-label">
+                      <PixelFilmIcon size={13} />
+                      <span>Cảnh bạn đã xem trong hoạt ảnh</span>
+                    </span>
                     {chapterScene >= 0 && (
                       <button
                         type="button"
-                        className="rd-link"
+                        className="rd-link px-inline-label"
                         onClick={() => {
                           retroAudio.playClick(); // a gesture: unlocks audio so the scene starts with its music
                           onBackToStory(chapterScene);
                         }}
                       >
-                        ▶ Xem lại cảnh này
+                        <PixelPlayIcon size={11} />
+                        <span>Xem lại cảnh này</span>
                       </button>
                     )}
                   </figcaption>
@@ -458,11 +470,13 @@ export function ReadingView({
                     </b>{" "}
                     câu đúng ngay lần đầu
                     <div className="rd-result-actions">
-                      <button type="button" className="rd-chip ai" onClick={onOpenDictation}>
-                        🎧 Luyện nghe chép
+                      <button type="button" className="rd-chip ai px-inline-label" onClick={onOpenDictation}>
+                        <PixelHeadphonesIcon size={13} />
+                        <span>Luyện nghe chép</span>
                       </button>
-                      <button type="button" className="rd-chip ghost" onClick={() => onBackToStory(0)}>
-                        ↺ Xem lại hoạt ảnh
+                      <button type="button" className="rd-chip ghost px-inline-label" onClick={() => onBackToStory(0)}>
+                        <PixelResetIcon size={13} />
+                        <span>Xem lại hoạt ảnh</span>
                       </button>
                     </div>
                   </div>
@@ -539,8 +553,9 @@ export function ReadingView({
 
       {!onQuiz && (
         <div className="rd-player">
-          <button type="button" className="rd-chip shu" onClick={playingAll ? stopReadAll : startReadAll}>
-            {playingAll ? "■ Dừng" : "▶ Đọc cả chương"}
+          <button type="button" className="rd-chip shu px-inline-label" onClick={playingAll ? stopReadAll : startReadAll}>
+            {playingAll ? <PixelStopIcon size={12} /> : <PixelPlayIcon size={12} />}
+            <span>{playingAll ? "Dừng" : "Đọc cả chương"}</span>
           </button>
           <div className="rd-player-bar" aria-hidden>
             {chapter.sentenceIds.map((id, i) => (

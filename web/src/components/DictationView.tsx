@@ -9,6 +9,26 @@ import {
   splitRubyIntoTiles,
   type DictationGrade,
 } from "../utils/dictation";
+import {
+  PixelArrowLeftIcon,
+  PixelArrowRightIcon,
+  PixelBookIcon,
+  PixelCheckIcon,
+  PixelEyeIcon,
+  PixelFilmIcon,
+  PixelFlameIcon,
+  PixelGridIcon,
+  PixelHeadphonesIcon,
+  PixelHomeIcon,
+  PixelKeyboardIcon,
+  PixelLightbulbIcon,
+  PixelMicIcon,
+  PixelPauseIcon,
+  PixelPlayIcon,
+  PixelPuzzleIcon,
+  PixelRepeatIcon,
+  PixelTranslateIcon,
+} from "./PixelIcons";
 import { RubyText } from "./RubyText";
 
 interface DictationViewProps {
@@ -44,6 +64,7 @@ export function DictationView({
   onBackToStory,
 }: DictationViewProps) {
   const [idx, setIdx] = useState(0);
+  const [showSentenceMap, setShowSentenceMap] = useState(pack.items.length <= 16);
   const [practiceMode, setPracticeMode] = useState<"type" | "tiles">("type");
   const [speed, setSpeed] = useState<number>(1.0);
   const [loop, setLoop] = useState<boolean>(false);
@@ -246,239 +267,305 @@ export function DictationView({
   const isSolved = Boolean(grade?.exactMatch || grade?.accuracyPct === 100);
   const progressPct = Math.round((completedIds.length / Math.max(total, 1)) * 100);
 
+  const backButtonContent = pack.id.endsWith("-choukai") ? (
+    <>
+      <PixelHeadphonesIcon size={14} />
+      <span>Phòng nghe JLPT</span>
+    </>
+  ) : pack.id.endsWith("-dokkai") ? (
+    <>
+      <PixelBookIcon size={14} />
+      <span>Phòng đọc JLPT</span>
+    </>
+  ) : (
+    <>
+      <PixelFilmIcon size={14} />
+      <span>Xem hoạt ảnh</span>
+    </>
+  );
+
   return (
     <div className="dict-shell">
-      {/* Top Bar */}
-      <div className="dict-topbar">
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+      {/* Unified Washi Top Bar */}
+      <header className="dict-topbar">
+        <div className="dict-topbar-inner">
+          <div className="dict-top-actions">
+            <button
+              type="button"
+              className="pixel-icon-btn"
+              onClick={() => {
+                stopAudio();
+                onOpenLibrary();
+              }}
+            >
+              <PixelHomeIcon size={14} />
+              <span>Thư viện</span>
+            </button>
+            {onBackToStory ? (
+              <button
+                type="button"
+                className="pixel-icon-btn"
+                onClick={() => {
+                  stopAudio();
+                  onBackToStory();
+                }}
+              >
+                {backButtonContent}
+              </button>
+            ) : pack.backHref ? (
+              <button
+                type="button"
+                className="pixel-icon-btn"
+                onClick={() => {
+                  stopAudio();
+                  window.location.href = resolveAssetUrl(pack.backHref!);
+                }}
+              >
+                {backButtonContent}
+              </button>
+            ) : null}
+          </div>
+
+          <div className="dict-title-group">
+            <span className="topbar-series">DAILY DICTATION · LUYỆN NGHE CHÉP CHÍNH TẢ</span>
+            <div className="topbar-title">
+              <span>
+                {pack.titleJa} — {pack.titleVi}
+              </span>
+              <span className="level-pill">{pack.level}</span>
+            </div>
+          </div>
+
           <button
             type="button"
-            className="pixel-icon-btn"
-            onClick={() => {
-              stopAudio();
-              onOpenLibrary();
-            }}
+            className={`pixel-icon-btn ${showFurigana ? "active" : ""}`}
+            onClick={onToggleFurigana}
           >
-            📚 Thư viện
+            <span>ふりがな {showFurigana ? "ON" : "OFF"}</span>
           </button>
-          {onBackToStory ? (
-            <button
-              type="button"
-              className="pixel-icon-btn"
-              onClick={() => {
-                stopAudio();
-                onBackToStory();
-              }}
-            >
-              {pack.id.endsWith("-choukai")
-                ? "🎧 Phòng nghe JLPT"
-                : pack.id.endsWith("-dokkai")
-                  ? "📖 Phòng đọc JLPT"
-                  : "🎮 Xem hoạt ảnh"}
-            </button>
-          ) : pack.backHref ? (
-            <button
-              type="button"
-              className="pixel-icon-btn"
-              onClick={() => {
-                stopAudio();
-                window.location.href = resolveAssetUrl(pack.backHref!);
-              }}
-            >
-              {pack.id.endsWith("-choukai")
-                ? "🎧 Phòng nghe JLPT"
-                : pack.id.endsWith("-dokkai")
-                  ? "📖 Phòng đọc JLPT"
-                  : "🎮 Xem hoạt ảnh"}
-            </button>
-          ) : null}
         </div>
+      </header>
 
-        <div className="dict-title-group">
-          <span className="topbar-series">DAILY DICTATION · LUYỆN NGHE CHÉP CHÍNH TẢ</span>
-          <div className="topbar-title">
+      <div className="dict-main-wrap">
+        {/* Progress & Sentence Selector */}
+        <div className="dict-progress-area">
+          <div className="dict-stats-row">
             <span>
-              {pack.titleJa} — {pack.titleVi}
+              Câu <b>{idx + 1}</b> / {total}
             </span>
-            <span className="level-pill">{pack.level}</span>
-          </div>
-        </div>
-
-        <button
-          type="button"
-          className={`pixel-icon-btn ${showFurigana ? "active" : ""}`}
-          onClick={onToggleFurigana}
-        >
-          ふりがな {showFurigana ? "ON" : "OFF"}
-        </button>
-      </div>
-
-      {/* Progress & Sentence Selector */}
-      <div className="dict-progress-area">
-        <div className="dict-stats-row">
-          <span>
-            Câu <b>{idx + 1}</b> / {total}
-          </span>
-          <span>
-            ✅ Hoàn thành:{" "}
-            <b>
-              {completedIds.length}/{total} ({progressPct}%)
-            </b>
-          </span>
-          {streak > 0 && <span className="dict-streak">🔥 Chuỗi đúng: {streak}</span>}
-        </div>
-
-        <div className="dict-progress-track">
-          <div
-            className="dict-progress-fill"
-            style={{ width: `${progressPct}%` }}
-          />
-        </div>
-
-        <div className="dict-step-dots">
-          {pack.items.map((it, i) => {
-            const done = completedIds.includes(it.id);
-            return (
-              <button
-                key={it.id}
-                type="button"
-                className={`dict-dot ${i === idx ? "current" : ""} ${
-                  done ? "done" : ""
-                }`}
-                onClick={() => setIdx(i)}
-                title={`Câu ${i + 1}`}
-              >
-                {i + 1}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Main Dictation Card */}
-      <div className="dict-card">
-        {/* Audio Control Strip */}
-        <div className="dict-audio-bar">
-          <button
-            type="button"
-            className={`pixel-btn ${isPlaying ? "pixel-btn-mint" : "pixel-btn-purple"}`}
-            onClick={() => (isPlaying ? stopAudio() : playCurrent())}
-          >
-            {isPlaying ? "⏸ Đang phát..." : "▶ Nghe câu (Ctrl+Space)"}
-          </button>
-
-          <div className="dict-speed-group" aria-label="Tốc độ đọc">
-            {SPEEDS.map((sp) => (
-              <button
-                key={sp}
-                type="button"
-                className={`dict-chip ${speed === sp ? "active" : ""}`}
-                onClick={() => setSpeed(sp)}
-              >
-                {sp}x
-              </button>
-            ))}
+            <span className="px-inline-label">
+              <PixelCheckIcon size={13} />
+              <span>
+                Hoàn thành:{" "}
+                <b>
+                  {completedIds.length}/{total} ({progressPct}%)
+                </b>
+              </span>
+            </span>
+            {streak > 0 && (
+              <span className="dict-streak px-inline-label">
+                <PixelFlameIcon size={13} />
+                <span>Chuỗi đúng: {streak}</span>
+              </span>
+            )}
+            <button
+              type="button"
+              className={`dict-chip study-map-toggle ${showSentenceMap ? "active" : ""}`}
+              style={{ marginLeft: "auto" }}
+              onClick={() => setShowSentenceMap((v) => !v)}
+              aria-expanded={showSentenceMap}
+            >
+              <PixelGridIcon size={13} />
+              <span>Danh sách ({total})</span>
+            </button>
           </div>
 
-          <button
-            type="button"
-            className={`dict-chip ${loop ? "active" : ""}`}
-            onClick={() => setLoop((v) => !v)}
-          >
-            🔁 Lặp {loop ? "ON" : "OFF"}
-          </button>
-
-          <button
-            type="button"
-            className={`dict-chip ${showMeaningHint ? "active" : ""}`}
-            onClick={() => setShowMeaningHint((v) => !v)}
-          >
-            🇻🇳 Gợi ý nghĩa
-          </button>
-        </div>
-
-        {item.speakerLabel && (
-          <div className="dict-speaker-tag">
-            🎙️ Nhân vật: <b>{item.speakerLabel}</b>{" "}
-            {item.durationSec ? `· ${item.durationSec.toFixed(1)}s` : ""}
-          </div>
-        )}
-
-        {showMeaningHint && (
-          <div className="dict-meaning-peek">
-            <b>Nghĩa tiếng Việt:</b> {item.vi}
-          </div>
-        )}
-
-        {/* Mode Switcher: Type vs Tiles */}
-        <div className="dict-mode-tabs">
-          <button
-            type="button"
-            className={`dict-mode-btn ${practiceMode === "type" ? "active" : ""}`}
-            onClick={() => {
-              setPracticeMode("type");
-              setGrade(null);
-            }}
-          >
-            ⌨️ Gõ chép chính tả (Hiragana hoặc Kanji)
-          </button>
-          <button
-            type="button"
-            className={`dict-mode-btn ${practiceMode === "tiles" ? "active" : ""}`}
-            onClick={() => {
-              setPracticeMode("tiles");
-              setGrade(null);
-            }}
-          >
-            🧩 Ghép cụm từ (Hợp điện thoại)
-          </button>
-        </div>
-
-        {/* Input Area */}
-        {practiceMode === "type" ? (
-          <form
-            className="dict-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (isSolved && idx + 1 < total) {
-                handleNext();
-              } else {
-                handleCheck();
-              }
-            }}
-          >
-            <input
-              ref={inputRef}
-              type="text"
-              className="dict-input"
-              value={input}
-              onChange={(e) => {
-                setInput(e.target.value);
-                if (grade) setGrade(null);
-              }}
-              placeholder="Gõ câu tiếng Nhật bạn nghe được (Hiragana hoặc Kanji)..."
-              autoComplete="off"
-              spellCheck={false}
+          <div className="dict-progress-track">
+            <div
+              className="dict-progress-fill"
+              style={{ width: `${progressPct}%` }}
             />
-          </form>
-        ) : (
-          <div className="dict-tiles-wrap">
-            <div className="dict-tile-answer-box">
-              {pickedTileIds.length === 0 ? (
-                <span className="dict-tile-placeholder">
-                  Nghe câu rồi bấm các cụm từ bên dưới theo đúng thứ tự...
-                </span>
-              ) : (
-                pickedTileIds.map((tid) => {
-                  const tile = orderedTiles.find((t) => t.id === tid);
-                  if (!tile) return null;
+          </div>
+
+          {showSentenceMap && (
+            <div className="dict-step-dots study-map-drawer">
+              {pack.items.map((it, i) => {
+                const done = completedIds.includes(it.id);
+                return (
+                  <button
+                    key={it.id}
+                    type="button"
+                    className={`dict-dot ${i === idx ? "current" : ""} ${
+                      done ? "done" : ""
+                    }`}
+                    onClick={() => setIdx(i)}
+                    title={`Câu ${i + 1}`}
+                  >
+                    {i + 1}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Main Dictation Card */}
+        <div className="dict-card">
+          {/* Audio Control Strip */}
+          <div className="dict-audio-bar">
+            <button
+              type="button"
+              className={`pixel-btn ${isPlaying ? "pixel-btn-mint" : "pixel-btn-purple"}`}
+              onClick={() => (isPlaying ? stopAudio() : playCurrent())}
+            >
+              {isPlaying ? <PixelPauseIcon size={14} /> : <PixelPlayIcon size={14} />}
+              <span>{isPlaying ? "Đang phát..." : "Nghe câu (Ctrl+Space)"}</span>
+            </button>
+
+            <div className="dict-speed-group" aria-label="Tốc độ đọc">
+              {SPEEDS.map((sp) => (
+                <button
+                  key={sp}
+                  type="button"
+                  className={`dict-chip ${speed === sp ? "active" : ""}`}
+                  onClick={() => setSpeed(sp)}
+                >
+                  {sp}x
+                </button>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              className={`dict-chip ${loop ? "active" : ""}`}
+              onClick={() => setLoop((v) => !v)}
+            >
+              <PixelRepeatIcon size={13} />
+              <span>Lặp {loop ? "ON" : "OFF"}</span>
+            </button>
+
+            <button
+              type="button"
+              className={`dict-chip ${showMeaningHint ? "active" : ""}`}
+              onClick={() => setShowMeaningHint((v) => !v)}
+            >
+              <PixelTranslateIcon size={13} />
+              <span>Gợi ý nghĩa</span>
+            </button>
+          </div>
+
+          {item.speakerLabel && (
+            <div className="dict-speaker-tag px-inline-label">
+              <PixelMicIcon size={13} />
+              <span>
+                Nhân vật: <b>{item.speakerLabel}</b>{" "}
+                {item.durationSec ? `· ${item.durationSec.toFixed(1)}s` : ""}
+              </span>
+            </div>
+          )}
+
+          {showMeaningHint && (
+            <div className="dict-meaning-peek">
+              <b>Nghĩa tiếng Việt:</b> {item.vi}
+            </div>
+          )}
+
+          {/* Mode Switcher: Type vs Tiles */}
+          <div className="dict-mode-tabs">
+            <button
+              type="button"
+              className={`dict-mode-btn ${practiceMode === "type" ? "active" : ""}`}
+              onClick={() => {
+                setPracticeMode("type");
+                setGrade(null);
+              }}
+            >
+              <PixelKeyboardIcon size={14} />
+              <span>Gõ chép chính tả (Hiragana hoặc Kanji)</span>
+            </button>
+            <button
+              type="button"
+              className={`dict-mode-btn ${practiceMode === "tiles" ? "active" : ""}`}
+              onClick={() => {
+                setPracticeMode("tiles");
+                setGrade(null);
+              }}
+            >
+              <PixelPuzzleIcon size={14} />
+              <span>Ghép cụm từ (Hợp điện thoại)</span>
+            </button>
+          </div>
+
+          {/* Input Area */}
+          {practiceMode === "type" ? (
+            <form
+              className="dict-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (isSolved && idx + 1 < total) {
+                  handleNext();
+                } else {
+                  handleCheck();
+                }
+              }}
+            >
+              <input
+                ref={inputRef}
+                type="text"
+                className="dict-input"
+                value={input}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  if (grade) setGrade(null);
+                }}
+                placeholder="Gõ câu tiếng Nhật bạn nghe được (Hiragana hoặc Kanji)..."
+                autoComplete="off"
+                spellCheck={false}
+              />
+            </form>
+          ) : (
+            <div className="dict-tiles-wrap">
+              <div className="dict-tile-answer-box">
+                {pickedTileIds.length === 0 ? (
+                  <span className="dict-tile-placeholder">
+                    Nghe câu rồi bấm các cụm từ bên dưới theo đúng thứ tự...
+                  </span>
+                ) : (
+                  pickedTileIds.map((tid) => {
+                    const tile = orderedTiles.find((t) => t.id === tid);
+                    if (!tile) return null;
+                    return (
+                      <button
+                        key={tid}
+                        type="button"
+                        className="dict-tile placed"
+                        onClick={() => {
+                          setPickedTileIds((prev) => prev.filter((x) => x !== tid));
+                          setGrade(null);
+                        }}
+                      >
+                        <RubyText
+                          segments={tile.segments}
+                          showFurigana={showFurigana}
+                        />
+                      </button>
+                    );
+                  })
+                )}
+              </div>
+
+              <div className="dict-tile-bank">
+                {scrambledTiles.map((tile) => {
+                  const used = pickedTileIds.includes(tile.id);
                   return (
                     <button
-                      key={tid}
+                      key={tile.id}
                       type="button"
-                      className="dict-tile placed"
+                      className={`dict-tile ${used ? "used" : ""}`}
+                      disabled={used}
                       onClick={() => {
-                        setPickedTileIds((prev) => prev.filter((x) => x !== tid));
+                        retroAudio.playClick();
+                        setPickedTileIds((prev) => [...prev, tile.id]);
                         setGrade(null);
                       }}
                     >
@@ -488,120 +575,104 @@ export function DictationView({
                       />
                     </button>
                   );
-                })
-              )}
+                })}
+              </div>
             </div>
+          )}
 
-            <div className="dict-tile-bank">
-              {scrambledTiles.map((tile) => {
-                const used = pickedTileIds.includes(tile.id);
-                return (
-                  <button
-                    key={tile.id}
-                    type="button"
-                    className={`dict-tile ${used ? "used" : ""}`}
-                    disabled={used}
-                    onClick={() => {
-                      retroAudio.playClick();
-                      setPickedTileIds((prev) => [...prev, tile.id]);
-                      setGrade(null);
-                    }}
-                  >
-                    <RubyText
-                      segments={tile.segments}
-                      showFurigana={showFurigana}
-                    />
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* Action Buttons */}
-        <div className="dict-actions">
-          <button
-            type="button"
-            className="pixel-btn pixel-btn-cream"
-            onClick={handleCheck}
-          >
-            ✓ Kiểm tra
-          </button>
-          <button
-            type="button"
-            className="pixel-btn pixel-btn-dark"
-            onClick={handleHint}
-          >
-            💡 Gợi ý (Alt+H)
-          </button>
-          <button
-            type="button"
-            className="pixel-btn pixel-btn-dark"
-            onClick={() => {
-              retroAudio.playClick();
-              setRevealed((r) => !r);
-            }}
-          >
-            {revealed ? "🙈 Ẩn đáp án" : "👁 Xem đáp án"}
-          </button>
-
-          <div className="dict-nav-right">
+          {/* Action Buttons */}
+          <div className="dict-actions">
             <button
               type="button"
-              className="pixel-icon-btn"
-              disabled={idx === 0}
-              onClick={handlePrev}
+              className="pixel-btn pixel-btn-cream"
+              onClick={handleCheck}
             >
-              ← Câu trước
+              <PixelCheckIcon size={14} />
+              <span>Kiểm tra</span>
             </button>
             <button
               type="button"
-              className={`pixel-icon-btn ${isSolved ? "active" : ""}`}
-              disabled={idx + 1 >= total}
-              onClick={handleNext}
+              className="pixel-btn pixel-btn-dark"
+              onClick={handleHint}
             >
-              Câu tiếp →
+              <PixelLightbulbIcon size={14} />
+              <span>Gợi ý (Alt+H)</span>
             </button>
+            <button
+              type="button"
+              className="pixel-btn pixel-btn-dark"
+              onClick={() => {
+                retroAudio.playClick();
+                setRevealed((r) => !r);
+              }}
+            >
+              <PixelEyeIcon size={14} />
+              <span>{revealed ? "Ẩn đáp án" : "Xem đáp án"}</span>
+            </button>
+
+            <div className="dict-nav-right">
+              <button
+                type="button"
+                className="pixel-icon-btn"
+                disabled={idx === 0}
+                onClick={handlePrev}
+              >
+                <PixelArrowLeftIcon size={13} />
+                <span>Câu trước</span>
+              </button>
+              <button
+                type="button"
+                className={`pixel-icon-btn ${isSolved ? "active" : ""}`}
+                disabled={idx + 1 >= total}
+                onClick={handleNext}
+              >
+                <span>Câu tiếp</span>
+                <PixelArrowRightIcon size={13} />
+              </button>
+            </div>
           </div>
+
+          {/* Character Diff Feedback */}
+          {grade && (
+            <div className={`dict-feedback ${isSolved ? "ok" : "warn"}`}>
+              <div className="dict-feedback-head">
+                {isSolved ? (
+                  <span className="px-inline-label">
+                    <PixelCheckIcon size={15} />
+                    <span>すごい！ Chính xác 100%! (Nhấn Enter để sang câu tiếp)</span>
+                  </span>
+                ) : (
+                  <span>
+                    Độ chính xác: <b>{grade.accuracyPct}%</b> — Xem chỗ đỏ/vàng bên dưới rồi nghe lại nhé:
+                  </span>
+                )}
+              </div>
+              <div className="dict-diff-line">
+                {grade.diff.map((tok, i) => (
+                  <span key={i} className={`diff-ch diff-${tok.status}`}>
+                    {tok.char}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Full Answer + Shadowing Card */}
+          {revealed && (
+            <div className="dict-answer-card">
+              <div className="dict-answer-label">ĐÁP ÁN CHUẨN · NGHE &amp; ĐỌC THEO (SHADOWING)</div>
+              <div className="dict-answer-ja">
+                <RubyText segments={item.jaRuby} showFurigana={showFurigana} />
+              </div>
+              <div className="dict-answer-vi">{item.vi}</div>
+            </div>
+          )}
         </div>
 
-        {/* Character Diff Feedback */}
-        {grade && (
-          <div className={`dict-feedback ${isSolved ? "ok" : "warn"}`}>
-            <div className="dict-feedback-head">
-              {isSolved ? (
-                <span>🎉 すごい！ Chính xác 100%! (Nhấn Enter để sang câu tiếp)</span>
-              ) : (
-                <span>
-                  Độ chính xác: <b>{grade.accuracyPct}%</b> — Xem chỗ đỏ/vàng bên dưới rồi nghe lại nhé:
-                </span>
-              )}
-            </div>
-            <div className="dict-diff-line">
-              {grade.diff.map((tok, i) => (
-                <span key={i} className={`diff-ch diff-${tok.status}`}>
-                  {tok.char}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Full Answer + Shadowing Card */}
-        {revealed && (
-          <div className="dict-answer-card">
-            <div className="dict-answer-label">ĐÁP ÁN CHUẨN · NGHE &amp; ĐỌC THEO (SHADOWING)</div>
-            <div className="dict-answer-ja">
-              <RubyText segments={item.jaRuby} showFurigana={showFurigana} />
-            </div>
-            <div className="dict-answer-vi">{item.vi}</div>
-          </div>
-        )}
-      </div>
-
-      <div className="dict-shortcuts-footer">
-        Phím tắt: <code>Ctrl + Space</code> nghe lại · <code>Enter</code> kiểm tra / sang câu tiếp ·{" "}
-        <code>Alt + H</code> mở gợi ý · Tiến độ tự lưu trên trình duyệt.
+        <div className="dict-shortcuts-footer">
+          Phím tắt: <code>Ctrl + Space</code> nghe lại · <code>Enter</code> kiểm tra / sang câu tiếp ·{" "}
+          <code>Alt + H</code> mở gợi ý · Tiến độ tự lưu trên trình duyệt.
+        </div>
       </div>
     </div>
   );

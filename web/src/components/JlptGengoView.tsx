@@ -6,6 +6,24 @@ import type {
   GengoPart,
   GengoQuestion,
 } from "../types/gengo";
+import {
+  PixelArrowLeftIcon,
+  PixelArrowRightIcon,
+  PixelBookIcon,
+  PixelCheckIcon,
+  PixelCrossIcon,
+  PixelExamIcon,
+  PixelGridIcon,
+  PixelHeadphonesIcon,
+  PixelHomeIcon,
+  PixelKanjiIcon,
+  PixelLightbulbIcon,
+  PixelPuzzleIcon,
+  PixelResetIcon,
+  PixelSparkleIcon,
+  PixelTargetIcon,
+  PixelTranslateIcon,
+} from "./PixelIcons";
 import { RubyText } from "./RubyText";
 
 interface JlptGengoViewProps {
@@ -114,7 +132,9 @@ function ClozePassageCard({
   return (
     <div className="dokkai-doc gengo-passage-doc">
       <div className="dokkai-chrome-bar dokkai-chrome-email">
-        <span>📝 問題3 · ĐỌC ĐOẠN VĂN ĐIỀN NGỮ PHÁP</span>
+        <span className="px-inline-label">
+          <PixelExamIcon size={14} /> 問題3 · ĐỌC ĐOẠN VĂN ĐIỀN NGỮ PHÁP
+        </span>
         <span>作文</span>
       </div>
       <div className="dokkai-doc-inner">
@@ -208,6 +228,7 @@ export function JlptGengoView({
   const [partFilter, setPartFilter] = useState<"all" | GengoPart>("all");
   const [sectionFilter, setSectionFilter] = useState<string>("all");
   const [idx, setIdx] = useState(0);
+  const [showQuestionMap, setShowQuestionMap] = useState(false);
   // Optional interactive scramble helper slots for 問題2 ★ questions
   const [scrambleSlots, setScrambleSlots] = useState<number[]>([]);
 
@@ -313,446 +334,519 @@ export function JlptGengoView({
   // Mask option ruby on Kanji writing before user answers so Kanji options stay authentic
   const showOptionRuby = q.kind === "kanji_write" ? (hasAnswered && showFurigana) : showFurigana;
 
+  const progressPct = Math.round(
+    (filteredQuestions.filter((item) => answers[item.id] !== undefined).length /
+      Math.max(filteredQuestions.length, 1)) *
+      100
+  );
+
   return (
     <div className="dict-shell gengo-shell">
-      {/* Top Bar */}
-      <div className="dict-topbar">
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button
-            type="button"
-            className="pixel-icon-btn"
-            onClick={onOpenLibrary}
-          >
-            📚 Thư viện
-          </button>
-          {exam.dokkaiId && onOpenDokkai && (
+      {/* Unified Washi Top Bar */}
+      <header className="dict-topbar">
+        <div className="dict-topbar-inner">
+          <div className="dict-top-actions">
             <button
               type="button"
               className="pixel-icon-btn"
-              onClick={() => onOpenDokkai(exam.dokkaiId!)}
+              onClick={onOpenLibrary}
             >
-              📖 Phòng đọc
+              <PixelHomeIcon size={14} />
+              <span>Thư viện</span>
             </button>
-          )}
-          {exam.choukaiId && onOpenChoukai && (
-            <button
-              type="button"
-              className="pixel-icon-btn"
-              onClick={() => onOpenChoukai(exam.choukaiId!)}
-            >
-              🎧 Phòng nghe
-            </button>
-          )}
-        </div>
+            {exam.dokkaiId && onOpenDokkai && (
+              <button
+                type="button"
+                className="pixel-icon-btn"
+                onClick={() => onOpenDokkai(exam.dokkaiId!)}
+              >
+                <PixelBookIcon size={14} />
+                <span>Đọc hiểu</span>
+              </button>
+            )}
+            {exam.choukaiId && onOpenChoukai && (
+              <button
+                type="button"
+                className="pixel-icon-btn"
+                onClick={() => onOpenChoukai(exam.choukaiId!)}
+              >
+                <PixelHeadphonesIcon size={14} />
+                <span>Nghe hiểu</span>
+              </button>
+            )}
+          </div>
 
-        <div className="dict-title-group">
-          <span className="topbar-series">
-            JLPT LANGUAGE KNOWLEDGE · {exam.examDate}
-          </span>
-          <div className="topbar-title">
-            <span>{exam.titleJa}</span>
-            <span className="level-pill">{exam.level}</span>
+          <div className="dict-title-group">
+            <span className="topbar-series">
+              JLPT KIẾN THỨC NGÔN NGỮ · {exam.examDate}
+            </span>
+            <div className="topbar-title">
+              <span>{exam.titleJa}</span>
+              <span className="level-pill">{exam.level}</span>
+            </div>
+          </div>
+
+          <div className="dict-top-actions">
+            <button
+              type="button"
+              className={`pixel-icon-btn ${showFurigana ? "active" : ""}`}
+              onClick={onToggleFurigana}
+              title="Bật / Tắt Furigana (tự động ẩn trên chữ Kanji đang bị hỏi ở 問題1)"
+            >
+              <span>ふりがな {showFurigana ? "ON" : "OFF"}</span>
+            </button>
+            <button
+              type="button"
+              className={`pixel-icon-btn ${showVi ? "active" : ""}`}
+              onClick={onToggleVi}
+              title="Hiện / Ẩn dịch tiếng Việt"
+            >
+              <PixelTranslateIcon size={14} />
+              <span>Dịch {showVi ? "ON" : "OFF"}</span>
+            </button>
           </div>
         </div>
+      </header>
 
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button
-            type="button"
-            className={`pixel-icon-btn ${showFurigana ? "active" : ""}`}
-            onClick={onToggleFurigana}
-            title="Bật / Tắt Furigana (tự động ẩn trên chữ Kanji đang bị hỏi ở 問題1)"
-          >
-            ふりがな {showFurigana ? "ON" : "OFF"}
-          </button>
-          <button
-            type="button"
-            className={`pixel-icon-btn ${showVi ? "active" : ""}`}
-            onClick={onToggleVi}
-            title="Hiện / Ẩn dịch tiếng Việt"
-          >
-            🇻🇳 Dịch {showVi ? "ON" : "OFF"}
-          </button>
-        </div>
-      </div>
-
-      {/* Part Tabs, Sub-section Chips & Progress Dots */}
-      <div className="dict-progress-area">
-        <div className="choukai-section-tabs">
-          <button
-            type="button"
-            className={`dict-chip ${partFilter === "all" ? "active" : ""}`}
-            onClick={() => {
-              setPartFilter("all");
-              setSectionFilter("all");
-              setIdx(0);
-            }}
-          >
-            ✨ Tất cả ({exam.questions.length})
-          </button>
-          <button
-            type="button"
-            className={`dict-chip ${partFilter === "vocab" ? "active" : ""}`}
-            onClick={() => {
-              setPartFilter("vocab");
-              setSectionFilter("all");
-              setIdx(0);
-            }}
-          >
-            漢 文字・語彙 ({vocabCount})
-          </button>
-          <button
-            type="button"
-            className={`dict-chip ${partFilter === "grammar" ? "active" : ""}`}
-            onClick={() => {
-              setPartFilter("grammar");
-              setSectionFilter("all");
-              setIdx(0);
-            }}
-          >
-            🧩 文法 ({grammarCount})
-          </button>
-          <span className="choukai-score-pill">
-            🎯 Điểm: <b>{totalCorrect}/{exam.questions.length}</b> ({totalAnswered} đã làm)
-          </span>
-        </div>
-
-        {/* Sub-section selector pills */}
-        <div className="gengo-subsec-row">
-          <button
-            type="button"
-            className={`gengo-sub-chip ${sectionFilter === "all" ? "active" : ""}`}
-            onClick={() => {
-              setSectionFilter("all");
-              setIdx(0);
-            }}
-          >
-            Tất cả mục
-          </button>
-          {visibleSections.map((sec) => {
-            const cnt = exam.questions.filter((x) => x.sectionId === sec.id).length;
-            return (
+      <div className="dict-main-wrap">
+        {/* Clean Single-Row Filter Bar + Collapsible Question Map */}
+        <div className="dict-progress-area">
+          <div className="study-filter-bar">
+            <div className="study-seg-group" role="tablist" aria-label="Phần thi">
               <button
-                key={sec.id}
                 type="button"
-                className={`gengo-sub-chip ${sectionFilter === sec.id ? "active" : ""}`}
+                role="tab"
+                aria-selected={partFilter === "all"}
+                className={`dict-chip ${partFilter === "all" ? "active" : ""}`}
                 onClick={() => {
-                  setSectionFilter(sec.id);
+                  setPartFilter("all");
+                  setSectionFilter("all");
                   setIdx(0);
                 }}
               >
-                {sec.shortLabel} ({cnt})
+                <PixelSparkleIcon size={13} />
+                <span>Tất cả ({exam.questions.length})</span>
               </button>
-            );
-          })}
-        </div>
-
-        <div className="dict-step-dots">
-          {filteredQuestions.map((item, i) => {
-            const ans = answers[item.id];
-            const cls =
-              ans === undefined
-                ? ""
-                : ans === item.correctIndex
-                  ? "done"
-                  : "wrong";
-            return (
               <button
-                key={item.id}
                 type="button"
-                className={`dict-dot ${i === safeIdx ? "current" : ""} ${cls}`}
-                onClick={() => setIdx(i)}
-                title={`${item.part === "vocab" ? "語彙" : "文法"} Câu ${item.number}`}
+                role="tab"
+                aria-selected={partFilter === "vocab"}
+                className={`dict-chip ${partFilter === "vocab" ? "active" : ""}`}
+                onClick={() => {
+                  setPartFilter("vocab");
+                  setSectionFilter("all");
+                  setIdx(0);
+                }}
               >
-                {item.part === "grammar" && partFilter === "all" && sectionFilter === "all"
-                  ? `G${item.number}`
-                  : item.number}
+                <PixelKanjiIcon size={13} />
+                <span>文字・語彙 ({vocabCount})</span>
               </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Main Question Card */}
-      <div className="dict-card gengo-card">
-        <div className="choukai-q-header">
-          <div style={{ flex: 1, minWidth: 220 }}>
-            <span className="choukai-sec-badge">
-              {q.part === "vocab" ? "文字・語彙" : "文法"} · {sectionMeta?.titleJa} · Câu {q.number}
-            </span>
-            <div className="choukai-sec-sub">{sectionMeta?.instructionVi}</div>
-          </div>
-          <div className="choukai-nav-mini">
-            <button
-              type="button"
-              className="pixel-icon-btn"
-              disabled={safeIdx === 0}
-              onClick={() => setIdx((v) => Math.max(0, v - 1))}
-            >
-              ← Trước
-            </button>
-            <button
-              type="button"
-              className="pixel-icon-btn"
-              disabled={safeIdx + 1 >= filteredQuestions.length}
-              onClick={() =>
-                setIdx((v) => Math.min(filteredQuestions.length - 1, v + 1))
-              }
-            >
-              Tiếp →
-            </button>
-          </div>
-        </div>
-
-        {/* Cloze Composition Card for 問題3 */}
-        {activePassage && (
-          <ClozePassageCard
-            passage={activePassage}
-            activeQNumber={q.number}
-            answers={answers}
-            questions={exam.questions}
-            showFurigana={showFurigana}
-            showVi={showVi}
-            onJumpToNumber={handleJumpToBlankNumber}
-          />
-        )}
-
-        {/* Question Prompt Box */}
-        <div className="gengo-prompt-panel">
-          {q.headwordJa && (
-            <div className="gengo-headword-pill">
-              Từ cần kiểm tra cách dùng: <b>{q.headwordJa}</b>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={partFilter === "grammar"}
+                className={`dict-chip ${partFilter === "grammar" ? "active" : ""}`}
+                onClick={() => {
+                  setPartFilter("grammar");
+                  setSectionFilter("all");
+                  setIdx(0);
+                }}
+              >
+                <PixelPuzzleIcon size={13} />
+                <span>文法 ({grammarCount})</span>
+              </button>
             </div>
-          )}
 
-          {q.kind === "star_order" ? (
-            <div className="gengo-star-sentence">
-              {q.promptJa.split("[[STAR_SLOTS]]").map((segment, si) => (
-                <span key={si}>
-                  <RubyText segments={segment} showFurigana={showFurigana} />
-                  {si === 0 && (
-                    <span className="gengo-star-slots-inline">
-                      {[0, 1, 2, 3].map((slotPos) => {
-                        const chosenOptIdx = hasAnswered && q.starOrder
-                          ? q.starOrder[slotPos]
-                          : scrambleSlots[slotPos];
-                        const optObj =
-                          chosenOptIdx !== undefined
-                            ? q.options[chosenOptIdx]
-                            : undefined;
-                        return (
-                          <span
-                            key={slotPos}
-                            className={`gengo-star-slot ${
-                              slotPos === starIdx ? "is-star" : ""
-                            } ${optObj ? "filled" : ""}`}
-                          >
-                            {optObj ? (
-                              <RubyText
-                                segments={optObj.ja}
-                                showFurigana={showFurigana}
-                              />
-                            ) : slotPos === starIdx ? (
-                              "★"
-                            ) : (
-                              "＿＿"
-                            )}
-                          </span>
-                        );
-                      })}
-                    </span>
-                  )}
+            <div className="study-filter-right">
+              <label className="study-select-wrap" aria-label="Lọc theo dạng bài">
+                <select
+                  className="study-select"
+                  value={sectionFilter}
+                  onChange={(e) => {
+                    setSectionFilter(e.target.value);
+                    setIdx(0);
+                  }}
+                >
+                  <option value="all">Tất cả dạng bài ({filteredQuestions.length})</option>
+                  {visibleSections.map((sec) => {
+                    const cnt = exam.questions.filter((x) => x.sectionId === sec.id).length;
+                    return (
+                      <option key={sec.id} value={sec.id}>
+                        {sec.shortLabel} ({cnt})
+                      </option>
+                    );
+                  })}
+                </select>
+              </label>
+
+              <span className="choukai-score-pill">
+                <PixelTargetIcon size={13} />
+                <span>
+                  <b>{totalCorrect}/{exam.questions.length}</b> đúng
                 </span>
-              ))}
+              </span>
+
+              <button
+                type="button"
+                className={`dict-chip study-map-toggle ${showQuestionMap ? "active" : ""}`}
+                onClick={() => {
+                  retroAudio.playClick();
+                  setShowQuestionMap((v) => !v);
+                }}
+                aria-expanded={showQuestionMap}
+              >
+                <PixelGridIcon size={13} />
+                <span>Bảng câu ({filteredQuestions.length})</span>
+              </button>
             </div>
-          ) : (
-            <div className="gengo-prompt-ja">
-              <span className="dokkai-q-num-badge">問{q.number}</span>{" "}
-              <RichPrompt
-                text={q.promptJa}
-                showFurigana={showFurigana}
-                maskTargetRuby={shouldMaskTarget}
-                filledBlank={
-                  q.kind === "cloze" && hasAnswered
-                    ? (typeof q.options[picked].ja === "string"
-                        ? q.options[picked].ja
-                        : null)
-                    : null
-                }
+          </div>
+
+          {/* Slim Washi Progress Bar */}
+          <div className="study-progress-slim">
+            <div className="dict-progress-track">
+              <div
+                className="dict-progress-fill"
+                style={{ width: `${progressPct}%` }}
               />
             </div>
-          )}
+            <span className="study-progress-caption">
+              Câu <b>{safeIdx + 1}</b> / {filteredQuestions.length} · Đã làm {totalAnswered}/{exam.questions.length}
+            </span>
+          </div>
 
-          {(showVi || hasAnswered) && q.promptVi && (
-            <div className="gengo-prompt-vi">🇻🇳 {q.promptVi}</div>
-          )}
-        </div>
-
-        {/* Interactive Scramble Helper for 問題2 ★ */}
-        {q.kind === "star_order" && !hasAnswered && (
-          <div className="gengo-scramble-helper">
-            <div className="gengo-scramble-head">
-              <span>
-                🧩 <b>Nháp ghép 4 mảnh câu (tùy chọn):</b> Bấm theo thứ tự 1 → 2 → ★ → 4 để thử câu rồi chọn đáp án ở ô ★!
-              </span>
-              {scrambleSlots.length > 0 && (
-                <button
-                  type="button"
-                  className="dokkai-reset-btn"
-                  onClick={() => setScrambleSlots([])}
-                >
-                  ↺ Xóa nháp
-                </button>
-              )}
-            </div>
-            <div className="gengo-scramble-chips">
-              {q.options.map((opt, oi) => {
-                const pos = scrambleSlots.indexOf(oi);
+          {/* Collapsible Question Map Drawer */}
+          {showQuestionMap && (
+            <div className="dict-step-dots study-map-drawer">
+              {filteredQuestions.map((item, i) => {
+                const ans = answers[item.id];
+                const cls =
+                  ans === undefined
+                    ? ""
+                    : ans === item.correctIndex
+                      ? "done"
+                      : "wrong";
                 return (
                   <button
-                    key={opt.label}
+                    key={item.id}
                     type="button"
-                    className={`gengo-scramble-chip ${pos >= 0 ? "placed" : ""}`}
-                    onClick={() => handleToggleScramblePiece(oi)}
+                    className={`dict-dot ${i === safeIdx ? "current" : ""} ${cls}`}
+                    onClick={() => {
+                      setIdx(i);
+                      setShowQuestionMap(false);
+                    }}
+                    title={`${item.part === "vocab" ? "語彙" : "文法"} Câu ${item.number}`}
                   >
-                    <span className="gengo-sc-num">{opt.label}</span>
-                    <RubyText segments={opt.ja} showFurigana={showFurigana} />
-                    {pos >= 0 && (
-                      <span className="gengo-sc-badge">
-                        {pos === starIdx ? "★" : `#${pos + 1}`}
-                      </span>
-                    )}
+                    {item.part === "grammar" && partFilter === "all" && sectionFilter === "all"
+                      ? `G${item.number}`
+                      : item.number}
                   </button>
                 );
               })}
             </div>
-            {scrambleSlots.length === 4 && (
-              <div style={{ marginTop: 8 }}>
-                <button
-                  type="button"
-                  className="pixel-btn pixel-btn-mint"
-                  onClick={() => handleSelectOption(scrambleSlots[starIdx])}
-                >
-                  ✓ Nộp đáp án ★ = số {scrambleSlots[starIdx] + 1}
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* 4 Answer Options */}
-        <div
-          className={`choukai-options-grid ${
-            q.kind === "usage" || q.kind === "synonym"
-              ? "gengo-options-single"
-              : ""
-          }`}
-        >
-          {q.options.map((opt, oIdx) => {
-            const chosen = picked === oIdx;
-            const revealCorrect = hasAnswered && oIdx === q.correctIndex;
-            const statusClass = revealCorrect
-              ? "ok"
-              : chosen && !isCorrect
-                ? "no"
-                : "";
-            const optContent =
-              q.kind === "usage" && typeof opt.ja === "string" ? (
-                <RichPrompt text={opt.ja} showFurigana={showOptionRuby} />
-              ) : (
-                <RubyText segments={opt.ja} showFurigana={showOptionRuby} />
-              );
-
-            return (
-              <button
-                key={opt.label}
-                type="button"
-                className={`choukai-opt-btn ${statusClass}`}
-                onClick={() => handleSelectOption(oIdx)}
-              >
-                <span className="choukai-opt-num">{opt.label}</span>
-                <div className="choukai-opt-content">
-                  <div className="choukai-opt-ja">{optContent}</div>
-                  {(hasAnswered || showVi) && opt.vi && (
-                    <div className="choukai-opt-vi">{opt.vi}</div>
-                  )}
-                </div>
-              </button>
-            );
-          })}
+          )}
         </div>
 
-        {/* Instant Feedback & Explanation */}
-        {hasAnswered && (
-          <div className={`dict-feedback ${isCorrect ? "ok" : "warn"}`}>
-            <div className="dict-feedback-head">
-              {isCorrect ? (
-                <span>
-                  🎉 せいかい! Chính xác (Đáp án {q.correctIndex + 1})
-                </span>
-              ) : (
-                <span>
-                  ❌ Bạn chọn {picked + 1} — Đáp án đúng là{" "}
-                  <b>số {q.correctIndex + 1}</b>
-                </span>
-              )}
+        {/* Main Question Card */}
+        <div className="dict-card gengo-card">
+          <div className="choukai-q-header">
+            <div style={{ flex: 1, minWidth: 220 }}>
+              <span className="choukai-sec-badge">
+                {q.part === "vocab" ? "文字・語彙" : "文法"} · {sectionMeta?.titleJa} · Câu {q.number}
+              </span>
+              <div className="choukai-sec-sub">{sectionMeta?.instructionVi}</div>
             </div>
-            {q.kind === "star_order" && q.starOrder && (
-              <div className="gengo-star-solution">
-                <b>Thứ tự chuẩn:</b>{" "}
-                {q.starOrder.map((oi, pos) => (
-                  <span
-                    key={pos}
-                    className={`gengo-sol-chip ${pos === starIdx ? "star" : ""}`}
-                  >
-                    {pos === starIdx ? "★ " : ""}
-                    {oi + 1}.{" "}
-                    <RubyText
-                      segments={q.options[oi].ja}
-                      showFurigana={showFurigana}
-                    />
-                  </span>
-                ))}
-              </div>
-            )}
-            <div className="choukai-clue-text">
-              <b>💡 Giải thích &amp; mẹo JLPT:</b> {q.explanationVi}
-            </div>
-          </div>
-        )}
-
-        {/* Footer Controls */}
-        <div className="choukai-script-controls">
-          <span style={{ fontSize: 13, color: "#9db0d9" }}>
-            Câu {safeIdx + 1}/{filteredQuestions.length} trong mục hiện tại
-          </span>
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            {safeIdx + 1 < filteredQuestions.length && hasAnswered && (
-              <button
-                type="button"
-                className="pixel-btn pixel-btn-purple"
-                onClick={() => setIdx((v) => v + 1)}
-              >
-                Câu tiếp →
-              </button>
-            )}
-            {totalAnswered > 0 && (
+            <div className="choukai-nav-mini">
               <button
                 type="button"
                 className="pixel-icon-btn"
-                onClick={() => {
-                  setAnswers({});
-                  retroAudio.playClick();
-                }}
+                disabled={safeIdx === 0}
+                onClick={() => setIdx((v) => Math.max(0, v - 1))}
               >
-                ↺ Làm lại toàn bộ
+                <PixelArrowLeftIcon size={13} />
+                <span>Trước</span>
               </button>
+              <button
+                type="button"
+                className="pixel-icon-btn"
+                disabled={safeIdx + 1 >= filteredQuestions.length}
+                onClick={() =>
+                  setIdx((v) => Math.min(filteredQuestions.length - 1, v + 1))
+                }
+              >
+                <span>Tiếp</span>
+                <PixelArrowRightIcon size={13} />
+              </button>
+            </div>
+          </div>
+
+          {/* Cloze Composition Card for 問題3 */}
+          {activePassage && (
+            <ClozePassageCard
+              passage={activePassage}
+              activeQNumber={q.number}
+              answers={answers}
+              questions={exam.questions}
+              showFurigana={showFurigana}
+              showVi={showVi}
+              onJumpToNumber={handleJumpToBlankNumber}
+            />
+          )}
+
+          {/* Question Prompt Box */}
+          <div className="gengo-prompt-panel">
+            {q.headwordJa && (
+              <div className="gengo-headword-pill">
+                Từ cần kiểm tra cách dùng: <b>{q.headwordJa}</b>
+              </div>
+            )}
+
+            {q.kind === "star_order" ? (
+              <div className="gengo-star-sentence">
+                {q.promptJa.split("[[STAR_SLOTS]]").map((segment, si) => (
+                  <span key={si}>
+                    <RubyText segments={segment} showFurigana={showFurigana} />
+                    {si === 0 && (
+                      <span className="gengo-star-slots-inline">
+                        {[0, 1, 2, 3].map((slotPos) => {
+                          const chosenOptIdx = hasAnswered && q.starOrder
+                            ? q.starOrder[slotPos]
+                            : scrambleSlots[slotPos];
+                          const optObj =
+                            chosenOptIdx !== undefined
+                              ? q.options[chosenOptIdx]
+                              : undefined;
+                          return (
+                            <span
+                              key={slotPos}
+                              className={`gengo-star-slot ${
+                                slotPos === starIdx ? "is-star" : ""
+                              } ${optObj ? "filled" : ""}`}
+                            >
+                              {optObj ? (
+                                <RubyText
+                                  segments={optObj.ja}
+                                  showFurigana={showFurigana}
+                                />
+                              ) : slotPos === starIdx ? (
+                                "★"
+                              ) : (
+                                "＿＿"
+                              )}
+                            </span>
+                          );
+                        })}
+                      </span>
+                    )}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <div className="gengo-prompt-ja">
+                <span className="dokkai-q-num-badge">問{q.number}</span>{" "}
+                <RichPrompt
+                  text={q.promptJa}
+                  showFurigana={showFurigana}
+                  maskTargetRuby={shouldMaskTarget}
+                  filledBlank={
+                    q.kind === "cloze" && hasAnswered
+                      ? (typeof q.options[picked].ja === "string"
+                          ? q.options[picked].ja
+                          : null)
+                      : null
+                  }
+                />
+              </div>
+            )}
+
+            {(showVi || hasAnswered) && q.promptVi && (
+              <div className="gengo-prompt-vi">
+                <PixelTranslateIcon size={13} />
+                <span>{q.promptVi}</span>
+              </div>
             )}
           </div>
-        </div>
-      </div>
 
-      <div className="dict-shortcuts-footer">
-        Đề thi thật {exam.level} · Trọn bộ 49 câu 文字・語彙 &amp; 文法 · Tiến độ tự lưu trên trình duyệt.
+          {/* Interactive Scramble Helper for 問題2 ★ */}
+          {q.kind === "star_order" && !hasAnswered && (
+            <div className="gengo-scramble-helper">
+              <div className="gengo-scramble-head">
+                <span className="px-inline-label">
+                  <PixelPuzzleIcon size={14} />
+                  <span>
+                    <b>Nháp ghép 4 mảnh câu (tùy chọn):</b> Bấm theo thứ tự 1 → 2 → ★ → 4 để thử câu rồi chọn đáp án ở ô ★.
+                  </span>
+                </span>
+                {scrambleSlots.length > 0 && (
+                  <button
+                    type="button"
+                    className="dokkai-reset-btn"
+                    onClick={() => setScrambleSlots([])}
+                  >
+                    <PixelResetIcon size={12} />
+                    <span>Xóa nháp</span>
+                  </button>
+                )}
+              </div>
+              <div className="gengo-scramble-chips">
+                {q.options.map((opt, oi) => {
+                  const pos = scrambleSlots.indexOf(oi);
+                  return (
+                    <button
+                      key={opt.label}
+                      type="button"
+                      className={`gengo-scramble-chip ${pos >= 0 ? "placed" : ""}`}
+                      onClick={() => handleToggleScramblePiece(oi)}
+                    >
+                      <span className="gengo-sc-num">{opt.label}</span>
+                      <RubyText segments={opt.ja} showFurigana={showFurigana} />
+                      {pos >= 0 && (
+                        <span className="gengo-sc-badge">
+                          {pos === starIdx ? "★" : `#${pos + 1}`}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+              {scrambleSlots.length === 4 && (
+                <div style={{ marginTop: 10 }}>
+                  <button
+                    type="button"
+                    className="pixel-btn pixel-btn-mint"
+                    onClick={() => handleSelectOption(scrambleSlots[starIdx])}
+                  >
+                    <PixelCheckIcon size={14} />
+                    <span>Nộp đáp án ★ = số {scrambleSlots[starIdx] + 1}</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 4 Answer Options */}
+          <div
+            className={`choukai-options-grid ${
+              q.kind === "usage" || q.kind === "synonym"
+                ? "gengo-options-single"
+                : ""
+            }`}
+          >
+            {q.options.map((opt, oIdx) => {
+              const chosen = picked === oIdx;
+              const revealCorrect = hasAnswered && oIdx === q.correctIndex;
+              const statusClass = revealCorrect
+                ? "ok"
+                : chosen && !isCorrect
+                  ? "no"
+                  : "";
+              const optContent =
+                q.kind === "usage" && typeof opt.ja === "string" ? (
+                  <RichPrompt text={opt.ja} showFurigana={showOptionRuby} />
+                ) : (
+                  <RubyText segments={opt.ja} showFurigana={showOptionRuby} />
+                );
+
+              return (
+                <button
+                  key={opt.label}
+                  type="button"
+                  className={`choukai-opt-btn ${statusClass}`}
+                  onClick={() => handleSelectOption(oIdx)}
+                >
+                  <span className="choukai-opt-num">{opt.label}</span>
+                  <div className="choukai-opt-content">
+                    <div className="choukai-opt-ja">{optContent}</div>
+                    {(hasAnswered || showVi) && opt.vi && (
+                      <div className="choukai-opt-vi">{opt.vi}</div>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Instant Feedback & Explanation */}
+          {hasAnswered && (
+            <div className={`dict-feedback ${isCorrect ? "ok" : "warn"}`}>
+              <div className="dict-feedback-head">
+                {isCorrect ? (
+                  <span className="px-inline-label">
+                    <PixelCheckIcon size={15} />
+                    <span>せいかい! Chính xác (Đáp án {q.correctIndex + 1})</span>
+                  </span>
+                ) : (
+                  <span className="px-inline-label">
+                    <PixelCrossIcon size={14} />
+                    <span>
+                      Bạn chọn {picked + 1} — Đáp án đúng là <b>số {q.correctIndex + 1}</b>
+                    </span>
+                  </span>
+                )}
+              </div>
+              {q.kind === "star_order" && q.starOrder && (
+                <div className="gengo-star-solution">
+                  <b>Thứ tự chuẩn:</b>{" "}
+                  {q.starOrder.map((oi, pos) => (
+                    <span
+                      key={pos}
+                      className={`gengo-sol-chip ${pos === starIdx ? "star" : ""}`}
+                    >
+                      {pos === starIdx ? "★ " : ""}
+                      {oi + 1}.{" "}
+                      <RubyText
+                        segments={q.options[oi].ja}
+                        showFurigana={showFurigana}
+                      />
+                    </span>
+                  ))}
+                </div>
+              )}
+              <div className="choukai-clue-text">
+                <span className="px-inline-label study-clue-lead">
+                  <PixelLightbulbIcon size={14} />
+                  <b>Giải thích &amp; mẹo JLPT:</b>
+                </span>{" "}
+                {q.explanationVi}
+              </div>
+            </div>
+          )}
+
+          {/* Footer Controls */}
+          <div className="choukai-script-controls">
+            <span className="study-muted-note">
+              Câu {safeIdx + 1}/{filteredQuestions.length} trong mục hiện tại
+            </span>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              {safeIdx + 1 < filteredQuestions.length && hasAnswered && (
+                <button
+                  type="button"
+                  className="pixel-btn pixel-btn-purple"
+                  onClick={() => setIdx((v) => v + 1)}
+                >
+                  <span>Câu tiếp</span>
+                  <PixelArrowRightIcon size={14} />
+                </button>
+              )}
+              {totalAnswered > 0 && (
+                <button
+                  type="button"
+                  className="pixel-icon-btn"
+                  onClick={() => {
+                    setAnswers({});
+                    retroAudio.playClick();
+                  }}
+                >
+                  <PixelResetIcon size={13} />
+                  <span>Làm lại toàn bộ</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="dict-shortcuts-footer">
+          Đề thi thật {exam.level} · Trọn bộ {exam.questions.length} câu 文字・語彙 &amp; 文法 · Tiến độ tự lưu trên trình duyệt.
+        </div>
       </div>
     </div>
   );

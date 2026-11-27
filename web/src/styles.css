@@ -7,7 +7,20 @@
   --accent-mint: #46b89d;
   --paper-bg: #f6f2e9;
   --paper-ink: #1e2130;
-  --font-jp: "DotGothic16", "Hiragino Kaku Gothic ProN", monospace;
+  --washi-bg: #f5eee0;
+  --washi-bar: #ece2ce;
+  --washi-card: #fdf9f1;
+  --washi-soft: #f6efe0;
+  --washi-border: #dfd1b6;
+  --washi-border-strong: #c9b592;
+  --washi-ink: #241712;
+  --washi-muted: #6e5745;
+  --washi-shu: #b8382c;
+  --washi-matcha: #2f5c3a;
+  --washi-indigo: #2a3559;
+  --font-jp-pixel: "DotGothic16", "Hiragino Kaku Gothic ProN", monospace;
+  --font-jp-read: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  --font-jp: var(--font-jp-read);
   --font-pixel-en: "Press Start 2P", "DotGothic16", monospace;
   --font-vi: "Be Vietnam Pro", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -43,59 +56,105 @@ body,
   padding: 0;
   justify-content: flex-start;
   align-items: stretch;
-  background: #f5eee0;
-  color: #241712;
+  background: var(--washi-bg);
+  color: var(--washi-ink);
+}
+
+.app-shell.app-shell-reading {
+  padding: 14px 16px 32px;
+}
+
+.study-status-card {
+  max-width: 520px;
+  margin: 72px auto;
+  padding: 24px 28px;
+  background: var(--washi-card);
+  border: 2px solid var(--washi-border);
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 4px 0 rgba(36, 23, 18, 0.06);
+}
+
+.study-status-ja {
+  font-family: var(--font-jp-read);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--washi-ink);
+}
+
+.px-inline-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  vertical-align: middle;
 }
 
 .topbar-series {
-  font-family: var(--font-jp);
-  font-size: 11px;
-  color: #7d8fb8;
-  letter-spacing: 0.06em;
+  font-family: var(--font-vi);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--washi-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .topbar-title {
-  font-family: var(--font-jp);
-  font-size: 15px;
-  color: #f5f1e6;
+  font-family: var(--font-jp-read);
+  font-size: 15.5px;
+  font-weight: 800;
+  color: var(--washi-ink);
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .level-pill {
   font-family: var(--font-vi);
-  font-size: 10px;
-  font-weight: 700;
-  background: #232d4f;
-  color: var(--accent-amber);
-  padding: 2px 7px;
-  border: 1px solid #3c4d82;
+  font-size: 10.5px;
+  font-weight: 800;
+  background: #efe2c6;
+  color: #6e3f27;
+  padding: 2px 8px;
+  border: 1.5px solid #d5bf94;
+  border-radius: 6px;
 }
 
 .pixel-icon-btn {
-  font-family: var(--font-jp);
-  font-size: 12px;
-  color: #f5f1e6;
-  background: #18203a;
-  border: 2px solid #f5f1e6;
-  padding: 5px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-vi);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--washi-ink);
+  background: var(--washi-card);
+  border: 1.5px solid var(--washi-border-strong);
+  border-radius: 8px;
+  padding: 6px 11px;
   cursor: pointer;
-  transition: transform 0.08s ease, background 0.12s ease;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease, transform 0.08s ease;
 }
 
-.pixel-icon-btn:hover {
-  background: #28355e;
+.pixel-icon-btn:hover:not(:disabled) {
+  background: #f2e8d4;
+  border-color: var(--washi-ink);
 }
 
-.pixel-icon-btn:active {
+.pixel-icon-btn:active:not(:disabled) {
   transform: translateY(1px);
 }
 
+.pixel-icon-btn:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
 .pixel-icon-btn.active {
-  background: var(--accent-mint);
-  color: #0b0e1a;
-  border-color: #f5f1e6;
+  background: var(--washi-ink);
+  color: var(--washi-card);
+  border-color: var(--washi-ink);
 }
 
 .canvas-viewport {
@@ -177,43 +236,70 @@ rt {
 }
 
 .pixel-btn {
-  font-family: var(--font-jp);
-  font-size: clamp(13px, 1.6vw, 16px);
-  letter-spacing: 0.04em;
-  padding: 9px 18px;
-  border: 2px solid #0b0e1a;
-  box-shadow: 0 0 0 2px #f5f1e6, 4px 4px 0 2px rgba(0, 0, 0, 0.55);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: var(--font-vi);
+  font-size: 13.5px;
+  font-weight: 700;
+  padding: 8px 15px;
+  border: 2px solid var(--washi-ink);
+  border-radius: 9px;
+  box-shadow: 0 3px 0 rgba(36, 23, 18, 0.12);
   cursor: pointer;
-  transition: transform 0.08s ease, filter 0.12s ease;
+  transition: transform 0.08s ease, background 0.12s ease, border-color 0.12s ease;
 }
 
 .pixel-btn:hover {
-  filter: brightness(1.08);
   transform: translateY(-1px);
 }
 
 .pixel-btn:active {
-  transform: translateY(2px);
+  transform: translateY(1px);
+  box-shadow: none;
 }
 
 .pixel-btn-cream {
-  background: #f5f1e6;
-  color: #0b0e1a;
+  background: var(--washi-ink);
+  color: var(--washi-card);
+  border-color: var(--washi-ink);
+}
+
+.pixel-btn-cream:hover {
+  background: var(--washi-shu);
+  border-color: var(--washi-shu);
 }
 
 .pixel-btn-purple {
-  background: var(--accent-purple);
-  color: #ffffff;
+  background: var(--washi-shu);
+  color: #fffdf8;
+  border-color: #8f281f;
+}
+
+.pixel-btn-purple:hover {
+  background: #9f2d23;
 }
 
 .pixel-btn-mint {
-  background: var(--accent-mint);
-  color: #0b0e1a;
+  background: var(--washi-matcha);
+  color: #fffdf8;
+  border-color: #1f4228;
+}
+
+.pixel-btn-mint:hover {
+  background: #244a2e;
 }
 
 .pixel-btn-dark {
-  background: #18203a;
-  color: #f5f1e6;
+  background: #f3ead7;
+  color: var(--washi-ink);
+  border-color: var(--washi-border-strong);
+}
+
+.pixel-btn-dark:hover {
+  background: #e8dbc1;
+  border-color: var(--washi-ink);
 }
 
 .scene-hud-top {
@@ -1017,65 +1103,217 @@ rt {
   }
 }
 
-/* Daily Dictation Mode */
+/* =====================================================================
+ * UNIFIED WARM WASHI STUDY & JLPT EXAM SUITE
+ * (Dictation, JLPT Gengo, JLPT Dokkai, JLPT Choukai)
+ * ===================================================================== */
+
 .dict-shell {
   width: 100%;
-  max-width: 960px;
-  background: #101422;
-  border: 2px solid #2b3556;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65);
-  overflow: hidden;
+  min-height: 100vh;
+  background: var(--washi-bg);
+  color: var(--washi-ink);
+  display: flex;
+  flex-direction: column;
+}
+
+.dict-shell rt {
+  font-family: var(--font-jp-read);
+  font-size: 0.54em;
+  color: #9a3a22;
+  font-weight: 500;
 }
 
 .dict-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+  width: 100%;
+  background: var(--washi-bar);
+  border-bottom: 2px solid #d8c8ab;
+}
+
+.dict-topbar-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 11px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  background: #0b0e1a;
-  border-bottom: 1px solid #242d4a;
-  gap: 12px;
+  gap: 14px;
+}
+
+.dict-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .dict-title-group {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex: 1;
+  min-width: 0;
 }
 
+.dict-title-group .topbar-title > span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.dict-topbar-inner > .pixel-icon-btn {
+  flex-shrink: 0;
+}
+
+@media (max-width: 820px) {
+  .dict-topbar-inner {
+    flex-wrap: wrap;
+  }
+  .dict-title-group {
+    order: 3;
+    flex-basis: 100%;
+  }
+}
+
+.dict-main-wrap {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 20px 20px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+/* Filter Bar & Collapsible Question Map */
 .dict-progress-area {
-  padding: 16px 22px 14px;
-  background: #13182b;
-  border-bottom: 1px solid #242d4a;
+  background: var(--washi-card);
+  border: 2px solid var(--washi-border);
+  border-radius: 14px;
+  padding: 14px 18px;
+  box-shadow: 0 3px 0 rgba(36, 23, 18, 0.05);
+}
+
+.study-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.study-seg-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.study-filter-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.study-select-wrap {
+  display: inline-flex;
+  align-items: center;
+}
+
+.study-select {
+  font-family: var(--font-vi);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--washi-ink);
+  background: var(--washi-soft);
+  border: 1.5px solid var(--washi-border-strong);
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  max-width: 240px;
+}
+
+.study-select:focus {
+  outline: none;
+  border-color: var(--washi-ink);
+}
+
+.study-progress-slim {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.study-progress-slim .dict-progress-track {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.study-progress-caption {
+  font-size: 12px;
+  color: var(--washi-muted);
+  white-space: nowrap;
+}
+
+.study-progress-caption b {
+  color: var(--washi-ink);
+}
+
+.study-map-drawer {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--washi-border);
+}
+
+.study-muted-note {
+  font-size: 13px;
+  color: var(--washi-muted);
+}
+
+.study-clue-lead {
+  color: var(--washi-ink);
 }
 
 .dict-stats-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   font-size: 13px;
-  color: #b7c4e0;
+  color: var(--washi-muted);
   margin-bottom: 10px;
 }
 
+.dict-stats-row b {
+  color: var(--washi-ink);
+}
+
 .dict-streak {
-  color: var(--accent-amber);
-  font-weight: 700;
+  color: var(--washi-shu);
+  font-weight: 800;
 }
 
 .dict-progress-track {
-  height: 8px;
-  background: #0b0e1a;
-  border: 1px solid #2b3556;
+  height: 7px;
+  background: #ebe1cd;
+  border: 1px solid #d5c5a7;
+  border-radius: 99px;
   overflow: hidden;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .dict-progress-fill {
   height: 100%;
-  background: var(--accent-mint);
+  background: var(--washi-matcha);
   transition: width 0.25s ease;
 }
 
@@ -1086,38 +1324,56 @@ rt {
 }
 
 .dict-dot {
-  min-width: 28px;
-  height: 26px;
-  font-family: var(--font-jp);
+  min-width: 31px;
+  height: 28px;
+  font-family: var(--font-mono);
   font-size: 12px;
-  background: #19213b;
-  color: #9ab0d6;
-  border: 1px solid #2d3a60;
+  font-weight: 700;
+  background: var(--washi-soft);
+  color: #5b483a;
+  border: 1.5px solid var(--washi-border);
+  border-radius: 7px;
   cursor: pointer;
+  transition: background 0.1s ease, border-color 0.1s ease;
+}
+
+.dict-dot:hover {
+  border-color: var(--washi-ink);
+  color: var(--washi-ink);
 }
 
 .dict-dot.done {
-  background: #226e68;
-  color: #ffffff;
-  border-color: var(--accent-mint);
+  background: #e5f3e8;
+  color: var(--washi-matcha);
+  border-color: #6ea37a;
+}
+
+.dict-dot.wrong {
+  background: #fceae8;
+  color: var(--washi-shu);
+  border-color: #d98279;
 }
 
 .dict-dot.current {
-  background: var(--accent-purple);
-  color: #ffffff;
-  border-color: #f5f1e6;
-  font-weight: 700;
+  background: var(--washi-ink);
+  color: var(--washi-card);
+  border-color: var(--washi-ink);
 }
 
+/* Primary Study Paper Card */
 .dict-card {
-  padding: 22px 24px 24px;
+  background: var(--washi-card);
+  border: 2px solid var(--washi-border);
+  border-radius: 14px;
+  padding: 24px 26px 26px;
+  box-shadow: 0 4px 0 rgba(36, 23, 18, 0.06);
 }
 
 .dict-audio-bar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 14px;
 }
 
@@ -1127,38 +1383,51 @@ rt {
 }
 
 .dict-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-family: var(--font-vi);
-  font-size: 12px;
-  font-weight: 600;
-  background: #18203a;
-  color: #c5d1eb;
-  border: 1px solid #354572;
-  padding: 7px 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  background: var(--washi-soft);
+  color: #4f3b2e;
+  border: 1.5px solid var(--washi-border);
+  border-radius: 8px;
+  padding: 6px 11px;
   cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
 }
 
 .dict-chip:hover {
-  background: #233056;
+  background: #ece1cb;
+  border-color: #a68d68;
+  color: var(--washi-ink);
 }
 
 .dict-chip.active {
-  background: var(--accent-amber);
-  color: #0b0e1a;
-  border-color: var(--accent-amber);
+  background: var(--washi-ink);
+  color: var(--washi-card);
+  border-color: var(--washi-ink);
 }
 
 .dict-speaker-tag {
   font-size: 13px;
-  color: #9ab0d6;
+  color: var(--washi-muted);
   margin-bottom: 12px;
 }
 
+.dict-speaker-tag b {
+  color: var(--washi-ink);
+}
+
 .dict-meaning-peek {
-  background: #1b223d;
-  border-left: 4px solid var(--accent-amber);
+  background: #fbf3df;
+  border: 1.5px solid #e4cfa0;
+  border-left: 4px solid #b87928;
+  border-radius: 8px;
   padding: 10px 14px;
   font-size: 13.5px;
-  color: #f5f1e6;
+  color: var(--washi-ink);
   margin-bottom: 14px;
 }
 
@@ -1170,20 +1439,31 @@ rt {
 }
 
 .dict-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-family: var(--font-vi);
   font-size: 13px;
-  font-weight: 600;
-  background: #151b30;
-  color: #9ab0d6;
-  border: 2px solid #2b3556;
-  padding: 7px 14px;
+  font-weight: 700;
+  background: var(--washi-soft);
+  color: var(--washi-muted);
+  border: 1.5px solid var(--washi-border);
+  border-radius: 9px;
+  padding: 8px 14px;
   cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.dict-mode-btn:hover {
+  border-color: var(--washi-border-strong);
+  color: var(--washi-ink);
 }
 
 .dict-mode-btn.active {
-  background: #222c4a;
-  color: #ffffff;
-  border-color: var(--accent-mint);
+  background: var(--washi-card);
+  color: var(--washi-ink);
+  border-color: var(--washi-ink);
+  box-shadow: 0 2px 0 rgba(36, 23, 18, 0.12);
 }
 
 .dict-form {
@@ -1192,24 +1472,27 @@ rt {
 
 .dict-input {
   width: 100%;
-  font-family: var(--font-jp);
-  font-size: clamp(18px, 2.4vw, 22px);
+  font-family: var(--font-jp-read);
+  font-size: clamp(18px, 2.2vw, 22px);
+  font-weight: 500;
   padding: 14px 16px;
-  background: #0b0e1a;
-  color: #ffffff;
-  border: 2px solid #4d6196;
+  background: #fffdf9;
+  color: var(--washi-ink);
+  border: 2px solid var(--washi-border-strong);
+  border-radius: 10px;
   outline: none;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
 }
 
 .dict-input:focus {
-  border-color: var(--accent-mint);
-  box-shadow: 0 0 0 3px rgba(70, 184, 157, 0.2);
+  border-color: var(--washi-ink);
+  box-shadow: 0 0 0 3px rgba(184, 56, 44, 0.14);
 }
 
 .dict-input::placeholder {
   font-family: var(--font-vi);
-  font-size: 15px;
-  color: #7d8fb8;
+  font-size: 14.5px;
+  color: #9a8672;
 }
 
 .dict-tiles-wrap {
@@ -1217,10 +1500,11 @@ rt {
 }
 
 .dict-tile-answer-box {
-  min-height: 68px;
-  padding: 12px;
-  background: #0b0e1a;
-  border: 2px dashed #4d6196;
+  min-height: 70px;
+  padding: 12px 14px;
+  background: #f9f3e5;
+  border: 2px dashed var(--washi-border-strong);
+  border-radius: 10px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1230,7 +1514,7 @@ rt {
 
 .dict-tile-placeholder {
   font-size: 13px;
-  color: #7d8fb8;
+  color: #8c7662;
 }
 
 .dict-tile-bank {
@@ -1240,29 +1524,37 @@ rt {
 }
 
 .dict-tile {
-  font-family: var(--font-jp);
-  font-size: 18px;
-  line-height: 1.7;
-  background: #1b2442;
-  color: #f5f1e6;
-  border: 2px solid #4d6196;
-  padding: 6px 12px;
+  font-family: var(--font-jp-read);
+  font-size: 17.5px;
+  font-weight: 500;
+  line-height: 1.75;
+  background: var(--washi-soft);
+  color: var(--washi-ink);
+  border: 1.5px solid var(--washi-border-strong);
+  border-radius: 9px;
+  padding: 6px 13px;
   cursor: pointer;
-  transition: transform 0.08s ease, background 0.12s ease;
+  transition: transform 0.08s ease, background 0.12s ease, border-color 0.12s ease;
 }
 
 .dict-tile:hover:not(:disabled) {
-  background: #283660;
+  background: #ede1ca;
+  border-color: var(--washi-ink);
   transform: translateY(-1px);
 }
 
 .dict-tile.placed {
-  background: var(--accent-purple);
-  border-color: #f5f1e6;
+  background: var(--washi-ink);
+  color: var(--washi-card);
+  border-color: var(--washi-ink);
+}
+
+.dict-tile.placed rt {
+  color: #f3c88b;
 }
 
 .dict-tile.used {
-  opacity: 0.25;
+  opacity: 0.32;
   cursor: default;
 }
 
@@ -1274,8 +1566,8 @@ rt {
 }
 
 .dict-actions .pixel-btn {
-  font-size: 14px;
-  padding: 8px 14px;
+  font-size: 13.5px;
+  padding: 8px 15px;
 }
 
 .dict-nav-right {
@@ -1286,97 +1578,112 @@ rt {
 
 .dict-feedback {
   margin-top: 18px;
-  padding: 14px 16px;
-  border: 2px solid #354572;
-  background: #151b30;
+  padding: 15px 18px;
+  border: 2px solid var(--washi-border);
+  border-radius: 11px;
+  background: var(--washi-soft);
 }
 
 .dict-feedback.ok {
-  border-color: var(--accent-mint);
-  background: rgba(34, 110, 104, 0.22);
+  border-color: var(--washi-matcha);
+  background: #edf6ee;
 }
 
 .dict-feedback.warn {
-  border-color: var(--accent-amber);
+  border-color: var(--washi-shu);
+  background: #fdf2ef;
 }
 
 .dict-feedback-head {
-  font-size: 13.5px;
-  color: #f5f1e6;
-  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--washi-ink);
+  margin-bottom: 8px;
+}
+
+.dict-feedback.ok .dict-feedback-head {
+  color: var(--washi-matcha);
+}
+
+.dict-feedback.warn .dict-feedback-head {
+  color: var(--washi-shu);
 }
 
 .dict-diff-line {
-  font-family: var(--font-jp);
-  font-size: 22px;
-  line-height: 1.7;
-  letter-spacing: 0.04em;
+  font-family: var(--font-jp-read);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.75;
+  letter-spacing: 0.03em;
   word-break: break-all;
 }
 
 .diff-ch.diff-ok {
-  color: #70e0b8;
+  color: var(--washi-matcha);
 }
 
 .diff-ch.diff-wrong {
-  color: #ff7b8a;
+  color: var(--washi-shu);
   text-decoration: line-through;
-  background: rgba(232, 106, 130, 0.18);
-  padding: 0 2px;
+  background: rgba(184, 56, 44, 0.13);
+  padding: 0 3px;
+  border-radius: 3px;
 }
 
 .diff-ch.diff-missing {
-  color: #ffd875;
-  border-bottom: 2px solid #ffd875;
-  background: rgba(255, 216, 117, 0.14);
-  padding: 0 2px;
+  color: #8f560e;
+  border-bottom: 2px solid #c7831e;
+  background: rgba(217, 164, 65, 0.22);
+  padding: 0 3px;
+  border-radius: 3px;
 }
 
 .dict-answer-card {
   margin-top: 16px;
   padding: 16px 18px;
-  background: #f6f2e9;
-  color: #1e2130;
-  border: 2px solid #d4cbb8;
+  background: #f8f1e2;
+  color: var(--washi-ink);
+  border: 2px solid #dfd1b6;
+  border-radius: 11px;
 }
 
 .dict-answer-label {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.08em;
-  color: #7c42a6;
+  color: var(--washi-shu);
   margin-bottom: 6px;
 }
 
 .dict-answer-ja {
-  font-family: var(--font-jp);
-  font-size: 22px;
-  line-height: 1.9;
-  color: #151826;
-}
-
-.dict-answer-ja rt {
-  color: #7c42a6;
+  font-family: var(--font-jp-read);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.95;
+  color: var(--washi-ink);
 }
 
 .dict-answer-vi {
   font-size: 14px;
-  color: #5b554b;
+  color: var(--washi-muted);
   margin-top: 6px;
 }
 
 .dict-shortcuts-footer {
-  padding: 12px 22px;
-  background: #0b0e1a;
-  border-top: 1px solid #242d4a;
+  padding: 12px 4px 0;
+  border-top: 1.5px solid var(--washi-border);
   font-size: 12px;
-  color: #8b9cc2;
+  color: #7c634f;
 }
 
 .dict-shortcuts-footer code {
-  background: #1b233d;
-  color: var(--accent-amber);
-  padding: 1px 5px;
+  background: #ece2ce;
+  color: var(--washi-ink);
+  border: 1px solid #d5c5a7;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
 }
 
 .story-card-art-badge {
@@ -1397,99 +1704,105 @@ rt {
   color: #101322 !important;
 }
 
-/* ==================== JLPT CHOUKAI EXAM VIEW ==================== */
+/* ==================== JLPT CHOUKAI / SHARED EXAM CONTROLS ==================== */
 .choukai-section-tabs {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
 }
 
 .choukai-score-pill {
-  margin-left: auto;
-  font-size: 13px;
-  color: var(--accent-amber);
-  background: #17203d;
-  border: 1px solid #35477d;
-  padding: 4px 10px;
-}
-
-.dict-dot.wrong {
-  background: #8c2d3b;
-  color: #fff;
-  border-color: #d96b7c;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--washi-matcha);
+  background: #edf6ee;
+  border: 1.5px solid #9cc2a4;
+  border-radius: 8px;
+  padding: 5px 10px;
+  white-space: nowrap;
 }
 
 .choukai-q-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1.5px dashed var(--washi-border);
   flex-wrap: wrap;
 }
 
 .choukai-sec-badge {
   display: inline-block;
-  font-family: var(--font-jp);
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--accent-amber);
+  font-family: var(--font-jp-read);
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--washi-shu);
 }
 
 .choukai-sec-sub {
   font-size: 13px;
-  color: #9db0d9;
+  color: var(--washi-muted);
   margin-top: 3px;
 }
 
 .choukai-nav-mini {
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .choukai-player {
-  background: #0d1224;
-  border: 2px solid #2c3860;
-  padding: 12px 14px;
-  margin-bottom: 16px;
+  background: var(--washi-soft);
+  border: 1.5px solid var(--washi-border);
+  border-radius: 11px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
 }
 
 .choukai-timeline-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .choukai-time {
-  font-family: var(--font-jp);
+  font-family: var(--font-mono);
   font-size: 12px;
-  color: #9db0d9;
+  font-weight: 700;
+  color: var(--washi-muted);
   min-width: 38px;
 }
 
 .choukai-timeline {
   flex: 1;
   height: 10px;
-  background: #1c2647;
-  border: 1px solid #3c4e85;
+  background: #e5d8be;
+  border: 1px solid #cbb896;
+  border-radius: 99px;
+  overflow: hidden;
   cursor: pointer;
   position: relative;
 }
 
 .choukai-timeline-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-mint), var(--accent-amber));
+  background: linear-gradient(90deg, var(--washi-matcha), var(--washi-shu));
   transition: width 0.1s linear;
 }
 
 .choukai-pic-frame {
-  background: #f8f4ea;
-  border: 3px solid #2b3556;
-  padding: 10px;
-  margin-bottom: 16px;
+  background: #fffdf8;
+  border: 2px solid var(--washi-border);
+  border-radius: 11px;
+  padding: 12px;
+  margin-bottom: 18px;
   display: flex;
   justify-content: center;
 }
@@ -1503,30 +1816,39 @@ rt {
 }
 
 .choukai-prompt-box {
-  background: #161d36;
-  border-left: 4px solid var(--accent-amber);
-  padding: 12px 14px;
-  margin-bottom: 14px;
+  background: #f8f1e2;
+  border: 1.5px solid #e2d3b5;
+  border-left: 4px solid var(--washi-shu);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
 }
 
 .choukai-prompt-ja {
-  font-family: var(--font-jp);
-  font-size: 17px;
-  line-height: 1.85;
-  color: #ffffff;
+  font-family: var(--font-jp-read);
+  font-size: 18.5px;
+  font-weight: 500;
+  line-height: 1.95;
+  color: var(--washi-ink);
 }
 
 .choukai-prompt-vi {
-  font-size: 13px;
-  color: #b7c4e0;
-  margin-top: 4px;
+  font-size: 13.5px;
+  color: var(--washi-muted);
+  margin-top: 6px;
 }
 
 .choukai-options-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
   margin-bottom: 14px;
+}
+
+@media (max-width: 640px) {
+  .choukai-options-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .choukai-opt-btn {
@@ -1534,28 +1856,30 @@ rt {
   align-items: flex-start;
   gap: 12px;
   text-align: left;
-  background: #18203a;
-  color: #f5f1e6;
-  border: 2px solid #3d4d7e;
-  padding: 11px 14px;
+  background: #fffdf8;
+  color: var(--washi-ink);
+  border: 2px solid var(--washi-border);
+  border-radius: 11px;
+  padding: 13px 15px;
   cursor: pointer;
-  transition: transform 0.08s ease, border-color 0.12s ease, background 0.12s ease;
+  transition: transform 0.08s ease, border-color 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
 }
 
 .choukai-opt-btn:hover {
-  border-color: var(--accent-amber);
-  background: #222e52;
+  border-color: var(--washi-ink);
+  background: #faf3e4;
   transform: translateY(-1px);
+  box-shadow: 0 3px 0 rgba(36, 23, 18, 0.08);
 }
 
 .choukai-opt-btn.ok {
-  background: #174038;
-  border-color: var(--accent-mint);
+  background: #edf6ee;
+  border-color: var(--washi-matcha);
 }
 
 .choukai-opt-btn.no {
-  background: #471c26;
-  border-color: #e06c7f;
+  background: #fdf1ee;
+  border-color: var(--washi-shu);
 }
 
 .choukai-opt-num {
@@ -1564,40 +1888,59 @@ rt {
   justify-content: center;
   min-width: 28px;
   height: 28px;
-  background: #0d1224;
-  border: 2px solid #f5f1e6;
-  font-family: var(--font-jp);
-  font-weight: 700;
-  font-size: 14px;
-  color: var(--accent-amber);
+  background: #efe4cc;
+  border: 1.5px solid #cbb896;
+  border-radius: 7px;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 13.5px;
+  color: var(--washi-ink);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.choukai-opt-btn.ok .choukai-opt-num {
+  background: var(--washi-matcha);
+  border-color: var(--washi-matcha);
+  color: #fffdf8;
+}
+
+.choukai-opt-btn.no .choukai-opt-num {
+  background: var(--washi-shu);
+  border-color: var(--washi-shu);
+  color: #fffdf8;
 }
 
 .choukai-opt-content {
   flex: 1;
+  min-width: 0;
 }
 
 .choukai-opt-ja {
-  font-family: var(--font-jp);
-  font-size: 16px;
-  line-height: 1.75;
+  font-family: var(--font-jp-read);
+  font-size: 17.5px;
+  font-weight: 500;
+  line-height: 1.8;
+  color: var(--washi-ink);
 }
 
 .choukai-opt-hidden {
-  font-size: 13px;
-  color: #9bb0db;
-  padding-top: 4px;
+  font-size: 13.5px;
+  color: var(--washi-muted);
+  padding-top: 3px;
 }
 
 .choukai-opt-vi {
-  font-size: 12px;
-  color: #c7d4ee;
+  font-size: 12.5px;
+  color: var(--washi-muted);
   margin-top: 4px;
+  line-height: 1.45;
 }
 
 .choukai-clue-text {
   font-size: 13.5px;
-  line-height: 1.55;
-  color: #f5f1e6;
+  line-height: 1.65;
+  color: #3a2a22;
   margin-top: 6px;
 }
 
@@ -1606,24 +1949,27 @@ rt {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1.5px dashed var(--washi-border);
   flex-wrap: wrap;
 }
 
 .choukai-script-box {
-  margin-top: 14px;
+  margin-top: 16px;
   padding: 16px 18px;
-  background: #f6f2e9;
-  color: #1e2130;
-  border: 2px solid #d4cbb8;
+  background: #f8f1e2;
+  color: var(--washi-ink);
+  border: 2px solid var(--washi-border);
+  border-radius: 11px;
 }
 
 .choukai-script-line {
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  padding: 8px 0;
-  border-bottom: 1px dashed #d6ccba;
+  padding: 9px 0;
+  border-bottom: 1px dashed #d6c5a5;
 }
 
 .choukai-script-line:last-of-type {
@@ -1631,52 +1977,61 @@ rt {
 }
 
 .choukai-speaker-pill {
-  font-family: var(--font-jp);
+  font-family: var(--font-jp-read);
   font-size: 12px;
   font-weight: 700;
-  background: #232d4f;
-  color: var(--accent-amber);
+  background: var(--washi-indigo);
+  color: #fdf9f1;
+  border-radius: 6px;
   padding: 3px 8px;
   min-width: 58px;
   text-align: center;
   margin-top: 4px;
+  flex-shrink: 0;
 }
 
 .choukai-script-body {
   flex: 1;
+  min-width: 0;
 }
 
 .choukai-script-ja {
-  font-family: var(--font-jp);
-  font-size: 16px;
-  line-height: 1.85;
-  color: #151826;
-}
-
-.choukai-script-ja rt {
-  color: #7c42a6;
+  font-family: var(--font-jp-read);
+  font-size: 16.5px;
+  font-weight: 500;
+  line-height: 1.9;
+  color: var(--washi-ink);
 }
 
 .choukai-script-vi {
   font-size: 13px;
-  color: #554f44;
-  margin-top: 2px;
+  color: var(--washi-muted);
+  margin-top: 3px;
 }
 
 .choukai-script-box .choukai-clue-text {
-  color: #252b40;
-  background: #ebe2ce;
-  padding: 8px 12px;
-  border-left: 3px solid #7c42a6;
+  color: var(--washi-ink);
+  background: #efe4cc;
+  padding: 9px 12px;
+  border-radius: 7px;
+  border-left: 3px solid var(--washi-shu);
 }
 
+/* ==================== JLPT DOKKAI (READING) ==================== */
 .dokkai-m5-btn {
-  border-color: var(--accent-amber) !important;
-  color: var(--accent-amber) !important;
+  border-color: var(--washi-shu) !important;
+  color: var(--washi-shu) !important;
 }
 
-.dokkai-tab.solved {
-  border-color: var(--accent-mint);
+.dokkai-m5-btn:hover {
+  background: var(--washi-shu) !important;
+  color: #fffdf8 !important;
+}
+
+.dokkai-tab.solved:not(.active) {
+  background: #edf6ee;
+  border-color: #6ea37a;
+  color: var(--washi-matcha);
 }
 
 .dokkai-card .choukai-q-header > div:first-child {
@@ -1685,17 +2040,19 @@ rt {
 }
 
 .dokkai-passage-title {
-  font-family: var(--font-jp);
-  font-size: 17px;
-  color: #ffffff;
+  font-family: var(--font-jp-read);
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--washi-ink);
   margin-top: 4px;
-  line-height: 1.7;
+  line-height: 1.55;
 }
 
 .dokkai-passage-title-vi {
   font-family: var(--font-vi);
-  font-size: 13.5px;
-  color: #b7c4e0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--washi-muted);
 }
 
 .dokkai-toolbar {
@@ -1708,63 +2065,67 @@ rt {
 
 .dokkai-tip-inline {
   font-size: 12.5px;
-  color: #9bb0db;
+  color: var(--washi-muted);
 }
 
 .dokkai-context-banner {
-  background: #161f3a;
-  border-left: 4px solid #7aa2f7;
-  padding: 10px 14px;
-  margin-bottom: 14px;
+  background: #f4ecda;
+  border: 1.5px solid #dfd1b6;
+  border-left: 4px solid var(--washi-indigo);
+  border-radius: 9px;
+  padding: 11px 15px;
+  margin-bottom: 16px;
 }
 
 .dokkai-context-ja {
-  font-family: var(--font-jp);
-  font-size: 15px;
-  line-height: 1.8;
-  color: #eef3ff;
+  font-family: var(--font-jp-read);
+  font-size: 15.5px;
+  font-weight: 500;
+  line-height: 1.85;
+  color: var(--washi-ink);
 }
 
 .dokkai-context-vi {
-  font-size: 12.5px;
-  color: #a9bce3;
-  margin-top: 3px;
+  font-size: 13px;
+  color: var(--washi-muted);
+  margin-top: 4px;
 }
 
-/* Retro Authentic Paper Document Container */
+/* Authentic Japanese Document Paper */
 .dokkai-doc {
-  background: #f7f3e8;
-  color: #1c202e;
-  border: 3px solid #2a3454;
-  box-shadow: 4px 4px 0 #0a0e1b;
-  margin-bottom: 20px;
+  background: #fffdf7;
+  color: var(--washi-ink);
+  border: 2px solid #cdb998;
+  border-radius: 12px;
+  box-shadow: 0 4px 0 rgba(36, 23, 18, 0.06);
+  margin-bottom: 22px;
   overflow: hidden;
 }
 
 .dokkai-doc-memo {
-  background: #fdf8df;
-  border-color: #9e8342;
+  background: #fdf9e4;
+  border-color: #cbb270;
 }
 
 .dokkai-doc-notice {
-  background: #fffcf4;
-  border-color: #a64b3c;
+  background: #fffcf5;
+  border-color: #c88d82;
 }
 
 .dokkai-chrome-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 7px 14px;
-  font-family: var(--font-jp);
+  padding: 8px 15px;
+  font-family: var(--font-vi);
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #fffdf8;
 }
 
 .dokkai-chrome-email {
-  background: #2b4570;
+  background: var(--washi-indigo);
 }
 
 .dokkai-chrome-memo {
@@ -1772,21 +2133,22 @@ rt {
 }
 
 .dokkai-chrome-notice {
-  background: #9e3d32;
+  background: #a43b2f;
 }
 
 .dokkai-chrome-info {
-  background: #245c55;
+  background: #2f5c4a;
 }
 
 .dokkai-doc-inner {
-  padding: 16px 18px;
+  padding: 18px 20px;
 }
 
 .dokkai-meta-block {
-  background: rgba(34, 46, 82, 0.07);
-  border: 1px solid rgba(34, 46, 82, 0.18);
-  padding: 9px 12px;
+  background: #f5eee0;
+  border: 1px solid #dfd1b6;
+  border-radius: 8px;
+  padding: 10px 14px;
   margin-bottom: 14px;
   display: flex;
   flex-direction: column;
@@ -1802,51 +2164,52 @@ rt {
 }
 
 .dokkai-meta-label {
-  font-weight: 700;
-  color: #4b5572;
+  font-weight: 800;
+  color: var(--washi-muted);
   min-width: 78px;
-  font-size: 12.5px;
+  font-size: 12px;
   text-transform: uppercase;
 }
 
 .dokkai-meta-val {
-  font-family: var(--font-jp);
+  font-family: var(--font-jp-read);
   font-size: 15.5px;
-  color: #161b2a;
+  font-weight: 500;
+  color: var(--washi-ink);
 }
 
 /* Interactive Sentence Rows */
 .dokkai-sentences {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
 
 .dokkai-sent-row {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 9px 11px;
-  border-radius: 3px;
+  gap: 11px;
+  padding: 9px 12px;
+  border-radius: 8px;
   border: 1.5px solid transparent;
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(245, 238, 224, 0.35);
   cursor: pointer;
   transition: background 0.12s ease, border-color 0.12s ease;
 }
 
 .dokkai-sent-row:hover {
-  background: #fff9e6;
-  border-color: #d9b766;
+  background: #f9f0db;
+  border-color: #d9be86;
 }
 
 .dokkai-sent-row.keyline {
-  border-left: 4px solid #7c42a6;
-  background: rgba(124, 66, 166, 0.06);
+  border-left: 4px solid var(--washi-shu);
+  background: #fdf3ee;
 }
 
 .dokkai-sent-row.playing {
-  background: #dff7ee;
-  border-color: #2aa384;
+  background: #e7f4ea;
+  border-color: var(--washi-matcha);
 }
 
 .dokkai-play-pill {
@@ -1855,48 +2218,51 @@ rt {
   justify-content: center;
   width: 24px;
   height: 24px;
-  margin-top: 4px;
-  background: #232d4f;
-  color: #ffd875;
-  font-size: 11px;
+  margin-top: 5px;
+  border-radius: 6px;
+  background: #ebe0ca;
+  color: var(--washi-ink);
   flex-shrink: 0;
 }
 
 .dokkai-play-pill.on {
-  background: #1f8a70;
-  color: #ffffff;
+  background: var(--washi-matcha);
+  color: #fffdf8;
 }
 
 .dokkai-sent-content {
   flex: 1;
+  min-width: 0;
 }
 
 .dokkai-sent-tag {
   display: inline-block;
-  font-family: var(--font-jp);
-  font-size: 13px;
+  font-family: var(--font-jp-read);
+  font-size: 12.5px;
   font-weight: 700;
-  color: #1f5c53;
-  background: #d8efe9;
+  color: var(--washi-matcha);
+  background: #e5f3e8;
+  border-radius: 5px;
   padding: 1px 8px;
   margin-bottom: 4px;
 }
 
 .dokkai-sent-ja {
-  font-family: var(--font-jp);
-  font-size: 17px;
-  line-height: 2.05;
-  color: #141826;
+  font-family: var(--font-jp-read);
+  font-size: 17.5px;
+  font-weight: 500;
+  line-height: 2.1;
+  color: var(--washi-ink);
 }
 
 .dokkai-doc rt {
-  color: #7c42a6;
-  font-size: 0.62em;
+  color: #9a3a22;
+  font-size: 0.56em;
 }
 
 .dokkai-sent-vi {
-  font-size: 13px;
-  color: #4f4a3f;
+  font-size: 13.5px;
+  color: var(--washi-muted);
   margin-top: 3px;
   line-height: 1.5;
 }
@@ -1904,25 +2270,22 @@ rt {
 .dokkai-doc-footer {
   margin-top: 14px;
   padding-top: 10px;
-  border-top: 1.5px dashed #c8bfa8;
+  border-top: 1.5px dashed #d3c3a4;
   text-align: right;
-  font-family: var(--font-jp);
+  font-family: var(--font-jp-read);
   font-size: 14.5px;
   line-height: 1.9;
-  color: #363c52;
+  color: #4f4136;
 }
 
-/* Interactive Condition Filter Panel (問題6) */
+/* Interactive Condition Filter Panel (問題6) — Washi Matcha Theme */
 .dokkai-filter-panel {
-  background: #142230;
-  color: #eef5f2;
-  border: 2px solid #356862;
-  padding: 12px 14px;
-  margin-bottom: 14px;
-}
-
-.dokkai-filter-panel rt {
-  color: #ffd875;
+  background: #f3ecdc;
+  color: var(--washi-ink);
+  border: 1.5px solid #c9b998;
+  border-radius: 10px;
+  padding: 13px 15px;
+  margin-bottom: 16px;
 }
 
 .dokkai-filter-head {
@@ -1932,29 +2295,32 @@ rt {
   gap: 10px;
   flex-wrap: wrap;
   font-size: 13px;
-  margin-bottom: 9px;
+  margin-bottom: 10px;
 }
 
 .dokkai-match-count {
-  background: #1d4a43;
-  border: 1px solid #46b89d;
-  color: #9ef5de;
-  padding: 2px 9px;
+  background: #e5f3e8;
+  border: 1.5px solid #7fb08a;
+  border-radius: 7px;
+  color: var(--washi-matcha);
+  padding: 2px 10px;
   font-size: 12.5px;
+  font-weight: 700;
 }
 
 .dokkai-preset-row {
   display: flex;
   gap: 7px;
   flex-wrap: wrap;
-  margin-bottom: 9px;
+  margin-bottom: 10px;
 }
 
 .dokkai-preset-btn {
-  background: #23384d;
-  color: #ffd875;
-  border: 1.5px solid #527394;
-  padding: 4px 10px;
+  background: var(--washi-card);
+  color: var(--washi-ink);
+  border: 1.5px solid var(--washi-border-strong);
+  border-radius: 7px;
+  padding: 5px 11px;
   font-size: 12.5px;
   font-weight: 700;
   cursor: pointer;
@@ -1962,17 +2328,22 @@ rt {
 
 .dokkai-preset-btn:hover,
 .dokkai-preset-btn.active {
-  background: #ffd875;
-  color: #141c2b;
-  border-color: #ffd875;
+  background: var(--washi-ink);
+  color: var(--washi-card);
+  border-color: var(--washi-ink);
 }
 
 .dokkai-reset-btn {
-  background: #3d2430;
-  color: #ffadb9;
-  border: 1.5px solid #8a4354;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #fdf1ee;
+  color: var(--washi-shu);
+  border: 1.5px solid #d9948b;
+  border-radius: 7px;
   padding: 4px 10px;
   font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
 }
 
@@ -1986,9 +2357,10 @@ rt {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: #1d2d42;
-  color: #eaf2ff;
-  border: 1.5px solid #446087;
+  background: #fffdf8;
+  color: var(--washi-ink);
+  border: 1.5px solid var(--washi-border-strong);
+  border-radius: 8px;
   padding: 5px 10px;
   cursor: pointer;
   font-size: 13px;
@@ -1996,23 +2368,28 @@ rt {
 }
 
 .dokkai-filter-chip:hover {
-  border-color: #79e6c9;
+  border-color: var(--washi-matcha);
 }
 
 .dokkai-filter-chip.active {
-  background: #1f7a65;
-  border-color: #82f5d6;
-  color: #ffffff;
+  background: var(--washi-matcha);
+  border-color: var(--washi-matcha);
+  color: #fffdf8;
+}
+
+.dokkai-filter-chip.active rt {
+  color: #e6f5ea;
 }
 
 .dokkai-chip-ja {
-  font-family: var(--font-jp);
+  font-family: var(--font-jp-read);
   font-size: 14px;
+  font-weight: 600;
 }
 
 .dokkai-chip-vi {
   font-size: 11.5px;
-  opacity: 0.88;
+  opacity: 0.85;
 }
 
 /* Info Lookup Tables (問題6) */
@@ -2021,11 +2398,11 @@ rt {
 }
 
 .dokkai-table-caption {
-  font-family: var(--font-jp);
-  font-size: 15px;
-  font-weight: 700;
-  color: #1f5c53;
-  margin-bottom: 6px;
+  font-family: var(--font-jp-read);
+  font-size: 15.5px;
+  font-weight: 800;
+  color: var(--washi-matcha);
+  margin-bottom: 7px;
 }
 
 .dokkai-table-scroll {
@@ -2036,28 +2413,25 @@ rt {
   width: 100%;
   border-collapse: collapse;
   background: #ffffff;
-  border: 2px solid #2b3a55;
-  font-family: var(--font-jp);
+  border: 2px solid #cdb998;
+  font-family: var(--font-jp-read);
   font-size: 15px;
 }
 
 .dokkai-table th {
-  background: #23364f;
-  color: #f8f4e8;
-  padding: 9px 10px;
-  border: 1px solid #3c5475;
+  background: #ece2ce;
+  color: var(--washi-ink);
+  padding: 9px 11px;
+  border: 1px solid #cdb998;
   text-align: left;
+  font-weight: 800;
   line-height: 1.75;
 }
 
-.dokkai-table th rt {
-  color: #ffd875;
-}
-
 .dokkai-table td {
-  padding: 9px 10px;
-  border: 1px solid #c9c2b0;
-  color: #161b29;
+  padding: 9px 11px;
+  border: 1px solid #dfd1b6;
+  color: var(--washi-ink);
   line-height: 1.85;
   vertical-align: middle;
 }
@@ -2067,12 +2441,12 @@ rt {
 }
 
 .dokkai-table tbody tr:nth-child(even) {
-  background: #faf7ef;
+  background: #faf6ec;
 }
 
 .dokkai-table tbody tr.dokkai-row-match {
-  background: #c8f5e5 !important;
-  outline: 2px solid #1b8c6f;
+  background: #dff3e4 !important;
+  outline: 2px solid var(--washi-matcha);
   outline-offset: -2px;
 }
 
@@ -2081,34 +2455,31 @@ rt {
 }
 
 .dokkai-match-star {
-  color: #0e7359;
-  font-weight: 700;
+  color: var(--washi-matcha);
+  font-weight: 800;
 }
 
 .dokkai-table-footnote {
-  margin-top: 6px;
-  font-family: var(--font-jp);
+  margin-top: 7px;
+  font-family: var(--font-jp-read);
   font-size: 13.5px;
   line-height: 1.8;
-  color: #3a3f54;
+  color: var(--washi-muted);
 }
 
 /* Interactive Condition Simulator (Notice Q24) */
 .dokkai-sim-box {
   margin-top: 14px;
-  padding: 12px 14px;
-  background: #172038;
-  color: #f4f1e8;
-  border: 2px solid #3e4f7d;
-}
-
-.dokkai-sim-box rt {
-  color: #ffd875;
+  padding: 13px 15px;
+  background: #f5eee0;
+  color: var(--washi-ink);
+  border: 1.5px solid #d5c5a7;
+  border-radius: 10px;
 }
 
 .dokkai-sim-prompt {
   font-size: 13px;
-  color: #c8d6f2;
+  color: var(--washi-muted);
   margin-bottom: 9px;
 }
 
@@ -2120,24 +2491,25 @@ rt {
 }
 
 .dokkai-sim-btn {
-  background: #232f52;
-  color: #f4f1e8;
-  border: 2px solid #4c5f94;
-  padding: 7px 12px;
+  background: #fffdf8;
+  color: var(--washi-ink);
+  border: 1.5px solid var(--washi-border-strong);
+  border-radius: 8px;
+  padding: 7px 13px;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
 }
 
 .dokkai-sim-btn.active.accent-sunny {
-  background: #b5651d;
-  border-color: #ffd875;
+  background: #b87928;
+  border-color: #8f5c1a;
   color: #ffffff;
 }
 
 .dokkai-sim-btn.active.accent-rain {
-  background: #1f6885;
-  border-color: #8de5ff;
+  background: var(--washi-indigo);
+  border-color: #1c243d;
   color: #ffffff;
 }
 
@@ -2145,39 +2517,44 @@ rt {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
-  background: #0e1426;
-  border-left: 4px solid var(--accent-amber);
+  padding: 11px 14px;
+  background: #fffdf8;
+  border: 1.5px solid #dfd1b6;
+  border-left: 4px solid #b87928;
+  border-radius: 8px;
   flex-wrap: wrap;
 }
 
 .dokkai-sim-result.accent-rain {
-  border-left-color: #6fd3ff;
+  border-left-color: var(--washi-indigo);
 }
 
 .dokkai-sim-badge {
-  font-family: var(--font-jp);
-  font-size: 14px;
-  font-weight: 700;
-  background: #ffd875;
-  color: #121728;
+  font-family: var(--font-jp-read);
+  font-size: 13.5px;
+  font-weight: 800;
+  background: #f5e1b5;
+  color: #5e3b09;
+  border-radius: 6px;
   padding: 4px 10px;
 }
 
 .dokkai-sim-result.accent-rain .dokkai-sim-badge {
-  background: #7ad7ff;
+  background: #dde4f4;
+  color: var(--washi-indigo);
 }
 
 .dokkai-sim-ja {
-  font-family: var(--font-jp);
+  font-family: var(--font-jp-read);
   font-size: 15.5px;
+  font-weight: 600;
   line-height: 1.85;
-  color: #ffffff;
+  color: var(--washi-ink);
 }
 
 .dokkai-sim-vi {
   font-size: 12.5px;
-  color: #bfd0ef;
+  color: var(--washi-muted);
 }
 
 /* Optional Timeline Helper (Office Memo Q23) */
@@ -2186,59 +2563,65 @@ rt {
 }
 
 .dokkai-timeline-toggle {
-  background: #263457;
-  color: #ffd875;
-  border: 2px solid #495d8f;
-  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #f3ead7;
+  color: var(--washi-ink);
+  border: 1.5px solid var(--washi-border-strong);
+  border-radius: 8px;
+  padding: 7px 13px;
   font-size: 12.5px;
   font-weight: 700;
   cursor: pointer;
 }
 
+.dokkai-timeline-toggle:hover {
+  border-color: var(--washi-ink);
+}
+
 .dokkai-timeline-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 8px;
   margin-top: 10px;
 }
 
 .dokkai-tl-node {
-  background: #172038;
-  color: #eef3ff;
-  border: 2px solid #3c4d7a;
-  padding: 8px 10px;
-}
-
-.dokkai-tl-node rt {
-  color: #ffd875;
+  background: #f8f1e2;
+  color: var(--washi-ink);
+  border: 1.5px solid var(--washi-border);
+  border-radius: 9px;
+  padding: 9px 11px;
 }
 
 .dokkai-tl-node.emphasis {
-  background: #3d1d2d;
-  border-color: #ff8aa0;
+  background: #fdf1ee;
+  border-color: var(--washi-shu);
 }
 
 .dokkai-tl-time {
-  font-family: var(--font-jp);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--accent-amber);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--washi-indigo);
 }
 
 .dokkai-tl-node.emphasis .dokkai-tl-time {
-  color: #ff9eb0;
+  color: var(--washi-shu);
 }
 
 .dokkai-tl-ja {
-  font-family: var(--font-jp);
-  font-size: 13.5px;
+  font-family: var(--font-jp-read);
+  font-size: 14px;
+  font-weight: 600;
   line-height: 1.75;
   margin-top: 3px;
 }
 
 .dokkai-tl-vi {
   font-size: 12px;
-  color: #b7c8ea;
+  color: var(--washi-muted);
   margin-top: 2px;
 }
 
@@ -2248,26 +2631,29 @@ rt {
 }
 
 .dokkai-section-heading {
-  font-family: var(--font-jp);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--accent-mint);
-  margin-bottom: 10px;
+  font-family: var(--font-vi);
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--washi-matcha);
+  margin-bottom: 12px;
 }
 
 .dokkai-q-block {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .dokkai-q-num-badge {
   display: inline-block;
-  background: var(--accent-amber);
-  color: #131829;
-  font-weight: 700;
+  background: var(--washi-shu);
+  color: #fffdf8;
+  font-family: var(--font-jp-read);
+  font-weight: 800;
   font-size: 13px;
-  padding: 1px 7px;
-  margin-right: 4px;
+  border-radius: 6px;
+  padding: 1px 8px;
+  margin-right: 6px;
+  vertical-align: 1px;
 }
 
 .dokkai-options-grid {
@@ -2284,9 +2670,9 @@ rt {
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px;
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 2px dashed #2e3b63;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1.5px dashed var(--washi-border);
 }
 
 @media (min-width: 800px) {
@@ -2296,15 +2682,16 @@ rt {
 }
 
 .dokkai-study-box {
-  background: #12182d;
-  border: 2px solid #2d3b66;
-  padding: 12px 14px;
+  background: var(--washi-soft);
+  border: 1.5px solid var(--washi-border);
+  border-radius: 11px;
+  padding: 14px 16px;
 }
 
 .dokkai-study-head {
   font-size: 13.5px;
-  font-weight: 700;
-  color: var(--accent-amber);
+  font-weight: 800;
+  color: var(--washi-ink);
   margin-bottom: 10px;
 }
 
@@ -2319,8 +2706,8 @@ rt {
   justify-content: space-between;
   align-items: baseline;
   gap: 10px;
-  padding-bottom: 6px;
-  border-bottom: 1px dashed #28355c;
+  padding-bottom: 7px;
+  border-bottom: 1px dashed #d7c7aa;
   font-size: 13.5px;
 }
 
@@ -2330,20 +2717,20 @@ rt {
 }
 
 .dokkai-vocab-word {
-  font-family: var(--font-jp);
-  font-size: 15px;
-  color: #ffffff;
+  font-family: var(--font-jp-read);
+  font-size: 15.5px;
+  color: var(--washi-ink);
   font-weight: 700;
 }
 
 .dokkai-vocab-read {
-  font-size: 12px;
-  color: #9bb8ff;
-  font-weight: 400;
+  font-size: 12.5px;
+  color: #9a3a22;
+  font-weight: 500;
 }
 
 .dokkai-vocab-vi {
-  color: #c8d5f0;
+  color: var(--washi-muted);
   text-align: right;
   font-size: 13px;
 }
@@ -2355,150 +2742,131 @@ rt {
 }
 
 .dokkai-grammar-item {
-  background: #18213e;
-  border-left: 3px solid var(--accent-mint);
-  padding: 8px 10px;
+  background: var(--washi-card);
+  border: 1px solid var(--washi-border);
+  border-left: 4px solid var(--washi-matcha);
+  border-radius: 7px;
+  padding: 10px 12px;
 }
 
 .dokkai-grammar-pat {
-  font-family: var(--font-jp);
-  font-size: 14.5px;
-  font-weight: 700;
-  color: #79e6c9;
+  font-family: var(--font-jp-read);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--washi-matcha);
 }
 
 .dokkai-grammar-title {
   font-family: var(--font-vi);
   font-size: 13px;
-  font-weight: 600;
-  color: #ffd875;
+  font-weight: 700;
+  color: var(--washi-ink);
 }
 
 .dokkai-grammar-exp {
   font-size: 12.5px;
-  color: #cdd8ef;
-  margin-top: 3px;
-  line-height: 1.5;
+  color: var(--washi-muted);
+  margin-top: 4px;
+  line-height: 1.55;
 }
 
 .dokkai-grammar-ex {
-  font-family: var(--font-jp);
-  font-size: 14px;
-  line-height: 1.8;
-  color: #ffffff;
-  margin-top: 4px;
-}
-
-.dokkai-grammar-ex rt {
-  color: #ffd875;
+  font-family: var(--font-jp-read);
+  font-size: 14.5px;
+  font-weight: 500;
+  line-height: 1.9;
+  color: var(--washi-ink);
+  margin-top: 5px;
 }
 
 /* =====================================================================
- * JLPT GENGO CHISHIKI (文字・語彙 & 文法) INTERACTIVE TRAINER
+ * JLPT GENGO CHISHIKI (文字・語彙 & 文法) — WARM WASHI TRAINER
  * ===================================================================== */
 
-.gengo-subsec-row {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.gengo-sub-chip {
-  background: #141c33;
-  color: #b7c8eb;
-  border: 1.5px solid #30416e;
-  padding: 4px 9px;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.gengo-sub-chip:hover {
-  border-color: var(--accent-amber);
-  color: #ffffff;
-}
-
-.gengo-sub-chip.active {
-  background: #2f2354;
-  border-color: #b98eff;
-  color: #ffffff;
-  font-weight: 700;
-}
-
 .gengo-prompt-panel {
-  background: #141c34;
-  border: 2px solid #334575;
-  border-left: 4px solid var(--accent-amber);
-  padding: 16px 18px;
-  margin-bottom: 16px;
+  background: #f8f1e2;
+  border: 1.5px solid #e2d3b5;
+  border-left: 4px solid var(--washi-shu);
+  border-radius: 11px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
 }
 
 .gengo-headword-pill {
   display: inline-block;
-  background: #2b1d4a;
-  border: 1.5px solid #9b6be8;
-  color: #e9d9ff;
-  font-size: 13.5px;
+  background: #efe2c6;
+  border: 1.5px solid #d5bf94;
+  border-radius: 7px;
+  color: #5b3b24;
+  font-size: 13px;
+  font-weight: 600;
   padding: 4px 11px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .gengo-headword-pill b {
-  font-family: var(--font-jp);
-  font-size: 17px;
-  color: #ffd875;
-  margin-left: 4px;
+  font-family: var(--font-jp-read);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--washi-shu);
+  margin-left: 5px;
 }
 
 .gengo-prompt-ja,
 .gengo-star-sentence {
-  font-family: var(--font-jp);
-  font-size: 18px;
+  font-family: var(--font-jp-read);
+  font-size: clamp(19px, 2.2vw, 22px);
+  font-weight: 500;
   line-height: 2.15;
-  color: #ffffff;
+  color: var(--washi-ink);
   white-space: pre-line;
 }
 
 .gengo-prompt-ja rt,
 .gengo-star-sentence rt {
-  color: #ffd875;
-  font-size: 0.58em;
+  color: #9a3a22;
+  font-size: 0.54em;
 }
 
 .gengo-underline {
   display: inline;
-  padding: 0 3px 2px;
-  border-bottom: 3px solid var(--accent-amber);
-  background: rgba(255, 216, 117, 0.14);
-  color: #fff6d1;
-  font-weight: 700;
+  padding: 1px 5px 2px;
+  border-bottom: 3px solid var(--washi-shu);
+  background: rgba(217, 164, 65, 0.25);
+  border-radius: 4px 4px 0 0;
+  color: var(--washi-ink);
+  font-weight: 800;
 }
 
 .gengo-blank {
   display: inline-block;
-  min-width: 58px;
+  min-width: 60px;
   text-align: center;
-  padding: 0 8px;
+  padding: 0 9px;
   margin: 0 3px;
-  border-bottom: 3px solid #79e6c9;
-  background: rgba(70, 184, 157, 0.15);
-  color: #9bf7de;
-  font-weight: 700;
+  border-bottom: 3px solid var(--washi-matcha);
+  background: rgba(47, 92, 58, 0.1);
+  border-radius: 4px 4px 0 0;
+  color: var(--washi-matcha);
+  font-weight: 800;
 }
 
 .gengo-blank.filled {
-  background: #174038;
-  border-color: #79e6c9;
-  color: #ffffff;
+  background: #e5f3e8;
+  border-color: var(--washi-matcha);
+  color: var(--washi-matcha);
 }
 
 .gengo-prompt-vi {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
   font-family: var(--font-vi);
   font-size: 13.5px;
-  color: #bdd0f2;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px dashed #2e3e6b;
+  color: var(--washi-muted);
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px dashed #d7c7aa;
 }
 
 /* Star Scramble Slots (問題2 ★) */
@@ -2512,30 +2880,32 @@ rt {
 
 .gengo-star-slot {
   display: inline-block;
-  min-width: 52px;
+  min-width: 54px;
   text-align: center;
-  padding: 1px 8px;
-  border-bottom: 3px solid #7aa2f7;
-  background: rgba(122, 162, 247, 0.14);
-  color: #d9e6ff;
+  padding: 1px 9px;
+  border-bottom: 3px solid var(--washi-indigo);
+  background: rgba(42, 53, 89, 0.08);
+  border-radius: 4px 4px 0 0;
+  color: var(--washi-indigo);
 }
 
 .gengo-star-slot.is-star {
-  border-bottom-color: var(--accent-amber);
-  background: rgba(255, 216, 117, 0.22);
-  color: var(--accent-amber);
-  font-weight: 700;
+  border-bottom-color: var(--washi-shu);
+  background: rgba(184, 56, 44, 0.13);
+  color: var(--washi-shu);
+  font-weight: 800;
 }
 
 .gengo-star-slot.filled {
-  color: #ffffff;
+  color: var(--washi-ink);
 }
 
 .gengo-scramble-helper {
-  background: #10172b;
-  border: 2px dashed #3e5285;
-  padding: 11px 14px;
-  margin-bottom: 14px;
+  background: #f5eee0;
+  border: 1.5px dashed var(--washi-border-strong);
+  border-radius: 10px;
+  padding: 13px 15px;
+  margin-bottom: 16px;
 }
 
 .gengo-scramble-head {
@@ -2545,8 +2915,12 @@ rt {
   gap: 8px;
   flex-wrap: wrap;
   font-size: 13px;
-  color: #c2d3f2;
-  margin-bottom: 9px;
+  color: var(--washi-muted);
+  margin-bottom: 10px;
+}
+
+.gengo-scramble-head b {
+  color: var(--washi-ink);
 }
 
 .gengo-scramble-chips {
@@ -2558,39 +2932,48 @@ rt {
 .gengo-scramble-chip {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  background: #1b2645;
-  color: #ffffff;
-  border: 2px solid #485e96;
-  padding: 6px 11px;
-  font-family: var(--font-jp);
-  font-size: 15px;
+  gap: 8px;
+  background: #fffdf8;
+  color: var(--washi-ink);
+  border: 1.5px solid var(--washi-border-strong);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: var(--font-jp-read);
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
 }
 
+.gengo-scramble-chip:hover {
+  border-color: var(--washi-ink);
+}
+
 .gengo-scramble-chip.placed {
-  background: #23473e;
-  border-color: var(--accent-mint);
+  background: #edf6ee;
+  border-color: var(--washi-matcha);
 }
 
 .gengo-sc-num {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 21px;
-  height: 21px;
-  background: #0d1224;
-  color: var(--accent-amber);
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  background: #efe4cc;
+  color: var(--washi-ink);
+  font-family: var(--font-mono);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .gengo-sc-badge {
-  background: var(--accent-amber);
-  color: #131829;
+  background: var(--washi-shu);
+  color: #fffdf8;
   font-family: var(--font-vi);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
+  border-radius: 5px;
   padding: 1px 6px;
 }
 
@@ -2601,23 +2984,26 @@ rt {
   flex-wrap: wrap;
   margin-top: 8px;
   font-size: 13.5px;
+  color: var(--washi-ink);
 }
 
 .gengo-sol-chip {
   display: inline-block;
-  background: #192442;
-  border: 1.5px solid #4d649e;
-  padding: 2px 8px;
-  font-family: var(--font-jp);
-  font-size: 14.5px;
-  color: #f4f1e8;
+  background: #fffdf8;
+  border: 1.5px solid var(--washi-border-strong);
+  border-radius: 6px;
+  padding: 2px 9px;
+  font-family: var(--font-jp-read);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--washi-ink);
 }
 
 .gengo-sol-chip.star {
-  background: #473510;
-  border-color: var(--accent-amber);
-  color: var(--accent-amber);
-  font-weight: 700;
+  background: #fdf1ee;
+  border-color: var(--washi-shu);
+  color: var(--washi-shu);
+  font-weight: 800;
 }
 
 .gengo-options-single {
@@ -2626,13 +3012,13 @@ rt {
 
 /* Cloze Passage Card (問題3) */
 .gengo-passage-doc {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .gengo-passage-intro {
-  font-family: var(--font-jp);
+  font-family: var(--font-jp-read);
   font-size: 14.5px;
-  color: #464d63;
+  color: var(--washi-muted);
   margin-bottom: 10px;
 }
 
@@ -2641,23 +3027,23 @@ rt {
   justify-content: space-between;
   align-items: baseline;
   gap: 10px;
-  border-bottom: 2px solid #c9c0ac;
-  padding-bottom: 7px;
+  border-bottom: 1.5px solid #dfd1b6;
+  padding-bottom: 8px;
   margin-bottom: 12px;
   flex-wrap: wrap;
 }
 
 .gengo-passage-title {
-  font-family: var(--font-jp);
+  font-family: var(--font-jp-read);
   font-size: 19px;
-  font-weight: 700;
-  color: #151929;
+  font-weight: 800;
+  color: var(--washi-ink);
 }
 
 .gengo-passage-author {
-  font-family: var(--font-jp);
+  font-family: var(--font-jp-read);
   font-size: 14px;
-  color: #4f556b;
+  color: var(--washi-muted);
 }
 
 .gengo-passage-para {
@@ -2665,56 +3051,71 @@ rt {
 }
 
 .gengo-passage-ja {
-  font-family: var(--font-jp);
-  font-size: 16.5px;
+  font-family: var(--font-jp-read);
+  font-size: 17px;
+  font-weight: 500;
   line-height: 2.15;
-  color: #171b2a;
+  color: var(--washi-ink);
   margin: 0;
 }
 
 .gengo-inline-blank {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 1px 8px;
+  gap: 5px;
+  padding: 1px 9px;
   margin: 0 3px;
-  border: 2px solid #3c547a;
-  background: #eef4ff;
-  color: #14223d;
-  font-family: var(--font-jp);
-  font-size: 15px;
+  border: 1.5px solid var(--washi-indigo);
+  border-radius: 6px;
+  background: #edf1f9;
+  color: var(--washi-indigo);
+  font-family: var(--font-jp-read);
+  font-size: 15.5px;
   font-weight: 700;
   cursor: pointer;
   vertical-align: baseline;
 }
 
 .gengo-inline-blank.current {
-  background: #ffe99e;
-  border-color: #c2780a;
-  box-shadow: 0 0 0 2px rgba(255, 198, 64, 0.45);
+  background: #faecc2;
+  border-color: #b87928;
+  color: var(--washi-ink);
+  box-shadow: 0 0 0 2px rgba(217, 164, 65, 0.35);
 }
 
 .gengo-inline-blank.ok {
-  background: #c8f5e5;
-  border-color: #1b8c6f;
-  color: #0d4f3d;
+  background: #e5f3e8;
+  border-color: var(--washi-matcha);
+  color: var(--washi-matcha);
 }
 
 .gengo-inline-blank.no {
-  background: #ffd8de;
-  border-color: #b83b52;
-  color: #6b1526;
+  background: #fceae8;
+  border-color: var(--washi-shu);
+  color: var(--washi-shu);
 }
 
 .gengo-inline-num {
   display: inline-block;
-  background: #23304f;
-  color: #ffd875;
+  background: var(--washi-indigo);
+  color: #fffdf8;
+  border-radius: 4px;
+  font-family: var(--font-mono);
   font-size: 11px;
   padding: 0 5px;
   line-height: 1.5;
 }
 
+@media (max-width: 640px) {
+  .dict-topbar-inner,
+  .dict-main-wrap {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .dict-card {
+    padding: 18px 16px 20px;
+  }
+}
 
 /* =============================================================================================
    Cinematic player v2 (engine "cinema"): thin tool bar, framed pixel stage with in-scene tags,
@@ -2819,6 +3220,7 @@ rt {
 }
 
 .cine-stamp {
+  font-family: var(--font-jp-pixel);
   font-weight: 800;
   font-size: max(11px, 1.55cqw);
   letter-spacing: 0.08em;
@@ -2878,7 +3280,7 @@ rt {
 
 .cine-titlecard h1 {
   margin: 0;
-  font-family: var(--font-jp);
+  font-family: var(--font-jp-pixel);
   font-weight: 400;
   font-size: max(22px, 3.7cqw);
   line-height: 1.2;

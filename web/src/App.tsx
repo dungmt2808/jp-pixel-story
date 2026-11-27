@@ -439,13 +439,13 @@ export function App() {
 
   if (error) {
     return (
-      <div className="app-shell">
-        <div className="subtitle-box">
-          <div className="subtitle-ja">Lỗi tải dữ liệu: {error}</div>
-          <div style={{ marginTop: 12 }}>
+      <div className="app-shell app-shell-washi">
+        <div className="study-status-card">
+          <div className="study-status-ja">Lỗi tải dữ liệu: {error}</div>
+          <div style={{ marginTop: 14 }}>
             <button
               type="button"
-              className="pixel-btn pixel-btn-cream"
+              className="washi-btn-play"
               onClick={handleOpenLibrary}
             >
               ← Quay về thư viện
@@ -459,15 +459,15 @@ export function App() {
   if (mode === "choukai") {
     if (!choukaiExam) {
       return (
-        <div className="app-shell">
-          <div className="subtitle-box">
-            <div className="subtitle-ja">読み込み中... (Đang tải đề luyện nghe JLPT...)</div>
+        <div className="app-shell app-shell-washi">
+          <div className="study-status-card">
+            <div className="study-status-ja">読み込み中... (Đang tải đề luyện nghe JLPT...)</div>
           </div>
         </div>
       );
     }
     return (
-      <div className="app-shell">
+      <div className="app-shell app-shell-washi">
         <JlptChoukaiView
           exam={choukaiExam}
           showFurigana={showFurigana}
@@ -482,15 +482,15 @@ export function App() {
   if (mode === "dokkai") {
     if (!dokkaiExam) {
       return (
-        <div className="app-shell">
-          <div className="subtitle-box">
-            <div className="subtitle-ja">読み込み中... (Đang tải đề đọc hiểu JLPT...)</div>
+        <div className="app-shell app-shell-washi">
+          <div className="study-status-card">
+            <div className="study-status-ja">読み込み中... (Đang tải đề đọc hiểu JLPT...)</div>
           </div>
         </div>
       );
     }
     return (
-      <div className="app-shell">
+      <div className="app-shell app-shell-washi">
         <JlptDokkaiView
           exam={dokkaiExam}
           showFurigana={showFurigana}
@@ -506,15 +506,15 @@ export function App() {
   if (mode === "gengo") {
     if (!gengoExam) {
       return (
-        <div className="app-shell">
-          <div className="subtitle-box">
-            <div className="subtitle-ja">読み込み中... (Đang tải đề Từ vựng &amp; Ngữ pháp JLPT...)</div>
+        <div className="app-shell app-shell-washi">
+          <div className="study-status-card">
+            <div className="study-status-ja">読み込み中... (Đang tải đề Từ vựng &amp; Ngữ pháp JLPT...)</div>
           </div>
         </div>
       );
     }
     return (
-      <div className="app-shell">
+      <div className="app-shell app-shell-washi">
         <JlptGengoView
           exam={gengoExam}
           showFurigana={showFurigana}
@@ -532,9 +532,9 @@ export function App() {
   if (mode === "dictation") {
     if (!dictationPack) {
       return (
-        <div className="app-shell">
-          <div className="subtitle-box">
-            <div className="subtitle-ja">読み込み中... (Đang tải bài luyện nghe...)</div>
+        <div className="app-shell app-shell-washi">
+          <div className="study-status-card">
+            <div className="study-status-ja">読み込み中... (Đang tải bài luyện nghe...)</div>
           </div>
         </div>
       );
@@ -547,7 +547,7 @@ export function App() {
       !catEntry || (catEntry.kind !== "standalone" && !isChoukaiPack && !isDokkaiPack);
 
     return (
-      <div className="app-shell">
+      <div className="app-shell app-shell-washi">
         <DictationView
           pack={dictationPack}
           showFurigana={showFurigana}
@@ -572,16 +572,16 @@ export function App() {
 
   if (!story) {
     return (
-      <div className="app-shell">
-        <div className="subtitle-box">
-          <div className="subtitle-ja">読み込み中... (Đang tải...)</div>
+      <div className="app-shell app-shell-washi">
+        <div className="study-status-card">
+          <div className="study-status-ja">読み込み中... (Đang tải...)</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${mode === "reading" ? "app-shell-washi app-shell-reading" : ""}`}>
       {mode === "stage" && resolveStageEngine(story) === "cinema" ? (
         <CinemaStage
           key={`${story.id}-${autoplay ? "auto" : "play"}-${stageStartScene}`}
