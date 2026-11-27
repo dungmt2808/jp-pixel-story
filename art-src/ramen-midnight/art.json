@@ -1,0 +1,41 @@
+{
+  "story": "ramen-midnight",
+  "palette": "ramen_midnight",
+  "characters": [
+    {
+      "key": "minh_neutral",
+      "raw": "raw_sheet_minh_neutral.png",
+      "kind": "bust"
+    },
+    {
+      "key": "chef_warm",
+      "raw": "raw_sheet_chef_warm.png",
+      "kind": "bust"
+    },
+    {
+      "key": "minh_happy",
+      "raw": "raw_sheet_minh_happy.png",
+      "kind": "bust"
+    },
+    {
+      "key": "minh_thinking",
+      "raw": "raw_sheet_minh_thinking.png",
+      "kind": "bust"
+    },
+    {
+      "key": "chef_happy",
+      "raw": "raw_sheet_chef_happy.png",
+      "kind": "bust"
+    },
+    {
+      "key": "minh_walk",
+      "raw": "raw_walk_minh.png",
+      "kind": "walk",
+      "frame": [
+        40,
+        64
+      ],
+      "stride": 28
+    }
+  ]
+}

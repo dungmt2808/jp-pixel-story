@@ -152,5 +152,27 @@
       ],
       "cleanup": true
     }
+  ],
+  "characters": [
+    {
+      "key": "lisa",
+      "raw": "raw_sheet_lisa.png",
+      "kind": "bust"
+    },
+    {
+      "key": "haruko",
+      "raw": "raw_sheet_haruko.png",
+      "kind": "bust"
+    },
+    {
+      "key": "lisa_walk",
+      "raw": "raw_walk_lisa.png",
+      "kind": "walk",
+      "frame": [
+        40,
+        64
+      ],
+      "stride": 28
+    }
   ]
 }

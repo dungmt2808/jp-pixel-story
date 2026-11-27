@@ -1,0 +1,31 @@
+{
+  "story": "tsuru-ongaeshi",
+  "palette": "jp_story_master",
+  "characters": [
+    {
+      "key": "yosaku",
+      "raw": "raw_sheet_yosaku.png",
+      "kind": "bust"
+    },
+    {
+      "key": "otsu_gentle",
+      "raw": "raw_sheet_otsu_gentle.png",
+      "kind": "bust"
+    },
+    {
+      "key": "otsu_plead",
+      "raw": "raw_sheet_otsu_plead.png",
+      "kind": "bust"
+    },
+    {
+      "key": "yosaku_walk",
+      "raw": "raw_walk_yosaku.png",
+      "kind": "walk",
+      "frame": [
+        40,
+        64
+      ],
+      "stride": 28
+    }
+  ]
+}

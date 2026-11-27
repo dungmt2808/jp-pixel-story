@@ -61,3 +61,41 @@ def test_apply_art_manifest_processes_existing_art_and_switches_scenes(tmp_path:
     assert saved["scenes"][1]["backdrop"] == "proc:washoku_table"  # its art has not arrived yet
     assert [w["key"] for w in res["waiting_for_art"]] == ["dining"]
     assert res["problems"] == ["train: no scene/choice 'nope' in demo"]
+
+
+def test_art_manifest_characters_animate_portraits_and_add_walkers(tmp_path: Path) -> None:
+    import shutil
+
+    repo = Path(__file__).resolve().parents[2]
+    public = tmp_path / "public"
+    sdir = public / "stories" / "demo"
+    (sdir / "assets").mkdir(parents=True)
+    Image.new("RGBA", (96, 96), (0, 0, 0, 0)).save(sdir / "assets" / "portrait_yui.png")
+    story = {"id": "demo", "engine": "cinema", "palette": "jp_story_master",
+             "assets": {"backgrounds": {}, "portraits": {"yui": "/stories/demo/assets/portrait_yui.png"}},
+             "scenes": [{"id": "s1", "lines": []}]}
+    (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
+    art = tmp_path / "art"
+    art.mkdir()
+    shutil.copy(repo / "art-src" / "hanami-first" / "raw_sheet_yui.png", art / "raw_sheet_yui.png")
+    shutil.copy(repo / "art-src" / "hanami-first" / "raw_walk_yui.png", art / "raw_walk_yui.png")
+    (art / "art.json").write_text(json.dumps({"story": "demo", "characters": [
+        {"key": "yui", "raw": "raw_sheet_yui.png", "kind": "bust"},
+        {"key": "yui_walk", "raw": "raw_walk_yui.png", "kind": "walk", "pixel_pitch": 5.5, "stride": 32},
+        {"key": "ghost", "raw": "raw_sheet_ghost.png", "kind": "bust"},
+        {"key": "yui", "raw": "raw_missing.png", "kind": "dance"},
+    ]}), encoding="utf-8")
+    nothing = apply_art_manifest(art / "art.json", public_root=public, only=["backgrounds"])
+    assert nothing["characters"] == [] and not (sdir / "assets" / "sprites").exists()
+    res = apply_art_manifest(art / "art.json", public_root=public, only=["characters"])
+    assert [c["key"] for c in res["characters"]] == ["yui", "yui_walk"]
+    assert "ghost: a bust sheet animates a portrait" in " ".join(res["problems"])
+    assert "kind must be 'bust' or 'walk'" in " ".join(res["problems"])
+    saved = json.loads((sdir / "story.json").read_text())
+    assert saved["assets"]["sprites"]["yui"].endswith("sprites/yui/meta.json")
+    assert saved["assets"]["rigs"]["yui"].endswith("sprites/yui/rig/rig.json")
+    bust = json.loads((sdir / "assets" / "sprites" / "yui" / "meta.json").read_text())
+    assert (bust["frameWidth"], bust["frameHeight"]) == (96, 96)  # the portrait's own size
+    assert set(bust["clips"]) == {"idle", "talk"}
+    walk = json.loads((sdir / "assets" / "sprites" / "yui_walk" / "meta.json").read_text())
+    assert walk["facing"] == "right" and walk["clips"]["walk"]["stridePx"] == 32.0 and walk["frameCount"] == 10

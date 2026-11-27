@@ -422,11 +422,15 @@ def pixellab_extract_object(
 
 
 @mcp.tool()
-def pixellab_apply_art_manifest(manifest_path: str, dry_run: bool = False) -> str:
+def pixellab_apply_art_manifest(manifest_path: str, dry_run: bool = False, only: list[str] | None = None) -> str:
     """Process every raw image listed in `art-src/<story>/art.json` that exists (grid detection,
     320x200, palette lock, provenance) and point the listed scenes/choices at the new `bg:<key>`
-    backgrounds in story.json. Missing raw files are listed under `waiting_for_art`."""
-    return json.dumps(apply_art_manifest(manifest_path, dry_run=dry_run), ensure_ascii=False, indent=2)
+    backgrounds in story.json. `objects` are cut out of a background as mover sprites.
+    `characters`: `bust` expression sheets (key = a portrait key: sliced at the portrait's size,
+    expressions locked, rig built, registered under the same key so the portrait talks and
+    blinks) and `walk` cycles (route B people sprites). Missing raw files are listed under
+    `waiting_for_art`. `only` (e.g. ["characters"]) runs just those sections."""
+    return json.dumps(apply_art_manifest(manifest_path, dry_run=dry_run, only=only), ensure_ascii=False, indent=2)
 
 
 @mcp.tool()
