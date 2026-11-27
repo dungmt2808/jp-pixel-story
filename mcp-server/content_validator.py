@@ -24,6 +24,7 @@ VIBE_CAMERAS = {"push", "punch", "close", "shake", "pan_left", "pan_right"}
 VIBE_SFX = {"pop", "ding", "whoosh", "boing", "shock", "sparkle", "thud", "gloom", "heart"}
 VIBE_LIGHTS = {"day", "morning", "golden", "dusk", "night", "rain", "warm"}
 VIBE_BGM = {"default", "depato_sunny", "depato_rain", "calm", "night", "happy", "bright", "sad", "tender", "rain", "none"}
+MOTION_TYPES = {"scroll", "sweep", "glow", "shimmer", "steam", "mover", "rumble"}
 
 
 def vocab_needles(v: dict[str, Any]) -> list[str]:
@@ -371,6 +372,24 @@ def validate_story_folder(
                     "backdrops (" + ", ".join(f"{sid}: {ref}" for sid, ref in coded) + ") in one story; replace the proc: "
                     "scenes with pixel backgrounds from the same art source (see art-src/<story>/PROMPTS.md)"
                 )
+
+        # route C motion layers (web/src/engine/sceneMotion.ts)
+        items = (data.get("assets") or {}).get("items") or {}
+        for sc in data.get("scenes", []):
+            for i, fx in enumerate(sc.get("motion") or []):
+                where = f"{sc.get('id')}/motion[{i}]"
+                kind = fx.get("type")
+                if kind not in MOTION_TYPES:
+                    issues.append(f"[Unknown Motion] {where}: '{kind}' (use one of {sorted(MOTION_TYPES)})")
+                    continue
+                rects = list(fx.get("rects") or []) + ([fx["rect"]] if fx.get("rect") else []) + list(fx.get("front") or [])
+                for r in rects:
+                    if len(r) != 4 or r[2] <= 0 or r[3] <= 0 or r[0] < 0 or r[1] < 0 or r[0] + r[2] > 320 or r[1] + r[3] > 200:
+                        issues.append(f"[Bad Motion Rect] {where}: {r} must lie inside the 320x200 frame")
+                if kind == "mover" and fx.get("item") not in items:
+                    issues.append(f"[Missing Asset] {where}: mover item '{fx.get('item')}' is not in assets.items")
+                if kind in ("scroll", "mover") and not str(sc.get("backdrop", "")).startswith("bg:"):
+                    warnings.append(f"[Motion Needs Painting] {where}: '{kind}' samples the painted bg: backdrop")
 
         for sc in data.get("scenes", []):
             if sc.get("light") and sc["light"] not in VIBE_LIGHTS:

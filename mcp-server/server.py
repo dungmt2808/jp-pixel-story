@@ -17,6 +17,7 @@ except ImportError:
 
 import provenance
 from art_manifest import apply_art_manifest
+from pixel_extract import extract_object
 from content_validator import validate_catalog, validate_story_folder
 from pixel_rig import add_expression, build_rig, lock_expressions
 from pixel_tools import cleanup_sprite, depixelize, detect_grid, extract_palette_tool, sprite_quality
@@ -384,6 +385,28 @@ def pixellab_extract_palette(
 ) -> str:
     """Pick real representative colours from images (optionally extending a base palette) and save them as a new palette."""
     res = extract_palette_tool(image_paths, n_colors, base_palette=base_palette, save_as=save_as, description=description)
+    return json.dumps(res, ensure_ascii=False, indent=2)
+
+
+@mcp.tool()
+def pixellab_extract_object(
+    input_path: str,
+    output_path: str,
+    rect: list[int],
+    part: str = "sprite",
+    polygon: list[list[float]] | None = None,
+    exclude: list[list[int]] | None = None,
+    tolerance: float = 10.0,
+    max_gap: int = 3,
+    inpaint: str = "clone",
+) -> str:
+    """Cut an object out of a background so it can move (route C). part="sprite" writes the object on
+    transparency (thin occluders like window mullions healed); part="clean" writes the background
+    with the hole filled. Without `polygon` a magic wand from the rect border is used (flat pixel
+    art); with `polygon` (lasso) + `exclude` rects it works on full-resolution AI source art.
+    Usually driven by the `objects` section of art.json (pixellab_apply_art_manifest)."""
+    res = extract_object(input_path, output_path, rect=rect, part=part, polygon=polygon, exclude=exclude,
+                         tolerance=tolerance, max_gap=max_gap, inpaint=inpaint)
     return json.dumps(res, ensure_ascii=False, indent=2)
 
 

@@ -108,6 +108,7 @@ def record(
 
 
 def _ops() -> dict[str, Callable[..., Any]]:
+    import pixel_extract as pe
     import pixel_processor as pp
     import pixel_rig as pr
     import pixel_tools as pt
@@ -122,6 +123,7 @@ def _ops() -> dict[str, Callable[..., Any]]:
         "lock_expressions": lambda i, o, **k: pr.lock_expressions(o, record_provenance=False, **k),
         "add_expression": lambda i, o, **k: pr.add_expression(o, record_provenance=False, **k),
         "build_rig": lambda i, o, **k: pr.build_rig(i, o, record_provenance=False, **k),
+        "extract_object": lambda i, o, **k: pe.extract_object(i, o, record_provenance=False, **k),
     }
 
 

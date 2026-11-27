@@ -55,6 +55,8 @@ Make scenes feel like a cinematic lesson, not a slideshow: give most scenes a `s
 Vibe over detail: keep ONE art source per story (never mix `bg:` and `proc:` backdrops — `[Style Mix]`), set `light`
 and `bgm` per scene, and give key lines an `emote` / `camera` / `telop` (story-schema.md "Vibe kit"; art-style.md §5).
 Missing art: write `art-src/<story>/art.json` + `PROMPTS.md`, then `pixellab_apply_art_manifest`.
+Make painted scenes move (route C): `scene.motion` layers + art.json `objects` to cut out vehicles/props
+(story-schema.md "Route C"; art-style.md §6 compares the three art routes).
 Stages are routed by `story.engine` (`web/src/engine/stageEngines.ts`), never by story id.
 
 Read schema references before creating files:

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "assets": {
+    "plane.png": {
+      "steps": [
+        {
+          "op": "process_pixel_sprite",
+          "params": {
+            "target_width": 65,
+            "target_height": 23,
+            "palette_name": "jp_story_master",
+            "bg_mode": "none",
+            "tolerance": 48,
+            "align_bottom": false,
+            "fit_mode": "bbox",
+            "grid": "none",
+            "cleanup": false,
+            "outline_color": "#241712"
+          },
+          "input": {
+            "path": "art-src/jlpt-n4-2025-12-japan-life/raw_item_plane.png",
+            "sha": "86c88739c1df3d51"
+          },
+          "at": "2026-11-27T02:21:57+00:00",
+          "source": {
+            "kind": "art-manifest",
+            "manifest": "art.json",
+            "object": "plane"
+          }
+        }
+      ],
+      "output": {
+        "sha": "27a95468ffeb2c1f"
+      }
+    }
+  }
+}

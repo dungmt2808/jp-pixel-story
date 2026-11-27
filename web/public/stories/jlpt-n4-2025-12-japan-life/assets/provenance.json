@@ -16,7 +16,7 @@
             "path": "art-src/jlpt-n4-2025-12-japan-life/raw_bg_dining.png",
             "sha": "d796af3b32082f79"
           },
-          "at": "2026-11-26T16:05:53+00:00",
+          "at": "2026-11-27T02:21:54+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -43,7 +43,7 @@
             "path": "art-src/jlpt-n4-2025-12-japan-life/raw_bg_train.png",
             "sha": "00f0aed5828f5072"
           },
-          "at": "2026-11-26T16:05:53+00:00",
+          "at": "2026-11-27T02:21:55+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -70,7 +70,7 @@
             "path": "art-src/jlpt-n4-2025-12-japan-life/raw_bg_airport.png",
             "sha": "f412eb239dfc284d"
           },
-          "at": "2026-11-26T16:05:54+00:00",
+          "at": "2026-11-27T02:21:56+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -80,6 +80,33 @@
       ],
       "output": {
         "sha": "336287b54340039d"
+      }
+    },
+    "bg_airport_empty.png": {
+      "steps": [
+        {
+          "op": "process_pixel_background",
+          "params": {
+            "target_width": 320,
+            "target_height": 200,
+            "palette_name": "jp_story_master",
+            "dither_strength": 18.0,
+            "grid": "auto"
+          },
+          "input": {
+            "path": "art-src/jlpt-n4-2025-12-japan-life/raw_bg_airport_empty.png",
+            "sha": "eb9710606d43e85c"
+          },
+          "at": "2026-11-27T02:21:57+00:00",
+          "source": {
+            "kind": "art-manifest",
+            "manifest": "art.json",
+            "cleaned": "plane"
+          }
+        }
+      ],
+      "output": {
+        "sha": "10a52f10e093216d"
       }
     }
   }

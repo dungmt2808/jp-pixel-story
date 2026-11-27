@@ -266,6 +266,7 @@ export function useStageRuntime({
   const startLoop = useCallback((draw: StageDrawFn, transitionColor = "#101322", transitionSpeed = 2.8) => {
     let rafId = 0;
     let stopped = false;
+    let loggedErr = false;
     let last = performance.now();
     const frame = (now: number) => {
       if (stopped) return;
@@ -284,7 +285,15 @@ export function useStageRuntime({
         const ctx = buffer.getContext("2d", { willReadFrequently: true });
         if (ctx) {
           ctx.imageSmoothingEnabled = false;
-          draw(ctx, now, dt);
+          try {
+            draw(ctx, now, dt);
+          } catch (err) {
+            // one bad frame must never freeze the stage: report it once and keep the loop alive
+            if (!loggedErr) {
+              loggedErr = true;
+              console.error("stage draw failed:", err);
+            }
+          }
           const tr = transitionRef.current;
           const swapTo = stepTransition(tr, dt, transitionSpeed);
           if (swapTo !== null) setSceneIdx(swapTo);

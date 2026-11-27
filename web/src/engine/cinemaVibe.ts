@@ -76,6 +76,8 @@ export function drawEmote(
   scale = 1
 ): void {
   const k = Math.max(1, Math.round(scale));
+  // rAF timestamps can be a few ms OLDER than the moment the line started: never animate backwards
+  age = Math.max(0, age);
   ctx.save();
   ctx.translate(Math.round(x), Math.round(y));
   ctx.scale(k, k);
@@ -109,7 +111,7 @@ function drawEmoteAt(ctx: CanvasRenderingContext2D, name: string, age: number): 
   }
   const frames = BITMAPS[name];
   if (!frames) return;
-  const rows = frames[Math.floor(age * 3) % frames.length];
+  const rows = frames[Math.floor(Math.max(0, age) * 3) % frames.length];
   const w = rows[0].length;
   const h = rows.length;
   const slide = name === "sweat" ? Math.min(4, Math.floor(age * 3)) : 0;

@@ -166,6 +166,38 @@ Per scene: `light` (`day`, `morning`, `golden`, `dusk`, `night`, `rain`, `warm`)
 items; `bgm` (`calm`, `happy`, `tender`/`sad`, `none`, or a theme name) — switches the music from this scene on.
 The MP4 exporter renders the same BGM themes and SFX into the video, with the music ducked under the voices.
 
+### Route C — motion layers on painted backgrounds (`scene.motion`)
+
+Painted art gives the detail, code gives the movement. All coordinates are virtual (320x200) and every
+effect is a pure function of scene time, so videos stay deterministic. Example: `日本の生活`.
+
+```json
+"motion": [
+  { "type": "scroll", "speed": 26, "radius": 3, "rects": [[16, 56, 60, 56], [86, 56, 68, 56]] },
+  { "type": "sweep", "rect": [0, 118, 320, 82], "speed": 26, "spacing": 46, "width": 12, "slant": 0.6 },
+  { "type": "rumble", "period": 0.9 },
+  { "type": "glow", "at": [157, 19], "r": 24, "color": "#ffe2b0", "period": 5, "min": 0.2, "max": 0.42, "flicker": false },
+  { "type": "steam", "at": [[128, 117], [100, 136]], "rate": 1.4, "height": 18 },
+  { "type": "shimmer", "rect": [118, 128, 64, 72], "minLuma": 150 },
+  { "type": "mover", "item": "plane", "path": [[196, 95], [140, 95]], "durationSec": 15, "delaySec": 2,
+    "ease": "linear", "flipX": false, "scale": 1, "show": "always", "front": [[161, 90, 3, 32]] }
+]
+```
+
+- `scroll`: the background pixels inside the window `rects` become one continuous strip (mirrored, seamless) that
+  slides past every window — the scenery outside a train or bus. `radius` keeps rounded window frames.
+- `sweep`: diagonal light/shadow bands crossing a region (sun through poles). `rumble`: the world bumps 1 px "ta-tan".
+- `glow`: a breathing, dithered light (lamps, TV, the sun). `steam`: puffs rising from points. `shimmer`: bright
+  pixels of a reflection sparkle in a travelling wave.
+- `mover`: an `assets.items` sprite along a `path` (top-left positions); `ease: "in"` accelerates (take-off),
+  `scale: 0.5` for far away, `show: "moving"` hides it before/after its trip, and the `front` rects of the
+  background are redrawn over it so it passes BEHIND mullions, bridges, planters...
+- Objects baked into a painting are cut out with art.json `objects` (lasso `polygon` + `exclude` occluders, in RAW
+  image coordinates): `pixellab_apply_art_manifest` writes the sprite to `assets.items[key]`, an emptied background
+  to `assets.backgrounds[clean]` (hole filled), switches the listed scenes to it and reports the sprite's `origin`
+  (the mover's first path point). Single cuts: `pixellab_extract_object`.
+- The validator checks motion types, rects inside the frame and mover items; `scroll`/`mover` want a `bg:` backdrop.
+
 ### Reading page (`reading.chapters`, vocab `hanViet` / `forms`)
 
 ```json
