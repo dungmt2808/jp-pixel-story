@@ -28,6 +28,7 @@ const px = await loadTsModule("src/engine/pixelScale.ts");
 const sprite = await loadTsModule("src/engine/spriteAnimator.ts");
 const cinema = await loadTsModule("src/engine/cinemaModel.ts");
 const engines = await loadTsModule("src/engine/stageEngines.ts");
+const mascot = await loadTsModule("src/engine/mascot/stackchan.ts");
 const vibe = await loadTsModule("src/engine/cinemaVibe.ts");
 const themes = await loadTsModule("src/audio/themes.ts");
 const motion = await loadTsModule("src/engine/sceneMotion.ts");
@@ -508,6 +509,20 @@ test("shibuya train: arrives, waits at the platform, leaves; nothing before its 
   assert.equal(typeof shibuya.trainX("loop", undefined, 3), "number");
   assert.deepEqual(Object.keys(shibuya.SHIBUYA_SETS).sort(), ["shibuya", "shibuya_today"]);
   for (const k of ["shibuya", "konbini_counter", "konbini_outro"]) assert.ok(sets.PROC_SETS[k], k);
+});
+
+test("StackChan mascot: full-body frames, talking mouth, moods from emotes, wardrobe", () => {
+  const stand = mascot.miniRows("stand", 0);
+  assert.equal(stand.length, mascot.MINI_H);
+  assert.ok(stand.every((r) => r.length === mascot.MINI_W));
+  assert.notDeepEqual(mascot.miniRows("walk", 0), mascot.miniRows("walk", 1));
+  assert.equal(mascot.miniRows("sit", 0).length, 14);
+  const mouths = new Set(Array.from({ length: 12 }, (_, i) => mascot.talkMouth(i / 9)));
+  assert.deepEqual([...mouths].sort(), ["closed", "half", "open"]);
+  assert.equal(mascot.moodForEmote("heart"), "heart");
+  assert.equal(mascot.moodForEmote("question"), "think");
+  assert.equal(mascot.moodForEmote(undefined), undefined);
+  assert.ok(mascot.WEAR_IDS.includes("nonla") && mascot.SHELL_IDS.includes("sakura"));
 });
 
 console.log(`\nALL ${passed} ENGINE TESTS PASSED!`);

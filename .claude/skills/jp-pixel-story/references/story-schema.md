@@ -182,6 +182,31 @@ Per scene: `light` (`day`, `morning`, `golden`, `dusk`, `night`, `rain`, `warm`)
 items; `bgm` (`calm`, `happy`, `tender`/`sad`, `none`, or a theme name) — switches the music from this scene on.
 The MP4 exporter renders the same BGM themes and SFX into the video, with the music ducked under the voices.
 
+### Series mascot: StackChan (`mascot`, scene `tips`, cast `mascot`, people kind `stackchan`)
+
+The same pixel StackChan as the ことば畑 Anki add-on (dungmt2808/kotoba-anki), drawn in code
+(`web/src/engine/mascot/stackchan.ts`): box body, screen face, 13 moods, wardrobe, talking mouth.
+
+```json
+"mascot": { "kind": "stackchan", "name": "StackChan", "wear": { "head": "nonla", "neck": "scarf" } },
+"scenes": [
+  { "id": "intro", "people": { "bot": { "kind": "stackchan", "x": -96, "y": 190, "wear": { "head": "nonla" } } },
+    "cues": [ { "line": 0, "people": [ { "who": "bot", "walkTo": 40, "speed": 26, "then": "wave" } ] } ],
+    "tips": [ { "after": 0, "who": "bot", "mood": "happy", "text": "Chào cả nhà!", "ja": "お{花見|はなみ}に{行|い}こう！" } ] },
+  { "id": "s2", "tips": [ { "after": 1, "mood": "think", "text": "「Vた + ことがありません」: chưa từng…",
+                           "ja": "{桜|さくら}を{見|み}たことがありません。" } ] }
+]
+```
+
+- `tips` pop up between the lines (`after` = line index, -1 = before the first) and pause the scene for `sec`
+  (default from the text length): StackChan rises at the bottom centre with a speech bubble (Vietnamese `text`, Japanese
+  `ja`, both with ruby). With `who` (a `people` id) the bubble sits over that StackChan in the shot, which waves instead.
+- Moods: idle, happy, star, sad, think, heart, wink, surprise, cool, cry, kira, pout, sleep. Wardrobe `head`/`face`/`neck`:
+  leaf, hachimaki, catears, straw, santa, nonla, grad, crown, glasses, bandaid, bow, scarf, bell; `shell`: sky, matcha, sakura, gold.
+- As a speaking cast member: `"cast": { "right": { "voice": "stackchan", "mascot": "stackchan" } }` (bust, scale 4 = the
+  96 px portrait height); its mouth moves while its lines play and its mood follows the line (`mascotMood`, or the `emote`).
+- In a wide shot: `people` kind `stackchan` (full body, scale 2: stand / walk / wave / sit, steps follow the distance walked).
+
 ### Route B — code-drawn worlds, full-body people, cues (`set:`, `people`, `cues`)
 
 Everything drawn in code from one style kit (`web/src/engine/proc/`), characters act in a wide shot, and

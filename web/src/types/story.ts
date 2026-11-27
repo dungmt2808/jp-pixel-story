@@ -1,3 +1,4 @@
+import type { MascotWear } from "../engine/mascot/stackchan";
 import type { MotionFx } from "../engine/sceneMotion";
 import type { SceneCue } from "../engine/cues";
 import type { PersonDef } from "../engine/people";
@@ -34,6 +35,8 @@ export interface DialogueLine {
   emoteWho?: string;
   /** Switch a cast member's portrait from this line on (expressions): { "left": "minh_happy" }. */
   castPortrait?: Partial<Record<"left" | "right", string>>;
+  /** Mood of a mascot cast member while it says this line (default from `emote`). */
+  mascotMood?: string;
   /** Vibe kit: switch the BGM when this line starts (same names as `scene.bgm`); lasts until the next scene. */
   bgm?: string;
   /** Cast sides that leave the stage when this line starts (slide out, stay gone for the scene). */
@@ -135,6 +138,26 @@ export interface CinemaActor {
   flipX?: boolean;
   /** Horizontal pivot position on the 320px stage (defaults: left 56, right 264). */
   x?: number;
+  /** The series mascot drawn in code instead of an image ("stackchan"): talks, blinks, moods. */
+  mascot?: "stackchan";
+  /** Mascot wardrobe ({ head: "nonla", neck: "scarf", shell: "sakura" }); default: story.mascot.wear. */
+  wear?: MascotWear;
+}
+
+/** A pop-in tip of the series mascot: it slides into the corner with a speech bubble. */
+export interface MascotTip {
+  /** Shown after this line (0-based); -1 = before the first line. Default -1. */
+  after?: number;
+  /** Bubble text (Vietnamese; Japanese words with ruby {漢字|かな}). */
+  text: string;
+  /** Optional Japanese example under the text (ruby). */
+  ja?: string;
+  /** Mascot mood (see engine/mascot/stackchan.ts MASCOT_MOODS), default "happy". */
+  mood?: string;
+  /** Seconds on screen (default from the text length). */
+  sec?: number;
+  /** A `people` id (a mascot standing in the shot): the bubble appears over it instead of the corner pop-in. */
+  who?: string;
 }
 
 /** In-scene pixel tag (reference player style): term + optional translation, optional leader line. */
@@ -243,6 +266,8 @@ export interface StoryScene {
   overlay?: string;
   /** Cinema: which actors are on stage (default both; legacy outro shows only the left actor). */
   actors?: Array<"left" | "right">;
+  /** Series mascot tips popping into the corner between the lines. */
+  tips?: MascotTip[];
   /** Cinema: who stands on a side in this scene, replacing the story `cast` for that side. */
   cast?: { left?: CinemaActor; right?: CinemaActor };
   revealNote?: CinemaRevealNote[];
@@ -361,6 +386,8 @@ export interface StoryData {
   assets?: StoryArtAssets;
   /** Cinema engine cast (falls back to the first two portraits, keyed by voice). */
   cast?: { left?: CinemaActor; right?: CinemaActor };
+  /** The series mascot (tips in the corner; a cast member or a `people` entry of kind "stackchan"). */
+  mascot?: { kind: "stackchan"; name?: string; wear?: MascotWear };
   /** Strict sprite craft checks for the validator (outline colour / noise / colour count). */
   artQuality?: { outlineColor?: string; minOutlineCompliance?: number; maxOrphanRatio?: number; maxColorsPerSprite?: number };
   /** Player v2 watermark shown in the stage corner. */

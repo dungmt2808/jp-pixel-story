@@ -543,3 +543,27 @@ def test_validator_flags_a_character_shown_twice(tmp_path: Path) -> None:
     scene["actors"] = []
     (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
     assert not any("[Double Character]" in w for w in validate_story_folder(sdir, web_public_dir=pub)["warnings"])
+
+
+def test_mascot_names_match_the_web_engine_and_tips_are_checked(tmp_path: Path) -> None:
+    import content_validator as cv
+
+    src = (Path(__file__).resolve().parents[2] / "web" / "src" / "engine" / "mascot" / "stackchan.ts").read_text(encoding="utf-8")
+    moods = set(re.findall(r'"(\w+)"', re.search(r"MASCOT_MOODS = \[(.*?)\]", src, re.S).group(1)))
+    assert moods == cv.MASCOT_MOODS
+    wear = set(re.findall(r"^  (\w+): \{ dy:", src.split("const WEAR_ART")[1].split("const MINI_WEAR")[0], re.M))
+    assert wear == cv.MASCOT_WEAR
+
+    pub, sdir = _setup_mock_catalog(tmp_path, "bot", category="story")
+    story = {
+        "id": "bot", "engine": "cinema", "mascot": {"kind": "stackchan", "wear": {"head": "tophat", "shell": "neon"}},
+        "assets": {"backgrounds": {}, "portraits": {}},
+        "scenes": [{"id": "s1", "lines": [], "tips": [{"after": 2, "mood": "angry", "text": "{花見|はなみ} ok", "ja": "花見", "who": "ghost"}],
+                    "people": {"b": {"kind": "stackchan", "x": 0, "wear": {"neck": "scarf"}}}}],
+        "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []},
+    }
+    (sdir / "story.json").write_text(json.dumps(story, ensure_ascii=False), encoding="utf-8")
+    joined = " | ".join(validate_story_folder(sdir, web_public_dir=pub)["issues"])
+    for tag in ("wear 'tophat'", "shell 'neon'", "s1/tips[0]: after 2", "mood 'angry'", "s1/tips[0].ja", "who 'ghost'"):
+        assert tag in joined, tag
+    assert "[Unknown Person]" not in joined and "s1/b" not in joined

@@ -3245,3 +3245,81 @@ rt {
   60% { transform: translate(-50%, -50%) scale(0.95); opacity: 1; }
   100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
+/* ---- series mascot tip (scene `tips`): StackChan pops up at the bottom centre, between the two
+   portraits (the part of the shot nobody stands in), with its speech bubble above ---- */
+.cine-mascot {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: 7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.cine-mascot-bot {
+  width: 12.5cqw; /* 20 art px x 6 = 120 px on the 960 px export stage: whole pixels */
+  height: auto;
+  image-rendering: pixelated;
+  animation: cine-mascot-in 0.36s steps(6) both;
+}
+.cine-mascot-bubble {
+  position: relative;
+  width: max-content;
+  max-width: 50cqw;
+  margin-bottom: 1.6cqw;
+  padding: 1cqw 1.6cqw 1.1cqw;
+  background: #fff8ea;
+  color: #241712;
+  border: max(2px, 0.35cqw) solid #241712;
+  box-shadow: 0 max(2px, 0.35cqw) 0 #241712;
+  font-size: max(13px, 2.2cqw);
+  line-height: 1.45;
+  text-align: left;
+  animation: cine-mascot-bubble 0.3s steps(4) 0.18s both;
+}
+.cine-mascot-bubble::after {
+  /* the tail, pointing down at the robot */
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(-1 * max(10px, 1.7cqw));
+  transform: translateX(-50%);
+  border-style: solid;
+  border-width: max(8px, 1.4cqw) max(6px, 1cqw) 0 max(6px, 1cqw);
+  border-color: #241712 transparent transparent transparent;
+}
+.cine-mascot-ja {
+  margin-top: 0.5cqw;
+  padding-top: 0.5cqw;
+  border-top: 1px dashed #c9b08a;
+  font-family: "Shippori Mincho", "Noto Serif JP", serif;
+  font-weight: 700;
+  color: #9a3a22;
+}
+.cine-mascot-text rt,
+.cine-mascot-ja rt {
+  color: #9a5b2e;
+}
+/* tip said by the mascot standing in the shot (tip `who`): bubble over its head */
+.cine-mascot-say {
+  position: absolute;
+  z-index: 7;
+  pointer-events: none;
+}
+.cine-mascot-say .cine-mascot-bubble { margin-bottom: max(10px, 1.7cqw); }
+.cine-mascot-say.center { transform: translateX(-50%); }
+.cine-mascot-say.left { transform: translateX(-4cqw); }
+.cine-mascot-say.right { transform: translateX(calc(-100% + 4cqw)); }
+.cine-mascot-say.left .cine-mascot-bubble::after { left: 4cqw; }
+.cine-mascot-say.right .cine-mascot-bubble::after { left: auto; right: 4cqw; transform: translateX(50%); }
+@keyframes cine-mascot-in {
+  0% { transform: translateY(100%); }
+  70% { transform: translateY(-6%); }
+  100% { transform: translateY(0); }
+}
+@keyframes cine-mascot-bubble {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}

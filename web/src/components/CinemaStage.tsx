@@ -41,12 +41,14 @@ import { drawSpriteFrame, frameAt } from "../engine/spriteAnimator";
 import { useStageRuntime } from "../engine/useStageRuntime";
 import { cameraAt, drawEmote, drawLightGrade, IDENTITY_VIEW, lineSfx } from "../engine/cinemaVibe";
 import { drawSceneMotion, sceneRumble } from "../engine/sceneMotion";
+import { BUST_H, BUST_TOP, BUST_W, drawStackChanBust, moodForEmote } from "../engine/mascot/stackchan";
 import { backdropAt, cueMoves, cueTime, setStateAt, type CueAnchors } from "../engine/cues";
 import { drawPerson, personAt, personBox, type PersonState } from "../engine/people";
 import { PROC_SETS } from "../engine/proc/sets";
 import { logStoryEvent } from "../engine/stageRuntime";
-import type { CinemaActor, DialogueLine, LineTelop, MiniGameChoice, SceneStamp, StoryData } from "../types/story";
+import type { CinemaActor, DialogueLine, LineTelop, MascotTip, MiniGameChoice, SceneStamp, StoryData } from "../types/story";
 import { InfoCard } from "./cinema/InfoCard";
+import { MascotBubble, MascotCorner, tipSeconds } from "./cinema/MascotCorner";
 import { RubyText } from "./RubyText";
 
 interface CinemaStageProps {
@@ -110,7 +112,7 @@ function drawActor(
     sprites: ReturnType<typeof useStageRuntime>["spritesRef"]["current"];
     rigs: ReturnType<typeof useStageRuntime>["rigsRef"]["current"];
   },
-  state: { talking: boolean; active: boolean; listening: boolean; enterProgress: number; t: number }
+  state: { talking: boolean; active: boolean; listening: boolean; enterProgress: number; t: number; mood?: string }
 ): void {
   const ease = easeOutCubic(state.enterProgress);
   const dir = side === "left" ? -1 : 1;
@@ -124,7 +126,19 @@ function drawActor(
   if (!state.active) ctx.filter = "brightness(0.8) saturate(0.9)";
   ctx.globalAlpha = clamp01(ease);
   const { rig, sheet } = actorAnimation(actor, res);
-  if (rig) {
+  if (actor.mascot === "stackchan") {
+    // the series mascot, drawn in code: whole-pixel scale, feet on the stage bottom
+    const k = Math.max(1, Math.floor(actor.scale ?? 4));
+    const w = BUST_W * k;
+    const h = (BUST_TOP + BUST_H) * k;
+    drawStackChanBust(ctx, x - Math.floor(w / 2), VIRTUAL_H - h + k, k, {
+      mood: state.mood,
+      t: state.t,
+      talking: state.talking,
+      wear: actor.wear,
+      lookX: side === "left" ? 1 : -1,
+    });
+  } else if (rig) {
     const pose = rigPose(state, state.t, side === "left" ? 0 : 1.3);
     const frame = rigHeadFrame(rig.data, state.talking, state.t, actor.talkClip, actor.idleClip);
     drawRig(ctx, rig, frame, x, VIRTUAL_H, pose, { scale, flipX: actor.flipX });
@@ -250,6 +264,7 @@ export function CinemaStage({
     exitRef.current = {};
     peopleStateRef.current = {};
     setPhase("lines");
+    setTip(null);
     setLineIdx(-1);
     setActiveLine(null);
     setCheckedIds([]);
@@ -265,7 +280,22 @@ export function CinemaStage({
     particlesRef.current = [];
     if (sceneIdx === story.scenes.length - 1) setReachedEnd(true);
 
+    // the mascot pops into the corner between lines (scene `tips`, `after` = line index, -1 = first)
+    const showTips = async (after: number) => {
+      for (const tp of (currentScene.tips ?? []).filter((x) => (x.after ?? -1) === after)) {
+        if (cancelled) return;
+        setTip(tp);
+        const url = sfxUrl("pop");
+        if (url) logStoryEvent({ type: "sfx", audioUrl: url, lineId: `tip:${after}` }, stageStartRef.current);
+        if (!recordMode) retroAudio.playSfx("pop");
+        await sleep(tipSeconds(tp) * 1000);
+        setTip(null);
+        if (cancelled) return;
+        await sleep(250);
+      }
+    };
     const run = async () => {
+      await showTips(-1);
       for (let i = 0; i < currentScene.lines.length; i++) {
         if (cancelled) return;
         setLineIdx(i);
@@ -273,6 +303,7 @@ export function CinemaStage({
         await playVoiceLine(currentScene.lines[i]);
         if (cancelled) return;
         await sleep(420);
+        await showTips(i);
       }
       if (cancelled) return;
       const holdLeft = (currentScene.holdSec ?? 0) * 1000 - (performance.now() - sceneStartRef.current);
@@ -296,6 +327,10 @@ export function CinemaStage({
   const vibeRef = useRef<{ line: DialogueLine | null; start: number }>({ line: null, start: 0 });
   // telop stays up while its line is spoken (also for checklist answers, which play in "ready")
   const [telopOn, setTelopOn] = useState(false);
+  // the mascot tip on screen (scene `tips`)
+  const [tip, setTip] = useState<MascotTip | null>(null);
+  const tipWhoRef = useRef<string | null>(null);
+  tipWhoRef.current = tip?.who ?? null;
   useEffect(() => {
     if (!activeLine?.telop) {
       setTelopOn(false);
@@ -583,6 +618,11 @@ export function CinemaStage({
       if (!base) return null;
       const actor = portraitsRef.current[side] ? { ...base, portrait: portraitsRef.current[side] } : base;
       const scale = Math.max(1, Math.floor(actor.scale ?? 1));
+      if (actor.mascot === "stackchan") {
+        const k = Math.max(1, Math.floor(actor.scale ?? 4));
+        const mh = (BUST_TOP + BUST_H) * k;
+        return { side, x: actorX(side, actor), top: VIRTUAL_H - mh, w: BUST_W * k, h: mh };
+      }
       const { rig, sheet } = actorAnimation(actor, { sprites: spritesRef.current, rigs: rigsRef.current });
       const im = actor.portrait ? imagesRef.current[`p:${actor.portrait}`] : undefined;
       const w = (rig?.data.frameWidth ?? sheet?.meta.frameWidth ?? im?.naturalWidth ?? 64) * scale;
@@ -657,7 +697,9 @@ export function CinemaStage({
           const st = personAt(def, moves.filter((m) => m.move.who === id), elapsed);
           peopleStateRef.current[id] = st;
           if (def.hideWhileInteract && phaseRef.current === "interact") continue;
-          drawPerson(ctx, def, st, t, spritesRef.current);
+          // the mascot in the shot says the tip itself: it waves while its bubble is up
+          const saying = tipWhoRef.current === id && !st.pose.startsWith("walk") ? { ...st, pose: "wave" as const } : st;
+          drawPerson(ctx, def, saying, t, spritesRef.current);
         }
       }
 
@@ -672,10 +714,14 @@ export function CinemaStage({
           const exitAt = exitRef.current[side];
           const stay = exitAt === undefined ? 1 : clamp01(1 - (now - exitAt) / 600);
           if (stay <= 0) return;
-          drawActor(ctx, side, actor, { imgs, sprites: spritesRef.current, rigs: rigsRef.current }, {
+          const myLine = focus.talking ? vibeRef.current.line : null;
+          drawActor(ctx, side, actor.mascot && !actor.wear ? { ...actor, wear: story.mascot?.wear } : actor, {
+            imgs, sprites: spritesRef.current, rigs: rigsRef.current,
+          }, {
             ...focus,
             enterProgress: Math.min(elapsed / (0.5 + i * 0.1), 1) * stay,
             t,
+            mood: myLine ? myLine.mascotMood ?? moodForEmote(myLine.emote) ?? "idle" : "idle",
           });
         });
       }
@@ -929,6 +975,19 @@ export function CinemaStage({
             </div>
             {telop.sub && showVi && <div className="cine-telop-s">{telop.sub}</div>}
           </div>
+        )}
+        {tip && tip.who && peopleStateRef.current[tip.who] ? (
+          <MascotBubble
+            key={tip.text}
+            tip={tip}
+            showFurigana={showFurigana}
+            at={[
+              peopleStateRef.current[tip.who].x,
+              peopleStateRef.current[tip.who].y - personBox(currentScene.people?.[tip.who]?.kind ?? "", spritesRef.current).h - 6,
+            ]}
+          />
+        ) : (
+          tip && <MascotCorner key={tip.text} tip={tip} wear={story.mascot?.wear} showFurigana={showFurigana} />
         )}
         {interaction && phase === "interact" && total > 1 && (
           <div className="cine-counter">

@@ -25,7 +25,11 @@ VIBE_SFX = {"pop", "ding", "whoosh", "boing", "shock", "sparkle", "thud", "gloom
 VIBE_LIGHTS = {"day", "morning", "golden", "dusk", "night", "rain", "warm"}
 VIBE_BGM = {"default", "depato_sunny", "depato_rain", "calm", "night", "happy", "bright", "sad", "tender", "rain", "none"}
 MOTION_TYPES = {"scroll", "sweep", "glow", "shimmer", "steam", "mover", "rumble"}
-PERSON_KINDS = {"dog", "bronze-dog", "sensei", "person"}
+PERSON_KINDS = {"dog", "bronze-dog", "sensei", "person", "stackchan"}
+# the series mascot (web/src/engine/mascot/stackchan.ts)
+MASCOT_MOODS = {"idle", "happy", "star", "sad", "think", "heart", "wink", "surprise", "cool", "cry", "kira", "pout", "sleep"}
+MASCOT_WEAR = {"leaf", "hachimaki", "catears", "straw", "santa", "nonla", "grad", "crown", "glasses", "bandaid", "bow", "scarf", "bell"}
+MASCOT_SHELLS = {"sky", "matcha", "sakura", "gold"}
 PROC_SETS = {"shibuya", "shibuya_today", "konbini_skyline", "konbini_exterior", "konbini_interior", "konbini_counter", "konbini_closeup", "konbini_outro"}
 
 
@@ -393,6 +397,53 @@ def validate_story_folder(
             for side in line.get("castExit") or []:
                 if side not in ("left", "right"):
                     issues.append(f"[Unknown Side] {lid}/castExit: '{side}' (use 'left' or 'right')")
+        # the series mascot: kind, wardrobe, tips
+        def _check_wear(where: str, wear: Any) -> None:
+            for slot, item in (wear or {}).items():
+                if slot == "shell":
+                    if item not in MASCOT_SHELLS:
+                        issues.append(f"[Mascot] {where}: shell '{item}' (use one of {sorted(MASCOT_SHELLS)})")
+                elif slot not in ("head", "face", "neck"):
+                    issues.append(f"[Mascot] {where}: wear slot '{slot}' (head, face, neck, shell)")
+                elif item not in MASCOT_WEAR:
+                    issues.append(f"[Mascot] {where}: wear '{item}' (use one of {sorted(MASCOT_WEAR)})")
+
+        mascot = data.get("mascot")
+        if mascot is not None:
+            if mascot.get("kind") != "stackchan":
+                issues.append(f"[Mascot] kind '{mascot.get('kind')}' (only 'stackchan')")
+            _check_wear("mascot", mascot.get("wear"))
+        for sc in data.get("scenes", []):
+            sid = sc.get("id", "?")
+            n_lines = len(sc.get("lines") or [])
+            if sc.get("tips") and mascot is None:
+                issues.append(f"[Mascot] {sid}: scene tips need a story `mascot`")
+            for ti, tp in enumerate(sc.get("tips") or []):
+                after = tp.get("after", -1)
+                if not isinstance(after, int) or not -1 <= after < n_lines:
+                    issues.append(f"[Mascot] {sid}/tips[{ti}]: after {after} (lines are 0..{n_lines - 1}, -1 = first)")
+                if tp.get("who") and tp["who"] not in (sc.get("people") or {}):
+                    issues.append(f"[Mascot] {sid}/tips[{ti}]: who '{tp['who']}' is not in scene.people")
+                if tp.get("mood") and tp["mood"] not in MASCOT_MOODS:
+                    issues.append(f"[Mascot] {sid}/tips[{ti}]: mood '{tp['mood']}' (use one of {sorted(MASCOT_MOODS)})")
+                _check_ruby_segments(f"{sid}/tips[{ti}].text", tp.get("text", ""), issues)
+                if tp.get("ja"):
+                    _check_ruby_segments(f"{sid}/tips[{ti}].ja", tp["ja"], issues)
+            for pid, pdef in (sc.get("people") or {}).items():
+                if pdef.get("kind") == "stackchan":
+                    _check_wear(f"{sid}/{pid}", pdef.get("wear"))
+            for side, actor in (sc.get("cast") or {}).items():
+                if isinstance(actor, dict) and actor.get("mascot"):
+                    _check_wear(f"{sid}/cast.{side}", actor.get("wear"))
+        for side, actor in (data.get("cast") or {}).items():
+            if isinstance(actor, dict) and actor.get("mascot"):
+                if actor["mascot"] != "stackchan":
+                    issues.append(f"[Mascot] cast.{side}: mascot '{actor['mascot']}' (only 'stackchan')")
+                _check_wear(f"cast.{side}", actor.get("wear"))
+        for line, default_id in iter_story_lines(data):
+            if line.get("mascotMood") and line["mascotMood"] not in MASCOT_MOODS:
+                issues.append(f"[Mascot] {line.get('id', default_id)}: mascotMood '{line['mascotMood']}'")
+
         # cast (story-wide and per scene): portraits must exist
         if data.get("engine") == "cinema":
             portraits = (data.get("assets") or {}).get("portraits") or {}

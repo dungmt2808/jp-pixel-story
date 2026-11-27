@@ -132,6 +132,16 @@
           "x": -70,
           "y": 190,
           "face": "right"
+        },
+        "bot": {
+          "kind": "stackchan",
+          "x": -96,
+          "y": 190,
+          "face": "right",
+          "wear": {
+            "head": "nonla",
+            "neck": "scarf"
+          }
         }
       },
       "cues": [
@@ -147,6 +157,12 @@
               "who": "yui",
               "walkTo": 108,
               "speed": 30
+            },
+            {
+              "who": "bot",
+              "walkTo": 40,
+              "speed": 26,
+              "then": "wave"
             }
           ]
         },
@@ -175,7 +191,16 @@
           ]
         }
       ],
-      "holdSec": 10
+      "holdSec": 10,
+      "tips": [
+        {
+          "after": 0,
+          "mood": "happy",
+          "text": "Chào cả nhà! Mình là StackChan. Hôm nay cùng Minh và Yui đi ngắm hoa anh đào nhé!",
+          "ja": "お{花見|はなみ}に{行|い}こう！",
+          "who": "bot"
+        }
+      ]
     },
     {
       "id": "under_sakura",
@@ -226,7 +251,15 @@
           "emote": "dots"
         }
       ],
-      "light": "morning"
+      "light": "morning",
+      "tips": [
+        {
+          "after": 1,
+          "mood": "think",
+          "text": "「Vた + ことがありません」: chưa từng làm việc gì đó. Minh chưa từng ngắm hoa anh đào.",
+          "ja": "{桜|さくら}を{見|み}たことがありません。"
+        }
+      ]
     },
     {
       "id": "bento_time",
@@ -431,7 +464,15 @@
       ],
       "actionLabel": "→",
       "light": "golden",
-      "bgm": "tender"
+      "bgm": "tender",
+      "tips": [
+        {
+          "after": 0,
+          "mood": "kira",
+          "text": "「Vませんか」: rủ ai đó cùng làm, nghe nhẹ nhàng và lịch sự.",
+          "ja": "いっしょにお{花見|はなみ}をしませんか。"
+        }
+      ]
     },
     {
       "id": "hanami_outro",
@@ -463,7 +504,15 @@
         }
       ],
       "light": "golden",
-      "bgm": "happy"
+      "bgm": "happy",
+      "tips": [
+        {
+          "after": 0,
+          "mood": "heart",
+          "text": "Hẹn gặp lại ở bài sau nha!",
+          "ja": "またね！"
+        }
+      ]
     }
   ],
   "reading": {
@@ -661,5 +710,13 @@
       }
     ]
   },
-  "brand": "jp-pixel-story.vn"
+  "brand": "jp-pixel-story.vn",
+  "mascot": {
+    "kind": "stackchan",
+    "name": "StackChan",
+    "wear": {
+      "head": "nonla",
+      "neck": "scarf"
+    }
+  }
 }
