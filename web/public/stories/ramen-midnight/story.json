@@ -26,7 +26,21 @@
       "egg": "/stories/ramen-midnight/assets/item_egg.png",
       "nori": "/stories/ramen-midnight/assets/item_nori.png"
     },
-    "cardPortrait": "/stories/ramen-midnight/assets/portrait_chef_warm.png"
+    "cardPortrait": "/stories/ramen-midnight/assets/portrait_chef_warm.png",
+    "sprites": {
+      "minh_neutral": "/stories/ramen-midnight/assets/sprites/minh_neutral/meta.json",
+      "chef_warm": "/stories/ramen-midnight/assets/sprites/chef_warm/meta.json",
+      "minh_happy": "/stories/ramen-midnight/assets/sprites/minh_happy/meta.json",
+      "minh_thinking": "/stories/ramen-midnight/assets/sprites/minh_thinking/meta.json",
+      "chef_happy": "/stories/ramen-midnight/assets/sprites/chef_happy/meta.json",
+      "minh_walk": "/stories/ramen-midnight/assets/sprites/minh_walk/meta.json"
+    },
+    "rigs": {
+      "minh_neutral": "/stories/ramen-midnight/assets/sprites/minh_neutral/rig/rig.json",
+      "chef_warm": "/stories/ramen-midnight/assets/sprites/chef_warm/rig/rig.json",
+      "minh_happy": "/stories/ramen-midnight/assets/sprites/minh_happy/rig/rig.json",
+      "chef_happy": "/stories/ramen-midnight/assets/sprites/chef_happy/rig/rig.json"
+    }
   },
   "voices": {
     "narrator": {
@@ -196,7 +210,27 @@
       "actors": [
         "left"
       ],
-      "stamp": "深夜のラーメン屋 · 路地裏の小さな店"
+      "stamp": "深夜のラーメン屋 · 路地裏の小さな店",
+      "people": {
+        "minh": {
+          "kind": "sprite:minh_walk",
+          "x": 312,
+          "y": 170,
+          "face": "left"
+        }
+      },
+      "cues": [
+        {
+          "line": 0,
+          "people": [
+            {
+              "who": "minh",
+              "walkTo": 186,
+              "speed": 36
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "counter_order",

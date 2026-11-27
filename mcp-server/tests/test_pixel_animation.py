@@ -268,3 +268,17 @@ def test_slicer_pixel_pitch_fixes_the_scale(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="frame of at least"):
         process_sprite_sheet(raw, tmp_path / "small", cols=4, frame_width=16, frame_height=16,
                              bg_mode="chroma_green", pixel_pitch=4)
+
+
+def test_slicer_gaps_keeps_wide_figures_separate_across_narrow_gaps(tmp_path: Path) -> None:
+    """Wide busts separated by a narrow green gap (< 8% of bust width) must NOT be merged."""
+    raw = tmp_path / "wide_busts.png"
+    sheet = Image.new("RGB", (440, 120), (0, 255, 0))
+    d = ImageDraw.Draw(sheet)
+    for i in range(4):
+        x0 = 4 + i * 108  # 102px wide bust + 6px gap (< 0.08 * 102 = 8.16px)
+        d.rectangle([x0, 20, x0 + 101, 119], fill=(120, 80, 60))
+    sheet.save(raw)
+    res = process_sprite_sheet(raw, tmp_path / "out", cols=4, split="gaps", frame_width=48, frame_height=48,
+                               bg_mode="chroma_green", palette_name="ramen_midnight", registration="bust")
+    assert res["frame_count"] == 4

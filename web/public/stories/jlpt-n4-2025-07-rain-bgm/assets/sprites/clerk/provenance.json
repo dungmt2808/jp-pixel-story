@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "assets": {
+    "rig": {
+      "steps": [
+        {
+          "op": "build_rig",
+          "params": {
+            "neck_row": null,
+            "neck_extension": 3
+          },
+          "input": {
+            "path": "web/public/stories/jlpt-n4-2025-07-rain-bgm/assets/sprites/clerk",
+            "sha": "f7f555f6a71825aa"
+          },
+          "at": "2026-11-27T11:03:40+00:00"
+        }
+      ],
+      "output": {
+        "sha": "ec69c07d276cefd4"
+      }
+    }
+  }
+}

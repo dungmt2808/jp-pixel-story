@@ -221,16 +221,21 @@ def _apply_characters(
                 if not dry_run:
                     process_sprite_sheet(raw, out, cols=int(ch.get("frames", 4)), frame_width=pw, frame_height=ph,
                                          registration="bust", grid=ch.get("grid", "auto"), lock_expressions=True,
+                                         expression_region=ch.get("expression_region"),
                                          padding=0,  # the bust is cut by the frame bottom like the portrait
                                          clips=ch.get("clips", BUST_CLIPS), fps=8, **common)
                 assets.setdefault("sprites", {})[key] = url
-                try:
-                    if not dry_run:
-                        build_rig(out)
-                    assets.setdefault("rigs", {})[key] = f"/stories/{story_id}/assets/sprites/{key}/rig/rig.json"
-                    entry["rig"] = assets["rigs"][key]
-                except ValueError as err:  # no clear neck: the sprite still talks and blinks
-                    problems.append(f"{key}: no rig ({err}); the sheet animates without nodding")
+                if ch.get("rig", True) is False:
+                    if key in (assets.get("rigs") or {}):
+                        del assets["rigs"][key]
+                else:
+                    try:
+                        if not dry_run:
+                            build_rig(out, neck_row=ch.get("neck_row"))
+                        assets.setdefault("rigs", {})[key] = f"/stories/{story_id}/assets/sprites/{key}/rig/rig.json"
+                        entry["rig"] = assets["rigs"][key]
+                    except ValueError as err:  # no clear neck: the sprite still talks and blinks
+                        problems.append(f"{key}: no rig ({err}); the sheet animates without nodding")
             else:
                 fw, fh = ch.get("frame", [40, 64])
                 clips = {"walk": {"frames": list(range(8)), "fps": 10, "stridePx": float(ch.get("stride", 28))}, **WALK_CLIPS}

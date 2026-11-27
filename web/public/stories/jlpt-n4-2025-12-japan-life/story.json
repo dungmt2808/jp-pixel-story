@@ -22,7 +22,15 @@
     "items": {
       "plane": "/stories/jlpt-n4-2025-12-japan-life/assets/items/plane.png"
     },
-    "cardPortrait": "/stories/jlpt-n4-2025-12-japan-life/assets/portrait_lisa.png"
+    "cardPortrait": "/stories/jlpt-n4-2025-12-japan-life/assets/portrait_lisa.png",
+    "sprites": {
+      "lisa": "/stories/jlpt-n4-2025-12-japan-life/assets/sprites/lisa/meta.json",
+      "haruko": "/stories/jlpt-n4-2025-12-japan-life/assets/sprites/haruko/meta.json",
+      "lisa_walk": "/stories/jlpt-n4-2025-12-japan-life/assets/sprites/lisa_walk/meta.json"
+    },
+    "rigs": {
+      "haruko": "/stories/jlpt-n4-2025-12-japan-life/assets/sprites/haruko/rig/rig.json"
+    }
   },
   "voices": {
     "lisa": {
@@ -263,6 +271,26 @@
       },
       "light": "dusk",
       "bgm": "tender",
+      "people": {
+        "lisa": {
+          "kind": "sprite:lisa_walk",
+          "x": 328,
+          "y": 172,
+          "face": "left"
+        }
+      },
+      "cues": [
+        {
+          "line": 0,
+          "people": [
+            {
+              "who": "lisa",
+              "walkTo": 226,
+              "speed": 26
+            }
+          ]
+        }
+      ],
       "motion": [
         {
           "type": "mover",

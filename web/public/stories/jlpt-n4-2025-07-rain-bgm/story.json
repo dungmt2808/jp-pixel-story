@@ -19,7 +19,18 @@
       "kitamura": "/stories/jlpt-n4-2025-07-rain-bgm/assets/portrait_kitamura.png"
     },
     "items": {},
-    "cardPortrait": "/stories/jlpt-n4-2025-07-rain-bgm/assets/portrait_clerk.png"
+    "cardPortrait": "/stories/jlpt-n4-2025-07-rain-bgm/assets/portrait_clerk.png",
+    "sprites": {
+      "student": "/stories/jlpt-n4-2025-07-rain-bgm/assets/sprites/student/meta.json",
+      "clerk": "/stories/jlpt-n4-2025-07-rain-bgm/assets/sprites/clerk/meta.json",
+      "student_walk": "/stories/jlpt-n4-2025-07-rain-bgm/assets/sprites/student_walk/meta.json",
+      "kitamura": "/stories/jlpt-n4-2025-07-rain-bgm/assets/sprites/kitamura/meta.json"
+    },
+    "rigs": {
+      "student": "/stories/jlpt-n4-2025-07-rain-bgm/assets/sprites/student/rig/rig.json",
+      "clerk": "/stories/jlpt-n4-2025-07-rain-bgm/assets/sprites/clerk/rig/rig.json",
+      "kitamura": "/stories/jlpt-n4-2025-07-rain-bgm/assets/sprites/kitamura/rig/rig.json"
+    }
   },
   "voices": {
     "student": {
@@ -221,6 +232,26 @@
             "sub": "Trời mưa thật!",
             "color": "ai"
           }
+        }
+      ],
+      "people": {
+        "student": {
+          "kind": "sprite:student_walk",
+          "x": 136,
+          "y": 168,
+          "face": "right"
+        }
+      },
+      "cues": [
+        {
+          "line": 0,
+          "people": [
+            {
+              "who": "student",
+              "walkTo": 216,
+              "speed": 28
+            }
+          ]
         }
       ]
     },

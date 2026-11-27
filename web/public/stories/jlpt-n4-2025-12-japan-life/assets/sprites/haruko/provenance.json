@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "assets": {
+    "rig": {
+      "steps": [
+        {
+          "op": "build_rig",
+          "params": {
+            "neck_row": null,
+            "neck_extension": 3
+          },
+          "input": {
+            "path": "web/public/stories/jlpt-n4-2025-12-japan-life/assets/sprites/haruko",
+            "sha": "27ed4cae16ab3cce"
+          },
+          "at": "2026-11-27T11:00:27+00:00"
+        }
+      ],
+      "output": {
+        "sha": "b87e2626b1984f5b"
+      }
+    }
+  }
+}

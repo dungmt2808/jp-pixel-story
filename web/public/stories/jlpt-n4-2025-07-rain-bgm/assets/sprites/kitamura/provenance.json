@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "assets": {
+    "rig": {
+      "steps": [
+        {
+          "op": "build_rig",
+          "params": {
+            "neck_row": null,
+            "neck_extension": 3
+          },
+          "input": {
+            "path": "web/public/stories/jlpt-n4-2025-07-rain-bgm/assets/sprites/kitamura",
+            "sha": "60d2c25b3c1228fd"
+          },
+          "at": "2026-11-27T11:03:43+00:00"
+        }
+      ],
+      "output": {
+        "sha": "9c3d93bd40bfe2cc"
+      }
+    }
+  }
+}

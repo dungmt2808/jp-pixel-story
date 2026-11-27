@@ -22,7 +22,16 @@
       "crane": "/stories/tsuru-ongaeshi/assets/item_crane.png",
       "cloth": "/stories/tsuru-ongaeshi/assets/item_cloth.png"
     },
-    "cardPortrait": "/stories/tsuru-ongaeshi/assets/portrait_otsu_gentle.png"
+    "cardPortrait": "/stories/tsuru-ongaeshi/assets/portrait_otsu_gentle.png",
+    "sprites": {
+      "otsu_gentle": "/stories/tsuru-ongaeshi/assets/sprites/otsu_gentle/meta.json",
+      "otsu_plead": "/stories/tsuru-ongaeshi/assets/sprites/otsu_plead/meta.json",
+      "yosaku_walk": "/stories/tsuru-ongaeshi/assets/sprites/yosaku_walk/meta.json",
+      "yosaku": "/stories/tsuru-ongaeshi/assets/sprites/yosaku/meta.json"
+    },
+    "rigs": {
+      "yosaku": "/stories/tsuru-ongaeshi/assets/sprites/yosaku/rig/rig.json"
+    }
   },
   "voices": {
     "narrator": {
@@ -105,6 +114,26 @@
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t01_l01.mp3",
           "durationSec": 7.424,
           "ttsHash": "e7ee6aca3b7a"
+        }
+      ],
+      "people": {
+        "yosaku": {
+          "kind": "sprite:yosaku_walk",
+          "x": -20,
+          "y": 154,
+          "face": "right"
+        }
+      },
+      "cues": [
+        {
+          "line": 0,
+          "people": [
+            {
+              "who": "yosaku",
+              "walkTo": 72,
+              "speed": 24
+            }
+          ]
         }
       ]
     },

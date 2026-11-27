@@ -458,10 +458,11 @@ def _split_by_gaps(clean: np.ndarray, count: int, margin: int = 6) -> list[np.nd
     if not runs:
         raise ValueError("split='gaps': no figure found (is the background removed?).")
     widest = max(b - a for a, b in runs)
-    # merge parts of one figure (a hand held out in front) split by a narrow gap
+    # merge parts of one figure (a hand held out in front) split by a narrow gap,
+    # without merging two separate full-size figures that sit close together
     merged: list[list[int]] = []
     for a, b in runs:
-        if merged and a - merged[-1][1] < max(3, widest * 0.08):
+        if merged and a - merged[-1][1] < max(3, widest * 0.08) and b - merged[-1][0] <= widest * 1.15:
             merged[-1][1] = b
         else:
             merged.append([a, b])

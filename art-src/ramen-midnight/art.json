@@ -10,17 +10,30 @@
     {
       "key": "chef_warm",
       "raw": "raw_sheet_chef_warm.png",
-      "kind": "bust"
+      "kind": "bust",
+      "expression_region": [
+        28,
+        28,
+        66,
+        58
+      ]
     },
     {
       "key": "minh_happy",
       "raw": "raw_sheet_minh_happy.png",
-      "kind": "bust"
+      "kind": "bust",
+      "expression_region": [
+        30,
+        36,
+        68,
+        59
+      ]
     },
     {
       "key": "minh_thinking",
       "raw": "raw_sheet_minh_thinking.png",
-      "kind": "bust"
+      "kind": "bust",
+      "rig": false
     },
     {
       "key": "chef_happy",
@@ -35,7 +48,7 @@
         40,
         64
       ],
-      "stride": 28
+      "stride": 30
     }
   ]
 }

@@ -99,3 +99,14 @@ def test_art_manifest_characters_animate_portraits_and_add_walkers(tmp_path: Pat
     assert set(bust["clips"]) == {"idle", "talk"}
     walk = json.loads((sdir / "assets" / "sprites" / "yui_walk" / "meta.json").read_text())
     assert walk["facing"] == "right" and walk["clips"]["walk"]["stridePx"] == 32.0 and walk["frameCount"] == 10
+    # Optional expression_region + rig: false override
+    (art / "art.json").write_text(json.dumps({"story": "demo", "characters": [
+        {"key": "yui", "raw": "raw_sheet_yui.png", "kind": "bust",
+         "expression_region": [24, 24, 72, 56], "rig": False},
+    ]}), encoding="utf-8")
+    res2 = apply_art_manifest(art / "art.json", public_root=public, only=["characters"])
+    assert res2["problems"] == [] and "rig" not in res2["characters"][0]
+    saved2 = json.loads((sdir / "story.json").read_text())
+    assert "yui" not in saved2["assets"].get("rigs", {})
+    bust2 = json.loads((sdir / "assets" / "sprites" / "yui" / "meta.json").read_text())
+    assert bust2["expressionRegion"] == [24, 24, 72, 56]

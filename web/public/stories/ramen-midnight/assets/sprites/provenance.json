@@ -1,0 +1,423 @@
+{
+  "version": 1,
+  "assets": {
+    "minh_neutral": {
+      "steps": [
+        {
+          "op": "process_sprite_sheet",
+          "params": {
+            "cols": 4,
+            "rows": 1,
+            "frame_width": 96,
+            "frame_height": 96,
+            "palette_name": "ramen_midnight",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "align_bottom": true,
+            "registration": "bust",
+            "fps": 8,
+            "clips": {
+              "idle": {
+                "frames": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  2
+                ],
+                "fps": 4
+              },
+              "talk": {
+                "frames": [
+                  1,
+                  3,
+                  1,
+                  0
+                ],
+                "fps": 8
+              }
+            },
+            "padding": 0,
+            "grid": "auto",
+            "cleanup": true,
+            "outline_color": "#241712",
+            "lock_expressions": true,
+            "expression_region": null,
+            "split": "gaps"
+          },
+          "input": {
+            "path": "art-src/ramen-midnight/raw_sheet_minh_neutral.png",
+            "sha": "116152fc92361e92"
+          },
+          "at": "2026-11-27T11:03:27+00:00",
+          "source": {
+            "kind": "art-manifest",
+            "manifest": "art.json",
+            "character": "minh_neutral"
+          }
+        }
+      ],
+      "output": {
+        "sha": "442c8b7ef4595733"
+      }
+    },
+    "chef_warm": {
+      "steps": [
+        {
+          "op": "process_sprite_sheet",
+          "params": {
+            "cols": 4,
+            "rows": 1,
+            "frame_width": 96,
+            "frame_height": 96,
+            "palette_name": "ramen_midnight",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "align_bottom": true,
+            "registration": "bust",
+            "fps": 8,
+            "clips": {
+              "idle": {
+                "frames": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  2
+                ],
+                "fps": 4
+              },
+              "talk": {
+                "frames": [
+                  1,
+                  3,
+                  1,
+                  0
+                ],
+                "fps": 8
+              }
+            },
+            "padding": 0,
+            "grid": "auto",
+            "cleanup": true,
+            "outline_color": "#241712",
+            "lock_expressions": true,
+            "expression_region": [
+              28,
+              28,
+              66,
+              58
+            ],
+            "split": "gaps"
+          },
+          "input": {
+            "path": "art-src/ramen-midnight/raw_sheet_chef_warm.png",
+            "sha": "eb56dd2f1362ba1f"
+          },
+          "at": "2026-11-27T11:03:29+00:00",
+          "source": {
+            "kind": "art-manifest",
+            "manifest": "art.json",
+            "character": "chef_warm"
+          }
+        }
+      ],
+      "output": {
+        "sha": "4cbb736770670957"
+      }
+    },
+    "minh_happy": {
+      "steps": [
+        {
+          "op": "process_sprite_sheet",
+          "params": {
+            "cols": 4,
+            "rows": 1,
+            "frame_width": 96,
+            "frame_height": 96,
+            "palette_name": "ramen_midnight",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "align_bottom": true,
+            "registration": "bust",
+            "fps": 8,
+            "clips": {
+              "idle": {
+                "frames": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  2
+                ],
+                "fps": 4
+              },
+              "talk": {
+                "frames": [
+                  1,
+                  3,
+                  1,
+                  0
+                ],
+                "fps": 8
+              }
+            },
+            "padding": 0,
+            "grid": "auto",
+            "cleanup": true,
+            "outline_color": "#241712",
+            "lock_expressions": true,
+            "expression_region": [
+              30,
+              36,
+              68,
+              59
+            ],
+            "split": "gaps"
+          },
+          "input": {
+            "path": "art-src/ramen-midnight/raw_sheet_minh_happy.png",
+            "sha": "d9898d72e118795f"
+          },
+          "at": "2026-11-27T11:03:30+00:00",
+          "source": {
+            "kind": "art-manifest",
+            "manifest": "art.json",
+            "character": "minh_happy"
+          }
+        }
+      ],
+      "output": {
+        "sha": "ff52ae2966bcab74"
+      }
+    },
+    "minh_thinking": {
+      "steps": [
+        {
+          "op": "process_sprite_sheet",
+          "params": {
+            "cols": 4,
+            "rows": 1,
+            "frame_width": 96,
+            "frame_height": 96,
+            "palette_name": "ramen_midnight",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "align_bottom": true,
+            "registration": "bust",
+            "fps": 8,
+            "clips": {
+              "idle": {
+                "frames": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  2
+                ],
+                "fps": 4
+              },
+              "talk": {
+                "frames": [
+                  1,
+                  3,
+                  1,
+                  0
+                ],
+                "fps": 8
+              }
+            },
+            "padding": 0,
+            "grid": "auto",
+            "cleanup": true,
+            "outline_color": "#241712",
+            "lock_expressions": true,
+            "expression_region": null,
+            "split": "gaps"
+          },
+          "input": {
+            "path": "art-src/ramen-midnight/raw_sheet_minh_thinking.png",
+            "sha": "b477cb5c59c485ba"
+          },
+          "at": "2026-11-27T11:03:33+00:00",
+          "source": {
+            "kind": "art-manifest",
+            "manifest": "art.json",
+            "character": "minh_thinking"
+          }
+        }
+      ],
+      "output": {
+        "sha": "e2055abbc6f7a949"
+      }
+    },
+    "chef_happy": {
+      "steps": [
+        {
+          "op": "process_sprite_sheet",
+          "params": {
+            "cols": 4,
+            "rows": 1,
+            "frame_width": 96,
+            "frame_height": 96,
+            "palette_name": "ramen_midnight",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "align_bottom": true,
+            "registration": "bust",
+            "fps": 8,
+            "clips": {
+              "idle": {
+                "frames": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  2
+                ],
+                "fps": 4
+              },
+              "talk": {
+                "frames": [
+                  1,
+                  3,
+                  1,
+                  0
+                ],
+                "fps": 8
+              }
+            },
+            "padding": 0,
+            "grid": "auto",
+            "cleanup": true,
+            "outline_color": "#241712",
+            "lock_expressions": true,
+            "expression_region": null,
+            "split": "gaps"
+          },
+          "input": {
+            "path": "art-src/ramen-midnight/raw_sheet_chef_happy.png",
+            "sha": "ab701a8761729273"
+          },
+          "at": "2026-11-27T11:03:35+00:00",
+          "source": {
+            "kind": "art-manifest",
+            "manifest": "art.json",
+            "character": "chef_happy"
+          }
+        }
+      ],
+      "output": {
+        "sha": "2c4459a049f276f3"
+      }
+    },
+    "minh_walk": {
+      "steps": [
+        {
+          "op": "process_sprite_sheet",
+          "params": {
+            "cols": 10,
+            "rows": 1,
+            "frame_width": 40,
+            "frame_height": 64,
+            "palette_name": "ramen_midnight",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "align_bottom": true,
+            "registration": "centroid",
+            "fps": 10,
+            "clips": {
+              "walk": {
+                "frames": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7
+                ],
+                "fps": 10,
+                "stridePx": 30.0
+              },
+              "idle": {
+                "frames": [
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  8,
+                  9
+                ],
+                "fps": 4
+              }
+            },
+            "padding": 1,
+            "grid": "none",
+            "cleanup": true,
+            "outline_color": "#241712",
+            "lock_expressions": false,
+            "expression_region": null,
+            "facing": "right",
+            "split": "gaps"
+          },
+          "input": {
+            "path": "art-src/ramen-midnight/raw_walk_minh.png",
+            "sha": "94db4f02112ac4a4"
+          },
+          "at": "2026-11-27T11:03:36+00:00",
+          "source": {
+            "kind": "art-manifest",
+            "manifest": "art.json",
+            "character": "minh_walk"
+          }
+        }
+      ],
+      "output": {
+        "sha": "063064da4dc13934"
+      }
+    }
+  }
+}

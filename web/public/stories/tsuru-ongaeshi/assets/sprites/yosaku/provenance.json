@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "assets": {
+    "rig": {
+      "steps": [
+        {
+          "op": "build_rig",
+          "params": {
+            "neck_row": null,
+            "neck_extension": 3
+          },
+          "input": {
+            "path": "web/public/stories/tsuru-ongaeshi/assets/sprites/yosaku",
+            "sha": "0e1608cf2f79f4dc"
+          },
+          "at": "2026-11-27T11:03:20+00:00"
+        }
+      ],
+      "output": {
+        "sha": "e757af9e9199a1ed"
+      }
+    }
+  }
+}

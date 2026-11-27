@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "assets": {
+    "rig": {
+      "steps": [
+        {
+          "op": "build_rig",
+          "params": {
+            "neck_row": null,
+            "neck_extension": 3
+          },
+          "input": {
+            "path": "web/public/stories/ramen-midnight/assets/sprites/minh_neutral",
+            "sha": "442c8b7ef4595733"
+          },
+          "at": "2026-11-27T11:03:27+00:00"
+        }
+      ],
+      "output": {
+        "sha": "84ab2876975e5f2a"
+      }
+    }
+  }
+}
