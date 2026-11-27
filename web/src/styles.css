@@ -39,6 +39,14 @@ body,
   padding: 16px;
 }
 
+.app-shell.app-shell-washi {
+  padding: 0;
+  justify-content: flex-start;
+  align-items: stretch;
+  background: #f5eee0;
+  color: #241712;
+}
+
 .topbar-series {
   font-family: var(--font-jp);
   font-size: 11px;
@@ -323,212 +331,690 @@ rt {
   transform: scale(0.84);
 }
 
-/* Story Library View */
-.library-shell {
-  width: 100%;
-  max-width: 1020px;
-  background: #101422;
-  border: 2px solid #2b3556;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65);
-  padding: 28px 30px;
-}
-
-.library-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #242d4a;
-  margin-bottom: 24px;
-}
-
-.library-title {
-  margin: 4px 0 0;
-  font-family: var(--font-jp);
-  font-size: clamp(22px, 3vw, 28px);
-  color: #f5f1e6;
-}
-
-.library-subtitle {
-  margin: 8px 0 0;
-  font-size: 14px;
-  color: #a9b8d9;
-  line-height: 1.5;
-}
-
-.library-badge-count {
-  font-family: var(--font-jp);
-  font-size: 13px;
-  color: var(--accent-amber);
-  background: #1a223d;
-  border: 2px solid #3c4d82;
-  padding: 6px 12px;
-  white-space: nowrap;
-}
-
-.library-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-.story-card {
-  background: #151b30;
-  border: 2px solid #2d385c;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  transition: transform 0.12s ease, border-color 0.15s ease;
-}
-
-.story-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--accent-mint);
-}
-
-.story-card-thumb {
-  position: relative;
-  aspect-ratio: 16 / 10;
-  background: #0b0e1a;
-  cursor: pointer;
-  overflow: hidden;
-  border-bottom: 2px solid #2d385c;
+/* =====================================================================
+   Story Library — Vibe A: Warm Japanese Washi & Crisp 16-bit Pixel UI
+   ===================================================================== */
+.px-icon {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
 }
 
 .library-thumb-canvas {
   width: 100%;
   height: 100%;
   display: block;
+  object-fit: cover;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
 
-.story-card-level {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 11px;
-  font-weight: 700;
-  background: rgba(11, 14, 26, 0.9);
-  color: var(--accent-amber);
-  border: 1px solid #ffd875;
-  padding: 2px 8px;
-}
-
-.story-card-body {
-  padding: 16px 18px 18px;
+.washi-library {
+  width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  background: #f5eee0;
+  color: #241712;
 }
 
-.story-card-title-ja {
-  margin: 0;
+.washi-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(236, 226, 206, 0.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 2px solid #d8c8ab;
+}
+
+.washi-topbar-inner {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.washi-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.washi-brand-mascot {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #241712;
+  border: 2px solid #241712;
+  padding: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 0 rgba(36, 23, 18, 0.25);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.washi-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.washi-brand-title {
   font-family: var(--font-jp);
-  font-size: 20px;
-  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  color: #241712;
+  line-height: 1.15;
 }
 
-.story-card-title-vi {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--accent-mint);
-  margin-top: 3px;
-}
-
-.story-card-desc {
-  font-size: 13px;
-  color: #b7c4e0;
-  line-height: 1.55;
-  margin: 10px 0 14px;
-  flex: 1;
-}
-
-.story-card-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  font-size: 12px;
-  color: #8b9cc2;
-  margin-bottom: 14px;
-}
-
-.story-card-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.story-card-actions .pixel-btn {
-  font-size: 13px;
-  padding: 7px 12px;
-}
-
-.library-footer {
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid #242d4a;
-  font-size: 12px;
-  color: #8b9cc2;
-  line-height: 1.5;
-}
-
-.library-footer code {
-  background: #1b233d;
-  color: var(--accent-amber);
-  padding: 1px 5px;
-}
-
-/* Category tabs & badges in Story Library */
-.category-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 22px;
-}
-
-.cat-tab {
+.washi-brand-sep {
   font-family: var(--font-vi);
   font-size: 13px;
   font-weight: 600;
-  color: #b7c4e0;
-  background: #151b30;
-  border: 2px solid #2d385c;
+  color: #7c634f;
+}
+
+.washi-brand-sub {
+  font-size: 12px;
+  color: #6e5745;
+}
+
+.washi-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.washi-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   padding: 8px 14px;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
+  background: transparent;
+  color: #593829;
+  font-family: var(--font-vi);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+}
+
+.washi-nav-btn:hover {
+  background: #e5d8be;
+  color: #241712;
+}
+
+.washi-nav-btn.active {
+  background: #241712;
+  color: #fdf9f1;
+  border-color: #241712;
+  box-shadow: 0 2px 0 rgba(36, 23, 18, 0.22);
+}
+
+.washi-main {
+  width: 100%;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 28px 24px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  flex: 1;
+}
+
+/* Hero Spotlight */
+.washi-hero {
+  display: grid;
+  grid-template-columns: 1.32fr 1fr;
+  background: #fdf9f1;
+  border: 2px solid #d9cab0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 0 rgba(36, 23, 18, 0.06), 0 14px 32px rgba(36, 23, 18, 0.07);
+}
+
+.washi-hero-media {
+  position: relative;
+  min-height: 248px;
+  background: #241712;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.washi-hero-pill {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  background: #b8382c;
+  color: #fff9f0;
+  border: 2px solid #241712;
+  box-shadow: 0 2px 0 rgba(36, 23, 18, 0.35);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.washi-hero-body {
+  padding: 26px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.washi-eyebrow {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #7c634f;
+}
+
+.washi-hero-ja {
+  margin: 6px 0 0;
+  font-family: var(--font-jp);
+  font-size: clamp(22px, 2.6vw, 28px);
+  line-height: 1.25;
+  color: #241712;
+}
+
+.washi-hero-vi {
+  margin: 6px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #8f3928;
+}
+
+.washi-hero-desc {
+  margin: 10px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #5a4638;
+}
+
+.washi-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.washi-cta-primary,
+.washi-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: 10px;
+  font-family: var(--font-vi);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.washi-cta-primary {
+  background: #b8382c;
+  color: #fff9f0;
+  border: 2px solid #241712;
+  box-shadow: 0 3px 0 #241712;
+}
+
+.washi-cta-primary:hover {
+  background: #a22d22;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 0 #241712;
+}
+
+.washi-cta-primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 #241712;
+}
+
+.washi-cta-secondary {
+  background: #f1e7d4;
+  color: #241712;
+  border: 2px solid #c5b393;
+  box-shadow: 0 3px 0 rgba(36, 23, 18, 0.14);
+}
+
+.washi-cta-secondary:hover {
+  background: #e7dac0;
+  border-color: #241712;
+  transform: translateY(-1px);
+}
+
+/* Section Headers */
+.washi-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.washi-sec-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.washi-sec-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.washi-sec-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: #ebe0ca;
+  border: 1.5px solid #d4c3a3;
+  color: #6e3f27;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.washi-sec-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #241712;
+}
+
+.washi-sec-sub {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: #6e5745;
+}
+
+.washi-sec-meta {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #6e5745;
+  background: #ebe0ca;
+  border: 1.5px solid #d4c3a3;
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+.washi-link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: #8f3928;
+  font-family: var(--font-vi);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.washi-link-more:hover {
+  background: #ebe0ca;
+}
+
+/* Minimalist Story Cards */
+.washi-story-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.washi-card {
+  background: #fdf9f1;
+  border: 2px solid #dfd1b6;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 0 rgba(36, 23, 18, 0.06);
+  transition: transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.washi-card:hover {
+  transform: translateY(-2px);
+  border-color: #b89f78;
+  box-shadow: 0 6px 0 rgba(36, 23, 18, 0.09);
+}
+
+.washi-card-thumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: #241712;
+  cursor: pointer;
+  overflow: hidden;
+  border-bottom: 1.5px solid #dfd1b6;
+}
+
+.washi-level-tag {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(36, 23, 18, 0.9);
+  color: #ffe38c;
+  border: 1px solid rgba(255, 227, 140, 0.45);
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.washi-card-body {
+  padding: 14px 15px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  flex: 1;
+}
+
+.washi-card-text {
+  cursor: pointer;
+}
+
+.washi-card-ja {
+  margin: 0;
+  font-family: var(--font-jp);
+  font-size: 17px;
+  line-height: 1.3;
+  color: #241712;
+}
+
+.washi-card-vi {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #6e5745;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.washi-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid #ece2ce;
+}
+
+.washi-btn-play,
+.washi-btn-dict {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 8px;
+  font-family: var(--font-vi);
+  font-size: 12.5px;
+  font-weight: 700;
   cursor: pointer;
   transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
 }
 
-.cat-tab:hover {
-  border-color: #5a6f9c;
-  color: #ffffff;
+.washi-btn-play {
+  background: #241712;
+  color: #fdf9f1;
+  border: 1.5px solid #241712;
 }
 
-.cat-tab.active {
-  background: var(--accent-mint);
-  border-color: #f5f1e6;
-  color: #0b0e1a;
+.washi-btn-play:hover {
+  background: #b8382c;
+  border-color: #b8382c;
 }
 
-.story-card-cat {
-  position: absolute;
-  top: 10px;
-  left: 10px;
+.washi-btn-dict {
+  background: #f3ead7;
+  color: #45281c;
+  border: 1.5px solid #d5c5a7;
+}
+
+.washi-btn-dict:hover {
+  background: #e8dbc1;
+  border-color: #8f6e49;
+}
+
+.washi-done-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: #2f5c3a;
+  color: #f6eed8;
+  border-radius: 5px;
+  padding: 1px 5px;
   font-size: 11px;
+  font-weight: 800;
+}
+
+/* Grouped JLPT Exam Session Boxes */
+.washi-exam-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.washi-exam-list.detailed {
+  grid-template-columns: 1fr;
+}
+
+.washi-exam-box {
+  background: #fdf9f1;
+  border: 2px solid #dfd1b6;
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 4px 0 rgba(36, 23, 18, 0.06);
+}
+
+.washi-exam-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.washi-exam-title {
+  margin: 3px 0 0;
+  font-size: 16.5px;
+  font-weight: 800;
+  color: #241712;
+}
+
+.washi-exam-count {
+  font-size: 12px;
+  font-weight: 800;
+  color: #6e3f27;
+  background: #efe2c6;
+  border: 1.5px solid #d9c59d;
+  border-radius: 8px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+.washi-exam-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.washi-exam-grid.detailed {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.washi-exam-tile-wrap {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.washi-exam-tile {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #f6efe0;
+  border: 1.5px solid #dfd1b6;
+  border-radius: 10px;
+  color: #241712;
+  font-family: var(--font-vi);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
+}
+
+.washi-exam-tile:hover {
+  background: #ede2cc;
+  border-color: #241712;
+  transform: translateY(-1px);
+}
+
+.washi-exam-tile-main {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.washi-exam-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: #e7dac0;
+  color: #593829;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.washi-exam-tile-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.washi-exam-tile-label {
+  font-size: 12.5px;
   font-weight: 700;
-  padding: 3px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #241712;
+  line-height: 1.25;
 }
 
-.story-card-cat.cat-situation {
-  background: rgba(34, 110, 104, 0.92);
-  color: #f5f1e6;
+.washi-exam-tile-sub {
+  font-size: 11.5px;
+  color: #6e5745;
+  margin-top: 2px;
 }
 
-.story-card-cat.cat-story {
-  background: rgba(122, 63, 160, 0.92);
-  color: #f5f1e6;
+.washi-exam-tile-stat {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #7c634f;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.washi-stat-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #2f5c3a;
+  font-weight: 800;
+}
+
+.washi-exam-dict-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 11px;
+  border-radius: 10px;
+  background: #efe6d3;
+  border: 1.5px solid #d5c5a7;
+  color: #45281c;
+  font-family: var(--font-vi);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.washi-exam-dict-btn:hover {
+  background: #e4d5b7;
+  border-color: #241712;
+}
+
+.washi-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1.5px solid #dfd1b6;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+  color: #7c634f;
+}
+
+@media (max-width: 860px) {
+  .washi-hero {
+    grid-template-columns: 1fr;
+  }
+  .washi-story-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .washi-exam-list,
+  .washi-exam-grid,
+  .washi-exam-grid.detailed {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .washi-topbar-inner,
+  .washi-main {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .washi-story-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Daily Dictation Mode */

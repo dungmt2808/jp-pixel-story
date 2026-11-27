@@ -424,7 +424,7 @@ export function App() {
 
   if (!selectedStoryId) {
     return (
-      <div className="app-shell">
+      <div className="app-shell app-shell-washi">
         <StoryLibrary
           stories={catalog}
           onSelectStory={handleSelectStory}
