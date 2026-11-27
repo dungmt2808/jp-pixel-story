@@ -10,9 +10,10 @@
  * the moves that already started, so exported videos are deterministic.
  */
 import { clamp, mixc, R, SPRF, type Ctx } from "./proc/pixelKit";
+import { drawStackChanMini, MINI_H, MINI_W, type MascotWear } from "./mascot/stackchan";
 import { drawSpriteFrame, frameAt, frameAtDistance, type SpriteSheet } from "./spriteAnimator";
 
-export type Pose = "stand" | "walk" | "sit" | "run" | "jump";
+export type Pose = "stand" | "walk" | "sit" | "run" | "jump" | "wave";
 export type Face = "left" | "right";
 
 export interface PersonDef {
@@ -30,6 +31,9 @@ export interface PersonDef {
   hidden?: boolean;
   /** Hidden while the scene's interaction runs (the player drags a stand-in). */
   hideWhileInteract?: boolean;
+  /** kind "stackchan": wardrobe ({ head: "nonla", neck: "scarf", shell: "sakura" }) and pixel scale (default 2). */
+  wear?: MascotWear;
+  scale?: number;
 }
 
 export interface PersonMove {
@@ -150,6 +154,7 @@ export function personBox(kind: string, sprites?: Record<string, SpriteSheet>): 
   if (kind === "dog") return { w: 17, h: 12 };
   if (kind === "sensei") return { w: 9, h: 21 };
   if (kind === "person") return { w: 8, h: 23 };
+  if (kind === "stackchan") return { w: MINI_W * 2, h: MINI_H * 2 };
   const sheet = kind.startsWith("sprite:") ? sprites?.[kind.slice(7)] : undefined;
   // a sprite's feet are its pivot: the figure fills the frame above it
   if (sheet) return { w: sheet.meta.frameWidth, h: sheet.meta.pivot.y };
@@ -210,6 +215,20 @@ export function drawPerson(
   if (def.kind === "dog" || def.kind === "bronze-dog") drawDog(c, s, def, t, def.kind === "bronze-dog");
   else if (def.kind === "sensei") drawSensei(c, s, t);
   else if (def.kind === "person") drawPasserby(c, s, def, t);
+  else if (def.kind === "stackchan") {
+    const walking = s.pose === "walk" || s.pose === "run";
+    const k = Math.max(1, Math.floor(def.scale ?? 2));
+    // walk: a step every 4 px travelled (feet stay planted); standing: a blink every 3.2 s
+    const frame = (
+      walking ? Math.floor(Math.abs(s.x) / 4) % 2 : s.pose === "wave" ? Math.floor(t * 4) % 2 : t % 3.2 < 0.16 ? 1 : 0
+    ) as 0 | 1;
+    drawStackChanMini(c, Math.round(s.x), Math.round(s.y + s.lift), k, {
+      pose: walking ? "walk" : s.pose === "sit" ? "sit" : s.pose === "wave" ? "wave" : "stand",
+      frame,
+      flipX: s.face === "left",
+      wear: def.wear,
+    });
+  }
   else if (def.kind.startsWith("sprite:")) {
     const sheet = sprites[def.kind.slice(7)];
     if (sheet) {
