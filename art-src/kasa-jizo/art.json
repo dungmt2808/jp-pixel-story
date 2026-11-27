@@ -1,0 +1,88 @@
+{
+  "story": "kasa-jizo",
+  "palette": "jp_story_master",
+  "backgrounds": [
+    {
+      "key": "hut_hearth",
+      "raw": "raw_bg_hut_hearth.png",
+      "dither": 18
+    },
+    {
+      "key": "village_market",
+      "raw": "raw_bg_village_market.png",
+      "dither": 18
+    },
+    {
+      "key": "jizo_road",
+      "raw": "raw_bg_jizo_road.png",
+      "dither": 18
+    },
+    {
+      "key": "hut_morning",
+      "raw": "raw_bg_hut_morning.png",
+      "dither": 18
+    }
+  ],
+  "characters": [
+    {
+      "key": "ojiisan",
+      "raw": "raw_sheet_ojiisan_warm.png",
+      "kind": "bust",
+      "frame": [96, 96],
+      "grid": "none",
+      "expression_region": [26, 26, 70, 62],
+      "frame_regions": {
+        "1": [36, 48, 60, 62],
+        "2": [26, 28, 70, 46],
+        "3": [36, 48, 60, 62]
+      }
+    },
+    {
+      "key": "obaasan",
+      "raw": "raw_sheet_obaasan_warm.png",
+      "kind": "bust",
+      "frame": [96, 96],
+      "grid": "none",
+      "expression_region": [26, 26, 70, 62],
+      "frame_regions": {
+        "1": [36, 48, 60, 62],
+        "2": [26, 28, 70, 46],
+        "3": [36, 48, 60, 62]
+      }
+    },
+    {
+      "key": "ojiisan_walk",
+      "raw": "raw_walk_ojiisan.png",
+      "kind": "walk",
+      "frames": 8,
+      "frame": [40, 64],
+      "stride": 24,
+      "clips": {
+        "walk": { "frames": [0, 1, 2, 3, 4, 5], "fps": 8, "stridePx": 24 },
+        "idle": { "frames": [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7], "fps": 4 }
+      }
+    }
+  ],
+  "items": [
+    {
+      "key": "straw_hat",
+      "raw": "raw_item_straw_hat.png",
+      "size": [26, 16]
+    },
+    {
+      "key": "tenugui",
+      "raw": "raw_item_tenugui.png",
+      "size": [24, 16]
+    },
+    {
+      "key": "mochi_gift",
+      "raw": "raw_item_mochi_gift.png",
+      "size": [26, 22]
+    },
+    {
+      "key": "rice_bale",
+      "raw": "raw_item_rice_bale.png",
+      "size": [28, 22]
+    }
+  ]
+}
