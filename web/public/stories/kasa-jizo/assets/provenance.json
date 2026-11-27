@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "assets": {
+    "bg_hut_hearth.png": {
+      "steps": [
+        {
+          "op": "process_pixel_background",
+          "params": {
+            "target_width": 320,
+            "target_height": 200,
+            "palette_name": "jp_story_master",
+            "dither_strength": 18.0,
+            "grid": "auto"
+          },
+          "input": {
+            "path": "art-src/kasa-jizo/raw_bg_hut_hearth.png",
+            "sha": "2c86f4c5afbe1f85"
+          },
+          "at": "2026-11-27T18:06:21+00:00",
+          "source": {
+            "kind": "art-manifest",
+            "manifest": "art.json",
+            "key": "hut_hearth"
+          }
+        }
+      ],
+      "output": {
+        "sha": "198ba8af0b2a1e56"
+      }
+    },
+    "bg_village_market.png": {
+      "steps": [
+        {
+          "op": "process_pixel_background",
+          "params": {
+            "target_width": 320,
+            "target_height": 200,
+            "palette_name": "jp_story_master",
+            "dither_strength": 18.0,
+            "grid": "auto"
+          },
+          "input": {
+            "path": "art-src/kasa-jizo/raw_bg_village_market.png",
+            "sha": "6999cf52024539f2"
+          },
+          "at": "2026-11-27T18:06:21+00:00",
+          "source": {
+            "kind": "art-manifest",
+            "manifest": "art.json",
+            "key": "village_market"
+          }
+        }
+      ],
+      "output": {
+        "sha": "6dd0728977571c80"
+      }
+    },
+    "bg_jizo_road.png": {
+      "steps": [
+        {
+          "op": "process_pixel_background",
+          "params": {
+            "target_width": 320,
+            "target_height": 200,
+            "palette_name": "jp_story_master",
+            "dither_strength": 18.0,
+            "grid": "auto"
+          },
+          "input": {
+            "path": "art-src/kasa-jizo/raw_bg_jizo_road.png",
+            "sha": "14f4f185ef81e266"
+          },
+          "at": "2026-11-27T18:06:21+00:00",
+          "source": {
+            "kind": "art-manifest",
+            "manifest": "art.json",
+            "key": "jizo_road"
+          }
+        }
+      ],
+      "output": {
+        "sha": "df0fd735caa6079f"
+      }
+    },
+    "bg_hut_morning.png": {
+      "steps": [
+        {
+          "op": "process_pixel_background",
+          "params": {
+            "target_width": 320,
+            "target_height": 200,
+            "palette_name": "jp_story_master",
+            "dither_strength": 18.0,
+            "grid": "auto"
+          },
+          "input": {
+            "path": "art-src/kasa-jizo/raw_bg_hut_morning.png",
+            "sha": "4ea68032ca68699d"
+          },
+          "at": "2026-11-27T18:06:22+00:00",
+          "source": {
+            "kind": "art-manifest",
+            "manifest": "art.json",
+            "key": "hut_morning"
+          }
+        }
+      ],
+      "output": {
+        "sha": "c7ad362556018ca1"
+      }
+    }
+  }
+}

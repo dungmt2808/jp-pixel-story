@@ -1,0 +1,58 @@
+{
+  "spritesheet": "spritesheet.png",
+  "frameWidth": 40,
+  "frameHeight": 64,
+  "frameCount": 8,
+  "palette": "jp_story_master",
+  "frames": [
+    "frame_00.png",
+    "frame_01.png",
+    "frame_02.png",
+    "frame_03.png",
+    "frame_04.png",
+    "frame_05.png",
+    "frame_06.png",
+    "frame_07.png"
+  ],
+  "pivot": {
+    "x": 20,
+    "y": 63
+  },
+  "fps": 10.0,
+  "clips": {
+    "walk": {
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "fps": 8.0,
+      "loop": true,
+      "stridePx": 24.0
+    },
+    "idle": {
+      "frames": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        7
+      ],
+      "fps": 4.0,
+      "loop": true
+    }
+  },
+  "scale": 0.19195,
+  "registration": "centroid",
+  "facing": "right"
+}

@@ -1,0 +1,1949 @@
+{
+  "id": "kasa-jizo",
+  "engine": "cinema",
+  "series": "jp-pixel-story · 日本の昔話 (Cổ tích tương tác · JLPT N4)",
+  "titleJa": "笠地蔵",
+  "titleVi": "Sáu Tượng Địa Tạng Đội Nón Rơm",
+  "level": "JLPT N4",
+  "author": "jp-pixel-studio",
+  "brand": "jp-pixel-story · 昔話",
+  "palette": "jp_story_master",
+  "artQuality": {
+    "outlineColor": "#241712",
+    "minOutlineCompliance": 0.94,
+    "maxOrphanRatio": 0.1
+  },
+  "artExceptions": {
+    "/stories/kasa-jizo/assets/sprites/ojiisan_walk/spritesheet.png": {
+      "noise": "Compact 40x64 8-frame walk sprite uses intentional 1px facial wrinkle and woven straw-hat basket detail pixels."
+    }
+  },
+  "bgm": "calm",
+  "mascot": {
+    "kind": "stackchan",
+    "name": "StackChan",
+    "wear": {
+      "head": "nonla",
+      "neck": "scarf"
+    }
+  },
+  "assets": {
+    "backgrounds": {
+      "hut_hearth": "/stories/kasa-jizo/assets/bg_hut_hearth.png",
+      "village_market": "/stories/kasa-jizo/assets/bg_village_market.png",
+      "jizo_road": "/stories/kasa-jizo/assets/bg_jizo_road.png",
+      "hut_morning": "/stories/kasa-jizo/assets/bg_hut_morning.png"
+    },
+    "portraits": {},
+    "sprites": {
+      "ojiisan": "/stories/kasa-jizo/assets/sprites/ojiisan/meta.json",
+      "obaasan": "/stories/kasa-jizo/assets/sprites/obaasan/meta.json",
+      "ojiisan_walk": "/stories/kasa-jizo/assets/sprites/ojiisan_walk/meta.json"
+    },
+    "rigs": {
+      "ojiisan": "/stories/kasa-jizo/assets/sprites/ojiisan/rig/rig.json",
+      "obaasan": "/stories/kasa-jizo/assets/sprites/obaasan/rig/rig.json"
+    },
+    "items": {
+      "straw_hat": "/stories/kasa-jizo/assets/items/straw_hat.png",
+      "tenugui": "/stories/kasa-jizo/assets/items/tenugui.png",
+      "mochi_gift": "/stories/kasa-jizo/assets/items/mochi_gift.png",
+      "rice_bale": "/stories/kasa-jizo/assets/items/rice_bale.png"
+    },
+    "cardPortrait": "/stories/kasa-jizo/assets/sprites/ojiisan/frame_03.png"
+  },
+  "backdropMotion": {
+    "hut_hearth": [
+      {
+        "type": "glow",
+        "at": [
+          223,
+          137
+        ],
+        "r": 32,
+        "color": "#f4a442",
+        "period": 1.6,
+        "min": 0.45,
+        "max": 0.85,
+        "flicker": true
+      },
+      {
+        "type": "glow",
+        "at": [
+          87,
+          46
+        ],
+        "r": 16,
+        "color": "#ffe38c",
+        "period": 2.4,
+        "min": 0.35,
+        "max": 0.65,
+        "flicker": true
+      },
+      {
+        "type": "steam",
+        "at": [
+          [
+            223,
+            118
+          ]
+        ],
+        "rate": 2.2,
+        "height": 26,
+        "color": "#f6eed8"
+      }
+    ],
+    "village_market": [
+      {
+        "type": "glow",
+        "at": [
+          57,
+          81
+        ],
+        "r": 16,
+        "color": "#f4a442",
+        "period": 2.3,
+        "min": 0.35,
+        "max": 0.65,
+        "flicker": true
+      },
+      {
+        "type": "glow",
+        "at": [
+          127,
+          81
+        ],
+        "r": 16,
+        "color": "#f4a442",
+        "period": 2.1,
+        "min": 0.35,
+        "max": 0.65,
+        "flicker": true
+      },
+      {
+        "type": "glow",
+        "at": [
+          216,
+          81
+        ],
+        "r": 16,
+        "color": "#f4a442",
+        "period": 2.5,
+        "min": 0.35,
+        "max": 0.65,
+        "flicker": true
+      },
+      {
+        "type": "glow",
+        "at": [
+          283,
+          81
+        ],
+        "r": 16,
+        "color": "#f4a442",
+        "period": 2.0,
+        "min": 0.35,
+        "max": 0.65,
+        "flicker": true
+      }
+    ]
+  },
+  "cast": {
+    "left": {
+      "voice": "ojiisan",
+      "sprite": "ojiisan",
+      "rig": "ojiisan",
+      "idleClip": "idle",
+      "talkClip": "talk"
+    },
+    "right": {
+      "voice": "obaasan",
+      "sprite": "obaasan",
+      "rig": "obaasan",
+      "idleClip": "idle",
+      "talkClip": "talk"
+    }
+  },
+  "voices": {
+    "narrator": {
+      "label": "ナレーター",
+      "speakerId": 31,
+      "speedScale": 0.9,
+      "intonationScale": 1.08,
+      "pauseLengthScale": 1.12
+    },
+    "ojiisan": {
+      "label": "おじいさん",
+      "speakerId": 42,
+      "speedScale": 0.9,
+      "intonationScale": 1.08,
+      "pauseLengthScale": 1.1
+    },
+    "obaasan": {
+      "label": "おばあさん",
+      "speakerId": 20,
+      "speedScale": 0.88,
+      "intonationScale": 1.06,
+      "pauseLengthScale": 1.12
+    },
+    "villager": {
+      "label": "まちの人",
+      "speakerId": 13,
+      "speedScale": 0.95,
+      "intonationScale": 1.08,
+      "pauseLengthScale": 1.06
+    }
+  },
+  "characterCard": {
+    "nameJa": "やさしいおじいさん",
+    "subtitle": "{雪国|ゆきぐに}の{笠|かさ}づくり{職人|しょくにん} · {笠地蔵|かさじぞう}",
+    "facts": [
+      {
+        "label": "CÔNG VIỆC",
+        "value": "{毎日|まいにち}{夫婦|ふうふ}で{笠|かさ}を{作|つく}って{暮|く}らしています (Mỗi ngày cùng bà đan nón rơm mưu sinh)"
+      },
+      {
+        "label": "BỐI CẢNH",
+        "value": "{大晦日|おおみそか}の{雪|ゆき}の{夜|よる} (Đêm Giao thừa 31/12 tuyết rơi dày)"
+      },
+      {
+        "label": "NGỮ PHÁP N4",
+        "value": "〜てあげる · 〜のに · 〜かわりに · 〜ようだ · 〜ようになる"
+      },
+      {
+        "label": "BÍ MẬT",
+        "value": "Ông lão không ngại rét buốt, tháo cả chiếc khăn {手|て}ぬぐい duy nhất của mình để buộc cho tượng Địa Tạng thứ sáu!",
+        "locked": true
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "type": "cinema_intro",
+      "backdrop": "bg:hut_hearth",
+      "light": "warm",
+      "bgm": "calm",
+      "titleCard": {
+        "title": "{笠地蔵|かさじぞう}",
+        "subtitle": "Cổ tích Nhật Bản · JLPT N4 · 12 cảnh tương tác",
+        "credit": "jp-pixel-story · StackChan đồng hành"
+      },
+      "actionLabel": "BẮT ĐẦU",
+      "lines": [
+        {
+          "id": "k01",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "むかしむかし、ある雪国に、貧しいけれどとてもやさしいおじいさんとおばあさんが住んでいました。",
+          "jaRuby": "むかしむかし、ある{雪国|ゆきぐに}に、{貧|まず}しいけれどとてもやさしいおじいさんとおばあさんが{住|す}んでいました。",
+          "vi": "Ngày xửa ngày xưa, ở một vùng quê tuyết trắng, có hai ông bà lão tuy nghèo nhưng vô cùng tốt bụng.",
+          "audioUrl": "/stories/kasa-jizo/audio/k01.mp3",
+          "durationSec": 10.608,
+          "ttsHash": "8ca142031266"
+        }
+      ],
+      "tips": [
+        {
+          "after": 0,
+          "mood": "happy",
+          "text": "Chào cả nhà! Mình là StackChan. Hôm nay mình đội nón rơm và quàng khăn ấm để cùng bạn nghe cổ tích đêm {大晦日|おおみそか} (Giao thừa) nhé!",
+          "ja": "{大晦日|おおみそか}の{昔話|むかしばなし}を{聞|き}こう！"
+        }
+      ]
+    },
+    {
+      "id": "weave_hats",
+      "type": "cinema_explore",
+      "backdrop": "bg:hut_hearth",
+      "light": "warm",
+      "bgm": "calm",
+      "stamp": "山里の小さな家 · 大晦日",
+      "actors": [
+        "left",
+        "right"
+      ],
+      "labels": [
+        {
+          "text": "{囲炉裏|いろり}",
+          "sub": "bếp lửa sưởi ấm",
+          "x": 196,
+          "y": 76,
+          "to": [
+            202,
+            134
+          ]
+        },
+        {
+          "text": "{菅笠|すげがさ}",
+          "sub": "nón rơm đang đan",
+          "x": 116,
+          "y": 76,
+          "to": [
+            108,
+            128
+          ]
+        }
+      ],
+      "lines": [
+        {
+          "id": "k02",
+          "voice": "obaasan",
+          "speakerLabel": "おばあさん",
+          "jaPlain": "おじいさん、明日はもうお正月ですね。でも、お餅を買うお金がありませんね。",
+          "jaRuby": "おじいさん、{明日|あした}はもうお{正月|しょうがつ}ですね。でも、お{餅|もち}を{買|か}うお{金|かね}がありませんね。",
+          "vi": "Ông ơi, ngày mai đã là Tết rồi đấy. Thế mà nhà mình vẫn chưa có tiền mua bánh mochi.",
+          "emote": "dots",
+          "action": "lean",
+          "audioUrl": "/stories/kasa-jizo/audio/k02.mp3",
+          "durationSec": 7.752,
+          "ttsHash": "0b282c47dce8"
+        },
+        {
+          "id": "k03",
+          "voice": "ojiisan",
+          "speakerLabel": "おじいさん",
+          "jaPlain": "だいじょうぶだよ。あと一つ笠を作ったら、五つそろえて町へ売りに行こう。",
+          "jaRuby": "だいじょうぶだよ。あと{一|ひと}つ{笠|かさ}を{作|つく}ったら、{五|いつ}つそろえて{町|まち}へ{売|う}りに{行|い}こう。",
+          "vi": "Không sao đâu bà ạ. Đan xong chiếc nón cuối này là đủ năm chiếc, tôi sẽ mang ra chợ bán.",
+          "emote": "sparkle",
+          "action": "hop",
+          "audioUrl": "/stories/kasa-jizo/audio/k03.mp3",
+          "durationSec": 7.824,
+          "ttsHash": "39c7a30e55ea"
+        }
+      ],
+      "interaction": {
+        "type": "hold",
+        "hint": "Giữ tay vào chiếc nón để giúp ông lão đan xong chiếc nón rơm thứ 5",
+        "hold": {
+          "label": "{笠|かさ}を{編|あ}む",
+          "x": 80,
+          "y": 124,
+          "durationSec": 1.8,
+          "item": "straw_hat"
+        },
+        "doneLine": {
+          "id": "k04",
+          "voice": "ojiisan",
+          "speakerLabel": "おじいさん",
+          "jaPlain": "よし、きれいな笠が五つできましたよ！",
+          "jaRuby": "よし、きれいな{笠|かさ}が{五|いつ}つできましたよ！",
+          "vi": "Xong rồi, vậy là đã có năm chiếc nón rơm thật đẹp!",
+          "emote": "note",
+          "sfx": "sparkle",
+          "telop": {
+            "text": "{五|いつ}つの{笠|かさ}{完成|かんせい}！",
+            "sub": "Hoàn thành 5 chiếc nón rơm!",
+            "color": "gold"
+          },
+          "audioUrl": "/stories/kasa-jizo/audio/k04.mp3",
+          "durationSec": 4.68,
+          "ttsHash": "de44f2416dad"
+        }
+      },
+      "actionLabel": "CHUẨN BỊ RA CHỢ →"
+    },
+    {
+      "id": "pack_departure",
+      "type": "cinema_checklist",
+      "backdrop": "bg:hut_hearth",
+      "light": "warm",
+      "bgm": "tender",
+      "stamp": "出発の前 · 夫婦の約束",
+      "actors": [
+        "left",
+        "right"
+      ],
+      "lines": [
+        {
+          "id": "k05",
+          "voice": "obaasan",
+          "speakerLabel": "おばあさん",
+          "jaPlain": "外は雪が降り始めましたよ。道がすべりやすいから、気をつけてくださいね。",
+          "jaRuby": "{外|そと}は{雪|ゆき}が{降|ふ}り{始|はじ}めましたよ。{道|みち}がすべりやすいから、{気|き}をつけてくださいね。",
+          "vi": "Ngoài trời tuyết bắt đầu rơi rồi đấy ông ạ. Đường trơn lắm, ông đi cẩn thận nhé.",
+          "emote": "sweat",
+          "audioUrl": "/stories/kasa-jizo/audio/k05.mp3",
+          "durationSec": 6.816,
+          "ttsHash": "6437c7cc2fa4"
+        }
+      ],
+      "minigame": {
+        "kind": "choice",
+        "pickOne": true,
+        "autoPick": "promise_mochi",
+        "prompt": "Chọn lời dặn ấm áp của ông lão trước khi ra chợ:",
+        "choices": [
+          {
+            "id": "promise_mochi",
+            "labelJa": "お餅を買ってきますよ",
+            "labelRuby": "お{餅|もち}を{買|か}ってきますよ",
+            "responseLine": {
+              "id": "k06a",
+              "voice": "obaasan",
+              "speakerLabel": "おばあさん",
+              "jaPlain": "ふふ、無理をしないでくださいね。囲炉裏を温めて待っていますから。",
+              "jaRuby": "ふふ、{無理|むり}をしないでくださいね。{囲炉裏|いろり}を{温|あたた}めて{待|ま}っていますから。",
+              "vi": "Hi hi, ông đừng cố quá sức nhé. Tôi sẽ nhóm bếp lửa thật ấm đợi ông về.",
+              "emote": "heart",
+              "action": "sway",
+              "audioUrl": "/stories/kasa-jizo/audio/k06a.mp3",
+              "durationSec": 6.024,
+              "ttsHash": "759a6ec3fc61"
+            }
+          },
+          {
+            "id": "promise_early",
+            "labelJa": "暗くなる前に帰ってきます",
+            "labelRuby": "{暗|くら}くなる{前|まえ}に{帰|かえ}ってきます",
+            "responseLine": {
+              "id": "k06b",
+              "voice": "obaasan",
+              "speakerLabel": "おばあさん",
+              "jaPlain": "ええ、体を冷やさないようにしてくださいね。いってらっしゃいませ。",
+              "jaRuby": "ええ、{体|からだ}を{冷|ひ}やさないようにしてくださいね。いってらっしゃいませ。",
+              "vi": "Vâng, ông nhớ giữ ấm đừng để bị lạnh nhé. Ông đi mạnh giỏi ạ.",
+              "emote": "heart",
+              "action": "bow",
+              "audioUrl": "/stories/kasa-jizo/audio/k06b.mp3",
+              "durationSec": 6.192,
+              "ttsHash": "254d81d5b723"
+            }
+          }
+        ]
+      },
+      "tips": [
+        {
+          "after": 0,
+          "mood": "think",
+          "text": "「Vて + くる」dùng khi đi đâu đó làm một việc rồi quay trở lại chỗ cũ!",
+          "ja": "{町|まち}でお{餅|もち}を{買|か}ってきます。"
+        }
+      ],
+      "actionLabel": "RA PHIÊN CHỢ TUYẾT →"
+    },
+    {
+      "id": "market_call",
+      "type": "cinema_checklist",
+      "backdrop": "bg:village_market",
+      "overlay": "snow",
+      "light": "dusk",
+      "bgm": "calm",
+      "stamp": "町の市 · 大晦日の午後",
+      "actors": [
+        "left"
+      ],
+      "lines": [
+        {
+          "id": "k07",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "町の市は、お正月の買い物をする人たちでにぎやかでした。",
+          "jaRuby": "{町|まち}の{市|いち}は、お{正月|しょうがつ}の{買|か}い{物|もの}をする{人|ひと}たちでにぎやかでした。",
+          "vi": "Phiên chợ thị trấn nhộn nhịp người qua lại mua sắm chuẩn bị đón Tết.",
+          "audioUrl": "/stories/kasa-jizo/audio/k07.mp3",
+          "durationSec": 6.648,
+          "ttsHash": "2129aa01e892"
+        },
+        {
+          "id": "k08",
+          "voice": "ojiisan",
+          "speakerLabel": "おじいさん",
+          "jaPlain": "さあ、みなさんに聞こえるように、ていねいに声をかけてみよう。",
+          "jaRuby": "さあ、みなさんに{聞|き}こえるように、ていねいに{声|こえ}をかけてみよう。",
+          "vi": "Nào, mình hãy gọi mời thật lịch sự để mọi người nghe thấy nhé.",
+          "action": "lean",
+          "audioUrl": "/stories/kasa-jizo/audio/k08.mp3",
+          "durationSec": 6.624,
+          "ttsHash": "3fa361111573"
+        }
+      ],
+      "minigame": {
+        "kind": "choice",
+        "pickOne": true,
+        "autoPick": "polite_call",
+        "prompt": "Chọn câu rao bán nón lịch sự kiểu Nhật:",
+        "choices": [
+          {
+            "id": "polite_call",
+            "labelJa": "笠はいかがですか",
+            "labelRuby": "{笠|かさ}はいかがですか",
+            "responseLine": {
+              "id": "k09a",
+              "voice": "villager",
+              "speakerLabel": "まちの人",
+              "jaPlain": "すみません、今日はお餅と魚で手がいっぱいなんです。また今度ね！",
+              "jaRuby": "すみません、{今日|きょう}はお{餅|もち}と{魚|さかな}で{手|て}がいっぱいなんです。また{今度|こんど}ね！",
+              "vi": "Xin lỗi cụ nhé, hôm nay tôi mua nhiều bánh mochi và cá quá tay rồi. Để dịp khác vậy!",
+              "emote": "sweat",
+              "sfx": "gloom",
+              "audioUrl": "/stories/kasa-jizo/audio/k09a.mp3",
+              "durationSec": 5.424,
+              "ttsHash": "822e51430ccd"
+            }
+          },
+          {
+            "id": "strong_call",
+            "labelJa": "雪よけの笠、安いですよ",
+            "labelRuby": "{雪|ゆき}よけの{笠|かさ}、{安|やす}いですよ",
+            "responseLine": {
+              "id": "k09b",
+              "voice": "villager",
+              "speakerLabel": "まちの人",
+              "jaPlain": "いい笠ですねえ。でも今年はもう買い物が終わってしまって…すみません。",
+              "jaRuby": "いい{笠|かさ}ですねえ。でも{今年|ことし}はもう{買|か}い{物|もの}が{終|お}わってしまって…すみません。",
+              "vi": "Nón đẹp quá cụ ạ. Tiếc là năm nay nhà tôi mua sắm xong hết rồi… xin lỗi cụ nhé.",
+              "emote": "dots",
+              "sfx": "gloom",
+              "audioUrl": "/stories/kasa-jizo/audio/k09b.mp3",
+              "durationSec": 5.616,
+              "ttsHash": "3c59b05a1ea0"
+            }
+          }
+        ]
+      },
+      "tips": [
+        {
+          "after": 1,
+          "mood": "think",
+          "text": "「〜のに」diễn tả sự trái ngược với kỳ vọng: dù làm vậy nhưng kết quả lại không như ý!",
+          "ja": "{大|おお}きな{声|こえ}で{呼|よ}んだのに、だれも{買|か}いませんでした。"
+        }
+      ],
+      "actionLabel": "ĐẾN CHIỀU TỐI →"
+    },
+    {
+      "id": "market_sunset",
+      "type": "cinema_explore",
+      "backdrop": "bg:village_market",
+      "overlay": "snow",
+      "light": "dusk",
+      "bgm": "sad",
+      "stamp": "夕暮れの市 · 売れ残り",
+      "actors": [],
+      "people": {
+        "ojiisan": {
+          "kind": "sprite:ojiisan_walk",
+          "x": 58,
+          "y": 168,
+          "face": "right"
+        }
+      },
+      "cues": [
+        {
+          "on": {
+            "line": 0
+          },
+          "move": {
+            "who": "ojiisan",
+            "walkTo": 150,
+            "speed": 36,
+            "then": "stand"
+          }
+        }
+      ],
+      "lines": [
+        {
+          "id": "k10",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "夕方まで待ちましたが、笠は一つも売れませんでした。",
+          "jaRuby": "{夕方|ゆうがた}まで{待|ま}ちましたが、{笠|かさ}は{一|ひと}つも{売|う}れませんでした。",
+          "vi": "Ông lão đợi mãi cho đến xế chiều, vậy mà chẳng bán được lấy một chiếc nón nào.",
+          "audioUrl": "/stories/kasa-jizo/audio/k10.mp3",
+          "durationSec": 6.096,
+          "ttsHash": "2cebff8bbea6"
+        }
+      ],
+      "interaction": {
+        "type": "tap",
+        "hint": "Chạm vào 3 góc chợ chiều cuối năm để cảm nhận tâm trạng của ông lão",
+        "spots": [
+          {
+            "id": "mochi_stall",
+            "x": 156,
+            "y": 108,
+            "r": 22,
+            "label": "お{餅|もち}",
+            "labelVi": "bánh mochi Tết",
+            "line": {
+              "id": "k11a",
+              "voice": "ojiisan",
+              "speakerLabel": "おじいさん",
+              "jaPlain": "おいしそうなお餅だなぁ…おばあさんに食べさせてあげたかったのに。",
+              "jaRuby": "おいしそうなお{餅|もち}だなぁ…おばあさんに{食|た}べさせてあげたかったのに。",
+              "vi": "Bánh mochi trông ngon quá… giá mà mua được cho bà ăn thì tốt biết mấy.",
+              "emote": "gloom",
+              "audioUrl": "/stories/kasa-jizo/audio/k11a.mp3",
+              "durationSec": 6.288,
+              "ttsHash": "47b875f7f353"
+            }
+          },
+          {
+            "id": "kadomatsu",
+            "x": 204,
+            "y": 112,
+            "r": 20,
+            "label": "{門松|かどまつ}",
+            "labelVi": "cây thông đón Tết",
+            "line": {
+              "id": "k11b",
+              "voice": "ojiisan",
+              "speakerLabel": "おじいさん",
+              "jaPlain": "どこのお店も門松を飾って、すっかりお正月の準備ができているな。",
+              "jaRuby": "どこのお{店|みせ}も{門松|かどまつ}を{飾|かざ}って、すっかりお{正月|しょうがつ}の{準備|じゅんび}ができているな。",
+              "vi": "Cửa tiệm nào cũng bày cây thông kadomatsu, chuẩn bị đón năm mới tươm tất cả rồi.",
+              "emote": "dots",
+              "audioUrl": "/stories/kasa-jizo/audio/k11b.mp3",
+              "durationSec": 7.632,
+              "ttsHash": "283753442aef"
+            }
+          },
+          {
+            "id": "lantern",
+            "x": 57,
+            "y": 81,
+            "r": 20,
+            "label": "{提灯|ちょうちん}",
+            "labelVi": "đèn lồng giấy ấm",
+            "line": {
+              "id": "k11c",
+              "voice": "ojiisan",
+              "speakerLabel": "おじいさん",
+              "jaPlain": "もう提灯に明かりがついた。そろそろ家へ帰らなければ。",
+              "jaRuby": "もう{提灯|ちょうちん}に{明|あ}かりがついた。そろそろ{家|いえ}へ{帰|かえ}らなければ。",
+              "vi": "Đèn lồng đã thắp sáng rồi. Đã đến lúc phải trở về nhà thôi.",
+              "audioUrl": "/stories/kasa-jizo/audio/k11c.mp3",
+              "durationSec": 6.048,
+              "ttsHash": "1f0309e0b8c5"
+            }
+          }
+        ],
+        "doneLine": {
+          "id": "k12",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "おじいさんは五つの笠を背負ったまま、雪の山道を歩き出しました。",
+          "jaRuby": "おじいさんは{五|いつ}つの{笠|かさ}を{背負|せお}ったまま、{雪|ゆき}の{山道|やまみち}を{歩|ある}き{出|だ}しました。",
+          "vi": "Ông lão đành cõng nguyên năm chiếc nón rơm trên lưng, lầm lũi bước đi trên con đường núi đầy tuyết.",
+          "audioUrl": "/stories/kasa-jizo/audio/k12.mp3",
+          "durationSec": 7.464,
+          "ttsHash": "d75a6e708980"
+        }
+      },
+      "actionLabel": "TRÊN ĐƯỜNG VỀ TRONG TUYẾT →"
+    },
+    {
+      "id": "snow_road",
+      "type": "cinema_explore",
+      "backdrop": "bg:jizo_road",
+      "overlay": "snow",
+      "light": "dusk",
+      "bgm": "tender",
+      "stamp": "雪の山道 · 六体のお地蔵様",
+      "actors": [],
+      "people": {
+        "ojiisan": {
+          "kind": "sprite:ojiisan_walk",
+          "x": 16,
+          "y": 178,
+          "face": "right"
+        }
+      },
+      "cues": [
+        {
+          "on": {
+            "line": 0
+          },
+          "move": {
+            "who": "ojiisan",
+            "walkTo": 78,
+            "speed": 34,
+            "then": "stand"
+          }
+        }
+      ],
+      "lines": [
+        {
+          "id": "k13",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "帰り道、雪がどんどん強くなってしまいました。ふと見ると、道ばたに六体のお地蔵様が並んでいます。",
+          "jaRuby": "{帰り道|かえりみち}、{雪|ゆき}がどんどん{強|つよ}くなってしまいました。ふと{見|み}ると、{道|みち}ばたに{六|ろく}{体|たい}のお{地蔵|じぞう}{様|さま}が{並|なら}んでいます。",
+          "vi": "Trên đường về, tuyết bỗng rơi mỗi lúc một dày hơn. Chợt nhìn sang vệ đường, có sáu bức tượng Địa Tạng đang đứng thành hàng.",
+          "audioUrl": "/stories/kasa-jizo/audio/k13.mp3",
+          "durationSec": 12.576,
+          "ttsHash": "d0318ab93507"
+        },
+        {
+          "id": "k14",
+          "voice": "ojiisan",
+          "speakerLabel": "おじいさん",
+          "jaPlain": "おやまあ！お地蔵様の頭にこんなに雪が積もっている。さぞ寒いでしょうに…",
+          "jaRuby": "おやまあ！お{地蔵|じぞう}{様|さま}の{頭|あたま}にこんなに{雪|ゆき}が{積|つ}もっている。さぞ{寒|さむ}いでしょうに…",
+          "vi": "Ôi chao! Tuyết phủ trắng cả lên đầu các ngài Địa Tạng thế này. Chắc hẳn lạnh lắm đây…",
+          "emote": "shock",
+          "sfx": "pop",
+          "audioUrl": "/stories/kasa-jizo/audio/k14.mp3",
+          "durationSec": 8.28,
+          "ttsHash": "0c5160c728dd"
+        }
+      ],
+      "interaction": {
+        "type": "tap",
+        "hint": "Chạm vào tuyết trên đầu các tượng Địa Tạng để phủi tuyết giúp các ngài",
+        "spots": [
+          {
+            "id": "brush_1",
+            "x": 56,
+            "y": 80,
+            "r": 20,
+            "label": "{雪|ゆき}を{払|はら}う",
+            "labelVi": "phủi tuyết tượng đầu",
+            "line": {
+              "id": "k15a",
+              "voice": "ojiisan",
+              "speakerLabel": "おじいさん",
+              "jaPlain": "よしよし、冷たい雪を払ってあげましょうね。",
+              "jaRuby": "よしよし、{冷|つめ}たい{雪|ゆき}を{払|はら}ってあげましょうね。",
+              "vi": "Nào nào, để lão phủi lớp tuyết lạnh này xuống cho ngài nhé.",
+              "audioUrl": "/stories/kasa-jizo/audio/k15a.mp3",
+              "durationSec": 5.376,
+              "ttsHash": "e3be84ce8047"
+            }
+          },
+          {
+            "id": "brush_3",
+            "x": 141,
+            "y": 80,
+            "r": 20,
+            "label": "{石|いし}の{頭|あたま}",
+            "labelVi": "đầu đá lạnh cóng",
+            "line": {
+              "id": "k15b",
+              "voice": "ojiisan",
+              "speakerLabel": "おじいさん",
+              "jaPlain": "どのお地蔵様も耳まで冷たくなっているなぁ。",
+              "jaRuby": "どの{お地蔵様|おじぞうさま}も{耳|みみ}まで{冷|つめ}たくなっているなぁ。",
+              "vi": "Vị Địa Tạng nào cũng lạnh buốt đến tận tai cả rồi.",
+              "audioUrl": "/stories/kasa-jizo/audio/k15b.mp3",
+              "durationSec": 4.656,
+              "ttsHash": "2d1522ce4e39"
+            }
+          },
+          {
+            "id": "brush_6",
+            "x": 269,
+            "y": 80,
+            "r": 20,
+            "label": "{六番目|ろくばんめ}",
+            "labelVi": "tượng thứ sáu",
+            "line": {
+              "id": "k15c",
+              "voice": "ojiisan",
+              "speakerLabel": "おじいさん",
+              "jaPlain": "そうだ！売れ残った笠をかぶせてさしあげよう！",
+              "jaRuby": "そうだ！{売|う}れ{残|のこ}った{笠|かさ}をかぶせてさしあげよう！",
+              "vi": "Đúng rồi! Mình lấy mấy chiếc nón rơm bán ế đội lên cho các ngài mới được!",
+              "emote": "sparkle",
+              "sfx": "ding",
+              "audioUrl": "/stories/kasa-jizo/audio/k15c.mp3",
+              "durationSec": 4.896,
+              "ttsHash": "bab935be0cba"
+            }
+          }
+        ]
+      },
+      "tips": [
+        {
+          "after": 0,
+          "mood": "sad",
+          "text": "「Vて + しまう」thể hiện sự tiếc nuối hoặc một việc xảy ra ngoài mong muốn (tuyết rơi dày mất rồi!).",
+          "ja": "{雪|ゆき}がどんどん{強|つよ}くなってしまいました。"
+        }
+      ],
+      "actionLabel": "ĐỘI NÓN CHO 5 TƯỢNG ĐỊA TẠNG →"
+    },
+    {
+      "id": "five_hats",
+      "type": "cinema_explore",
+      "backdrop": "bg:jizo_road",
+      "overlay": "snow",
+      "light": "dusk",
+      "bgm": "tender",
+      "stamp": "五つの笠 · お地蔵様へ",
+      "actors": [],
+      "lines": [
+        {
+          "id": "k16",
+          "voice": "ojiisan",
+          "speakerLabel": "おじいさん",
+          "jaPlain": "これなら雪も少しはふせげるでしょう。さあ、一つずつかぶせてあげますよ。",
+          "jaRuby": "これなら{雪|ゆき}も{少|すこ}しはふせげるでしょう。さあ、{一|ひと}つずつかぶせてあげますよ。",
+          "vi": "Có nón này thì cũng đỡ tuyết phần nào. Nào, để lão đội từng chiếc một cho các ngài nhé.",
+          "audioUrl": "/stories/kasa-jizo/audio/k16.mp3",
+          "durationSec": 7.92,
+          "ttsHash": "b69beca2618d"
+        }
+      ],
+      "interaction": {
+        "type": "drag",
+        "hint": "Kéo lần lượt 5 chiếc nón rơm (笠) đội lên đầu 5 tượng Địa Tạng đầu tiên",
+        "items": [
+          {
+            "id": "hat1",
+            "item": "straw_hat",
+            "from": [
+              56,
+              174
+            ],
+            "to": [
+              56,
+              83
+            ],
+            "label": "{笠|かさ} ①",
+            "labelVi": "kéo lên tượng 1"
+          },
+          {
+            "id": "hat2",
+            "item": "straw_hat",
+            "from": [
+              108,
+              174
+            ],
+            "to": [
+              99,
+              83
+            ],
+            "label": "{笠|かさ} ②"
+          },
+          {
+            "id": "hat3",
+            "item": "straw_hat",
+            "from": [
+              160,
+              174
+            ],
+            "to": [
+              141,
+              83
+            ],
+            "label": "{笠|かさ} ③"
+          },
+          {
+            "id": "hat4",
+            "item": "straw_hat",
+            "from": [
+              212,
+              174
+            ],
+            "to": [
+              184,
+              83
+            ],
+            "label": "{笠|かさ} ④"
+          },
+          {
+            "id": "hat5",
+            "item": "straw_hat",
+            "from": [
+              264,
+              174
+            ],
+            "to": [
+              227,
+              83
+            ],
+            "label": "{笠|かさ} ⑤"
+          }
+        ],
+        "doneLine": {
+          "id": "k17",
+          "voice": "ojiisan",
+          "speakerLabel": "おじいさん",
+          "jaPlain": "あっ…笠は五つしかないのに、お地蔵様は六体いらっしゃる！",
+          "jaRuby": "あっ…{笠|かさ}は{五|いつ}つしかないのに、お{地蔵|じぞう}{様|さま}は{六|ろく}{体|たい}いらっしゃる！",
+          "vi": "Á… mình chỉ có năm chiếc nón, thế mà các ngài Địa Tạng lại có tới sáu vị!",
+          "emote": "shock",
+          "sfx": "shock",
+          "telop": {
+            "text": "あと{一体|いったい}…{笠|かさ}が{足|た}りない！",
+            "sub": "Còn vị thứ 6… thiếu mất một chiếc nón!",
+            "color": "shu"
+          },
+          "audioUrl": "/stories/kasa-jizo/audio/k17.mp3",
+          "durationSec": 6.288,
+          "ttsHash": "68bfc934ba48"
+        }
+      },
+      "tips": [
+        {
+          "after": 0,
+          "mood": "heart",
+          "text": "「Vて + あげる」mang nghĩa làm giúp điều tốt cho người khác (đội nón giúp các tượng Địa Tạng).",
+          "ja": "お{地蔵|じぞう}{様|さま}に{笠|かさ}をかぶせてあげました。"
+        }
+      ],
+      "actionLabel": "GIÚP TƯỢNG THỨ SÁU →"
+    },
+    {
+      "id": "sixth_jizo",
+      "type": "cinema_explore",
+      "backdrop": "bg:jizo_road",
+      "overlay": "snow",
+      "light": "dusk",
+      "bgm": "tender",
+      "stamp": "六体目のお地蔵様 · 手ぬぐい",
+      "actors": [],
+      "motion": [
+        {
+          "type": "mover",
+          "item": "straw_hat",
+          "path": [
+            [
+              40,
+              74
+            ],
+            [
+              40,
+              74
+            ]
+          ],
+          "durationSec": 1.0,
+          "show": "always"
+        },
+        {
+          "type": "mover",
+          "item": "straw_hat",
+          "path": [
+            [
+              83,
+              74
+            ],
+            [
+              83,
+              74
+            ]
+          ],
+          "durationSec": 1.0,
+          "show": "always"
+        },
+        {
+          "type": "mover",
+          "item": "straw_hat",
+          "path": [
+            [
+              125,
+              74
+            ],
+            [
+              125,
+              74
+            ]
+          ],
+          "durationSec": 1.0,
+          "show": "always"
+        },
+        {
+          "type": "mover",
+          "item": "straw_hat",
+          "path": [
+            [
+              168,
+              74
+            ],
+            [
+              168,
+              74
+            ]
+          ],
+          "durationSec": 1.0,
+          "show": "always"
+        },
+        {
+          "type": "mover",
+          "item": "straw_hat",
+          "path": [
+            [
+              211,
+              74
+            ],
+            [
+              211,
+              74
+            ]
+          ],
+          "durationSec": 1.0,
+          "show": "always"
+        }
+      ],
+      "lines": [
+        {
+          "id": "k18",
+          "voice": "ojiisan",
+          "speakerLabel": "おじいさん",
+          "jaPlain": "お一人だけ雪をかぶったままでは、お気の毒だ。古い手ぬぐいですが、笠のかわりにどうぞ。",
+          "jaRuby": "お{一人|ひとり}だけ{雪|ゆき}をかぶったままでは、お{気|き}の{毒|どく}だ。{古|ふる}い{手|て}ぬぐいですが、{笠|かさ}のかわりにどうぞ。",
+          "vi": "Để mỗi một ngài chịu tuyết rơi trần thế này thật tội nghiệp. Tuy chỉ là chiếc khăn cũ, xin ngài dùng tạm thay cho nón ạ.",
+          "emote": "heart",
+          "audioUrl": "/stories/kasa-jizo/audio/k18.mp3",
+          "durationSec": 9.936,
+          "ttsHash": "c6b0ac3db89b"
+        }
+      ],
+      "interaction": {
+        "type": "drag",
+        "hint": "Kéo chiếc khăn 手ぬぐい của ông lão buộc lên đầu tượng Địa Tạng thứ 6",
+        "items": [
+          {
+            "id": "tenugui_6",
+            "item": "tenugui",
+            "from": [
+              160,
+              174
+            ],
+            "to": [
+              269,
+              84
+            ],
+            "label": "{手|て}ぬぐい",
+            "labelVi": "khăn của ông lão"
+          }
+        ],
+        "doneLine": {
+          "id": "k19",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "おじいさんは自分の頭が雪でまっ白になっても、にっこり笑っておじぎをして帰っていきました。",
+          "jaRuby": "おじいさんは{自分|じぶん}の{頭|あたま}が{雪|ゆき}でまっ{白|しろ}になっても、にっこり{笑|わら}っておじぎをして{帰|かえ}っていきました。",
+          "vi": "Dù đầu mình phủ trắng tuyết lạnh, ông lão vẫn mỉm cười cúi chào các tượng Địa Tạng rồi quay bước trở về nhà.",
+          "emote": "sparkle",
+          "sfx": "heart",
+          "telop": {
+            "text": "やさしい{心|こころ}",
+            "sub": "Tấm lòng nhân hậu giữa trời tuyết",
+            "color": "gold"
+          },
+          "audioUrl": "/stories/kasa-jizo/audio/k19.mp3",
+          "durationSec": 9.888,
+          "ttsHash": "b118326a95d9"
+        }
+      },
+      "tips": [
+        {
+          "after": 0,
+          "mood": "kira",
+          "text": "「Danh từ + のかわりに」nghĩa là 'thay cho…': ông lão dùng chiếc khăn thay cho chiếc nón!",
+          "ja": "{笠|かさ}のかわりに{手|て}ぬぐいをかけました。"
+        }
+      ],
+      "actionLabel": "TRỞ VỀ NHÀ TRANH →"
+    },
+    {
+      "id": "home_empty",
+      "type": "cinema_checklist",
+      "backdrop": "bg:hut_hearth",
+      "light": "warm",
+      "bgm": "tender",
+      "stamp": "大晦日の夜 · 囲炉裏のそば",
+      "actors": [
+        "left",
+        "right"
+      ],
+      "lines": [
+        {
+          "id": "k20",
+          "voice": "ojiisan",
+          "speakerLabel": "おじいさん",
+          "jaPlain": "ただいま、おばあさん。すまないね、笠は売れずに、雪の中のお地蔵様にみんなあげてきたんだよ。",
+          "jaRuby": "ただいま、おばあさん。すまないね、{笠|かさ}は{売|う}れずに、{雪|ゆき}の{中|なか}のお{地蔵|じぞう}{様|さま}にみんなあげてきたんだよ。",
+          "vi": "Tôi về rồi đây bà ạ. Xin lỗi bà nhé, nón không bán được, tôi đã đem đội hết cho các ngài Địa Tạng giữa trời tuyết rồi.",
+          "action": "bow",
+          "emote": "sweat",
+          "audioUrl": "/stories/kasa-jizo/audio/k20.mp3",
+          "durationSec": 10.584,
+          "ttsHash": "4df2daa7afea"
+        },
+        {
+          "id": "k21",
+          "voice": "obaasan",
+          "speakerLabel": "おばあさん",
+          "jaPlain": "まあ、それはとてもいいことをなさいましたね！お餅がなくても、二人で元気ならそれで十分ですよ。",
+          "jaRuby": "まあ、それはとてもいいことをなさいましたね！お{餅|もち}がなくても、{二人|ふたり}で{元気|げんき}ならそれで{十分|じゅうぶん}ですよ。",
+          "vi": "Ôi, ông đã làm một việc thật tốt đẹp quá! Không có bánh mochi cũng chẳng sao, hai vợ chồng mình khỏe mạnh bên nhau là đủ lắm rồi.",
+          "camera": "push",
+          "emote": "heart",
+          "action": "sway",
+          "sfx": "heart",
+          "audioUrl": "/stories/kasa-jizo/audio/k21.mp3",
+          "durationSec": 8.832,
+          "ttsHash": "3fda1fb0b270"
+        }
+      ],
+      "minigame": {
+        "kind": "choice",
+        "pickOne": true,
+        "autoPick": "warm_tea",
+        "prompt": "Đêm giao thừa ấm áp bên bếp lửa, hai ông bà cùng làm gì?",
+        "choices": [
+          {
+            "id": "warm_tea",
+            "labelJa": "熱いお茶を飲みましょう",
+            "labelRuby": "{熱|あつ}いお{茶|ちゃ}を{飲|の}みましょう",
+            "responseLine": {
+              "id": "k22a",
+              "voice": "ojiisan",
+              "speakerLabel": "おじいさん",
+              "jaPlain": "ありがたいねえ。体のしんまでぽかぽか温まるよ。",
+              "jaRuby": "ありがたいねえ。{体|からだ}のしんまでぽかぽか{温|あたた}まるよ。",
+              "vi": "Cảm ơn bà nhiều lắm. Ấm áp lan tận vào trong lòng thế này cơ chứ.",
+              "emote": "note",
+              "audioUrl": "/stories/kasa-jizo/audio/k22a.mp3",
+              "durationSec": 5.712,
+              "ttsHash": "8fe2e9b7f5b5"
+            }
+          },
+          {
+            "id": "pickles_dinner",
+            "labelJa": "お漬物で年越ししましょう",
+            "labelRuby": "お{漬物|つけもの}で{年越|としこ}ししましょう",
+            "responseLine": {
+              "id": "k22b",
+              "voice": "ojiisan",
+              "speakerLabel": "おじいさん",
+              "jaPlain": "ははは、おばあさんの漬物が一番のごちそうだよ。",
+              "jaRuby": "ははは、おばあさんの{漬物|つけもの}が{一番|いちばん}のごちそうだよ。",
+              "vi": "Ha ha ha, dưa muối bà làm chính là món ngon nhất đêm giao thừa rồi.",
+              "emote": "sparkle",
+              "audioUrl": "/stories/kasa-jizo/audio/k22b.mp3",
+              "durationSec": 5.4,
+              "ttsHash": "6df9ed610da8"
+            }
+          }
+        ]
+      },
+      "actionLabel": "ĐÊM KHUYA GIAO THỪA →"
+    },
+    {
+      "id": "midnight_song",
+      "type": "cinema_explore",
+      "backdrop": "bg:hut_hearth",
+      "light": "night",
+      "bgm": "night",
+      "stamp": "真夜中 · 不思議な歌ごえ",
+      "actors": [
+        "left",
+        "right"
+      ],
+      "motion": [
+        {
+          "type": "rumble",
+          "period": 1.6
+        }
+      ],
+      "lines": [
+        {
+          "id": "k23",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "その夜、真夜中になると、外からずしん、ずしんと重い足音と歌ごえが聞こえてきました。",
+          "jaRuby": "その{夜|よる}、{真夜中|まよなか}になると、{外|そと}からずしん、ずしんと{重|おも}い{足音|あしおと}と{歌|うた}ごえが{聞|き}こえてきました。",
+          "vi": "Đêm hôm đó, vừa đến nửa đêm, bên ngoài bỗng vang lên những tiếng bước chân nặng nề thình thịch cùng một điệu hát lạ kỳ.",
+          "sfx": "thud",
+          "audioUrl": "/stories/kasa-jizo/audio/k23.mp3",
+          "durationSec": 11.184,
+          "ttsHash": "0e861fdd1049"
+        },
+        {
+          "id": "k24",
+          "voice": "ojiisan",
+          "speakerLabel": "おじいさん",
+          "jaPlain": "おや？「笠くれたじいさまの家はどこだ」と歌っているようだぞ。外を見てみよう。",
+          "jaRuby": "おや？「{笠|かさ}くれたじいさまの{家|いえ}はどこだ」と{歌|うた}っているようだぞ。{外|そと}を{見|み}てみよう。",
+          "vi": "Ủa? Hình như có ai đang hát 'Nhà ông lão tặng nón ở đâu nhỉ'. Mình thử lắng nghe và nhìn ra ngoài xem sao.",
+          "emote": "question",
+          "action": "startle",
+          "audioUrl": "/stories/kasa-jizo/audio/k24.mp3",
+          "durationSec": 8.832,
+          "ttsHash": "eec81a0c13fe"
+        }
+      ],
+      "interaction": {
+        "type": "tap",
+        "hint": "Chạm vào ô cửa sổ shoji và góc cửa nhà để lắng nghe tiếng bước chân ngoài tuyết",
+        "spots": [
+          {
+            "id": "shoji_peek",
+            "x": 38,
+            "y": 84,
+            "r": 24,
+            "label": "{障子|しょうじ}の{窓|まど}",
+            "labelVi": "nhìn qua cửa sổ tuyết",
+            "line": {
+              "id": "k25a",
+              "voice": "obaasan",
+              "speakerLabel": "おばあさん",
+              "jaPlain": "あっ！雪の向こうに、笠と手ぬぐいをかぶった六体の影が見えますよ！",
+              "jaRuby": "あっ！{雪|ゆき}の{向|む}こうに、{笠|かさ}と{手|て}ぬぐいをかぶった{六|ろく}{体|たい}の{影|かげ}が{見|み}えますよ！",
+              "vi": "Á! Phía bên kia màn tuyết, tôi thấy sáu bóng dáng đang đội nón rơm và khăn tenugui kìa ông ơi!",
+              "emote": "shock",
+              "sfx": "sparkle",
+              "audioUrl": "/stories/kasa-jizo/audio/k25a.mp3",
+              "durationSec": 6.144,
+              "ttsHash": "9ae27f45a4f6"
+            }
+          },
+          {
+            "id": "door_thud",
+            "x": 292,
+            "y": 116,
+            "r": 24,
+            "label": "{玄関|げんかん}の{音|おと}",
+            "labelVi": "tiếng đặt đồ trước cửa",
+            "line": {
+              "id": "k25b",
+              "voice": "narrator",
+              "speakerLabel": "ナレーター",
+              "jaPlain": "ドスン！と玄関の前に大きな荷物を置く音がして、歌ごえはしずかに遠ざかっていきました。",
+              "jaRuby": "ドスン！と{玄関|げんかん}の{前|まえ}に{大|おお}きな{荷物|にもつ}を{置|お}く{音|おと}がして、{歌|うた}ごえはしずかに{遠|とお}ざかっていきました。",
+              "vi": "Rầm! Một tiếng đặt hành lý nặng vang lên ngay trước cửa nhà, rồi điệu hát dần xa khuất trong màn đêm tĩnh lặng.",
+              "sfx": "thud",
+              "audioUrl": "/stories/kasa-jizo/audio/k25b.mp3",
+              "durationSec": 10.56,
+              "ttsHash": "2883e7a55602"
+            }
+          }
+        ]
+      },
+      "tips": [
+        {
+          "after": 1,
+          "mood": "surprise",
+          "text": "「〜ようだ」dùng để phỏng đoán qua cảm nhận trực giác/nghe thấy ('hình như ai đó đang hát…').",
+          "ja": "{外|そと}でだれかが{歌|うた}っているようだ。"
+        }
+      ],
+      "actionLabel": "SÁNG MỒNG MỘT TẾT →"
+    },
+    {
+      "id": "new_year_gifts",
+      "type": "cinema_explore",
+      "backdrop": "bg:hut_morning",
+      "light": "morning",
+      "bgm": "bright",
+      "stamp": "元日の朝 · お地蔵様の恩返し",
+      "actors": [],
+      "people": {
+        "ojiisan": {
+          "kind": "sprite:ojiisan_walk",
+          "x": 112,
+          "y": 162,
+          "face": "right"
+        }
+      },
+      "lines": [
+        {
+          "id": "k26",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "次の朝、戸を開けてみると、まぶしい朝日の中に山のようなお正月の贈り物が届いていました！",
+          "jaRuby": "{次|つぎ}の{朝|あさ}、{戸|と}を{開|あ}けてみると、まぶしい{朝日|あさひ}の{中|なか}に{山|やま}のようなお{正月|しょうがつ}の{贈|おく}り{物|もの}が{届|とど}いていました！",
+          "vi": "Sáng hôm sau, khi mở cửa ra, dưới ánh nắng bình minh rực rỡ là cả một núi quà Tết được xếp ngay ngắn trước hiên nhà!",
+          "sfx": "sparkle",
+          "audioUrl": "/stories/kasa-jizo/audio/k26.mp3",
+          "durationSec": 11.112,
+          "ttsHash": "d4a4cfb0c319"
+        }
+      ],
+      "interaction": {
+        "type": "tap",
+        "hint": "Chạm vào 4 điểm lấp lánh trước sân tuyết để mở từng món quà Tết của các vị Địa Tạng",
+        "spots": [
+          {
+            "id": "gift_mochi1",
+            "x": 166,
+            "y": 146,
+            "r": 22,
+            "item": "mochi_gift",
+            "label": "{鏡餅|かがみもち}",
+            "labelVi": "bánh mochi Tết",
+            "line": {
+              "id": "k27a",
+              "voice": "obaasan",
+              "speakerLabel": "おばあさん",
+              "jaPlain": "まあ、白くてりっぱな鏡餅！みかんまで乗っていますよ！",
+              "jaRuby": "まあ、{白|しろ}くてりっぱな{鏡餅|かがみもち}！みかんまで{乗|の}っていますよ！",
+              "vi": "Ôi chao, bánh kagami-mochi trắng tinh và đẹp quá! Còn có cả quả quýt đặt trên đỉnh nữa!",
+              "sfx": "ding",
+              "audioUrl": "/stories/kasa-jizo/audio/k27a.mp3",
+              "durationSec": 5.712,
+              "ttsHash": "7b0dc6357244"
+            }
+          },
+          {
+            "id": "gift_rice1",
+            "x": 208,
+            "y": 152,
+            "r": 22,
+            "item": "rice_bale",
+            "label": "{米俵|こめだわら}",
+            "labelVi": "bao gạo đầy ắp",
+            "line": {
+              "id": "k27b",
+              "voice": "ojiisan",
+              "speakerLabel": "おじいさん",
+              "jaPlain": "おおっ！ずっしり重い米俵がこんなにたくさん！",
+              "jaRuby": "おおっ！ずっしり{重|おも}い{米俵|こめだわら}がこんなにたくさん！",
+              "vi": "Ồ! Những bao gạo mới nặng trĩu đầy ắp thế này cơ chứ!",
+              "sfx": "ding",
+              "audioUrl": "/stories/kasa-jizo/audio/k27b.mp3",
+              "durationSec": 4.896,
+              "ttsHash": "ffb3a5aad365"
+            }
+          },
+          {
+            "id": "gift_rice2",
+            "x": 246,
+            "y": 144,
+            "r": 22,
+            "item": "rice_bale",
+            "label": "{新米|しんまい}",
+            "labelVi": "gạo mùa mới",
+            "line": {
+              "id": "k27c",
+              "voice": "ojiisan",
+              "speakerLabel": "おじいさん",
+              "jaPlain": "お地蔵様が、親切のお礼に運んでくださったんだね。",
+              "jaRuby": "お{地蔵|じぞう}{様|さま}が、{親切|しんせつ}のお{礼|れい}に{運|はこ}んでくださったんだね。",
+              "vi": "Chính các ngài Địa Tạng đã mang đến để trả ơn cho tấm lòng thành đó bà ạ.",
+              "sfx": "sparkle",
+              "audioUrl": "/stories/kasa-jizo/audio/k27c.mp3",
+              "durationSec": 6.024,
+              "ttsHash": "4a4330ab5338"
+            }
+          },
+          {
+            "id": "gift_mochi2",
+            "x": 224,
+            "y": 166,
+            "r": 22,
+            "item": "mochi_gift",
+            "label": "お{正月|しょうがつ}の{祝|いわ}い",
+            "labelVi": "lộc đầu năm",
+            "line": {
+              "id": "k27d",
+              "voice": "obaasan",
+              "speakerLabel": "おばあさん",
+              "jaPlain": "お地蔵様、本当にありがとうございます！",
+              "jaRuby": "お{地蔵|じぞう}{様|さま}、{本当|ほんとう}にありがとうございます！",
+              "vi": "Chúng con xin chân thành cảm tạ các ngài Địa Tạng!",
+              "sfx": "heart",
+              "audioUrl": "/stories/kasa-jizo/audio/k27d.mp3",
+              "durationSec": 3.744,
+              "ttsHash": "157a4e4bbaf9"
+            }
+          }
+        ],
+        "doneLine": {
+          "id": "k28",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "それから二人は、もう食べ物に困ることなく、しあわせに暮らせるようになりました。",
+          "jaRuby": "それから{二人|ふたり}は、もう{食べ物|たべもの}に{困|こま}ることなく、しあわせに{暮|く}らせるようになりました。",
+          "vi": "Từ hôm đó trở đi, hai ông bà không còn phải lo thiếu ăn nữa và đã có thể sống những ngày thật ấm no, hạnh phúc.",
+          "telop": {
+            "text": "あけましておめでとう！",
+            "sub": "Chúc mừng năm mới ấm no!",
+            "color": "gold"
+          },
+          "audioUrl": "/stories/kasa-jizo/audio/k28.mp3",
+          "durationSec": 9.216,
+          "ttsHash": "7a1f1fdf1db1"
+        }
+      },
+      "tips": [
+        {
+          "after": 0,
+          "mood": "star",
+          "text": "「Vる (thể khả năng) + ようになる」diễn tả sự thay đổi trạng thái: từ trước chưa thể, nay đã trở nên có thể!",
+          "ja": "しあわせに{暮|く}らせるようになりました。"
+        }
+      ],
+      "actionLabel": "KẾT THÚC CÂU CHUYỆN →"
+    },
+    {
+      "id": "outro",
+      "type": "cinema_outro",
+      "backdrop": "bg:hut_morning",
+      "light": "golden",
+      "bgm": "happy",
+      "stamp": "笠地蔵 · おしまい",
+      "actors": [
+        "left",
+        "right"
+      ],
+      "motion": [
+        {
+          "type": "mover",
+          "item": "rice_bale",
+          "path": [
+            [
+              172,
+              139
+            ],
+            [
+              172,
+              139
+            ]
+          ],
+          "durationSec": 1.0,
+          "show": "always"
+        },
+        {
+          "type": "mover",
+          "item": "mochi_gift",
+          "path": [
+            [
+              157,
+              163
+            ],
+            [
+              157,
+              163
+            ]
+          ],
+          "durationSec": 1.0,
+          "show": "always"
+        },
+        {
+          "type": "mover",
+          "item": "rice_bale",
+          "path": [
+            [
+              186,
+              165
+            ],
+            [
+              186,
+              165
+            ]
+          ],
+          "durationSec": 1.0,
+          "show": "always"
+        }
+      ],
+      "people": {
+        "bot": {
+          "kind": "stackchan",
+          "x": 132,
+          "y": 170,
+          "wear": {
+            "head": "nonla",
+            "neck": "scarf"
+          }
+        }
+      },
+      "lines": [
+        {
+          "id": "k29",
+          "voice": "ojiisan",
+          "speakerLabel": "おじいさん",
+          "jaPlain": "おばあさん、今年はきっとすばらしい一年になるね。",
+          "jaRuby": "おばあさん、{今年|ことし}はきっとすばらしい{一年|いちねん}になるね。",
+          "vi": "Bà ơi, năm nay chắc chắn sẽ là một năm thật tuyệt vời đấy.",
+          "emote": "heart",
+          "action": "hop",
+          "audioUrl": "/stories/kasa-jizo/audio/k29.mp3",
+          "durationSec": 5.472,
+          "ttsHash": "271273f00d77"
+        },
+        {
+          "id": "k30",
+          "voice": "obaasan",
+          "speakerLabel": "おばあさん",
+          "jaPlain": "ええ、親切な心は、いつでも温かい春を運んできてくれますね。",
+          "jaRuby": "ええ、{親切|しんせつ}な{心|こころ}は、いつでも{温|あたた}かい{春|はる}を{運|はこ}んできてくれますね。",
+          "vi": "Vâng ạ, tấm lòng nhân hậu bao giờ cũng mang mùa xuân ấm áp đến bên mình ông nhỉ.",
+          "emote": "sparkle",
+          "action": "sway",
+          "audioUrl": "/stories/kasa-jizo/audio/k30.mp3",
+          "durationSec": 6.384,
+          "ttsHash": "6ee16f9e20e4"
+        }
+      ],
+      "tips": [
+        {
+          "after": 1,
+          "who": "bot",
+          "mood": "heart",
+          "text": "Tuyệt vời quá! Bạn đã hoàn thành trọn vẹn 12 cảnh cổ tích {笠地蔵|かさじぞう}. Nhớ vào Phòng đọc và Nghe chép để ôn lại 5 mẫu ngữ pháp N4 nha!",
+          "ja": "おつかれさま！また{次|つぎ}の{昔話|むかしばなし}で{会|あ}おうね！"
+        }
+      ],
+      "summary": "Hoàn thành 12 cảnh · 5 mẫu ngữ pháp N4 · 10 từ vựng cổ tích!",
+      "outroLabels": {
+        "reading": "ĐỌC BÀI 4 CHƯƠNG",
+        "dictation": "NGHE CHÉP",
+        "card": "THẺ NHÂN VẬT",
+        "replay": "XEM LẠI"
+      }
+    }
+  ],
+  "reading": {
+    "chapters": [
+      {
+        "id": "ch1",
+        "title": "{大晦日|おおみそか}の{笠|かさ}づくり",
+        "titleVi": "Đêm giao thừa đan nón rơm",
+        "sentenceIds": [
+          "r01",
+          "r02",
+          "r03"
+        ],
+        "scene": "weave_hats"
+      },
+      {
+        "id": "ch2",
+        "title": "{雪|ゆき}の{市|いち}と{帰|かえ}り{道|みち}",
+        "titleVi": "Phiên chợ tuyết rơi & đường về tay không",
+        "sentenceIds": [
+          "r04",
+          "r05",
+          "r06"
+        ],
+        "scene": "market_sunset"
+      },
+      {
+        "id": "ch3",
+        "title": "{六体|ろくたい}のお{地蔵|じぞう}{様|さま}",
+        "titleVi": "Năm chiếc nón rơm và một chiếc khăn tenugui",
+        "sentenceIds": [
+          "r07",
+          "r08",
+          "r09"
+        ],
+        "scene": "sixth_jizo"
+      },
+      {
+        "id": "ch4",
+        "title": "お{正月|しょうがつ}の{贈|おく}り{物|もの}",
+        "titleVi": "Điệu hát nửa đêm và món quà mồng Một",
+        "sentenceIds": [
+          "r10",
+          "r11",
+          "r12"
+        ],
+        "scene": "new_year_gifts"
+      }
+    ],
+    "sentences": [
+      {
+        "id": "r01",
+        "voice": "narrator",
+        "jaPlain": "むかし、ある雪国に、貧しいけれどとても親切なおじいさんとおばあさんが住んでいました。",
+        "jaRuby": "むかし、ある{雪国|ゆきぐに}に、{貧|まず}しいけれどとても{親切|しんせつ}なおじいさんとおばあさんが{住|す}んでいました。",
+        "vi": "Ngày xưa, ở một vùng quê tuyết trắng, có hai ông bà lão tuy nghèo nhưng rất tốt bụng.",
+        "highlightVocabIds": [
+          "mazushii",
+          "shinsetsu"
+        ],
+        "audioUrl": "/stories/kasa-jizo/audio/r01.mp3",
+        "durationSec": 10.272,
+        "ttsHash": "50f7c109e697"
+      },
+      {
+        "id": "r02",
+        "voice": "narrator",
+        "jaPlain": "大晦日の日、二人は五つの笠を作りました。",
+        "jaRuby": "{大晦日|おおみそか}の{日|ひ}、{二人|ふたり}は{五|いつ}つの{笠|かさ}を{作|つく}りました。",
+        "vi": "Vào ngày cuối năm (Giao thừa), hai ông bà đã đan được năm chiếc nón rơm.",
+        "highlightVocabIds": [
+          "oomisoka",
+          "kasa"
+        ],
+        "audioUrl": "/stories/kasa-jizo/audio/r02.mp3",
+        "durationSec": 5.664,
+        "ttsHash": "220dd65c85c5"
+      },
+      {
+        "id": "r03",
+        "voice": "narrator",
+        "jaPlain": "おじいさんは「町で笠を売って、お餅を買ってきますよ」と言って出かけました。",
+        "jaRuby": "おじいさんは「{町|まち}で{笠|かさ}を{売|う}って、お{餅|もち}を{買|か}ってきますよ」と{言|い}って{出|で}かけました。",
+        "vi": "Ông lão nói 'Tôi sẽ ra chợ bán nón rồi mua bánh mochi về nhé' và lên đường.",
+        "highlightVocabIds": [
+          "kasa",
+          "omochi"
+        ],
+        "audioUrl": "/stories/kasa-jizo/audio/r03.mp3",
+        "durationSec": 9.672,
+        "ttsHash": "dcf9eedf8694"
+      },
+      {
+        "id": "r04",
+        "voice": "narrator",
+        "jaPlain": "しかし、大きな声で呼んだのに、笠は一つも売れませんでした。",
+        "jaRuby": "しかし、{大|おお}きな{声|こえ}で{呼|よ}んだのに、{笠|かさ}は{一|ひと}つも{売|う}れませんでした。",
+        "vi": "Thế nhưng, dù ông đã cất tiếng rao thật to mà chẳng bán được chiếc nón nào cả.",
+        "highlightVocabIds": [
+          "kasa"
+        ],
+        "audioUrl": "/stories/kasa-jizo/audio/r04.mp3",
+        "durationSec": 7.656,
+        "ttsHash": "801fa30000ee"
+      },
+      {
+        "id": "r05",
+        "voice": "narrator",
+        "jaPlain": "夕方になると、雪がどんどん強くなってしまいました。",
+        "jaRuby": "{夕方|ゆうがた}になると、{雪|ゆき}がどんどん{強|つよ}くなってしまいました。",
+        "vi": "Đến xế chiều, tuyết rơi mỗi lúc một nặng hạt hơn.",
+        "highlightVocabIds": [
+          "yuki"
+        ],
+        "audioUrl": "/stories/kasa-jizo/audio/r05.mp3",
+        "durationSec": 6.144,
+        "ttsHash": "84679e02b43e"
+      },
+      {
+        "id": "r06",
+        "voice": "narrator",
+        "jaPlain": "帰り道で、おじいさんは道ばたに並ぶ六体のお地蔵様を見つけました。",
+        "jaRuby": "{帰|かえ}り{道|みち}で、おじいさんは{道|みち}ばたに{並|なら}ぶ{六|ろく}{体|たい}のお{地蔵|じぞう}{様|さま}を{見|み}つけました。",
+        "vi": "Trên đường về, ông lão bắt gặp sáu bức tượng Địa Tạng đứng thành hàng bên vệ đường.",
+        "highlightVocabIds": [
+          "ojizousama"
+        ],
+        "audioUrl": "/stories/kasa-jizo/audio/r06.mp3",
+        "durationSec": 8.016,
+        "ttsHash": "5e3c94bd3381"
+      },
+      {
+        "id": "r07",
+        "voice": "narrator",
+        "jaPlain": "おじいさんは寒そうなお地蔵様の雪を払い、五つの笠をかぶせてあげました。",
+        "jaRuby": "おじいさんは{寒|さむ}そうなお{地蔵|じぞう}{様|さま}の{雪|ゆき}を{払|はら}い、{五|いつ}つの{笠|かさ}をかぶせてあげました。",
+        "vi": "Ông lão phủi tuyết cho các tượng Địa Tạng đang lạnh cóng rồi đội năm chiếc nón lên cho các ngài.",
+        "highlightVocabIds": [
+          "ojizousama",
+          "yuki",
+          "kasa"
+        ],
+        "audioUrl": "/stories/kasa-jizo/audio/r07.mp3",
+        "durationSec": 8.592,
+        "ttsHash": "ff0bddf749d3"
+      },
+      {
+        "id": "r08",
+        "voice": "narrator",
+        "jaPlain": "六番目のお地蔵様には、笠のかわりに自分の手ぬぐいをかけてあげました。",
+        "jaRuby": "{六番目|ろくばんめ}のお{地蔵|じぞう}{様|さま}には、{笠|かさ}のかわりに{自分|じぶん}の{手|て}ぬぐいをかけてあげました。",
+        "vi": "Với vị Địa Tạng thứ sáu, ông lão đã buộc chiếc khăn tenugui của chính mình lên thay cho chiếc nón.",
+        "highlightVocabIds": [
+          "ojizousama",
+          "kasa",
+          "tenugui"
+        ],
+        "audioUrl": "/stories/kasa-jizo/audio/r08.mp3",
+        "durationSec": 8.016,
+        "ttsHash": "e618c4912cef"
+      },
+      {
+        "id": "r09",
+        "voice": "narrator",
+        "jaPlain": "家へ帰ると、おばあさんは「とてもいいことをなさいましたね」と温かく迎えてくれました。",
+        "jaRuby": "{家|いえ}へ{帰|かえ}ると、おばあさんは「とてもいいことをなさいましたね」と{温|あたた}かく{迎|むか}えてくれました。",
+        "vi": "Khi ông trở về nhà, bà lão đón ông thật ấm áp và khen: 'Ông đã làm một việc thật tốt đẹp quá!'.",
+        "highlightVocabIds": [
+          "shinsetsu"
+        ],
+        "audioUrl": "/stories/kasa-jizo/audio/r09.mp3",
+        "durationSec": 10.584,
+        "ttsHash": "a368fb1ec2e0"
+      },
+      {
+        "id": "r10",
+        "voice": "narrator",
+        "jaPlain": "真夜中、外でだれかが「笠くれたじいさまの家はここだ」と歌っているようでした。",
+        "jaRuby": "{真夜中|まよなか}、{外|そと}でだれかが「{笠|かさ}くれたじいさまの{家|いえ}はここだ」と{歌|うた}っているようでした。",
+        "vi": "Nửa đêm hôm đó, bên ngoài hình như có ai đang hát 'Nhà ông lão tặng nón là ở đây rồi!'.",
+        "highlightVocabIds": [
+          "kasa"
+        ],
+        "audioUrl": "/stories/kasa-jizo/audio/r10.mp3",
+        "durationSec": 9.96,
+        "ttsHash": "5aea996f6cdf"
+      },
+      {
+        "id": "r11",
+        "voice": "narrator",
+        "jaPlain": "お正月の朝、戸を開けると、お餅や米俵がたくさん届いていました。",
+        "jaRuby": "{お正月|おしょうがつ}の{朝|あさ}、{戸|と}を{開|あ}けると、お{餅|もち}や{米俵|こめだわら}がたくさん{届|とど}いていました。",
+        "vi": "Sáng mồng Một Tết, vừa mở cửa ra, bánh mochi và rất nhiều bao gạo đã được xếp đầy trước cửa.",
+        "highlightVocabIds": [
+          "oshougatsu",
+          "omochi",
+          "komedawara"
+        ],
+        "audioUrl": "/stories/kasa-jizo/audio/r11.mp3",
+        "durationSec": 8.544,
+        "ttsHash": "b73bf2c73c65"
+      },
+      {
+        "id": "r12",
+        "voice": "narrator",
+        "jaPlain": "それからおじいさんとおばあさんは、毎日しあわせに暮らせるようになりました。",
+        "jaRuby": "それからおじいさんとおばあさんは、{毎日|まいにち}しあわせに{暮|く}らせるようになりました。",
+        "vi": "Từ đó về sau, hai ông bà đã có thể sống những ngày tháng thật ấm no, hạnh phúc.",
+        "highlightVocabIds": [
+          "oshougatsu"
+        ],
+        "audioUrl": "/stories/kasa-jizo/audio/r12.mp3",
+        "durationSec": 7.944,
+        "ttsHash": "bb4fe6d6b4dc"
+      }
+    ],
+    "vocab": [
+      {
+        "id": "oomisoka",
+        "word": "大晦日",
+        "reading": "おおみそか",
+        "hanViet": "ĐẠI HỐI NHẬT",
+        "meaningVi": "Ngày 31/12, đêm Giao thừa cuối năm",
+        "note": "Ngày cuối cùng của năm dương lịch ở Nhật, mọi nhà dọn dẹp và ăn mì toshikoshi-soba."
+      },
+      {
+        "id": "mazushii",
+        "word": "貧しい",
+        "reading": "まずしい",
+        "hanViet": "BẦN",
+        "meaningVi": "Nghèo khó, thiếu thốn",
+        "note": "Tính từ đuôi い cấp N4, thường gặp trong truyện cổ tích."
+      },
+      {
+        "id": "kasa",
+        "word": "笠",
+        "reading": "かさ",
+        "hanViet": "LẠP",
+        "meaningVi": "Nón rơm / nón lá truyền thống",
+        "note": "Phân biệt với 傘 (ô/dù cầm tay) — cùng đọc là かさ!"
+      },
+      {
+        "id": "yuki",
+        "word": "雪",
+        "reading": "ゆき",
+        "hanViet": "TUYẾT",
+        "meaningVi": "Tuyết",
+        "note": "雪が降る (tuyết rơi), 雪が積もる (tuyết chất dày)."
+      },
+      {
+        "id": "ojizousama",
+        "word": "お地蔵様",
+        "reading": "おじぞうさま",
+        "hanViet": "ĐỊA TẠNG",
+        "meaningVi": "Ngài Địa Tạng (tượng đá bên đường)",
+        "note": "Thường đeo yếm đỏ, tượng trưng cho sự che chở trẻ nhỏ và khách bộ hành."
+      },
+      {
+        "id": "tenugui",
+        "word": "手ぬぐい",
+        "reading": "てぬぐい",
+        "hanViet": "THỦ",
+        "meaningVi": "Khăn vải bông truyền thống Nhật",
+        "note": "Dùng lau mồ hôi, quấn cổ hoặc trùm đầu rất đa năng."
+      },
+      {
+        "id": "shinsetsu",
+        "word": "親切",
+        "reading": "しんせつ",
+        "hanViet": "THÂN THIẾT",
+        "meaningVi": "Tốt bụng, tử tế, chu đáo",
+        "note": "Tính từ đuôi な quen thuộc trong JLPT N4."
+      },
+      {
+        "id": "omochi",
+        "word": "お餅",
+        "reading": "おもち",
+        "hanViet": "BÍNH",
+        "meaningVi": "Bánh giầy gạo nếp mochi",
+        "note": "Món ăn không thể thiếu dịp Tết お正月 (đặc biệt là bánh 2 tầng 鏡餅)."
+      },
+      {
+        "id": "komedawara",
+        "word": "米俵",
+        "reading": "こめだわら",
+        "hanViet": "MỄ BIỂU",
+        "meaningVi": "Bao gạo bện bằng rơm",
+        "note": "Biểu tượng của mùa màng bội thu và sự sung túc thời xưa ở Nhật."
+      },
+      {
+        "id": "oshougatsu",
+        "word": "お正月",
+        "reading": "おしょうがつ",
+        "hanViet": "CHÍNH NGUYỆT",
+        "meaningVi": "Tết năm mới (đầu tháng Giêng)",
+        "note": "Mùng 1 Tết gọi là 元日 (がんじつ)."
+      }
+    ],
+    "grammar": [
+      {
+        "id": "g_tekuru",
+        "pattern": "Vて + くる",
+        "level": "JLPT N4",
+        "meaningVi": "Đi (làm gì đó) rồi quay lại",
+        "explanation": "Diễn tả hành động rời vị trí hiện tại đi làm việc gì đó rồi trở về chỗ ban đầu (ví dụ: ra chợ mua bánh rồi về).",
+        "exampleJa": "町でお餅を買ってきますよ。",
+        "exampleRuby": "{町|まち}でお{餅|もち}を{買|か}ってきますよ。",
+        "exampleVi": "Tôi sẽ ra thị trấn mua bánh mochi rồi quay về nhé."
+      },
+      {
+        "id": "g_noni",
+        "pattern": "Thể thông thường + のに",
+        "level": "JLPT N4",
+        "meaningVi": "Mặc dù… thế mà… (ngạc nhiên / tiếc nuối)",
+        "explanation": "Nối hai mệnh đề trái ngược kỳ vọng, thường mang sắc thái hụt hẫng hoặc bất ngờ mạnh hơn けれど / が.",
+        "exampleJa": "大きな声で呼んだのに、笠は一つも売れませんでした。",
+        "exampleRuby": "{大|おお}きな{声|こえ}で{呼|よ}んだのに、{笠|かさ}は{一|ひと}つも{売|う}れませんでした。",
+        "exampleVi": "Dù đã gọi mời thật to thế mà chẳng bán được lấy một chiếc nón nào."
+      },
+      {
+        "id": "g_teageru",
+        "pattern": "Vて + あげる",
+        "level": "JLPT N4",
+        "meaningVi": "Làm giúp điều gì đó cho ai",
+        "explanation": "Thể hiện lòng tốt của người nói (hoặc chủ ngữ) khi làm một việc có lợi cho đối phương.",
+        "exampleJa": "お地蔵様に笠をかぶせてあげました。",
+        "exampleRuby": "お{地蔵|じぞう}{様|さま}に{笠|かさ}をかぶせてあげました。",
+        "exampleVi": "Ông lão đã đội nón giúp cho các ngài Địa Tạng."
+      },
+      {
+        "id": "g_kawarini",
+        "pattern": "Danh từ + のかわりに",
+        "level": "JLPT N4",
+        "meaningVi": "Thay cho…, dùng làm vật thay thế cho…",
+        "explanation": "Chỉ việc chọn phương án/vật dụng B thay thế cho A.",
+        "exampleJa": "笠のかわりに自分の手ぬぐいをかけました。",
+        "exampleRuby": "{笠|かさ}のかわりに{自分|じぶん}の{手|て}ぬぐいをかけました。",
+        "exampleVi": "Ông đã dùng chiếc khăn của chính mình buộc lên thay cho chiếc nón."
+      },
+      {
+        "id": "g_youninaru",
+        "pattern": "Vる (thể khả năng) + ようになる",
+        "level": "JLPT N4",
+        "meaningVi": "Trở nên có thể… / bắt đầu…",
+        "explanation": "Diễn tả sự chuyển biến trạng thái: trước kia chưa làm được, từ một mốc thời gian trở đi thì đã có thể.",
+        "exampleJa": "二人はしあわせに暮らせるようになりました。",
+        "exampleRuby": "{二人|ふたり}はしあわせに{暮|く}らせるようになりました。",
+        "exampleVi": "Hai ông bà đã có thể sống một cuộc sống hạnh phúc."
+      }
+    ],
+    "quiz": [
+      {
+        "id": "q1",
+        "questionJa": "おじいさんはなぜ{町|まち}へ{笠|かさ}を{売|う}りに{行|い}きましたか。",
+        "questionVi": "Vì sao ông lão mang nón rơm ra thị trấn bán?",
+        "options": [
+          {
+            "ja": "お{正月|しょうがつ}のお{餅|もち}を{買|か}うため"
+          },
+          {
+            "ja": "{新|あたら}しい{手|て}ぬぐいを{買|か}うため"
+          },
+          {
+            "ja": "お{地蔵|じぞう}{様|さま}に{会|あ}うため"
+          },
+          {
+            "ja": "{町|まち}の{友|とも}だちと{遊|あそ}ぶため"
+          }
+        ],
+        "correctIndex": 0,
+        "explanationVi": "Ông lão đan đủ 5 chiếc nón mang ra chợ bán để lấy tiền mua bánh お餅 đón Tết お正月 cùng bà."
+      },
+      {
+        "id": "q2",
+        "questionJa": "{町|まち}の{市|いち}で、{笠|かさ}はいくつ{売|う}れましたか。",
+        "questionVi": "Ở phiên chợ thị trấn, ông lão bán được bao nhiêu chiếc nón?",
+        "options": [
+          {
+            "ja": "{五|いつ}つぜんぶ{売|う}れました"
+          },
+          {
+            "ja": "{三|みっ}つだけ{売|う}れました"
+          },
+          {
+            "ja": "{一|ひと}つも{売|う}れませんでした"
+          },
+          {
+            "ja": "{六|むっ}つ{売|う}れました"
+          }
+        ],
+        "correctIndex": 2,
+        "explanationVi": "Dù rao mãi tới chiều tối (大きな声で呼んだのに), ông chẳng bán được chiếc nào cả (一つも売れませんでした)."
+      },
+      {
+        "id": "q3",
+        "questionJa": "{六番目|ろくばんめ}のお{地蔵|じぞう}{様|さま}に、おじいさんは{何|なに}をかぶせてあげましたか。",
+        "questionVi": "Ông lão đã đội thứ gì lên đầu tượng Địa Tạng thứ sáu?",
+        "options": [
+          {
+            "ja": "{新|あたら}しい{笠|かさ}"
+          },
+          {
+            "ja": "{自分|じぶん}の{手|て}ぬぐい"
+          },
+          {
+            "ja": "お{店|みせ}の{門松|かどまつ}"
+          },
+          {
+            "ja": "{白|しろ}いお{餅|もち}"
+          }
+        ],
+        "correctIndex": 1,
+        "explanationVi": "Vì chỉ có 5 chiếc nón mà có tới 6 tượng, ông đã tháo chiếc khăn 手ぬぐい của mình buộc lên đầu tượng thứ sáu thay cho nón (笠のかわりに)."
+      },
+      {
+        "id": "q4",
+        "questionJa": "おじいさんが{手|て}ぶらで{帰|かえ}ったとき、おばあさんはどうしましたか。",
+        "questionVi": "Khi ông lão về tay không, bà lão đã phản ứng thế nào?",
+        "options": [
+          {
+            "ja": "とても{怒|おこ}りました"
+          },
+          {
+            "ja": "もう{一度|いちど}{町|まち}へ{行|い}かせました"
+          },
+          {
+            "ja": "いいことをしたと{温|あたた}かく{迎|むか}えました"
+          },
+          {
+            "ja": "お{地蔵|じぞう}{様|さま}のところへ{走|はし}っていきました"
+          }
+        ],
+        "correctIndex": 2,
+        "explanationVi": "Bà lão không hề trách móc mà khen ông đã làm việc thật tốt đẹp và đón ông thật ấm áp bên bếp lửa."
+      },
+      {
+        "id": "q5",
+        "questionJa": "{次|つぎ}の{朝|あさ}、{家|いえ}の{前|まえ}には{何|なに}が{届|とど}いていましたか。",
+        "questionVi": "Sáng hôm sau (mồng Một), trước cửa nhà hai ông bà có gì?",
+        "options": [
+          {
+            "ja": "{五|いつ}つの{笠|かさ}だけが{戻|もど}っていました"
+          },
+          {
+            "ja": "お{餅|もち}や{米俵|こめだわら}がたくさん{届|とど}いていました"
+          },
+          {
+            "ja": "{町|まち}の{人|ひと}からの{手紙|てがみ}だけでした"
+          },
+          {
+            "ja": "{雪|ゆき}だるまが{六|むっ}つありました"
+          }
+        ],
+        "correctIndex": 1,
+        "explanationVi": "Nửa đêm, sáu ngài Địa Tạng đã mang thật nhiều bánh mochi (鏡餅) và bao gạo (米俵) đến đặt trước cửa để trả ơn hai ông bà."
+      }
+    ]
+  }
+}

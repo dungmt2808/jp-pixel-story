@@ -129,6 +129,23 @@
       "theme": "jlpt_exam"
     },
     {
+      "id": "kasa-jizo",
+      "category": "story",
+      "kind": "engine",
+      "thumbStyle": "image",
+      "thumbImage": "stories/kasa-jizo/assets/bg_jizo_road.png",
+      "artBadge": "🎍 CỔ TÍCH · 12 CẢNH",
+      "titleJa": "笠地蔵",
+      "titleVi": "Sáu Tượng Địa Tạng Đội Nón Rơm (Stack-chan giải thích N4)",
+      "level": "JLPT N4",
+      "description": "Cổ tích đêm giao thừa Nhật Bản phiên bản dài 12 cảnh & 7 tương tác (đan nón rơm, rao chợ, phủi tuyết, kéo 5 chiếc nón + 1 khăn tenugui đội cho 6 tượng Địa Tạng, mở quà sáng mồng Một) cùng Stack-chan giải thích 5 mẫu ngữ pháp N4 + bài đọc 4 chương & Daily Dictation.",
+      "sceneCount": 12,
+      "vocabCount": 10,
+      "grammarCount": 5,
+      "quizCount": 5,
+      "theme": "jp_story_master"
+    },
+    {
       "id": "kotoba-mura-ep1",
       "category": "story",
       "kind": "engine",

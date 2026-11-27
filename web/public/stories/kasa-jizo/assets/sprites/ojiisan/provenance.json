@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "assets": {
+    "rig": {
+      "steps": [
+        {
+          "op": "build_rig",
+          "params": {
+            "neck_row": 53,
+            "neck_extension": 3
+          },
+          "input": {
+            "path": "web/public/stories/kasa-jizo/assets/sprites/ojiisan",
+            "sha": "6545de839a99680e"
+          },
+          "at": "2026-11-27T18:18:23+00:00"
+        }
+      ],
+      "output": {
+        "sha": "78fbb925fca475f5"
+      }
+    }
+  }
+}
