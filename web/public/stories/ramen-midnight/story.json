@@ -1,6 +1,6 @@
 {
   "id": "ramen-midnight",
-  "engine": "hybrid",
+  "engine": "cinema",
   "series": "jp-pixel-story · HYBRID PIXEL ART",
   "titleJa": "深夜のラーメン屋",
   "titleVi": "Gọi mì Ramen lúc đêm muộn",
@@ -70,8 +70,7 @@
   "scenes": [
     {
       "id": "alley_intro",
-      "type": "hybrid_alley_intro",
-      "bannerTitle": "TOKYO 00:15",
+      "type": "cinema_intro",
       "actionLabel": "のれんをくぐる · VÀO QUÁN",
       "lines": [
         {
@@ -136,12 +135,18 @@
           "durationSec": 4.363,
           "ttsHash": "0cf303cc0669"
         }
-      ]
+      ],
+      "backdrop": "bg:alley",
+      "overlay": "rain",
+      "titleCard": {
+        "title": "{深夜|しんや}のラーメン{屋|や}",
+        "subtitle": "TOKYO 00:15 · JLPT N4",
+        "credit": "Tình huống đời sống · gọi mì ramen đêm mưa"
+      }
     },
     {
       "id": "alley_zoom",
-      "type": "hybrid_alley_zoom",
-      "locationBadge": "深夜のラーメン屋 · 路地裏の小さな店",
+      "type": "cinema_dialogue",
       "lines": [
         {
           "id": "r02_l01",
@@ -178,13 +183,24 @@
           "vi": "Bụng đói meo rồi. Vào ăn một bát mì ramen nóng hổi thôi!",
           "audioUrl": "/stories/ramen-midnight/audio/r02_l01.mp3",
           "durationSec": 3.787,
-          "ttsHash": "2327bb0ff204"
+          "ttsHash": "2327bb0ff204",
+          "camera": "push",
+          "emote": "dots",
+          "castPortrait": {
+            "left": "minh_thinking"
+          }
         }
-      ]
+      ],
+      "backdrop": "bg:alley",
+      "overlay": "rain",
+      "actors": [
+        "left"
+      ],
+      "stamp": "深夜のラーメン屋 · 路地裏の小さな店"
     },
     {
       "id": "counter_order",
-      "type": "hybrid_counter_order",
+      "type": "cinema_checklist",
       "whoButtonLabel": "? 大将ってだれ",
       "lines": [
         {
@@ -229,7 +245,13 @@
           "vi": "Chào cậu! Đi dưới mưa vất vả rồi nhỉ. Cậu gọi món gì nào?",
           "audioUrl": "/stories/ramen-midnight/audio/r03_l01.mp3",
           "durationSec": 5.12,
-          "ttsHash": "de402c55bf8b"
+          "ttsHash": "de402c55bf8b",
+          "emote": "note",
+          "telop": {
+            "text": "{何|なに}にしますか？",
+            "sub": "Cậu dùng món gì?",
+            "color": "shu"
+          }
         }
       ],
       "minigame": {
@@ -287,7 +309,10 @@
               "vi": "Cho cháu bát mì nước tương Shōyu đặc trưng của quán ạ!",
               "audioUrl": "/stories/ramen-midnight/audio/r03_c01.mp3",
               "durationSec": 2.56,
-              "ttsHash": "a2dbb5ab203e"
+              "ttsHash": "a2dbb5ab203e",
+              "castPortrait": {
+                "left": "minh_happy"
+              }
             }
           },
           {
@@ -336,15 +361,27 @@
               "vi": "Cho cháu một bát mì tương đậu Miso nóng ạ!",
               "audioUrl": "/stories/ramen-midnight/audio/r03_c02.mp3",
               "durationSec": 2.091,
-              "ttsHash": "be55e9b87b00"
+              "ttsHash": "be55e9b87b00",
+              "castPortrait": {
+                "left": "minh_happy"
+              }
             }
           }
-        ]
-      }
+        ],
+        "mode": "one",
+        "autoPick": "shoyu"
+      },
+      "backdrop": "bg:counter",
+      "actors": [
+        "left",
+        "right"
+      ],
+      "light": "warm",
+      "bgm": "happy"
     },
     {
       "id": "noodle_firmness",
-      "type": "hybrid_noodle_firmness",
+      "type": "cinema_checklist",
       "lines": [
         {
           "id": "r04_l01",
@@ -367,7 +404,15 @@
           "vi": "Có ngay! Độ cứng của sợi mì cậu muốn thế nào?",
           "audioUrl": "/stories/ramen-midnight/audio/r04_l01.mp3",
           "durationSec": 3.157,
-          "ttsHash": "7b86adf68c7c"
+          "ttsHash": "7b86adf68c7c",
+          "telop": {
+            "text": "{麺|めん}のかたさ",
+            "sub": "Độ cứng của sợi mì",
+            "color": "ai"
+          },
+          "castPortrait": {
+            "right": "chef_happy"
+          }
         },
         {
           "id": "r04_l02",
@@ -390,7 +435,12 @@
           "vi": "À, độ cứng của sợi mì kìa! Chọn mức nào đây nhỉ?",
           "audioUrl": "/stories/ramen-midnight/audio/r04_l02.mp3",
           "durationSec": 3.243,
-          "ttsHash": "2d524ce506c0"
+          "ttsHash": "2d524ce506c0",
+          "emote": "question",
+          "camera": "punch",
+          "castPortrait": {
+            "left": "minh_thinking"
+          }
         }
       ],
       "minigame": {
@@ -434,7 +484,10 @@
               "vi": "Cho cháu sợi hơi cứng (dai) ạ!",
               "audioUrl": "/stories/ramen-midnight/audio/r04_c01.mp3",
               "durationSec": 1.6,
-              "ttsHash": "8ec774849e90"
+              "ttsHash": "8ec774849e90",
+              "castPortrait": {
+                "left": "minh_happy"
+              }
             }
           },
           {
@@ -475,7 +528,10 @@
               "vi": "Cho cháu mức vừa phải ạ!",
               "audioUrl": "/stories/ramen-midnight/audio/r04_c02.mp3",
               "durationSec": 1.579,
-              "ttsHash": "c0d6241cf87b"
+              "ttsHash": "c0d6241cf87b",
+              "castPortrait": {
+                "left": "minh_happy"
+              }
             }
           },
           {
@@ -516,16 +572,26 @@
               "vi": "Cho cháu sợi mềm một chút ạ!",
               "audioUrl": "/stories/ramen-midnight/audio/r04_c03.mp3",
               "durationSec": 1.803,
-              "ttsHash": "d45edc8f4f6e"
+              "ttsHash": "d45edc8f4f6e",
+              "castPortrait": {
+                "left": "minh_happy"
+              }
             }
           }
-        ]
-      }
+        ],
+        "mode": "one",
+        "autoPick": "katame"
+      },
+      "backdrop": "bg:counter",
+      "actors": [
+        "left",
+        "right"
+      ],
+      "light": "warm"
     },
     {
       "id": "drag_toppings",
-      "type": "hybrid_drag_toppings",
-      "instruction": "トッピングを3つ ラーメンにのせよう！ · Kéo 3 topping vào bát mì",
+      "type": "cinema_dialogue",
       "lines": [
         {
           "id": "r05_l01",
@@ -555,13 +621,96 @@
           "vi": "Để cậu chờ lâu rồi! Đây là bát mì ramen đặc biệt!",
           "audioUrl": "/stories/ramen-midnight/audio/r05_l01.mp3",
           "durationSec": 3.04,
-          "ttsHash": "96aad72856cb"
+          "ttsHash": "96aad72856cb",
+          "telop": {
+            "text": "{特製|とくせい}ラーメン",
+            "sub": "Mì ramen đặc biệt của quán",
+            "color": "gold"
+          }
         }
-      ]
+      ],
+      "backdrop": "bg:table",
+      "actors": [],
+      "motion": [
+        {
+          "type": "mover",
+          "item": "ramen_base",
+          "path": [
+            [
+              120,
+              78
+            ]
+          ],
+          "durationSec": 1
+        },
+        {
+          "type": "steam",
+          "at": [
+            [
+              150,
+              84
+            ],
+            [
+              168,
+              82
+            ]
+          ],
+          "rate": 1.2,
+          "height": 18
+        }
+      ],
+      "interaction": {
+        "type": "drag",
+        "hint": "Kéo 3 topping vào bát mì",
+        "items": [
+          {
+            "id": "chashu",
+            "item": "chashu",
+            "from": [
+              44,
+              70
+            ],
+            "to": [
+              148,
+              116
+            ],
+            "label": "チャーシュー",
+            "labelVi": "thịt xá xíu"
+          },
+          {
+            "id": "egg",
+            "item": "egg",
+            "from": [
+              44,
+              118
+            ],
+            "to": [
+              172,
+              112
+            ],
+            "label": "{卵|たまご}",
+            "labelVi": "trứng"
+          },
+          {
+            "id": "nori",
+            "item": "nori",
+            "from": [
+              44,
+              166
+            ],
+            "to": [
+              160,
+              98
+            ],
+            "label": "のり",
+            "labelVi": "rong biển"
+          }
+        ]
+      }
     },
     {
       "id": "itadakimasu_outro",
-      "type": "hybrid_outro_ramen",
+      "type": "cinema_outro",
       "lines": [
         {
           "id": "r06_l01",
@@ -577,7 +726,16 @@
           "vi": "Oa, trông ngon quá đi! Cháu xin phép ăn ạ!",
           "audioUrl": "/stories/ramen-midnight/audio/r06_l01.mp3",
           "durationSec": 3.029,
-          "ttsHash": "4960bc876e17"
+          "ttsHash": "4960bc876e17",
+          "castPortrait": {
+            "left": "minh_happy"
+          },
+          "emote": "sparkle",
+          "telop": {
+            "text": "いただきます！",
+            "sub": "Cháu xin phép ăn ạ!",
+            "color": "gold"
+          }
         },
         {
           "id": "r06_l02",
@@ -620,7 +778,79 @@
           "durationSec": 4.619,
           "ttsHash": "7c31b20d9904"
         }
-      ]
+      ],
+      "backdrop": "bg:counter",
+      "actors": [
+        "left"
+      ],
+      "light": "warm",
+      "bgm": "happy",
+      "motion": [
+        {
+          "type": "mover",
+          "item": "ramen_base",
+          "path": [
+            [
+              138,
+              112
+            ]
+          ],
+          "durationSec": 1
+        },
+        {
+          "type": "mover",
+          "item": "nori",
+          "path": [
+            [
+              160,
+              110
+            ]
+          ],
+          "durationSec": 1
+        },
+        {
+          "type": "mover",
+          "item": "chashu",
+          "path": [
+            [
+              146,
+              124
+            ]
+          ],
+          "durationSec": 1
+        },
+        {
+          "type": "mover",
+          "item": "egg",
+          "path": [
+            [
+              170,
+              124
+            ]
+          ],
+          "durationSec": 1
+        },
+        {
+          "type": "steam",
+          "at": [
+            [
+              170,
+              112
+            ],
+            [
+              184,
+              110
+            ],
+            [
+              160,
+              114
+            ]
+          ],
+          "rate": 1.6,
+          "height": 26
+        }
+      ],
+      "summary": "{麺|めん}のかたさ: かため · ふつう · やわらかめ"
     }
   ],
   "reading": {
@@ -1266,6 +1496,37 @@
         ],
         "correctIndex": 2,
         "explanationVi": "「味玉」 viết tắt từ 「味付け玉子」 — trứng lòng đào ướp nước tương."
+      }
+    ]
+  },
+  "brand": "jp-pixel-story.vn",
+  "bgm": "rain",
+  "cast": {
+    "left": {
+      "voice": "minh",
+      "portrait": "minh_neutral"
+    },
+    "right": {
+      "voice": "chef",
+      "portrait": "chef_warm"
+    }
+  },
+  "backdropMotion": {
+    "counter": [
+      {
+        "type": "steam",
+        "at": [
+          [
+            124,
+            90
+          ],
+          [
+            132,
+            92
+          ]
+        ],
+        "rate": 1.4,
+        "height": 20
       }
     ]
   }
