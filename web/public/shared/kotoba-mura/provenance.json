@@ -14,9 +14,9 @@
           },
           "input": {
             "path": "art-src/shared/kotoba-mura/raw_bg_kotoba_garden.png",
-            "sha": "9a9717e2f974307d"
+            "sha": "58d9a362b0af4411"
           },
-          "at": "2026-11-27T13:11:58+00:00",
+          "at": "2026-11-27T14:51:02+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -25,7 +25,7 @@
         }
       ],
       "output": {
-        "sha": "a21cd1135384d6fa"
+        "sha": "5fe843acc6d9909e"
       }
     },
     "bg_kotoba_inn_lobby.png": {
@@ -43,7 +43,7 @@
             "path": "art-src/shared/kotoba-mura/raw_bg_kotoba_inn_lobby.png",
             "sha": "72dc8c1ca0fb0a92"
           },
-          "at": "2026-11-27T13:11:58+00:00",
+          "at": "2026-11-27T14:51:02+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",

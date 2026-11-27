@@ -94,35 +94,48 @@
       {
         "type": "glow",
         "at": [
-          22,
-          91
+          117,
+          100
         ],
-        "r": 34,
-        "color": "#ffcf78",
-        "period": 4.2,
-        "min": 0.35,
-        "max": 0.6
+        "r": 28,
+        "color": "#ffe38c",
+        "period": 2.6,
+        "min": 0.45,
+        "max": 0.78,
+        "flicker": true
       },
       {
         "type": "glow",
         "at": [
-          70,
-          134
+          18,
+          122
         ],
-        "r": 24,
+        "r": 20,
         "color": "#ffe38c",
-        "period": 2.8,
+        "period": 3.1,
         "min": 0.4,
         "max": 0.7,
         "flicker": true
       },
       {
+        "type": "glow",
+        "at": [
+          72,
+          62
+        ],
+        "r": 46,
+        "color": "#ffcf78",
+        "period": 4.5,
+        "min": 0.22,
+        "max": 0.42
+      },
+      {
         "type": "shimmer",
         "rect": [
-          202,
-          82,
-          46,
-          26
+          224,
+          85,
+          48,
+          22
         ],
         "minLuma": 155,
         "speed": 1.8
@@ -209,13 +222,13 @@
       "people": {
         "stackchan": {
           "kind": "sprite:stackchan_walk",
-          "x": 54,
+          "x": 104,
           "y": 174,
           "face": "right"
         },
         "lin": {
           "kind": "sprite:lin_walk",
-          "x": 18,
+          "x": 72,
           "y": 176,
           "face": "right"
         }
@@ -226,20 +239,20 @@
           "people": [
             {
               "who": "stackchan",
-              "walkTo": 224,
+              "walkTo": 244,
               "speed": 30,
               "then": "stand"
             },
             {
               "who": "lin",
-              "walkTo": 172,
+              "walkTo": 194,
               "speed": 24,
               "then": "stand"
             }
           ]
         },
         {
-          "at": 5.8,
+          "at": 5.2,
           "people": [
             {
               "who": "stackchan",
@@ -566,14 +579,14 @@
       "people": {
         "lin": {
           "kind": "sprite:lin_walk",
-          "x": 34,
-          "y": 170,
+          "x": 74,
+          "y": 166,
           "face": "right"
         },
         "stackchan": {
           "kind": "sprite:stackchan_walk",
-          "x": 78,
-          "y": 168,
+          "x": 112,
+          "y": 166,
           "face": "right"
         }
       },
@@ -581,22 +594,22 @@
         {
           "text": "ガラスの{屋根|やね}",
           "sub": "mái kính che lá non",
-          "x": 246,
+          "x": 248,
           "y": 36,
           "to": [
-            232,
-            82
+            246,
+            86
           ],
           "afterLine": 0
         },
         {
           "text": "{郵便受|ゆうびんう}け",
           "sub": "hòm thư báo sáng",
-          "x": 284,
+          "x": 288,
           "y": 74,
           "to": [
-            277,
-            114
+            288,
+            110
           ],
           "afterLine": 1
         }
@@ -607,8 +620,8 @@
           "people": [
             {
               "who": "stackchan",
-              "walkTo": 246,
-              "walkToY": 156,
+              "walkTo": 256,
+              "walkToY": 160,
               "speed": 38,
               "then": "stand"
             }
@@ -616,7 +629,7 @@
         },
         {
           "line": 0,
-          "delay": 4.4,
+          "delay": 4.0,
           "people": [
             {
               "who": "stackchan",
@@ -630,8 +643,8 @@
           "people": [
             {
               "who": "lin",
-              "walkTo": 112,
-              "walkToY": 164,
+              "walkTo": 142,
+              "walkToY": 166,
               "speed": 28,
               "then": "stand"
             }
@@ -652,9 +665,9 @@
           "people": [
             {
               "who": "lin",
-              "walkTo": 198,
-              "walkToY": 158,
-              "speed": 36,
+              "walkTo": 212,
+              "walkToY": 162,
+              "speed": 34,
               "then": "stand"
             }
           ]
@@ -694,13 +707,13 @@
         "hint": "Giữ chuột (hoặc giữ ngón tay) để tưới nước cho 5 chiếc lá non dưới mái kính",
         "hold": {
           "label": "{水|みず}やり",
-          "x": 184,
-          "y": 60,
+          "x": 204,
+          "y": 62,
           "durationSec": 2.0,
           "item": "watering_can",
           "streamTo": [
-            224,
-            100
+            246,
+            102
           ],
           "streamColor": "#76cdd6"
         },
@@ -752,14 +765,14 @@
       "people": {
         "lin": {
           "kind": "sprite:lin_walk",
-          "x": 92,
-          "y": 170,
+          "x": 94,
+          "y": 164,
           "face": "right"
         },
         "stackchan": {
           "kind": "sprite:stackchan_walk",
-          "x": 236,
-          "y": 168,
+          "x": 246,
+          "y": 166,
           "face": "left",
           "hideWhileInteract": true
         }
@@ -779,8 +792,8 @@
           "people": [
             {
               "who": "stackchan",
-              "x": 118,
-              "y": 170,
+              "x": 122,
+              "y": 164,
               "face": "left"
             }
           ]
@@ -790,14 +803,16 @@
           "people": [
             {
               "who": "lin",
-              "walkTo": 24,
-              "speed": 28,
+              "walkTo": 84,
+              "walkToY": 148,
+              "speed": 24,
               "then": "exit"
             },
             {
               "who": "stackchan",
-              "walkTo": 40,
-              "speed": 28,
+              "walkTo": 88,
+              "walkToY": 148,
+              "speed": 24,
               "then": "exit"
             }
           ]
@@ -827,12 +842,12 @@
             "id": "rescue_sc",
             "person": "stackchan",
             "from": [
-              236,
-              168
+              246,
+              166
             ],
             "to": [
-              118,
-              170
+              122,
+              164
             ],
             "label": "スタックちゃん",
             "labelVi": "Bế về sạc pin"

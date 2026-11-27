@@ -936,14 +936,17 @@ export function CinemaStage({
 
         {interaction?.type === "drag" &&
           phase === "interact" &&
-          (interaction.items ?? []).map((it, i) =>
-            it.label && !dragRef.current[i]?.placed && draggingId !== it.id ? (
-              <div key={it.id} className="cine-tag" style={toPct(it.from[0], it.from[1] - 22)}>
+          (interaction.items ?? []).map((it, i) => {
+            if (!it.label || dragRef.current[i]?.placed || draggingId === it.id) return null;
+            const pdef = it.person ? currentScene.people?.[it.person] : undefined;
+            const lift = pdef ? personBox(pdef.kind, spritesRef.current).h + 12 : 22;
+            return (
+              <div key={it.id} className="cine-tag" style={toPct(it.from[0], it.from[1] - lift)}>
                 <RubyText segments={it.label} showFurigana={showFurigana} />
                 {it.labelVi && <span className="cine-tag-sub">{it.labelVi}</span>}
               </div>
-            ) : null
-          )}
+            );
+          })}
         {interaction?.type === "tap" &&
           (interaction.spots ?? []).map((s) =>
             foundIds.includes(s.id) && s.label ? (
