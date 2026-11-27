@@ -528,6 +528,7 @@ export function PixelStage({
       {/* Character Card Modal */}
       {showCard && (
         <CharacterCardModal
+          showFurigana={showFurigana}
           card={story.characterCard}
           onClose={() => {
             retroAudio.playClick();

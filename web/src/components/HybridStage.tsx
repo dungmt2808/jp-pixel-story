@@ -785,6 +785,7 @@ export function HybridStage({
 
       {showCard && (
         <CharacterCardModal
+          showFurigana={showFurigana}
           card={story.characterCard}
           portraitUrl={story.assets?.cardPortrait}
           onClose={() => {

@@ -3335,25 +3335,44 @@ rt {
 }
 .cine-telop-t rt {
   font-size: 0.38em;
-  -webkit-text-stroke: max(2px, 0.4cqw) #fff8ea;
+  -webkit-text-stroke: max(1.5px, 0.25cqw) #fff8ea;
   color: #241712;
 }
 .cine-telop.gold .cine-telop-t { color: #e8a93a; }
 .cine-telop.ai .cine-telop-t { color: #22365a; }
 .cine-telop.white .cine-telop-t { color: #fff8ea; -webkit-text-stroke-color: #241712; }
+/* the Vietnamese ribbon is part of the same caption: it sits right under the Japanese, tilted with
+   it (the whole .cine-telop is rotated), one line, and never wider than the stage */
 .cine-telop-s {
   display: inline-block;
-  margin-top: 0.4cqw;
-  padding: 0.2cqw 0.9cqw;
+  max-width: 82cqw;
+  margin-top: -0.2cqw;
+  padding: 0.25cqw 1.1cqw;
   font-family: "Be Vietnam Pro", sans-serif;
   font-weight: 800;
-  font-size: max(11px, 1.6cqw);
+  font-size: max(10px, 1.5cqw);
+  line-height: 1.35;
   color: #fff8ea;
   background: #241712;
-  transform: rotate(3deg);
+  border-left: 0.5cqw solid currentColor;
+  box-shadow: 0.4cqw 0.4cqw 0 rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+.cine-telop.shu .cine-telop-s { border-left-color: #c8442c; }
+.cine-telop.gold .cine-telop-s { border-left-color: #e8a93a; }
+.cine-telop.ai .cine-telop-s { border-left-color: #6f8fd0; }
 @keyframes cine-telop-pop {
   0% { transform: translate(-50%, -50%) rotate(-3deg) scale(1.9); opacity: 0; }
   60% { transform: translate(-50%, -50%) rotate(-3deg) scale(0.92); opacity: 1; }
   100% { transform: translate(-50%, -50%) rotate(-3deg) scale(1); opacity: 1; }
+}
+
+/* furigana on the cream story card (the global gold rt is unreadable on cream) */
+.char-card-name rt,
+.char-card-sub rt,
+.char-fact-value rt {
+  color: #9a5b2e;
+  font-weight: 700;
 }

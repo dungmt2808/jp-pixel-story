@@ -930,9 +930,8 @@
             "ttsHash": "c874b67c815e",
             "telop": {
               "text": "いとしや{老犬物語|ろうけんものがたり}",
-              "sub": "“Chuyện chú chó già đáng thương” · báo Tokyo Asahi, 10/1932",
-              "color": "ai",
-              "y": 22
+              "sub": "Chuyện chú chó già đáng thương · báo Asahi, 10/1932",
+              "color": "ai"
             }
           },
           {
@@ -1062,8 +1061,7 @@
             "telop": {
               "text": "ハチ{公|こう}{像|ぞう}",
               "sub": "Tượng đồng Hachikō",
-              "color": "gold",
-              "y": 20
+              "color": "gold"
             }
           },
           {
@@ -1189,8 +1187,7 @@
           "telop": {
             "text": "ハチ{公|こう}{前|まえ}で{会|あ}おう！",
             "sub": "Gặp nhau trước tượng Hachikō nhé!",
-            "color": "shu",
-            "y": 24
+            "color": "shu"
           }
         },
         {

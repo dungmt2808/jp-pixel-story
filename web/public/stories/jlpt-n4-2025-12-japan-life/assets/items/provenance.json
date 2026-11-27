@@ -14,14 +14,14 @@
             "align_bottom": false,
             "fit_mode": "bbox",
             "grid": "none",
-            "cleanup": false,
+            "cleanup": true,
             "outline_color": "#241712"
           },
           "input": {
             "path": "art-src/jlpt-n4-2025-12-japan-life/raw_item_plane.png",
             "sha": "86c88739c1df3d51"
           },
-          "at": "2026-11-27T02:21:57+00:00",
+          "at": "2026-11-27T03:57:01+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -30,7 +30,7 @@
         }
       ],
       "output": {
-        "sha": "27a95468ffeb2c1f"
+        "sha": "df392d8d989fbc64"
       }
     }
   }

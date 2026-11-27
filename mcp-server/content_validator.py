@@ -489,9 +489,15 @@ def validate_story_folder(
             return braced_to_plain(str(ruby or ""))
 
         plain_text = "".join(_plain(sent.get("jaRuby")) for sent in reading.get("sentences", []))
+        # words met in the animation count too: they stay reachable from the word list
+        spoken = "".join(_plain(ln.get("jaRuby")) for ln, _ in iter_story_lines({"scenes": data.get("scenes", [])}))
+        spoken += str(data.get("titleJa", "")) + "".join(
+            _plain((sc.get("titleCard") or {}).get("title", "")) for sc in data.get("scenes", [])
+        )
         for v in reading.get("vocab", []):
-            if not any(n in plain_text for n in vocab_needles(v)):
-                warnings.append(f"[Vocab Not In Text] {v.get('id')}: '{v.get('word')}' is never found in the reading, so it cannot be tapped (add `forms`)")
+            needles = vocab_needles(v)
+            if not any(n in plain_text or n in spoken for n in needles):
+                warnings.append(f"[Vocab Not In Text] {v.get('id')}: '{v.get('word')}' appears neither in the reading nor in the dialogue (add `forms` or drop it)")
 
     if dictation_json.exists():
         ddata = json.loads(dictation_json.read_text(encoding="utf-8"))

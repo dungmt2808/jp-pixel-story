@@ -851,7 +851,8 @@ export function CinemaStage({
           <div
             key={activeLine?.id}
             className={`cine-telop ${telop.color ?? "shu"}`}
-            style={{ left: `${telop.x ?? 50}%`, top: `${telop.y ?? 24}%` }}
+            // default below the location stamp when the scene has one (they used to collide)
+            style={{ left: `${telop.x ?? 50}%`, top: `${telop.y ?? (stamp ? 32 : 24)}%` }}
           >
             <div className="cine-telop-t">
               <RubyText segments={telop.text} showFurigana={showFurigana} />

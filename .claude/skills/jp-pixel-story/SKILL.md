@@ -20,7 +20,7 @@ Every lesson lives in `web/public/stories/<id>/` and is registered in `web/publi
 
 1. **NO Romaji anywhere** — every Kanji uses compact `{漢字|かんじ}` Furigana notation with the global **`ふりがな ON/OFF`** toggle (and never place ruby on pure Kana).
 2. **Global Vietnamese Toggle (`🇻🇳 Dịch ON/OFF`):**
-   - Video stages (`TsuruStage`, `CinemaStage`, `DepatoStage`, `HybridStage`, `PixelStage`, `hachiko/index.html`) default `Dịch ON` so learners can hide `.subtitle-vi` / `.choice-vi` in 1 click.
+   - Video stages (`TsuruStage`, `CinemaStage`, `DepatoStage`, `HybridStage`, `PixelStage`) default `Dịch ON` so learners can hide `.subtitle-vi` / `.choice-vi` in 1 click.
    - Exam views (`JlptDokkaiView`, `JlptGengoView`) default `Dịch OFF` so meaning hints never spoil exam answers before selection.
 3. **Natural VOICEVOX Prosody:**
    - Verify engine via `voicevox_health` and inspect casts via `voicevox_list_speakers`.

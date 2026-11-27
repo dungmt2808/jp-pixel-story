@@ -646,6 +646,7 @@ export function DepatoStage({
 
       {showCard && (
         <CharacterCardModal
+          showFurigana={showFurigana}
           card={story.characterCard}
           portraitUrl={story.assets?.cardPortrait}
           onClose={() => {

@@ -46,24 +46,24 @@
     }
   },
   "characterCard": {
-    "nameJa": "ラーメン屋の大将 (TAISHŌ)",
-    "subtitle": "LATE-NIGHT TOKYO RAMEN MASTER · 深夜のラーメン屋",
+    "nameJa": "ラーメン{屋|や}の{大将|たいしょう} (TAISHŌ)",
+    "subtitle": "LATE-NIGHT TOKYO RAMEN MASTER · {深夜|しんや}のラーメン{屋|や}",
     "facts": [
       {
         "label": "SHOP",
-        "value": "東京の路地裏にある小さなラーメン屋 (Quán mì nhỏ trong con hẻm Tokyo)"
+        "value": "{東京|とうきょう}の{路地裏|ろじうら}にある{小|ちい}さなラーメン{屋|や} (Quán mì nhỏ trong con hẻm Tokyo)"
       },
       {
         "label": "NOREN",
-        "value": "入り口の赤い「のれん」が出ているときは営業中のサイン！(Rèm vải đỏ trước cửa báo hiệu quán đang mở)"
+        "value": "{入|い}り{口|ぐち}の{赤|あか}い「のれん」が{出|で}ているときは{営業中|えいぎょうちゅう}のサイン！(Rèm vải đỏ trước cửa báo hiệu quán đang mở)"
       },
       {
         "label": "SPECIALTY",
-        "value": "じっくり煮込んだ醤油ラーメン (Mì Ramen nước tương ninh kỹ suốt nhiều giờ)"
+        "value": "じっくり{煮込|にこ}んだ{醤油|しょうゆ}ラーメン (Mì Ramen nước tương ninh kỹ suốt nhiều giờ)"
       },
       {
         "label": "KEY PHRASE",
-        "value": "「麺のかたさはどうしますか？」— Câu hỏi kinh điển về độ cứng sợi mì (かため / ふつう / やわらかめ)!"
+        "value": "「{麺|めん}のかたさはどうしますか？」— Câu hỏi kinh điển về độ cứng sợi mì (かため / ふつう / やわらかめ)!"
       }
     ]
   },

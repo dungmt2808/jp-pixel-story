@@ -2,13 +2,18 @@ import type { CharacterCard } from "../types/story";
 import { resolveAssetUrl } from "../utils/assetUrl";
 import { PortraitCanvas } from "./PortraitCanvas";
 
+import { RubyText } from "./RubyText";
+
 interface CharacterCardModalProps {
   card: CharacterCard;
   portraitUrl?: string;
+  /** Card texts use compact ruby `{漢字|かんじ}` (shown as furigana by default). */
+  showFurigana?: boolean;
   onClose: () => void;
 }
 
 export function CharacterCardModal({
+  showFurigana = true,
   card,
   portraitUrl,
   onClose,
@@ -30,7 +35,7 @@ export function CharacterCardModal({
             {portraitUrl ? (
               <img
                 src={resolveAssetUrl(portraitUrl)}
-                alt={card.nameJa}
+                alt={card.nameJa.replace(/\{([^|}]+)\|[^}]+\}/g, "$1")}
                 style={{
                   width: "100%",
                   height: "100%",
@@ -44,8 +49,12 @@ export function CharacterCardModal({
             )}
           </div>
           <div>
-            <h2 className="char-card-name">{card.nameJa}</h2>
-            <div className="char-card-sub">{card.subtitle}</div>
+            <h2 className="char-card-name">
+              <RubyText segments={card.nameJa} showFurigana={showFurigana} />
+            </h2>
+            <div className="char-card-sub">
+              <RubyText segments={card.subtitle} showFurigana={showFurigana} />
+            </div>
           </div>
         </div>
 
@@ -58,7 +67,9 @@ export function CharacterCardModal({
                 className={`char-fact-row ${isLast ? "char-fact-highlight" : ""}`}
               >
                 <div className="char-fact-label">{fact.label}</div>
-                <div className="char-fact-value">{fact.value}</div>
+                <div className="char-fact-value">
+                  <RubyText segments={fact.value} showFurigana={showFurigana} />
+                </div>
               </div>
             );
           })}

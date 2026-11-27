@@ -1354,6 +1354,7 @@ export function TsuruStage({
 
       {showCard && (
         <CharacterCardModal
+          showFurigana={showFurigana}
           card={story.characterCard}
           portraitUrl={story.assets?.cardPortrait}
           onClose={() => {

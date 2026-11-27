@@ -48,20 +48,20 @@
     }
   },
   "characterCard": {
-    "nameJa": "おつう · 白い鶴",
-    "subtitle": "JAPANESE FOLKTALE · 鶴の恩返し (JLPT N4)",
+    "nameJa": "おつう · {白|しろ}い{鶴|つる}",
+    "subtitle": "JAPANESE FOLKTALE · {鶴|つる}の{恩返|おんがえ}し (JLPT N4)",
     "facts": [
       {
         "label": "STORY",
-        "value": "日本で最も有名な昔話の一つ (Một trong những truyện cổ tích nổi tiếng nhất Nhật Bản)"
+        "value": "{日本|にほん}で{最|もっと}も{有名|ゆうめい}な{昔話|むかしばなし}の{一|ひと}つ (Một trong những truyện cổ tích nổi tiếng nhất Nhật Bản)"
       },
       {
         "label": "THEME",
-        "value": "恩返し (おんがえし) — Lòng biết ơn và giữ trọn lời hứa"
+        "value": "{恩返|おんがえ}し (ơn trả nghĩa) — Lòng biết ơn và giữ trọn lời hứa"
       },
       {
         "label": "PROMISE",
-        "value": "「布を織っているあいだ、ぜったいに部屋の中を見ないでください」"
+        "value": "「{布|ぬの}を{織|お}っているあいだ、ぜったいに{部屋|へや}の{中|なか}を{見|み}ないでください」"
       },
       {
         "label": "GRAMMAR",

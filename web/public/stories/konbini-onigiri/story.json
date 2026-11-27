@@ -30,19 +30,19 @@
     "facts": [
       {
         "label": "PLACE",
-        "value": "東京・高田馬場 (Takadanobaba, Tokyo)"
+        "value": "{東京|とうきょう}・{高田馬場|たかだのばば} (Takadanobaba, Tokyo)"
       },
       {
         "label": "TIME",
-        "value": "23:45 — バイトが終わったばかり (Vừa tan ca làm thêm)"
+        "value": "23:45 — バイトが{終|お}わったばかり (Vừa tan ca làm thêm)"
       },
       {
         "label": "MISSION",
-        "value": "コンビニで初めて一人でおにぎりを買う。店員さんの質問に答えられるかな？"
+        "value": "コンビニで{初|はじ}めて{一人|ひとり}でおにぎりを{買|か}う。{店員|てんいん}さんの{質問|しつもん}に{答|こた}えられるかな？"
       },
       {
         "label": "KEY PHRASE",
-        "value": "「温めますか？」(Atatamemasu ka?) — Câu hỏi kinh điển ở mọi cửa hàng tiện lợi Nhật!"
+        "value": "「{温|あたた}めますか？」(Atatamemasu ka?) — Câu hỏi kinh điển ở mọi cửa hàng tiện lợi Nhật!"
       }
     ]
   },

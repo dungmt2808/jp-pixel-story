@@ -149,7 +149,8 @@
       "clean": "airport_empty",
       "use": [
         "warm_ending"
-      ]
+      ],
+      "cleanup": true
     }
   ]
 }
