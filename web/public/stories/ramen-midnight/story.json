@@ -1067,13 +1067,28 @@
     ],
     "vocab": [
       {
+        "id": "iriguchi",
+        "word": "入り口",
+        "reading": "いりぐち",
+        "level": "N5",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Lối vào, cửa vào",
+        "note": "↔ 出口 (でぐち, lối ra). Cũng viết 入口.",
+        "forms": [
+          "入り口",
+          "入口"
+        ],
+        "hanViet": "NHẬP KHẨU"
+      },
+      {
         "id": "noren",
         "word": "のれん",
         "reading": "のれん (暖簾)",
         "level": "N4",
         "partOfSpeech": "Danh từ",
         "meaningVi": "Rèm vải treo trước cửa quán",
-        "note": "Cụm 「のれんをくぐる」 nghĩa là vén rèm bước vào quán ăn truyền thống Nhật."
+        "note": "Cụm 「のれんをくぐる」 nghĩa là vén rèm bước vào quán ăn truyền thống Nhật.",
+        "hanViet": "NOÃN LIÊM"
       },
       {
         "id": "chuumon",
@@ -1082,7 +1097,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ / Động từ する",
         "meaningVi": "Gọi món, đặt hàng",
-        "note": "Ví dụ: ラーメンを注文する (Gọi món mì ramen)."
+        "note": "Ví dụ: ラーメンを注文する (Gọi món mì ramen).",
+        "hanViet": "CHÚ VĂN"
       },
       {
         "id": "katasa",
@@ -1091,7 +1107,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ (từ tính từ 硬い + さ)",
         "meaningVi": "Độ cứng (của sợi mì)",
-        "note": "3 mức phổ biến nhất: かため (hơi cứng/dai), ふつう (vừa), やわらかめ (hơi mềm)."
+        "note": "3 mức phổ biến nhất: かため (hơi cứng/dai), ふつう (vừa), やわらかめ (hơi mềm).",
+        "hanViet": "NGẠNH"
       },
       {
         "id": "erabu",
@@ -1100,7 +1117,8 @@
         "level": "N4",
         "partOfSpeech": "Động từ nhóm I",
         "meaningVi": "Lựa chọn",
-        "note": "Thường đi với trợ từ から: AやBから選ぶ (chọn từ A hoặc B)."
+        "note": "Thường đi với trợ từ から: AやBから選ぶ (chọn từ A hoặc B).",
+        "hanViet": "TUYỂN"
       },
       {
         "id": "ajitama",
@@ -1109,7 +1127,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ (viết tắt 味付け玉子)",
         "meaningVi": "Trứng luộc lòng đào ngâm tương",
-        "note": "Topping được yêu thích số 1 trong hầu hết các quán ramen ở Nhật!"
+        "note": "Topping được yêu thích số 1 trong hầu hết các quán ramen ở Nhật!",
+        "hanViet": "VỊ NGỌC"
       },
       {
         "id": "itadakimasu",
@@ -1496,6 +1515,36 @@
         ],
         "correctIndex": 2,
         "explanationVi": "「味玉」 viết tắt từ 「味付け玉子」 — trứng lòng đào ướp nước tương."
+      }
+    ],
+    "chapters": [
+      {
+        "id": "ch1",
+        "title": "のれんの{印|しるし}",
+        "titleVi": "Tấm rèm noren",
+        "sentenceIds": [
+          "rr_01"
+        ],
+        "scene": "alley_intro"
+      },
+      {
+        "id": "ch2",
+        "title": "{麺|めん}のかたさ",
+        "titleVi": "Độ cứng của sợi mì",
+        "sentenceIds": [
+          "rr_02",
+          "rr_03"
+        ],
+        "scene": "noodle_firmness"
+      },
+      {
+        "id": "ch3",
+        "title": "いただきます",
+        "titleVi": "Xin phép dùng bữa",
+        "sentenceIds": [
+          "rr_04"
+        ],
+        "scene": "itadakimasu_outro"
       }
     ]
   },

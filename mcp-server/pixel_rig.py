@@ -170,8 +170,12 @@ def add_expression(
 # ---------------------------------------------------------------------------------------------
 
 
-def detect_neck_row(base: np.ndarray) -> int:
-    """Row where a bust is narrowest between the head and the shoulders (top of the neck cut)."""
+def detect_neck_row(base: np.ndarray, min_row: int | None = None) -> int:
+    """Row where a bust is narrowest between the head and the shoulders (top of the neck cut).
+
+    `min_row`: the cut may not be above this row (the bottom of the expression region: a mouth
+    below the cut would stay on the body and never move).
+    """
     opaque = base[:, :, 3] > 0
     rows = np.where(opaque.any(axis=1))[0]
     if len(rows) == 0:
@@ -181,6 +185,8 @@ def detect_neck_row(base: np.ndarray) -> int:
     widths = opaque.sum(axis=1).astype(np.float64)
     smooth = np.convolve(widths, np.ones(3) / 3, mode="same")
     lo, hi = top + int(0.3 * height), top + int(0.85 * height)
+    if min_row is not None:
+        lo = max(lo, int(min_row))
     band = smooth[lo:hi]
     if len(band) == 0:
         raise ValueError("silhouette too small to find a neck")
@@ -206,7 +212,13 @@ def build_rig(
     odir.mkdir(parents=True, exist_ok=True)
     meta, frames = _load_sheet(sdir)
     base = frames[0]
-    neck = int(neck_row) if neck_row is not None else detect_neck_row(base)
+    region = meta.get("expressionRegion")
+    face_bottom = int(region[3]) if region else None
+    neck = int(neck_row) if neck_row is not None else detect_neck_row(base, min_row=face_bottom)
+    if face_bottom is not None and neck < face_bottom:
+        raise ValueError(
+            f"neck_row {neck} cuts through the face (expressions reach row {face_bottom}); the mouth would not move"
+        )
     fh, fw = base.shape[:2]
 
     head_strip = np.zeros((neck, fw * len(frames), 4), dtype=np.uint8)

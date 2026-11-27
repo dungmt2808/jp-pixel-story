@@ -311,6 +311,19 @@ def test_rig_splits_at_neck_and_recombines_exactly(tmp_path: Path) -> None:
         assert np.all(up[neck - lift : neck, 20:28, 3] == 255)
 
 
+def test_rig_neck_never_cuts_through_the_face() -> None:
+    # a 3/4 bust whose narrowest row is ABOVE the mouth (hair tuft / chin line): the cut must go
+    # below the expression region, otherwise the talking mouth would stay on the body
+    bust = np.zeros((48, 48, 4), np.uint8)
+    bust[4:20, 10:38] = (40, 30, 30, 255)  # hair
+    bust[20:23, 21:27] = (242, 198, 160, 255)  # narrower than the neck: looks like a neck
+    bust[23:32, 14:34] = (242, 198, 160, 255)  # lower face with the mouth at rows 27-29
+    bust[32:35, 19:29] = (214, 152, 110, 255)  # the real neck
+    bust[35:48, 4:44] = (65, 82, 125, 255)  # shoulders
+    assert detect_neck_row(bust) < 27
+    assert detect_neck_row(bust, min_row=30) >= 30
+
+
 def test_rig_refuses_a_silhouette_without_neck() -> None:
     block = np.zeros((40, 40, 4), np.uint8)
     block[5:40, 5:35] = (65, 82, 125, 255)

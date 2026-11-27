@@ -544,7 +544,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ / Động từ する",
         "meaningVi": "Trả ơn, đền ơn",
-        "note": "Từ ghép của 恩 (ân nghĩa) + 返し (trả lại)."
+        "note": "Từ ghép của 恩 (ân nghĩa) + 返し (trả lại).",
+        "hanViet": "ÂN PHẢN"
       },
       {
         "id": "tasukeru",
@@ -556,7 +557,8 @@
         "note": "Ví dụ: 助けてくれてありがとう (Cảm ơn đã cứu giúp).",
         "forms": [
           "助けました"
-        ]
+        ],
+        "hanViet": "TRỢ"
       },
       {
         "id": "yakusoku",
@@ -565,7 +567,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ / Động từ する",
         "meaningVi": "Lời hứa, cuộc hẹn",
-        "note": "約束を守る (giữ lời hứa) ↔ 約束を破る (thất hứa, phá vỡ lời hứa)."
+        "note": "約束を守る (giữ lời hứa) ↔ 約束を破る (thất hứa, phá vỡ lời hứa).",
+        "hanViet": "ƯỚC THÚC"
       },
       {
         "id": "nozoku",
@@ -590,7 +593,8 @@
         "forms": [
           "織ります",
           "織って"
-        ]
+        ],
+        "hanViet": "CHỨC"
       },
       {
         "id": "utsukushii",
@@ -599,7 +603,8 @@
         "level": "N4",
         "partOfSpeech": "Tính từ đuôi い",
         "meaningVi": "Xinh đẹp, tuyệt mỹ",
-        "note": "Trang trọng và giàu chất văn học hơn きれいな."
+        "note": "Trang trọng và giàu chất văn học hơn きれいな.",
+        "hanViet": "MỸ"
       }
     ],
     "grammar": [
@@ -716,6 +721,45 @@
         ],
         "correctIndex": 0,
         "explanationVi": "Ngữ pháp N4 「V-てしまう」 diễn tả sự tiếc nuối vì lỡ làm việc không nên làm."
+      }
+    ],
+    "chapters": [
+      {
+        "id": "ch1",
+        "title": "{白|しろ}い{鶴|つる}を{助|たす}ける",
+        "titleVi": "Cứu chú hạc trắng",
+        "sentenceIds": [
+          "tr_01"
+        ],
+        "scene": "rescue_crane"
+      },
+      {
+        "id": "ch2",
+        "title": "{夜|よる}の{約束|やくそく}",
+        "titleVi": "Lời hứa trong đêm",
+        "sentenceIds": [
+          "tr_02"
+        ],
+        "scene": "visitor_promise"
+      },
+      {
+        "id": "ch3",
+        "title": "のぞいてしまった",
+        "titleVi": "Lỡ nhìn trộm",
+        "sentenceIds": [
+          "tr_03"
+        ],
+        "scene": "slide_fusuma",
+        "image": "/stories/tsuru-ongaeshi/assets/bg_loom.png"
+      },
+      {
+        "id": "ch4",
+        "title": "{雪|ゆき}の{空|そら}へ",
+        "titleVi": "Bay về bầu trời tuyết",
+        "sentenceIds": [
+          "tr_04"
+        ],
+        "scene": "farewell_sky"
       }
     ]
   },

@@ -1,0 +1,31 @@
+{
+  "story": "jlpt-n4-2025-07-rain-bgm",
+  "palette": "jp_story_master",
+  "characters": [
+    {
+      "key": "student",
+      "raw": "raw_sheet_student.png",
+      "kind": "bust"
+    },
+    {
+      "key": "clerk",
+      "raw": "raw_sheet_clerk.png",
+      "kind": "bust"
+    },
+    {
+      "key": "kitamura",
+      "raw": "raw_sheet_kitamura.png",
+      "kind": "bust"
+    },
+    {
+      "key": "student_walk",
+      "raw": "raw_walk_student.png",
+      "kind": "walk",
+      "frame": [
+        40,
+        64
+      ],
+      "stride": 28
+    }
+  ]
+}

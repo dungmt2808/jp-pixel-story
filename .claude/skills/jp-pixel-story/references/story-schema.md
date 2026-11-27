@@ -88,7 +88,11 @@ Full example: `web/public/stories/hanami-first/story.json`.
 - `cast.left/right`: `voice` (matches `lines[].voice` to animate talking), and one of (best first):
   `rig` (head/body cutout from `pixellab_build_rig`: expression clips on the head + breathing / nodding / bobbing),
   `sprite` (frame animation from a `pixellab_slice_spritesheet` meta.json, playing `idleClip` / `talkClip`), or a static `portrait`.
-  `scale` is a whole number.
+  `scale` is a whole number. A cast member with only a `portrait` is animated automatically when an expression sheet
+  exists for that portrait key (`assets.rigs[key]` / `assets.sprites[key]`): it talks, blinks and nods, and line
+  `castPortrait` switches between animated expressions. Those sheets come from art.json `characters`
+  (`{ "key": "<portrait key>", "raw": "raw_sheet_<key>.png", "kind": "bust" }`; walk cycles: `"kind": "walk"`), run with
+  `art_manifest.py <art.json> --only characters`; prompts per story in `art-src/<story>/PROMPTS-cast.md`.
 - `artQuality`: strict validator thresholds for this story's sprites (outline colour compliance, isolated-pixel ratio, optional `maxColorsPerSprite`).
   `artExceptions`: `{ "/stories/<id>/assets/item_cloth.png": { "noise": "woven silk texture (12.3% after cleanup, reviewed)" } }`
   — a reviewed decision that one metric (`outline`, `noise`, `colors`) does not apply to one sprite; a written reason is

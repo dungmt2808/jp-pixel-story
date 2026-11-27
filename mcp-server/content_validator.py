@@ -558,6 +558,21 @@ def validate_story_folder(
         spoken += str(data.get("titleJa", "")) + "".join(
             _plain((sc.get("titleCard") or {}).get("title", "")) for sc in data.get("scenes", [])
         )
+        # the reader v2 for every animated story: chapters linked to scenes, Hán Việt on kanji words
+        vocab_ids = {v.get("id") for v in reading.get("vocab", [])}
+        for sent in reading.get("sentences", []):
+            dangling = [i for i in sent.get("highlightVocabIds") or [] if i not in vocab_ids]
+            if dangling:
+                issues.append(f"[Unknown Vocab] reading/{sent.get('id')}: highlightVocabIds {dangling} are not in reading.vocab")
+        if data.get("engine") == "cinema" and reading.get("sentences") and not reading.get("chapters"):
+            warnings.append(
+                "[No Chapters] the reading page shows one long chapter: split reading.sentences into "
+                "`chapters` (title, titleVi, sentenceIds, scene) so each has its picture and a 'watch again' link"
+            )
+        if data.get("engine") == "cinema":
+            for v in reading.get("vocab", []):
+                if not v.get("hanViet") and any(KANJI_RE.search(n) for n in vocab_needles(v)):
+                    warnings.append(f"[No Hán Việt] {v.get('id')}: '{v.get('word')}' is written with kanji; add `hanViet`")
         for v in reading.get("vocab", []):
             needles = vocab_needles(v)
             if not any(n in plain_text or n in spoken for n in needles):

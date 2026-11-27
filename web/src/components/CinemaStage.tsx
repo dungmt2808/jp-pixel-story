@@ -79,6 +79,25 @@ function easeOutCubic(t: number): number {
 }
 
 /**
+ * The animation of an actor: its own `rig` / `sprite`, else the expression sheet made for its
+ * current portrait (`assets.rigs[portrait]` / `assets.sprites[portrait]`, see art.json
+ * `characters`). So a story drawn with static portraits starts talking and blinking as soon as
+ * the sheets exist, and line `castPortrait` keeps switching expressions.
+ */
+function actorAnimation(
+  actor: CinemaActor,
+  res: {
+    sprites: ReturnType<typeof useStageRuntime>["spritesRef"]["current"];
+    rigs: ReturnType<typeof useStageRuntime>["rigsRef"]["current"];
+  }
+) {
+  const key = actor.portrait;
+  const rig = actor.rig ? res.rigs[actor.rig] : actor.sprite ? undefined : key ? res.rigs[key] : undefined;
+  const sheet = actor.sprite ? res.sprites[actor.sprite] : key ? res.sprites[key] : undefined;
+  return { rig, sheet };
+}
+
+/**
  * Frameless actor standing on the bottom edge: rig (head/body) > sprite clips > static portrait.
  * Always whole-pixel scale and offsets.
  */
@@ -104,8 +123,7 @@ function drawActor(
   // gentle: a heavy brightness cut reads as a different skin tone on pixel portraits
   if (!state.active) ctx.filter = "brightness(0.8) saturate(0.9)";
   ctx.globalAlpha = clamp01(ease);
-  const rig = actor.rig ? res.rigs[actor.rig] : undefined;
-  const sheet = actor.sprite ? res.sprites[actor.sprite] : undefined;
+  const { rig, sheet } = actorAnimation(actor, res);
   if (rig) {
     const pose = rigPose(state, state.t, side === "left" ? 0 : 1.3);
     const frame = rigHeadFrame(rig.data, state.talking, state.t, actor.talkClip, actor.idleClip);
@@ -561,11 +579,11 @@ export function CinemaStage({
     const inter = currentScene.interaction;
 
     const actorBox = (side: Side) => {
-      const actor = cast[side];
-      if (!actor) return null;
+      const base = cast[side];
+      if (!base) return null;
+      const actor = portraitsRef.current[side] ? { ...base, portrait: portraitsRef.current[side] } : base;
       const scale = Math.max(1, Math.floor(actor.scale ?? 1));
-      const rig = actor.rig ? rigsRef.current[actor.rig] : undefined;
-      const sheet = actor.sprite ? spritesRef.current[actor.sprite] : undefined;
+      const { rig, sheet } = actorAnimation(actor, { sprites: spritesRef.current, rigs: rigsRef.current });
       const im = actor.portrait ? imagesRef.current[`p:${actor.portrait}`] : undefined;
       const w = (rig?.data.frameWidth ?? sheet?.meta.frameWidth ?? im?.naturalWidth ?? 64) * scale;
       const h = (rig?.data.frameHeight ?? sheet?.meta.frameHeight ?? im?.naturalHeight ?? 96) * scale;

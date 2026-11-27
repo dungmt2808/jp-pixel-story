@@ -24,6 +24,18 @@ border magic wand without one), the hole is filled, and BOTH the sprite and the 
 go through the same pixelize + palette lock as every other asset, at the same scale. The sprite
 lands in `assets.items[key]`, the emptied background in `assets.backgrounds[clean]`, the listed
 scenes switch to it, and the report gives the object's virtual position (`origin`) for a mover.
+
+Characters that move (`characters`):
+  { "key": "lisa", "raw": "raw_sheet_lisa.png", "kind": "bust" }
+  { "key": "lisa_walk", "raw": "raw_walk_lisa.png", "kind": "walk", "pixel_pitch": 5.5, "stride": 28 }
+`bust`: an expression sheet of one portrait (4 figures in a row: neutral, mouth open, eyes
+closed, mouth half open). `key` must be a key of `assets.portraits`: the sheet is sliced at the
+portrait's size, the expressions are locked (hair and clothes never flicker), a head/body rig is
+built, and both are registered under the SAME key, so the player animates that portrait (talks,
+blinks, nods) wherever it appears, `castPortrait` switches included. `walk`: a full-body walk
+cycle (8 walk + idle + blink, side view facing right) registered as `assets.sprites[key]` for
+route B `people` (`kind: "sprite:<key>"`). Figures are found by the gaps between them, so the
+generator does not have to space them evenly.
 """
 
 from __future__ import annotations
@@ -35,7 +47,13 @@ from typing import Any
 from PIL import Image
 
 from pixel_extract import extract_object
-from pixel_processor import process_pixel_background, process_pixel_sprite
+from pixel_processor import process_pixel_background, process_pixel_sprite, process_sprite_sheet
+
+BUST_CLIPS = {
+    "idle": {"frames": [0] * 11 + [2], "fps": 4},  # a blink every 3 s
+    "talk": {"frames": [1, 3, 1, 0], "fps": 8},
+}
+WALK_CLIPS = {"idle": {"frames": [8] * 11 + [9], "fps": 4}}
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -60,9 +78,20 @@ def apply_art_manifest(
     *,
     public_root: str | Path | None = None,
     dry_run: bool = False,
+    only: list[str] | None = None,
 ) -> dict[str, Any]:
+    """`only`: sections to run ("backgrounds", "objects", "characters"); default all. Lets new
+    character sheets be added without re-running the backgrounds already in the story."""
     manifest_path = Path(manifest_path).resolve()
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if only:
+        unknown = set(only) - {"backgrounds", "objects", "characters"}
+        if unknown:
+            raise ValueError(f"only: unknown sections {sorted(unknown)}")
+        # objects are cut from the raw backgrounds, so they keep their `backgrounds` specs to read
+        manifest = {**manifest, **{sec: [] for sec in ("backgrounds", "objects", "characters") if sec not in only}}
+        if "objects" in only:
+            manifest["_object_sources"] = json.loads(manifest_path.read_text(encoding="utf-8")).get("backgrounds", [])
     story_id = manifest["story"]
     public = Path(public_root) if public_root else REPO_ROOT / "web" / "public"
     story_dir = public / "stories" / story_id
@@ -101,7 +130,8 @@ def apply_art_manifest(
                 problems.append(f"{key}: no scene/choice '{target}' in {story_id}")
         applied.append(entry)
 
-    raw_of = {bg["key"]: manifest_path.parent / bg["raw"] for bg in manifest.get("backgrounds", [])}
+    bg_specs = manifest.get("backgrounds", []) or manifest.get("_object_sources", [])
+    raw_of = {bg["key"]: manifest_path.parent / bg["raw"] for bg in bg_specs}
     objects: list[dict[str, Any]] = []
     for ob in manifest.get("objects", []):
         key = ob["key"]
@@ -128,7 +158,7 @@ def apply_art_manifest(
                                  bg_mode="none", align_bottom=False, fit_mode="bbox", grid="none",
                                  cleanup=bool(ob.get("cleanup", False)),
                                  source={"kind": "art-manifest", "manifest": manifest_path.name, "object": key})
-            bg_spec = next(b for b in manifest["backgrounds"] if b["key"] == ob["from"])
+            bg_spec = next(b for b in bg_specs if b["key"] == ob["from"])
             process_pixel_background(clean_raw, story_dir / "assets" / f"bg_{clean_key}.png", palette_name=palette,
                                      grid=bg_spec.get("grid", "auto"), dither_strength=float(bg_spec.get("dither", 18.0)),
                                      source={"kind": "art-manifest", "manifest": manifest_path.name, "cleaned": key})
@@ -143,13 +173,83 @@ def apply_art_manifest(
                 problems.append(f"{key}: no scene/choice '{target}' in {story_id}")
         objects.append(entry)
 
-    if (applied or objects) and not dry_run:
+    characters = _apply_characters(manifest, manifest_path, story, story_dir, palette, waiting, problems, dry_run)
+
+    if (applied or objects or characters) and not dry_run:
         story_json.write_text(json.dumps(story, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    return {"story": story_id, "applied": applied, "objects": objects, "waiting_for_art": waiting,
-            "problems": problems, "dry_run": dry_run}
+    return {"story": story_id, "applied": applied, "objects": objects, "characters": characters,
+            "waiting_for_art": waiting, "problems": problems, "dry_run": dry_run}
 
 
-if __name__ == "__main__":  # uv run python art_manifest.py ../art-src/<story>/art.json
+def _apply_characters(
+    manifest: dict[str, Any],
+    manifest_path: Path,
+    story: dict[str, Any],
+    story_dir: Path,
+    palette: str,
+    waiting: list[dict[str, str]],
+    problems: list[str],
+    dry_run: bool,
+) -> list[dict[str, Any]]:
+    from pixel_rig import build_rig
+
+    story_id = manifest["story"]
+    assets = story.setdefault("assets", {})
+    done: list[dict[str, Any]] = []
+    for ch in manifest.get("characters", []):
+        key, kind = ch["key"], ch.get("kind", "bust")
+        raw = manifest_path.parent / ch["raw"]
+        if kind not in ("bust", "walk"):
+            problems.append(f"{key}: kind must be 'bust' or 'walk'")
+            continue
+        portrait_url = (assets.get("portraits") or {}).get(key)
+        if kind == "bust" and not portrait_url:
+            problems.append(f"{key}: a bust sheet animates a portrait; '{key}' is not in assets.portraits")
+            continue
+        if not raw.exists():
+            waiting.append({"key": key, "raw": str(raw.relative_to(REPO_ROOT)) if raw.is_relative_to(REPO_ROOT) else str(raw)})
+            continue
+        out = story_dir / "assets" / "sprites" / key
+        url = f"/stories/{story_id}/assets/sprites/{key}/meta.json"
+        entry: dict[str, Any] = {"key": key, "kind": kind, "sprite": url}
+        source = {"kind": "art-manifest", "manifest": manifest_path.name, "character": key}
+        common = dict(palette_name=palette, bg_mode=ch.get("bg_mode", "chroma_green"), cleanup=True,
+                      split="gaps", source=source)
+        try:
+            if kind == "bust":
+                pw, ph = Image.open(story_dir.parent.parent / portrait_url.lstrip("/")).size
+                if not dry_run:
+                    process_sprite_sheet(raw, out, cols=int(ch.get("frames", 4)), frame_width=pw, frame_height=ph,
+                                         registration="bust", grid=ch.get("grid", "auto"), lock_expressions=True,
+                                         padding=0,  # the bust is cut by the frame bottom like the portrait
+                                         clips=ch.get("clips", BUST_CLIPS), fps=8, **common)
+                assets.setdefault("sprites", {})[key] = url
+                try:
+                    if not dry_run:
+                        build_rig(out)
+                    assets.setdefault("rigs", {})[key] = f"/stories/{story_id}/assets/sprites/{key}/rig/rig.json"
+                    entry["rig"] = assets["rigs"][key]
+                except ValueError as err:  # no clear neck: the sprite still talks and blinks
+                    problems.append(f"{key}: no rig ({err}); the sheet animates without nodding")
+            else:
+                fw, fh = ch.get("frame", [40, 64])
+                clips = {"walk": {"frames": list(range(8)), "fps": 10, "stridePx": float(ch.get("stride", 28))}, **WALK_CLIPS}
+                if not dry_run:
+                    process_sprite_sheet(raw, out, cols=int(ch.get("frames", 10)), frame_width=int(fw), frame_height=int(fh),
+                                         registration="centroid", facing=ch.get("facing", "right"),
+                                         pixel_pitch=float(ch.get("pixel_pitch", 0)), grid="none",
+                                         clips=ch.get("clips", clips), fps=10, **common)
+                assets.setdefault("sprites", {})[key] = url
+        except ValueError as err:
+            problems.append(f"{key}: {err}")
+            continue
+        done.append(entry)
+    return done
+
+
+if __name__ == "__main__":  # uv run python art_manifest.py ../art-src/<story>/art.json [--only characters] [--dry-run]
     import sys
 
-    print(json.dumps(apply_art_manifest(sys.argv[1], dry_run="--dry-run" in sys.argv), ensure_ascii=False, indent=2))
+    sections = sys.argv[sys.argv.index("--only") + 1].split(",") if "--only" in sys.argv else None
+    print(json.dumps(apply_art_manifest(sys.argv[1], dry_run="--dry-run" in sys.argv, only=sections),
+                     ensure_ascii=False, indent=2))
