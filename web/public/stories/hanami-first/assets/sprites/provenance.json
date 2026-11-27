@@ -140,8 +140,8 @@
           "params": {
             "cols": 10,
             "rows": 1,
-            "frame_width": 32,
-            "frame_height": 48,
+            "frame_width": 40,
+            "frame_height": 64,
             "palette_name": "jp_story_master",
             "bg_mode": "chroma_green",
             "tolerance": 48,
@@ -161,7 +161,7 @@
                   7
                 ],
                 "fps": 10,
-                "stridePx": 24
+                "stridePx": 32
               },
               "idle": {
                 "frames": [
@@ -187,21 +187,23 @@
             "outline_color": "#241712",
             "lock_expressions": false,
             "expression_region": null,
-            "facing": "right"
+            "facing": "right",
+            "split": "gaps",
+            "pixel_pitch": 5.5
           },
           "input": {
             "path": "art-src/hanami-first/raw_walk_yui.png",
-            "sha": "f6f9e60771fed26a"
+            "sha": "5226f65ab3471191"
           },
-          "at": "2026-11-27T07:30:51+00:00",
+          "at": "2026-11-27T09:44:53+00:00",
           "source": {
-            "standin": "art-src/hanami-first/standin_walk.py",
-            "note": "code-drawn stand-in; replace with a generated sheet (PROMPTS-walk.md)"
+            "artist": "user",
+            "brief": "art-src/hanami-first/PROMPTS-walk.md"
           }
         }
       ],
       "output": {
-        "sha": "dc1db81fd2355ea0"
+        "sha": "713a2662e830c58a"
       }
     },
     "minh_walk": {
@@ -211,8 +213,8 @@
           "params": {
             "cols": 10,
             "rows": 1,
-            "frame_width": 32,
-            "frame_height": 48,
+            "frame_width": 40,
+            "frame_height": 64,
             "palette_name": "jp_story_master",
             "bg_mode": "chroma_green",
             "tolerance": 48,
@@ -232,7 +234,7 @@
                   7
                 ],
                 "fps": 10,
-                "stridePx": 24
+                "stridePx": 28
               },
               "idle": {
                 "frames": [
@@ -258,21 +260,23 @@
             "outline_color": "#241712",
             "lock_expressions": false,
             "expression_region": null,
-            "facing": "right"
+            "facing": "right",
+            "split": "gaps",
+            "pixel_pitch": 5.5
           },
           "input": {
             "path": "art-src/hanami-first/raw_walk_minh.png",
-            "sha": "0942c5937191efd6"
+            "sha": "a9ea673d7661de37"
           },
-          "at": "2026-11-27T07:30:52+00:00",
+          "at": "2026-11-27T09:44:51+00:00",
           "source": {
-            "standin": "art-src/hanami-first/standin_walk.py",
-            "note": "code-drawn stand-in; replace with a generated sheet (PROMPTS-walk.md)"
+            "artist": "user",
+            "brief": "art-src/hanami-first/PROMPTS-walk.md"
           }
         }
       ],
       "output": {
-        "sha": "88fb1a3cf58d3b8c"
+        "sha": "47f54fcd5cf9f2ec"
       }
     }
   }

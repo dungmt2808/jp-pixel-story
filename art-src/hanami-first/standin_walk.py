@@ -1,4 +1,4 @@
-"""Stand-in raw walk-cycle sheets for the hanami demo (no image model in this environment).
+"""Code-drawn stand-in walk-cycle sheets, used to build and test the walker pipeline before real art.
 
 Draws Yui and Minh full-body, side view facing right, in the same flat cartoon style as
 raw_sheet_yui.png / raw_sheet_minh.png, at "AI generator" resolution on a green screen:
@@ -11,10 +11,10 @@ Like the other stand-ins it deliberately carries generator defects so the pipeli
 anti-aliased edges, a noisy green screen with green spill on the outline, and the character
 drifting a few pixels between cells (`registration="centroid"` has to line them up).
 
-    python3 art-src/hanami-first/standin_walk.py      # writes raw_walk_yui.png, raw_walk_minh.png
+    python3 art-src/hanami-first/standin_walk.py      # writes standin_walk_yui.png, standin_walk_minh.png
 
-Replace these files with real generated sheets (prompts in PROMPTS-walk.md) and re-run
-`pixellab_slice_spritesheet` with the same parameters (see assets/sprites/*_walk/provenance).
+The story now uses the real sheets raw_walk_yui.png / raw_walk_minh.png (made from PROMPTS-walk.md);
+these stand-ins stay as a test input for the slicer.
 """
 from __future__ import annotations
 
@@ -158,7 +158,7 @@ def make_sheet(name: str, seed: int) -> Path:
         r, g, b = px[x, y]
         if g > 200 and r < 40:
             px[x, y] = (rnd.randint(0, 3), rnd.randint(250, 255), rnd.randint(0, 3))
-    out = HERE / f"raw_walk_{name}.png"
+    out = HERE / f"standin_walk_{name}.png"
     sheet.save(out)
     return out
 

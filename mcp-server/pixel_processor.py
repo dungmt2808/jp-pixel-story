@@ -438,6 +438,51 @@ def _normalize_clips(
     return result
 
 
+def _split_by_gaps(clean: np.ndarray, count: int, margin: int = 6) -> list[np.ndarray]:
+    """Cut one row of `count` figures apart at the empty columns between them.
+
+    Every cell gets the same width (widest figure + margin) centred on its figure, and keeps
+    only that figure's columns, so a neighbour's hand or a stray speck never leaks in.
+    """
+    h, w = clean.shape[:2]
+    occupied = (clean[:, :, 3] >= 128).sum(axis=0) >= 2  # 2+ px tall: lone noise specks do not count
+    runs: list[list[int]] = []
+    x = 0
+    while x < w:
+        if occupied[x]:
+            x0 = x
+            while x < w and occupied[x]:
+                x += 1
+            runs.append([x0, x])
+        x += 1
+    if not runs:
+        raise ValueError("split='gaps': no figure found (is the background removed?).")
+    widest = max(b - a for a, b in runs)
+    # merge parts of one figure (a hand held out in front) split by a narrow gap
+    merged: list[list[int]] = []
+    for a, b in runs:
+        if merged and a - merged[-1][1] < max(3, widest * 0.08):
+            merged[-1][1] = b
+        else:
+            merged.append([a, b])
+    figures = [r for r in merged if r[1] - r[0] >= max(4, 0.25 * max(b - a for a, b in merged))]
+    if len(figures) != count:
+        raise ValueError(
+            f"split='gaps' found {len(figures)} figures (x ranges {figures}), expected cols={count}."
+        )
+    cell_w = max(b - a for a, b in figures) + 2 * margin
+    cells: list[np.ndarray] = []
+    for a, b in figures:
+        cell = np.zeros((h, cell_w, 4), dtype=np.uint8)
+        left = (a + b) // 2 - cell_w // 2
+        for cx in range(cell_w):
+            sx = left + cx
+            if a <= sx < b:
+                cell[:, cx] = clean[:, sx]
+        cells.append(cell)
+    return cells
+
+
 def process_sprite_sheet(
     input_path: str | Path,
     output_dir: str | Path,
@@ -462,6 +507,8 @@ def process_sprite_sheet(
     record_provenance: bool = True,
     source: dict[str, Any] | None = None,
     facing: str = "",
+    split: str = "grid",
+    pixel_pitch: float = 0.0,
 ) -> dict[str, Any]:
     """Slice a raw AI spritesheet grid into registered, pixel-perfect animation frames.
 
@@ -474,11 +521,25 @@ def process_sprite_sheet(
                      and the ground line (bottom y) line up before the shared crop.
       - 'bust'     : like 'centroid' but anchored on the head (top row + head centroid-x), for
                      portrait/expression sheets whose torso is cut off by the cell edge.
+
+    split:
+      - 'grid' : `cols` x `rows` equal cells.
+      - 'gaps' : one row of figures that are NOT evenly spaced (generators rarely are): the figures
+                 are found by the empty columns between them; there must be exactly `cols` of them.
+    pixel_pitch: source pixels per art pixel (e.g. 5.5 for a 2000 px wide sheet of 10 chibi
+      walkers). Fixes the scale to 1 / pitch instead of fitting the frame, so every sheet of a
+      story keeps the same world scale and one output pixel = one drawn pixel.
     """
     if registration not in ("cell", "centroid", "bust"):
         raise ValueError("registration must be 'cell', 'centroid' or 'bust'.")
     if facing not in ("", "left", "right"):
         raise ValueError("facing must be 'left' or 'right' (the way a side-view character looks).")
+    if split not in ("grid", "gaps"):
+        raise ValueError("split must be 'grid' or 'gaps'.")
+    if split == "gaps" and rows != 1:
+        raise ValueError("split='gaps' reads one row of figures (rows=1).")
+    if pixel_pitch < 0:
+        raise ValueError("pixel_pitch must be > 0 (or 0 to fit the frame).")
     inp = Path(input_path).expanduser().resolve()
     out_dir = Path(output_dir).expanduser().resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -491,7 +552,9 @@ def process_sprite_sheet(
 
     # 1. Clean every cell (identical cell size so a shared crop box maps identically).
     cells: list[np.ndarray] = []
-    for r in range(rows):
+    if split == "gaps":
+        cells = _split_by_gaps(np.array(remove_background(raw, mode=bg_mode, tolerance=tolerance), dtype=np.uint8), cols)
+    for r in range(rows if split == "grid" else 0):
         for c in range(cols):
             left = int(round(c * src_w / cols))
             top = int(round(r * src_h / rows))
@@ -549,6 +612,15 @@ def process_sprite_sheet(
         uy1 = max(b[3] for b in boxes)
         uw, uh = ux1 - ux0, uy1 - uy0
         scale = _fit_scale(uw, uh, max(1, frame_width - 2 * padding), max(1, frame_height - 2 * padding))
+        if pixel_pitch:
+            fixed = 1.0 / pixel_pitch
+            need_w, need_h = int(round(uw * fixed)) + 2 * padding, int(round(uh * fixed)) + 2 * padding
+            if need_w > frame_width or need_h > frame_height:
+                raise ValueError(
+                    f"At pixel_pitch {pixel_pitch} the figure is {need_w}x{need_h} px with padding; "
+                    f"use a frame of at least that size (got {frame_width}x{frame_height})."
+                )
+            scale = fixed
         out_w = max(1, int(round(uw * scale)))
         out_h = max(1, int(round(uh * scale)))
         off_x, off_y = _place_offset(
@@ -610,7 +682,9 @@ def process_sprite_sheet(
                  bg_mode=bg_mode, tolerance=tolerance, align_bottom=align_bottom, registration=registration, fps=fps,
                  clips=clips, padding=padding, grid=grid, cleanup=cleanup, outline_color=outline_color,
                  lock_expressions=lock_expressions, expression_region=expression_region,
-                 **({"facing": facing} if facing else {})),
+                 **({"facing": facing} if facing else {}),
+                 **({"split": split} if split != "grid" else {}),
+                 **({"pixel_pitch": pixel_pitch} if pixel_pitch else {})),
             output=out_dir, input_path=inp, source=source,
         )
 

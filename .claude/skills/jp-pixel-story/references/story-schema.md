@@ -204,7 +204,8 @@ the world changes with the story. Example: `hachiko` (ported from the old standa
 - `people`: `{ kind: dog | bronze-dog | sensei | person | sprite:<key>, x, y, face, pose: stand|walk|sit|run, age, coat,
   seed, hidden, hideWhileInteract }`. `sprite:<key>` uses an `assets.sprites` meta.json with clips idle / walk / sit / run
   (PixelLab walk cycles go through `pixellab_slice_spritesheet` with `registration: "centroid"`, `facing: "right"` and a
-  walk clip `{ "frames": [0..7], "fps": 10, "stridePx": 24 }`: walk frames then follow the distance travelled, so the
+  walk clip `{ "frames": [0..7], "fps": 10, "stridePx": 28 }` (≈ 2 × the foot spread of a contact frame; generated sheets
+  whose figures are not evenly spaced: `split: "gaps"`; `pixel_pitch` fixes the scale): walk frames follow the distance travelled, so the
   feet stay planted at any `speed`; the sprite is mirrored when it faces the other way). People also work on painted
   `bg:` scenes (e.g. `hanami-first` intro: Minh and Yui walk into the park; prompts in `art-src/hanami-first/PROMPTS-walk.md`).
   The validator warns `[Sprite Clips]` (no idle / no walk clip) and `[Foot Slide]` (walk clip without `stridePx`).

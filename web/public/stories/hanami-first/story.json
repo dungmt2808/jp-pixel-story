@@ -123,14 +123,14 @@
       "people": {
         "minh": {
           "kind": "sprite:minh_walk",
-          "x": -20,
-          "y": 184,
+          "x": -24,
+          "y": 186,
           "face": "right"
         },
         "yui": {
           "kind": "sprite:yui_walk",
-          "x": -60,
-          "y": 188,
+          "x": -70,
+          "y": 190,
           "face": "right"
         }
       },
@@ -140,19 +140,19 @@
           "people": [
             {
               "who": "minh",
-              "walkTo": 70,
-              "speed": 24
+              "walkTo": 72,
+              "speed": 28
             },
             {
               "who": "yui",
-              "walkTo": 98,
-              "speed": 22
+              "walkTo": 108,
+              "speed": 30
             }
           ]
         },
         {
           "line": 0,
-          "delay": 4.0,
+          "delay": 3.8,
           "people": [
             {
               "who": "minh",
@@ -162,7 +162,7 @@
         },
         {
           "line": 0,
-          "delay": 7.4,
+          "delay": 6.2,
           "people": [
             {
               "who": "minh",
