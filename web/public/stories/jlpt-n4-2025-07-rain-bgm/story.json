@@ -1,6 +1,6 @@
 {
   "id": "jlpt-n4-2025-07-rain-bgm",
-  "engine": "depato",
+  "engine": "cinema",
   "series": "JLPT N4 07/2025 · ĐỌC HIỂU 問題５",
   "titleJa": "デパートの雨の音楽",
   "titleVi": "Bí mật bản nhạc trời mưa ở trung tâm thương mại",
@@ -69,9 +69,14 @@
   "scenes": [
     {
       "id": "depato_intro",
-      "type": "depato_intro",
-      "bannerTitle": "デパートの雨の音楽",
+      "type": "cinema_intro",
       "actionLabel": "はじめる · BẮT ĐẦU",
+      "backdrop": "bg:counter",
+      "titleCard": {
+        "title": "デパートの{雨|あめ}の{音楽|おんがく}",
+        "subtitle": "JLPT N4 07/2025 · 問題5",
+        "credit": "Chuyển thể bài đọc thật · nhạc nền báo mưa"
+      },
       "lines": [
         {
           "id": "d01_l01",
@@ -82,15 +87,21 @@
           "vi": "Ở các trung tâm thương mại Nhật Bản lúc nào cũng có tiếng nhạc, và gần đây tôi vừa biết được một điều cực kỳ thú vị.",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d01_l01.mp3",
           "durationSec": 7.424,
-          "ttsHash": "f607e97da7ca"
+          "ttsHash": "f607e97da7ca",
+          "emote": "note"
         }
       ]
     },
     {
       "id": "depato_counter_clue",
-      "type": "depato_counter_clue",
+      "type": "cinema_checklist",
+      "backdrop": "bg:counter",
+      "actors": [
+        "left",
+        "right"
+      ],
       "whoButtonLabel": "? Thông tin đề thi",
-      "instruction": "Nhạc nền vừa đổi giai điệu! Kiểm tra 2 manh mối quanh quầy rồi trả lời nhân viên",
+      "stamp": "さくらデパート · 1F",
       "lines": [
         {
           "id": "d02_l01",
@@ -112,7 +123,14 @@
           "vi": "Có vẻ bên ngoài đang mưa rồi, nên tôi sẽ đổi sang loại túi không phải túi giấy (chống ướt) cho quý khách nhé.",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d02_l02.mp3",
           "durationSec": 5.131,
-          "ttsHash": "bd0aafb7c5fd"
+          "ttsHash": "bd0aafb7c5fd",
+          "bgm": "depato_rain",
+          "emote": "note",
+          "telop": {
+            "text": "{雨|あめ}のようです",
+            "sub": "Hình như trời đang mưa",
+            "color": "ai"
+          }
         },
         {
           "id": "d02_l03",
@@ -123,9 +141,33 @@
           "vi": "Hả? Lúc mình tới trời vẫn đẹp mà... Xung quanh đây chẳng có cửa sổ nào, cũng chẳng có ai cầm ô cả.",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d02_l03.mp3",
           "durationSec": 7.04,
-          "ttsHash": "30f715ee693c"
+          "ttsHash": "30f715ee693c",
+          "emote": "question",
+          "camera": "punch"
         }
       ],
+      "interaction": {
+        "type": "tap",
+        "hint": "Tìm 2 manh mối quanh quầy",
+        "spots": [
+          {
+            "id": "window",
+            "x": 112,
+            "y": 52,
+            "r": 16,
+            "label": "{窓|まど}がない",
+            "labelVi": "không có cửa sổ"
+          },
+          {
+            "id": "umbrella",
+            "x": 162,
+            "y": 176,
+            "r": 16,
+            "label": "{傘|かさ}の{人|ひと}もいない",
+            "labelVi": "không ai cầm ô"
+          }
+        ]
+      },
       "minigame": {
         "prompt": "Nhân viên đang chờ phản hồi của bạn:",
         "choices": [
@@ -134,7 +176,6 @@
             "labelJa": "お願いします。",
             "labelRuby": "お{願|ねが}いします。",
             "labelVi": "Vâng, nhờ chị ạ! (Rồi đi ra cửa kiểm tra xem trời có mưa thật không)",
-            "effect": "accept",
             "responseLine": {
               "id": "d02_c01",
               "voice": "clerk",
@@ -147,13 +188,21 @@
               "ttsHash": "090616ccbd6d"
             }
           }
-        ]
+        ],
+        "mode": "one",
+        "autoPick": "reply_onegai"
       }
     },
     {
       "id": "depato_step_rain",
-      "type": "depato_step_rain",
-      "actionLabel": "次の日、北村先輩に会う · Sang ngày hôm sau →",
+      "type": "cinema_dialogue",
+      "backdrop": "bg:rain",
+      "overlay": "rain",
+      "actors": [
+        "left"
+      ],
+      "bgm": "depato_rain",
+      "stamp": "さくらデパート · 出口",
       "lines": [
         {
           "id": "d03_l01",
@@ -164,15 +213,34 @@
           "vi": "Mua xong, tôi lập tức bước ra khỏi trung tâm thương mại. Bên ngoài trời đang mưa thật!",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d03_l01.mp3",
           "durationSec": 6.005,
-          "ttsHash": "c87c61940840"
+          "ttsHash": "c87c61940840",
+          "emote": "shock",
+          "camera": "punch",
+          "telop": {
+            "text": "{本当|ほんとう}に{雨|あめ}！",
+            "sub": "Trời mưa thật!",
+            "color": "ai"
+          }
         }
       ]
     },
     {
       "id": "depato_campus_reveal",
-      "type": "depato_campus_reveal",
-      "instruction": "Nghe thử 2 bản nhạc (☀️ Nhạc nắng ↔ ☔ Nhạc mưa) để hiểu bí mật của nhân viên siêu thị Nhật!",
-      "actionLabel": "なるほど！ · Đã hiểu ra bí mật →",
+      "type": "cinema_dialogue",
+      "backdrop": "bg:campus",
+      "actors": [
+        "left",
+        "right"
+      ],
+      "cast": {
+        "right": {
+          "voice": "kitamura",
+          "portrait": "kitamura"
+        }
+      },
+      "bgm": "depato_sunny",
+      "light": "morning",
+      "stamp": "次の日 · 大学のカフェ",
       "lines": [
         {
           "id": "d04_l01",
@@ -183,7 +251,8 @@
           "vi": "Anh Kitamura ơi, anh làm thêm ở trung tâm thương mại đúng không ạ? Hôm qua không có cửa sổ mà chị nhân viên vẫn biết trời mưa đấy.",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d04_l01.mp3",
           "durationSec": 8.64,
-          "ttsHash": "0a5f82b585e1"
+          "ttsHash": "0a5f82b585e1",
+          "emote": "question"
         },
         {
           "id": "d04_l02",
@@ -194,13 +263,26 @@
           "vi": "À, ở trung tâm thương mại Nhật Bản thường khi trời đổ mưa hay tạnh mưa họ sẽ đổi sang một bản nhạc đặc biệt đấy. Nhờ vậy nhân viên mới biết được thời tiết!",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d04_l02.mp3",
           "durationSec": 11.829,
-          "ttsHash": "70df30b72191"
+          "ttsHash": "70df30b72191",
+          "bgm": "depato_rain",
+          "emote": "note",
+          "telop": {
+            "text": "{特別|とくべつ}な{音楽|おんがく}",
+            "sub": "Bản nhạc đặc biệt báo mưa",
+            "color": "gold"
+          }
         }
       ]
     },
     {
       "id": "depato_outro",
-      "type": "depato_outro",
+      "type": "cinema_outro",
+      "backdrop": "bg:campus",
+      "actors": [
+        "left"
+      ],
+      "bgm": "depato_rain",
+      "light": "morning",
       "lines": [
         {
           "id": "d05_l01",
@@ -211,9 +293,11 @@
           "vi": "Tôi cứ tưởng nhạc ở trung tâm thương mại chỉ để giúp khách hàng thấy vui vẻ. Nhưng hóa ra nó còn có ý nghĩa khác nữa. Thật thú vị!",
           "audioUrl": "/stories/jlpt-n4-2025-07-rain-bgm/audio/d05_l01.mp3",
           "durationSec": 9.707,
-          "ttsHash": "87fdc6004b9d"
+          "ttsHash": "87fdc6004b9d",
+          "emote": "sparkle"
         }
-      ]
+      ],
+      "summary": "〜ようです · 〜のに · 〜かもしれない · 〜ための"
     }
   ],
   "reading": {
@@ -496,6 +580,70 @@
         ],
         "correctIndex": 1,
         "explanationVi": "Đáp án chuẩn JLPT: 2. Cẩn thận bẫy câu 4 (đó là điều tôi TƯỞNG trước đó, không phải điều mới biết!). Điều mới biết là trung tâm thương mại dùng âm nhạc để báo thời tiết cho nhân viên!"
+      }
+    ]
+  },
+  "bgm": "depato_sunny",
+  "cast": {
+    "left": {
+      "voice": "student",
+      "portrait": "student"
+    },
+    "right": {
+      "voice": "clerk",
+      "portrait": "clerk"
+    }
+  },
+  "backdropMotion": {
+    "counter": [
+      {
+        "type": "shimmer",
+        "rect": [
+          120,
+          150,
+          200,
+          50
+        ],
+        "minLuma": 205,
+        "speed": 0.6
+      }
+    ],
+    "rain": [
+      {
+        "type": "glow",
+        "at": [
+          134,
+          120
+        ],
+        "r": 30,
+        "color": "#ffd27a",
+        "period": 4,
+        "min": 0.2,
+        "max": 0.4
+      },
+      {
+        "type": "shimmer",
+        "rect": [
+          0,
+          150,
+          320,
+          50
+        ],
+        "minLuma": 150,
+        "speed": 1.1
+      }
+    ],
+    "campus": [
+      {
+        "type": "shimmer",
+        "rect": [
+          160,
+          100,
+          90,
+          60
+        ],
+        "minLuma": 200,
+        "speed": 0.7
       }
     ]
   }

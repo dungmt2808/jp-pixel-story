@@ -34,6 +34,10 @@ export interface DialogueLine {
   emoteWho?: string;
   /** Switch a cast member's portrait from this line on (expressions): { "left": "minh_happy" }. */
   castPortrait?: Partial<Record<"left" | "right", string>>;
+  /** Vibe kit: switch the BGM when this line starts (same names as `scene.bgm`); lasts until the next scene. */
+  bgm?: string;
+  /** Cast sides that leave the stage when this line starts (slide out, stay gone for the scene). */
+  castExit?: ("left" | "right")[];
   /** Vibe kit: camera move while the line plays ("push", "punch", "close", "shake", "pan_left", "pan_right"). */
   camera?: string;
   /** Vibe kit: big variety-show caption over the stage (ruby allowed). */
@@ -239,6 +243,8 @@ export interface StoryScene {
   overlay?: string;
   /** Cinema: which actors are on stage (default both; legacy outro shows only the left actor). */
   actors?: Array<"left" | "right">;
+  /** Cinema: who stands on a side in this scene, replacing the story `cast` for that side. */
+  cast?: { left?: CinemaActor; right?: CinemaActor };
   revealNote?: CinemaRevealNote[];
   /** Player v2: location / date stamp, e.g. "SHINJUKU GYOEN · 4月". */
   stamp?: string | SceneStamp;

@@ -12,9 +12,9 @@
 - **📝 Đề thi JLPT (8 bài — trọn bộ 100% JLPT N4 năm 2025: 07/2025 & 12/2025, 170 câu thi thật):**
   - **漢 文字・語彙・文法 (`JlptGengoView`):** Đủ 49 câu/kỳ (28 Từ vựng + 21 Ngữ pháp), tự ẩn Furigana & dịch chống lộ đáp án câu Kanji, nháp ghép 4 mảnh câu `★` tương tác (`問題2`), đoạn văn đục lỗ bấm điền trực tiếp (`問題3`).
   - **📖 読解 問題4・6 (`JlptDokkaiView`):** Khung Email / Giấy nhắn / Thông báo / Bảng tra cứu chuẩn đề thật, có **bộ lọc điều kiện đồng bộ nhiều bảng** (`問題6`), **mô phỏng thời tiết nắng/mưa** & **trục thời gian mốc giờ** (`問題4`), giọng VOICEVOX từng câu + Daily Dictation.
-  - **🎬 読解 問題5 (`CinemaStage` / `DepatoStage`):** Chuyển thể nguyên văn bài đọc trung văn (`デパートの雨の音楽` & `日本の生活`) thành hoạt ảnh 2D pixel tương tác + câu 25–27 thi thật.
+  - **🎬 読解 問題5 (`CinemaStage`):** Chuyển thể nguyên văn bài đọc trung văn (`デパートの雨の音楽` & `日本の生活`) thành hoạt ảnh 2D pixel tương tác + câu 25–27 thi thật.
   - **🎧 聴解 (`JlptChoukaiView`):** Đủ 28 câu/kỳ cắt trực tiếp từ MP3 gốc phòng thi, tranh minh họa xóa sạch watermark, 2 chế độ **Thi thử / Học sâu**, Script đầy đủ `ふりがな` + **26 câu Daily Dictation giọng Nhật thật**.
-- **💬 Tình huống đời sống (`situation`):** `夜のコンビニ` (Mua cơm nắm nửa đêm), `深夜のラーメン屋` (Gọi mì Ramen đêm mưa — hybrid AI pixel art), `はじめてのお花見` (truyện demo engine `cinema` dữ liệu hoá + nhân vật hoạt hình theo frame).
+- **💬 Tình huống đời sống (`situation`):** `夜のコンビニ` (Mua cơm nắm nửa đêm), `深夜のラーメン屋` (Gọi mì Ramen đêm mưa), `はじめてのお花見` (truyện demo engine `cinema` dữ liệu hoá + nhân vật hoạt hình theo frame).
 - **📖 Câu chuyện & Đọc hiểu (`story`):** `鶴の恩返し` (Chim Hạc Trả Ơn — AI Pixel Art thống nhất bảng màu), `ハチ公の話` (Chú chó Hachikō ở ga Shibuya).
 
 ### 2. Trải nghiệm học Tiếng Nhật 3 trong 1 (không Romaji)
@@ -57,7 +57,7 @@ jp-pixel-story/
 ├── web/                               # React + Vite + HTML5 Canvas App + unit tests (npm test)
 │   ├── public/stories/                # 12 bài học (index.json, story/choukai/dokkai/gengo.json, MP3)
 │   ├── src/engine/                    # useStageRuntime, pixelScale, spriteAnimator, cinemaBackdrops...
-│   └── src/components/                # CinemaStage, TsuruStage, DepatoStage, Jlpt*View, DictationView
+│   └── src/components/                # CinemaStage, ReadingView, Jlpt*View, DictationView
 └── exporter/                          # Xuất MP4 tất định (đồng hồ ảo Playwright + FFmpeg) + E2E check
 ```
 

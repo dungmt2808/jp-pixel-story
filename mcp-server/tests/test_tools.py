@@ -392,13 +392,16 @@ def test_validator_flags_unknown_vibe_names_and_telop_furigana(tmp_path: Path) -
     story = {
         "id": "vibe-bad",
         "engine": "cinema",
+        "cast": {"left": {"voice": "a", "portrait": "ghost"}},
         "scenes": [
             {
                 "id": "sc1",
                 "light": "neon",
+                "cast": {"right": {"voice": "b", "portrait": "phantom"}},
                 "lines": [
                     {"id": "l1", "voice": "narrator", "jaPlain": "あ", "jaRuby": "あ", "vi": "a",
-                     "emote": "facepalm", "camera": "dolly", "sfx": "boom", "telop": "約束"},
+                     "emote": "facepalm", "camera": "dolly", "sfx": "boom", "telop": "約束",
+                     "castPortrait": {"left": "nobody", "top": "x"}, "castExit": ["middle"]},
                 ],
             }
         ],
@@ -407,7 +410,9 @@ def test_validator_flags_unknown_vibe_names_and_telop_furigana(tmp_path: Path) -
     (sdir / "story.json").write_text(json.dumps(story, ensure_ascii=False), encoding="utf-8")
     res = validate_story_folder(sdir, web_public_dir=pub)
     joined = " | ".join(res["issues"])
-    for tag in ("[Unknown Emote]", "[Unknown Camera]", "[Unknown SFX]", "[Unknown Light]", "l1/telop"):
+    for tag in ("[Unknown Emote]", "[Unknown Camera]", "[Unknown SFX]", "[Unknown Light]", "l1/telop",
+                "[Missing Portrait] l1/castPortrait.left", "[Unknown Side] l1/castPortrait", "[Unknown Side] l1/castExit",
+                "[Missing Portrait] cast.left", "[Missing Portrait] sc1/cast.right"):
         assert tag in joined, tag
 
 

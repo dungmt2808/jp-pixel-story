@@ -28,7 +28,7 @@
 
 - `category`: `"jlpt"` (`📝 Đề thi JLPT`) | `"situation"` (`💬 Tình huống`) | `"story"` (`📖 Câu chuyện`).
 - `kind`:
-  - `"engine"` — React interactive stage (`CinemaStage` when `"engine": "cinema"`, `HybridStage`, `TsuruStage`, `DepatoStage`, or `PixelStage`) + `ReadingView` + auto `DictationView`.
+  - `"engine"` — React interactive stage (`CinemaStage`, `"engine": "cinema"`) + `ReadingView` + auto `DictationView`.
   - `"standalone"` — custom HTML5 Canvas (`href: "stories/<id>/index.html"`) + `dictation.json`.
   - `"jlpt-choukai"` — `choukai.json` + optional native `dictation.json`.
   - `"jlpt-dokkai"` — `dokkai.json` + auto `DictationView`.
@@ -79,7 +79,8 @@ Full example: `web/public/stories/hanami-first/story.json`.
 }
 ```
 
-- `engine` (routes the stage, never the story id): `"cinema"` (default for new work) | legacy `"tsuru"`, `"depato"`, `"hybrid"`, `"pixel"`.
+- `engine`: `"cinema"` (the only stage; the former `"tsuru"`, `"depato"`, `"hybrid"`, `"pixel"` stages were removed after
+  their stories were ported — a story still using one shows a "no longer supported" notice).
 - Scene `type`: `cinema_intro` (title banner + start button), `cinema_dialogue` / `cinema_reveal` (lines + continue),
   `cinema_checklist` / `cinema_explore` (clickable choices, each may switch `backdrop`), `cinema_outro` (reading / dictation / card / replay buttons).
 - `backdrop`: `"bg:<key>"` (a palette-locked PNG from `assets.backgrounds`) or `"proc:<name>"` from `PROCEDURAL_BACKDROPS`
@@ -91,6 +92,8 @@ Full example: `web/public/stories/hanami-first/story.json`.
 - `artQuality`: strict validator thresholds for this story's sprites (outline colour compliance, isolated-pixel ratio, optional `maxColorsPerSprite`).
   Without `cast`, the first two `assets.portraits` are used (legacy).
 - `actors`: which sides are on stage (default: none in intro, both in dialogue/checklist, left only in outro).
+- Scene `cast`: `{ "right": { "voice": "kitamura", "portrait": "kitamura" } }` replaces the story cast for that side in
+  this scene only (a new character in a new place). Line `bgm` switches the music when that line starts (the store's rain song).
 - `lines[]`: `{ id, voice, speakerLabel, jaPlain, ttsText?, jaRuby, vi, audioUrl, durationSec, ttsHash }` — the last three are written by `voicevox_generate_story_audio`.
 - `reading`: `{ sectionTitle, subtitle, sentences, vocab, grammar, quiz }`. Daily Dictation is built automatically from all voiced lines.
 
@@ -161,6 +164,12 @@ Per line (scene lines, `doneLine`, choice `responseLine`):
 - `telop`: big variety-show caption (string or `{ text, sub?, color?: "shu"|"gold"|"ai"|"white", x?, y? }`, % of stage).
 - `sfx`: `pop`, `ding`, `whoosh`, `boing`, `shock`, `sparkle`, `thud`, `gloom`, `heart` (`"none"` silences the emote sound).
   Files live in `web/public/audio/sfx/` (regenerate with `cd web && npm run render:audio`).
+- `castPortrait`: switch a cast member's expression from this line on (`{ "right": "otsu_plead" }`, keys of
+  `assets.portraits`); `castExit`: sides that slide off the stage when the line starts (`["right"]`, a farewell).
+
+Choices (`cinema_checklist`): `minigame.mode: "one"` makes the buttons a single pick (the others lock, the story goes on
+after one answer) — `"all"` (default) asks to try every answer. `autoPick` is the answer taken in autoplay / videos;
+`prompt` is shown in the caption bar until a choice is made.
 
 Per scene: `light` (`day`, `morning`, `golden`, `dusk`, `night`, `rain`, `warm`) — one grade over backdrop, actors and
 items; `bgm` (`calm`, `happy`, `tender`/`sad`, `none`, or a theme name) — switches the music from this scene on.
@@ -192,8 +201,13 @@ the world changes with the story. Example: `hachiko` (ported from the old standa
 - `people`: `{ kind: dog | bronze-dog | sensei | person | sprite:<key>, x, y, face, pose: stand|walk|sit|run, age, coat,
   seed, hidden, hideWhileInteract }`. `sprite:<key>` uses an `assets.sprites` meta.json with clips idle / walk / sit / run
   (PixelLab walk cycles go through `pixellab_slice_spritesheet`).
-- `cues`: `{ at | line | doneLine | done, delay, set: {...}, people: [{ who, walkTo, speed, then: pose|"exit", x, face,
-  pose, show, fadeOut, hop }] }` — anchors are recorded as the scene plays, so videos are deterministic.
+- `cues`: `{ at | line | doneLine | done | choice, ifChoice, delay, set: {...}, backdrop, people: [{ who, walkTo, speed,
+  then: pose|"exit", x, face, pose, show, fadeOut, hop }] }` — anchors are recorded as the scene plays, so videos are
+  deterministic. `choice: "<id>"` fires when that answer is picked; `ifChoice` keeps a cue only if that answer was picked
+  earlier in the story. `backdrop: "bg:loom"` cuts to another picture (a door slides open on another room); the scene's own
+  `motion` stays with the scene's backdrop, the new one brings its `backdropMotion`.
+- Other code-drawn sets: `konbini_skyline {title}`, `konbini_exterior`, `konbini_interior`, `konbini_counter {scanned}`,
+  `konbini_closeup {effect: "microwave"|"polite_bow"}`, `konbini_outro {warmed}` (story `konbini-onigiri`).
 - Lines: `emoteWho` puts the emote (and camera focus) on a person. Interactions: `doneLines` (several lines after the
   game, cues can anchor on them), `doneDelaySec` (let the cues play first), drag `items[].person` drags a person.
 - `holdSec`: minimum time on screen (scenes without lines, e.g. seasons passing).
@@ -223,7 +237,9 @@ effect is a pure function of scene time, so videos stay deterministic. Example: 
 - `glow`: a breathing, dithered light (lamps, TV, the sun). `steam`: puffs rising from points. `shimmer`: bright
   pixels of a reflection sparkle in a travelling wave.
 - `mover`: an `assets.items` sprite along a `path` (top-left positions); `ease: "in"` accelerates (take-off),
-  `scale: 0.5` for far away, `show: "moving"` hides it before/after its trip, and the `front` rects of the
+  `scale: 0.5` for far away, `show: "moving"` hides it before/after its trip, `startOn` (a cue anchor such as
+  `{ "done": true }` or `{ "line": 1 }`) starts its `delaySec` from that moment (the crane takes off once the snare is
+  untied; until then it waits at its first point), and the `front` rects of the
   background are redrawn over it so it passes BEHIND mullions, bridges, planters...
 - Objects baked into a painting are cut out with art.json `objects` (lasso `polygon` + `exclude` occluders, in RAW
   image coordinates): `pixellab_apply_art_manifest` writes the sprite to `assets.items[key]`, an emptied background

@@ -118,6 +118,8 @@ test("parseArgs validates fps/width and rejects unknown flags", () => {
   assert.equal(a.story, "s1");
   assert.equal(a.fps, 24);
   assert.equal(a.check, true);
+  assert.equal(a.voiceOnly, false);
+  assert.equal(parseArgs(["node", "x", "--voice-only"]).voiceOnly, true);
   assert.throws(() => parseArgs(["node", "x", "--fps", "0"]));
   assert.throws(() => parseArgs(["node", "x", "--width", "100"]));
   assert.throws(() => parseArgs(["node", "x", "--bogus"]));

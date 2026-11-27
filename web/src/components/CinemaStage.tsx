@@ -188,7 +188,8 @@ export function CinemaStage({
 
   const currentScene = story.scenes[sceneIdx];
   const kind = cinemaSceneKind(currentScene.type);
-  const cast = useMemo(() => resolveCast(story), [story]);
+  // story cast, with the scene's own cast for a side if it has one (a new character in a new place)
+  const cast = useMemo(() => ({ ...resolveCast(story), ...(currentScene.cast ?? {}) }), [story, currentScene]);
   const interaction = currentScene.interaction;
   const total = interaction
     ? interaction.type === "drag"
@@ -214,6 +215,8 @@ export function CinemaStage({
   const pickedRef = useRef<string[]>([]);
   // expression changes of the cast within the current scene (line `castPortrait`)
   const portraitsRef = useRef<Partial<Record<Side, string>>>({});
+  // cast members leaving the stage within the current scene (line `castExit`): side -> start time
+  const exitRef = useRef<Partial<Record<Side, number>>>({});
   const peopleStateRef = useRef<Record<string, PersonState>>({});
   const foundRef = useRef<string[]>([]);
 
@@ -226,6 +229,7 @@ export function CinemaStage({
     sceneStartRef.current = performance.now();
     anchorsRef.current = { lines: [], doneLines: [], choices: {}, picked: pickedRef.current };
     portraitsRef.current = {};
+    exitRef.current = {};
     peopleStateRef.current = {};
     setPhase("lines");
     setLineIdx(-1);
@@ -286,6 +290,7 @@ export function CinemaStage({
 
   useEffect(() => {
     if (activeLine?.castPortrait) portraitsRef.current = { ...portraitsRef.current, ...activeLine.castPortrait };
+    for (const side of activeLine?.castExit ?? []) exitRef.current[side] ??= performance.now();
     vibeRef.current = { line: activeLine, start: performance.now() };
     const name = lineSfx(activeLine);
     const url = name ? sfxUrl(name) : null;
@@ -298,14 +303,24 @@ export function CinemaStage({
   const bgmThemeRef = useRef<string | null>(null);
   // entering mid-story comes from a click (reading page), which already unlocked audio
   const bgmStartedRef = useRef(startScene > 0);
+  const switchBgm = useCallback(
+    (name: string) => {
+      const theme = resolveBgmTheme(name);
+      if (theme === bgmThemeRef.current) return;
+      bgmThemeRef.current = theme;
+      logStoryEvent({ type: "bgm", theme }, stageStartRef.current);
+      if (bgmStartedRef.current && !recordMode) retroAudio.startBgm(theme);
+    },
+    [recordMode, stageStartRef]
+  );
   useEffect(() => {
     if (!assetsReady) return;
-    const theme = resolveBgmTheme(currentScene.bgm ?? story.bgm ?? "default");
-    if (theme === bgmThemeRef.current) return;
-    bgmThemeRef.current = theme;
-    logStoryEvent({ type: "bgm", theme }, stageStartRef.current);
-    if (bgmStartedRef.current && !recordMode) retroAudio.startBgm(theme);
-  }, [assetsReady, currentScene, recordMode, stageStartRef, story.bgm]);
+    switchBgm(currentScene.bgm ?? story.bgm ?? "default");
+  }, [assetsReady, currentScene, story.bgm, switchBgm]);
+  // a line may change the music when it starts (the store switches to its "rain" song mid-scene)
+  useEffect(() => {
+    if (assetsReady && activeLine?.bgm) switchBgm(activeLine.bgm);
+  }, [activeLine, assetsReady, switchBgm]);
   /** First user gesture (BEGIN) starts the music of the current scene. */
   const startMusic = useCallback(() => {
     bgmStartedRef.current = true;
@@ -589,7 +604,10 @@ export function CinemaStage({
       // route C: the world (backdrop + motion layers + actors) may bump 1 px on a rumble beat
       // ambient motion of the painting on screen + the scene's own scripted motion (movers...)
       const bgKey = backdropRef.startsWith("bg:") ? backdropRef.slice(3) : "";
-      const motion = [...(story.backdropMotion?.[bgKey] ?? []), ...(backdropOverride ? [] : currentScene.motion ?? [])];
+      // the scene's own motion belongs to the scene's backdrop: a choice override or a cue that
+      // cuts to another room leaves it behind (that room brings its own backdropMotion)
+      const ownBackdrop = !backdropOverride && backdropRef === baseBackdrop;
+      const motion = [...(story.backdropMotion?.[bgKey] ?? []), ...(ownBackdrop ? currentScene.motion ?? [] : [])];
       const bgImg = imgs[backdropRef.startsWith("bg:") ? backdropRef : `bg:${backdropRef}`];
       const bump = sceneRumble(motion, elapsed);
       if (bump) {
@@ -632,9 +650,13 @@ export function CinemaStage({
           if (!base) return;
           const actor = portraitsRef.current[side] ? { ...base, portrait: portraitsRef.current[side] } : base;
           const focus = actorFocus(side, cast, speaking, sides);
+          // line `castExit`: the actor slides back out the way it came in
+          const exitAt = exitRef.current[side];
+          const stay = exitAt === undefined ? 1 : clamp01(1 - (now - exitAt) / 600);
+          if (stay <= 0) return;
           drawActor(ctx, side, actor, { imgs, sprites: spritesRef.current, rigs: rigsRef.current }, {
             ...focus,
-            enterProgress: Math.min(elapsed / (0.5 + i * 0.1), 1),
+            enterProgress: Math.min(elapsed / (0.5 + i * 0.1), 1) * stay,
             t,
           });
         });

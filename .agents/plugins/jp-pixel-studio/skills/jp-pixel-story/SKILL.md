@@ -20,7 +20,7 @@ Every lesson lives in `web/public/stories/<id>/` and is registered in `web/publi
 
 1. **NO Romaji anywhere** — every Kanji uses compact `{漢字|かんじ}` Furigana notation with the global **`ふりがな ON/OFF`** toggle (and never place ruby on pure Kana).
 2. **Global Vietnamese Toggle (`🇻🇳 Dịch ON/OFF`):**
-   - Video stages (`TsuruStage`, `CinemaStage`, `DepatoStage`, `HybridStage`, `PixelStage`) default `Dịch ON` so learners can hide `.subtitle-vi` / `.choice-vi` in 1 click.
+   - The video stage (`CinemaStage`) defaults `Dịch ON` so learners can hide `.subtitle-vi` / `.choice-vi` in 1 click.
    - Exam views (`JlptDokkaiView`, `JlptGengoView`) default `Dịch OFF` so meaning hints never spoil exam answers before selection.
 3. **Natural VOICEVOX Prosody:**
    - Verify engine via `voicevox_health` and inspect casts via `voicevox_list_speakers`.
@@ -42,7 +42,7 @@ Every lesson lives in `web/public/stories/<id>/` and is registered in `web/publi
 | Content Type | `kind` / `engine` | Data File | Engine Component | Audio / Image MCP Tools |
 | :--- | :--- | :--- | :--- | :--- |
 | **NEW animated story / situation / JLPT 問題5** | `"engine"` + `story.engine: "cinema"` | `story.json` | `CinemaStage` player v2 (100% data-driven: top bar + caption bar, title card, stamps, leader-line labels, drag/tap/hold mini-games, info card, backdrops, overlays, rig/sprite cast) + `ReadingView` + auto `DictationView` | `pixellab_clean_background`, `pixellab_slice_spritesheet(registration="bust")`, `voicevox_generate_story_audio` |
-| Legacy bespoke stages | `story.engine`: `"tsuru"`, `"depato"`, `"hybrid"`, `"pixel"` | `story.json` | `TsuruStage`, `DepatoStage`, `HybridStage`, `PixelStage` (all on the shared `useStageRuntime`) | same |
+| (Former bespoke stages) | `"tsuru"`, `"depato"`, `"hybrid"`, `"pixel"` were removed: every story now runs on `"cinema"` (code-drawn worlds as `set:` backdrops, see story-schema.md) | — | — | — |
 | **JLPT Listening (`聴解`)** | `"jlpt-choukai"` | `choukai.json` + `dictation.json` | `JlptChoukaiView` + native `DictationView` | `jlpt_clean_exam_image` + FFmpeg slice |
 | **JLPT Reading (`読解 問題4・6`)** | `"jlpt-dokkai"` | `dokkai.json` | `JlptDokkaiView` + auto `DictationView` | `voicevox_generate_dokkai_audio` |
 | **JLPT Vocab & Grammar (`言語知識`)** | `"jlpt-gengo"` | `gengo.json` | `JlptGengoView` | (text + interactive `★` scramble & cloze essay) |

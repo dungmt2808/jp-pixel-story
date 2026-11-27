@@ -41,7 +41,8 @@ function onsetSec(file, startSec = 0, durSec = 3) {
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "jp-sync-"));
 const out = path.join(tmp, `${story}.mp4`);
-const args = [path.join(__dirname, "..", "export_video.mjs"), "--story", story, "--fps", fps, "--out", out];
+// voices only: music and sound effects would fill the silences the onset detection relies on
+const args = [path.join(__dirname, "..", "export_video.mjs"), "--story", story, "--fps", fps, "--out", out, "--voice-only"];
 if (url) args.push("--url", url);
 console.log(`Exporting ${story} at ${fps} fps for the sync test...`);
 execFileSync("node", args, { stdio: "inherit" });
@@ -57,13 +58,15 @@ const video = streams.find((s) => s.codec_type === "video");
 const audio = streams.find((s) => s.codec_type === "audio");
 assert.ok(video && audio, "MP4 must contain both video and audio");
 assert.equal(video.width, 960, "stage must be pinned to an exact 3x (960px) width");
-assert.equal(video.height, 600);
+// the cinema player is recorded whole: top bar + the 960x600 stage + caption bar
+assert.ok(video.height >= 600 && video.height % 2 === 0, `video height ${video.height} must hold the 600px stage`);
 assert.ok(Math.abs(Number(video.duration) - Number(audio.duration)) < 0.1, "audio must span the whole video");
 assert.deepEqual(timeline.overlaps, [], "voice lines must never overlap");
-assert.ok(timeline.clips.length > 0, "story must have voiced lines");
+const voices = timeline.clips.filter((c) => (c.kind ?? "voice") === "voice");
+assert.ok(voices.length > 0, "story must have voiced lines");
 
 let worst = 0;
-for (const clip of timeline.clips) {
+for (const clip of voices) {
   const leadIn = onsetSec(clip.file, 0, 2);
   const planned = clip.offsetMs / 1000;
   const windowStart = Math.max(0, planned - 0.3); // >= 0.6 s of silence precede every line
@@ -74,4 +77,4 @@ for (const clip of timeline.clips) {
   assert.ok(Math.abs(diffMs) <= TOLERANCE_MS, `${clip.lineId}: A/V offset ${diffMs}ms > ${TOLERANCE_MS}ms`);
 }
 fs.rmSync(tmp, { recursive: true, force: true });
-console.log(`\nSYNC E2E PASSED: ${timeline.clips.length} clips, worst offset ${worst} ms (tolerance ${TOLERANCE_MS} ms)`);
+console.log(`\nSYNC E2E PASSED: ${voices.length} clips, worst offset ${worst} ms (tolerance ${TOLERANCE_MS} ms)`);

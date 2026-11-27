@@ -141,6 +141,7 @@ export function parseArgs(argv) {
     maxSec: 600,
     tailSec: 1.2,
     check: false,
+    voiceOnly: false,
   };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
@@ -153,6 +154,7 @@ export function parseArgs(argv) {
     else if (a === "--max-sec" || a === "--timeout") args.maxSec = Number(next());
     else if (a === "--tail") args.tailSec = Number(next());
     else if (a === "--check") args.check = true;
+    else if (a === "--voice-only") args.voiceOnly = true;
     else throw new Error(`Unknown argument: ${a}`);
   }
   if (!(args.fps > 0 && args.fps <= 60)) throw new Error("--fps must be in 1..60");

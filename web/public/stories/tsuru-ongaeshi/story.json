@@ -1,6 +1,6 @@
 {
   "id": "tsuru-ongaeshi",
-  "engine": "tsuru",
+  "engine": "cinema",
   "series": "jp-pixel-story · AI PIXEL CINEMA",
   "titleJa": "鶴の恩返し",
   "titleVi": "Chim Hạc Trả Ơn",
@@ -72,9 +72,28 @@
   "scenes": [
     {
       "id": "snow_intro",
-      "type": "tsuru_snow_intro",
-      "bannerTitle": "鶴の恩返し",
+      "type": "cinema_intro",
       "actionLabel": "はじめる · BẮT ĐẦU",
+      "backdrop": "bg:snow",
+      "overlay": "snow",
+      "titleCard": {
+        "title": "{鶴|つる}の{恩返|おんがえ}し",
+        "subtitle": "日本の昔話 · JLPT N4",
+        "credit": "Truyện cổ tích Nhật Bản · chim hạc trả ơn"
+      },
+      "motion": [
+        {
+          "type": "mover",
+          "item": "crane",
+          "path": [
+            [
+              84,
+              70
+            ]
+          ],
+          "durationSec": 1
+        }
+      ],
       "lines": [
         {
           "id": "t01_l01",
@@ -91,8 +110,42 @@
     },
     {
       "id": "rescue_crane",
-      "type": "tsuru_rescue_crane",
-      "instruction": "鶴のわなを 長押し（またはタップ）して ほどこう · Nhấn giữ (hoặc chạm) để gỡ bẫy cứu hạc",
+      "type": "cinema_dialogue",
+      "backdrop": "bg:snow",
+      "overlay": "snow",
+      "actors": [
+        "left"
+      ],
+      "stamp": "冬の日 · わなにかかった鶴",
+      "motion": [
+        {
+          "type": "mover",
+          "item": "crane",
+          "path": [
+            [
+              128,
+              74
+            ],
+            [
+              168,
+              44
+            ],
+            [
+              236,
+              4
+            ],
+            [
+              330,
+              -70
+            ]
+          ],
+          "durationSec": 3.2,
+          "ease": "in",
+          "startOn": {
+            "done": true
+          }
+        }
+      ],
       "lines": [
         {
           "id": "t02_l01",
@@ -103,15 +156,33 @@
           "vi": "Tội nghiệp quá! Anh gỡ bẫy cứu ngay đây. Nào, bay về bầu trời đi!",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t02_l01.mp3",
           "durationSec": 5.483,
-          "ttsHash": "81bdf2241bec"
+          "ttsHash": "81bdf2241bec",
+          "emote": "sweat",
+          "camera": "push"
         }
-      ]
+      ],
+      "interaction": {
+        "type": "hold",
+        "hint": "Nhấn giữ để gỡ bẫy cứu chim hạc",
+        "hold": {
+          "label": "わなをほどく",
+          "x": 160,
+          "y": 158,
+          "durationSec": 2.2
+        },
+        "doneDelaySec": 2.6
+      }
     },
     {
       "id": "visitor_promise",
-      "type": "tsuru_visitor_promise",
+      "type": "cinema_dialogue",
+      "backdrop": "bg:hearth",
+      "actors": [
+        "left",
+        "right"
+      ],
       "whoButtonLabel": "? どんな物語",
-      "actionLabel": "約束する · ĐỒNG Ý HỨA →",
+      "light": "warm",
       "lines": [
         {
           "id": "t03_l01",
@@ -135,7 +206,10 @@
           "vi": "Xin cho em tá túc đêm nay. Để đền ơn, em sẽ dệt một tấm vải thật đẹp.",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t03_l02.mp3",
           "durationSec": 6.773,
-          "ttsHash": "366e118bab89"
+          "ttsHash": "366e118bab89",
+          "castPortrait": {
+            "right": "otsu_gentle"
+          }
         },
         {
           "id": "t03_l03",
@@ -148,13 +222,42 @@
           "vi": "Chỉ có điều... trong lúc em đang dệt vải, xin chàng tuyệt đối đừng nhìn vào trong phòng nhé.",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t03_l03.mp3",
           "durationSec": 8.064,
-          "ttsHash": "15c3ce6910f8"
+          "ttsHash": "15c3ce6910f8",
+          "castPortrait": {
+            "right": "otsu_plead"
+          },
+          "camera": "close",
+          "telop": {
+            "text": "{見|み}ないでください",
+            "sub": "Xin đừng nhìn vào trong",
+            "color": "ai"
+          }
         }
       ]
     },
     {
       "id": "weaving_choice",
-      "type": "tsuru_weaving_choice",
+      "type": "cinema_checklist",
+      "backdrop": "bg:hearth",
+      "actors": [
+        "left"
+      ],
+      "light": "dusk",
+      "motion": [
+        {
+          "type": "glow",
+          "at": [
+            247,
+            98
+          ],
+          "r": 16,
+          "color": "#ffce70",
+          "period": 1.6,
+          "min": 0.35,
+          "max": 0.8,
+          "flicker": true
+        }
+      ],
       "lines": [
         {
           "id": "t04_l01",
@@ -165,7 +268,12 @@
           "vi": "Suốt ba ngày liền, từ sau cánh cửa cứ vang lên tiếng khung cửi dệt vải kỳ lạ...",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t04_l01.mp3",
           "durationSec": 6.101,
-          "ttsHash": "fb787aebbc4b"
+          "ttsHash": "fb787aebbc4b",
+          "telop": {
+            "text": "トン、トン…",
+            "sub": "tiếng khung cửi sau cánh cửa",
+            "color": "white"
+          }
         },
         {
           "id": "t04_l02",
@@ -176,7 +284,8 @@
           "vi": "Ba ngày rồi không ăn uống gì liệu cô ấy có ổn không... phải làm sao đây?",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t04_l02.mp3",
           "durationSec": 3.915,
-          "ttsHash": "7767d3f906f6"
+          "ttsHash": "7767d3f906f6",
+          "emote": "sweat"
         }
       ],
       "minigame": {
@@ -187,7 +296,6 @@
             "labelJa": "少しだけ中をのぞいてみる…",
             "labelRuby": "{少|すこ}しだけ{中|なか}をのぞいてみる…",
             "labelVi": "Lo quá, lén hé cửa nhìn một chút xem sao...",
-            "effect": "peek",
             "responseLine": {
               "id": "t04_c01",
               "voice": "yosaku",
@@ -199,7 +307,8 @@
               "vi": "Ta đã thất hứa, lỡ lén nhìn vào trong mất rồi...",
               "audioUrl": "/stories/tsuru-ongaeshi/audio/t04_c01.mp3",
               "durationSec": 4.747,
-              "ttsHash": "ce7f0c17c1a2"
+              "ttsHash": "ce7f0c17c1a2",
+              "emote": "gloom"
             }
           },
           {
@@ -207,7 +316,6 @@
             "labelJa": "約束を守って待つ",
             "labelRuby": "{約束|やくそく}を{守|まも}って{待|ま}つ",
             "labelVi": "Giữ lời hứa và đợi bên ngoài (nhưng rồi vẫn lo lắng...)",
-            "effect": "wait",
             "responseLine": {
               "id": "t04_c02",
               "voice": "narrator",
@@ -220,15 +328,45 @@
               "ttsHash": "c495f6334f3a"
             }
           }
-        ]
+        ],
+        "mode": "one",
+        "autoPick": "wait_promise"
       }
     },
     {
       "id": "slide_fusuma",
-      "type": "tsuru_slide_fusuma",
-      "instruction": "ふすまを そっと開けよう · Kéo (hoặc chạm) mở cánh cửa fusuma",
-      "lines": [
+      "type": "cinema_dialogue",
+      "backdrop": "bg:hearth",
+      "actors": [],
+      "light": "dusk",
+      "motion": [
         {
+          "type": "glow",
+          "at": [
+            247,
+            98
+          ],
+          "r": 18,
+          "color": "#ffce70",
+          "period": 1.2,
+          "min": 0.5,
+          "max": 0.95,
+          "flicker": true
+        }
+      ],
+      "lines": [],
+      "interaction": {
+        "type": "tap",
+        "hint": "Chạm vào khe cửa fusuma để mở",
+        "spots": [
+          {
+            "id": "fusuma",
+            "x": 247,
+            "y": 98,
+            "r": 22
+          }
+        ],
+        "doneLine": {
           "id": "t05_l01",
           "voice": "narrator",
           "speakerLabel": "ナレーター",
@@ -237,13 +375,69 @@
           "vi": "Thật bất ngờ, bên trong là một chú chim hạc trắng đang tự nhổ lông mình để dệt nên tấm vải tuyệt đẹp!",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t05_l01.mp3",
           "durationSec": 6.592,
-          "ttsHash": "2bd86a618158"
+          "ttsHash": "2bd86a618158",
+          "emote": "shock",
+          "camera": "punch"
+        }
+      },
+      "cues": [
+        {
+          "done": true,
+          "backdrop": "bg:loom"
         }
       ]
     },
     {
       "id": "farewell_sky",
-      "type": "tsuru_farewell_sky",
+      "type": "cinema_outro",
+      "backdrop": "bg:snow",
+      "overlay": "snow",
+      "actors": [
+        "right"
+      ],
+      "bgm": "sad",
+      "motion": [
+        {
+          "type": "mover",
+          "item": "cloth",
+          "path": [
+            [
+              128,
+              82
+            ]
+          ],
+          "durationSec": 1
+        },
+        {
+          "type": "mover",
+          "item": "crane",
+          "path": [
+            [
+              30,
+              60
+            ],
+            [
+              120,
+              30
+            ],
+            [
+              210,
+              0
+            ],
+            [
+              300,
+              -60
+            ]
+          ],
+          "durationSec": 6,
+          "ease": "out",
+          "show": "moving",
+          "startOn": {
+            "line": 1
+          },
+          "delaySec": 0.6
+        }
+      ],
       "lines": [
         {
           "id": "t06_l01",
@@ -256,7 +450,10 @@
           "vi": "Cảm ơn chàng đã cứu mạng em. Mong chàng luôn mạnh khỏe...",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t06_l01.mp3",
           "durationSec": 7.659,
-          "ttsHash": "e5fae14c3952"
+          "ttsHash": "e5fae14c3952",
+          "castPortrait": {
+            "right": "otsu_plead"
+          }
         },
         {
           "id": "t06_l02",
@@ -267,9 +464,14 @@
           "vi": "Chim hạc trắng vỗ cánh bay cao lên bầu trời đêm đầy tuyết, và không bao giờ quay trở lại nữa.",
           "audioUrl": "/stories/tsuru-ongaeshi/audio/t06_l02.mp3",
           "durationSec": 5.888,
-          "ttsHash": "d3af9b14c5c5"
+          "ttsHash": "d3af9b14c5c5",
+          "castExit": [
+            "right"
+          ],
+          "camera": "pan_right"
         }
-      ]
+      ],
+      "summary": "{恩返|おんがえ}し · 〜ないでください · 〜てしまう · 〜ために"
     }
   ],
   "reading": {
@@ -514,6 +716,111 @@
         ],
         "correctIndex": 0,
         "explanationVi": "Ngữ pháp N4 「V-てしまう」 diễn tả sự tiếc nuối vì lỡ làm việc không nên làm."
+      }
+    ]
+  },
+  "bgm": "calm",
+  "cast": {
+    "left": {
+      "voice": "yosaku",
+      "portrait": "yosaku"
+    },
+    "right": {
+      "voice": "otsu",
+      "portrait": "otsu_gentle"
+    }
+  },
+  "backdropMotion": {
+    "snow": [
+      {
+        "type": "glow",
+        "at": [
+          245,
+          113
+        ],
+        "r": 18,
+        "color": "#ffce6e",
+        "period": 3.2,
+        "min": 0.25,
+        "max": 0.55,
+        "flicker": true
+      },
+      {
+        "type": "glow",
+        "at": [
+          292,
+          113
+        ],
+        "r": 18,
+        "color": "#ffce6e",
+        "period": 3.6,
+        "min": 0.25,
+        "max": 0.55,
+        "flicker": true
+      },
+      {
+        "type": "steam",
+        "at": [
+          [
+            247,
+            40
+          ]
+        ],
+        "rate": 1.1,
+        "height": 40,
+        "color": "#dae0f2"
+      }
+    ],
+    "hearth": [
+      {
+        "type": "glow",
+        "at": [
+          105,
+          157
+        ],
+        "r": 20,
+        "color": "#ffa844",
+        "period": 1.4,
+        "min": 0.3,
+        "max": 0.55,
+        "flicker": true
+      },
+      {
+        "type": "steam",
+        "at": [
+          [
+            98,
+            119
+          ]
+        ],
+        "rate": 1.2,
+        "height": 28
+      }
+    ],
+    "loom": [
+      {
+        "type": "glow",
+        "at": [
+          46,
+          112
+        ],
+        "r": 28,
+        "color": "#ffd670",
+        "period": 2.2,
+        "min": 0.2,
+        "max": 0.45,
+        "flicker": true
+      },
+      {
+        "type": "shimmer",
+        "rect": [
+          150,
+          84,
+          66,
+          40
+        ],
+        "minLuma": 200,
+        "speed": 0.8
       }
     ]
   }

@@ -17,6 +17,7 @@
  * Usage:
  *   node export_video.mjs --story jlpt-n4-2025-12-japan-life [--fps 30] [--width 960] [--out out.mp4]
  *   node export_video.mjs --story konbini-onigiri --check      # fast timeline check, no video (CI)
+ *   node export_video.mjs --story konbini-onigiri --voice-only # voices only (no BGM / SFX), e.g. the A/V sync test
  */
 
 import { execFileSync, spawn } from "node:child_process";
@@ -187,12 +188,14 @@ async function main() {
       // render each BGM segment at its exact length with the same synth/tables as the web player
       const { renderBgm, encodeWav } = await import("../web/scripts/audio_synth.mjs");
       const bgmFiles = [];
-      for (const [j, seg] of bgmPlan.entries()) {
+      // --voice-only: just the voices (A/V sync measurements, dubbing); no music, no sound effects
+      for (const [j, seg] of (opts.voiceOnly ? [] : bgmPlan).entries()) {
         const file = `${outPath}.bgm${j}.wav`;
         fs.writeFileSync(file, encodeWav(await renderBgm(seg.theme, seg.durationMs / 1000)));
         bgmFiles.push({ ...seg, file });
       }
-      execFileSync("ffmpeg", buildMuxArgs(tmpVideo, clips, outPath, bgmFiles), { stdio: "inherit" });
+      const mixed = opts.voiceOnly ? clips.filter((c) => c.kind !== "sfx") : clips;
+      execFileSync("ffmpeg", buildMuxArgs(tmpVideo, mixed, outPath, bgmFiles), { stdio: "inherit" });
       fs.rmSync(tmpVideo, { force: true });
       for (const b of bgmFiles) fs.rmSync(b.file, { force: true });
     }

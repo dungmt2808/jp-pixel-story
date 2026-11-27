@@ -358,6 +358,29 @@ def validate_story_folder(
             if telop:
                 text = telop if isinstance(telop, str) else telop.get("text", "")
                 _check_ruby_segments(f"{lid}/telop", text, issues)
+            portraits = (data.get("assets") or {}).get("portraits") or {}
+            for side, key in (line.get("castPortrait") or {}).items():
+                if side not in ("left", "right"):
+                    issues.append(f"[Unknown Side] {lid}/castPortrait: '{side}' (use 'left' or 'right')")
+                elif key not in portraits:
+                    issues.append(f"[Missing Portrait] {lid}/castPortrait.{side}: '{key}' is not in assets.portraits")
+            if line.get("bgm") and line["bgm"] not in VIBE_BGM:
+                warnings.append(f"[Unknown BGM] {lid}: '{line['bgm']}' falls back to 'default'")
+            for side in line.get("castExit") or []:
+                if side not in ("left", "right"):
+                    issues.append(f"[Unknown Side] {lid}/castExit: '{side}' (use 'left' or 'right')")
+        # cast (story-wide and per scene): portraits must exist
+        if data.get("engine") == "cinema":
+            portraits = (data.get("assets") or {}).get("portraits") or {}
+            casts = [("cast", data.get("cast") or {})] + [
+                (f"{sc.get('id', '?')}/cast", sc.get("cast") or {}) for sc in data.get("scenes", [])
+            ]
+            for where, cast in casts:
+                for side, actor in cast.items():
+                    if side not in ("left", "right"):
+                        issues.append(f"[Unknown Side] {where}: '{side}' (use 'left' or 'right')")
+                    elif isinstance(actor, dict) and actor.get("portrait") and actor["portrait"] not in portraits:
+                        issues.append(f"[Missing Portrait] {where}.{side}: '{actor['portrait']}' is not in assets.portraits")
         # style consistency: painted pixel backgrounds and code-drawn (proc:) backdrops look like
         # two different worlds in one video, so mixing them is flagged
         if data.get("engine") == "cinema":
