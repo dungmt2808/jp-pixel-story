@@ -3313,60 +3313,61 @@ rt {
   .rd-text.tate { height: 56vh; }
 }
 
-/* Vibe kit: variety-show telop (big caption over the stage) */
+/* Vibe kit: telop = a name-plate caption over the stage. One flat plate per caption: cream text
+   on a solid colour with a 1-pixel-style dark border — no text outline, no drop shadow (two
+   layers around each glyph read as a doubled, blurry print). The Vietnamese ribbon hangs under it. */
 .cine-telop {
   position: absolute;
   z-index: 6;
-  transform: translate(-50%, -50%) rotate(-3deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%) rotate(-2deg);
   text-align: center;
   pointer-events: none;
   animation: cine-telop-pop 0.32s steps(4) both;
+  --telop-bg: #c8442c;
+  --telop-fg: #fff8ea;
+  --telop-rt: #ffd9c9;
 }
+.cine-telop.gold { --telop-bg: #e8a93a; --telop-fg: #241712; --telop-rt: #5a3a12; }
+.cine-telop.ai { --telop-bg: #22365a; --telop-fg: #fff8ea; --telop-rt: #c9d6f0; }
+.cine-telop.white { --telop-bg: #fff8ea; --telop-fg: #241712; --telop-rt: #9a5b2e; }
 .cine-telop-t {
   font-family: "Shippori Mincho", var(--font-jp), serif;
   font-weight: 800;
-  font-size: max(22px, 5.4cqw);
-  line-height: 1.15;
-  color: #c8442c;
-  paint-order: stroke fill;
-  -webkit-text-stroke: max(4px, 0.9cqw) #fff8ea;
-  text-shadow: 0.5cqw 0.5cqw 0 #241712;
+  font-size: max(18px, 4.4cqw);
+  line-height: 1.2;
+  color: var(--telop-fg);
+  background: var(--telop-bg);
+  padding: 0.5cqw 1.6cqw 0.35cqw;
+  border: max(2px, 0.35cqw) solid #241712;
   white-space: nowrap;
 }
 .cine-telop-t rt {
-  font-size: 0.38em;
-  -webkit-text-stroke: max(1.5px, 0.25cqw) #fff8ea;
-  color: #241712;
+  font-size: 0.4em;
+  font-weight: 700;
+  color: var(--telop-rt);
 }
-.cine-telop.gold .cine-telop-t { color: #e8a93a; }
-.cine-telop.ai .cine-telop-t { color: #22365a; }
-.cine-telop.white .cine-telop-t { color: #fff8ea; -webkit-text-stroke-color: #241712; }
-/* the Vietnamese ribbon is part of the same caption: it sits right under the Japanese, tilted with
-   it (the whole .cine-telop is rotated), one line, and never wider than the stage */
 .cine-telop-s {
   display: inline-block;
   max-width: 82cqw;
-  margin-top: -0.2cqw;
+  margin-top: calc(-1 * max(2px, 0.35cqw));
   padding: 0.25cqw 1.1cqw;
   font-family: "Be Vietnam Pro", sans-serif;
-  font-weight: 800;
-  font-size: max(10px, 1.5cqw);
+  font-weight: 700;
+  font-size: max(10px, 1.45cqw);
   line-height: 1.35;
   color: #fff8ea;
   background: #241712;
-  border-left: 0.5cqw solid currentColor;
-  box-shadow: 0.4cqw 0.4cqw 0 rgba(0, 0, 0, 0.35);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.cine-telop.shu .cine-telop-s { border-left-color: #c8442c; }
-.cine-telop.gold .cine-telop-s { border-left-color: #e8a93a; }
-.cine-telop.ai .cine-telop-s { border-left-color: #6f8fd0; }
 @keyframes cine-telop-pop {
-  0% { transform: translate(-50%, -50%) rotate(-3deg) scale(1.9); opacity: 0; }
-  60% { transform: translate(-50%, -50%) rotate(-3deg) scale(0.92); opacity: 1; }
-  100% { transform: translate(-50%, -50%) rotate(-3deg) scale(1); opacity: 1; }
+  0% { transform: translate(-50%, -50%) rotate(-2deg) scale(1.6); opacity: 0; }
+  60% { transform: translate(-50%, -50%) rotate(-2deg) scale(0.95); opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(-2deg) scale(1); opacity: 1; }
 }
 
 /* furigana on the cream story card (the global gold rt is unreadable on cream) */
