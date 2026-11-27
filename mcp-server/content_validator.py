@@ -375,9 +375,11 @@ def validate_story_folder(
 
         # route C motion layers (web/src/engine/sceneMotion.ts)
         items = (data.get("assets") or {}).get("items") or {}
-        for sc in data.get("scenes", []):
-            for i, fx in enumerate(sc.get("motion") or []):
-                where = f"{sc.get('id')}/motion[{i}]"
+        backgrounds = (data.get("assets") or {}).get("backgrounds") or {}
+
+        def check_motion(where_prefix: str, fxs: list[dict[str, Any]], painted: bool) -> None:
+            for i, fx in enumerate(fxs or []):
+                where = f"{where_prefix}[{i}]"
                 kind = fx.get("type")
                 if kind not in MOTION_TYPES:
                     issues.append(f"[Unknown Motion] {where}: '{kind}' (use one of {sorted(MOTION_TYPES)})")
@@ -388,8 +390,15 @@ def validate_story_folder(
                         issues.append(f"[Bad Motion Rect] {where}: {r} must lie inside the 320x200 frame")
                 if kind == "mover" and fx.get("item") not in items:
                     issues.append(f"[Missing Asset] {where}: mover item '{fx.get('item')}' is not in assets.items")
-                if kind in ("scroll", "mover") and not str(sc.get("backdrop", "")).startswith("bg:"):
+                if kind in ("scroll", "mover") and not painted:
                     warnings.append(f"[Motion Needs Painting] {where}: '{kind}' samples the painted bg: backdrop")
+
+        for key, fxs in (data.get("backdropMotion") or {}).items():
+            if key not in backgrounds:
+                issues.append(f"[Bad Backdrop Motion] '{key}' is not in assets.backgrounds")
+            check_motion(f"backdropMotion.{key}", fxs, True)
+        for sc in data.get("scenes", []):
+            check_motion(f"{sc.get('id')}/motion", sc.get("motion") or [], str(sc.get("backdrop", "")).startswith("bg:"))
 
         for sc in data.get("scenes", []):
             if sc.get("light") and sc["light"] not in VIBE_LIGHTS:

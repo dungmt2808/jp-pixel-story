@@ -337,6 +337,9 @@ export interface StoryData {
   brand?: string;
   /** Player v2 look: subtle dithered corner vignette (off by default). */
   look?: { vignette?: boolean };
+  /** Route C: ambient motion that belongs to a painted background (steam over its bowls, scenery
+   *  past its windows); it runs whenever `bg:<key>` is on screen, in any scene or checklist answer. */
+  backdropMotion?: Record<string, MotionFx[]>;
   /** Chiptune BGM theme started when the story begins. */
   bgm?: "default" | "depato_sunny" | "depato_rain";
   series: string;

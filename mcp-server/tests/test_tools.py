@@ -421,11 +421,12 @@ def test_validator_checks_motion_layers(tmp_path: Path) -> None:
             {"type": "scroll", "speed": 10, "rects": [[300, 10, 40, 20]]},
             {"type": "mover", "item": "plane", "path": [[0, 0]], "durationSec": 3},
         ]}],
+        "backdropMotion": {"nowhere": [{"type": "glow", "at": [1, 1], "r": 3}]},
         "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []},
     }
     (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
     res = validate_story_folder(sdir, web_public_dir=pub)
     joined = " | ".join(res["issues"])
-    for tag in ("[Unknown Motion]", "[Bad Motion Rect]", "mover item 'plane'"):
+    for tag in ("[Unknown Motion]", "[Bad Motion Rect]", "mover item 'plane'", "[Bad Backdrop Motion] 'nowhere'"):
         assert tag in joined, tag
     assert any("[Motion Needs Painting]" in w for w in res["warnings"])

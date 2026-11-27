@@ -278,7 +278,8 @@ export function CinemaStage({
 
   // BGM mood per scene (scene.bgm > story.bgm); the exporter renders the same themes into the MP4.
   const bgmThemeRef = useRef<string | null>(null);
-  const bgmStartedRef = useRef(false);
+  // entering mid-story comes from a click (reading page), which already unlocked audio
+  const bgmStartedRef = useRef(startScene > 0);
   useEffect(() => {
     if (!assetsReady) return;
     const theme = resolveBgmTheme(currentScene.bgm ?? story.bgm ?? "default");
@@ -292,6 +293,20 @@ export function CinemaStage({
     bgmStartedRef.current = true;
     if (!recordMode) retroAudio.startBgm(bgmThemeRef.current ?? story.bgm ?? "default");
   }, [recordMode, story.bgm]);
+
+  // Entered past the title card (e.g. "watch this scene again" from the reading page): there is
+  // no BEGIN click, so the first tap / key press anywhere starts the music (browsers need a gesture).
+  useEffect(() => {
+    if (recordMode) return;
+    // startBgm is idempotent; calling it inside a gesture also resumes a suspended AudioContext
+    const onFirstGesture = () => startMusic();
+    window.addEventListener("pointerdown", onFirstGesture, { once: true });
+    window.addEventListener("keydown", onFirstGesture, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", onFirstGesture);
+      window.removeEventListener("keydown", onFirstGesture);
+    };
+  }, [recordMode, startMusic]);
 
   const completeInteraction = useCallback(async () => {
     if (completingRef.current) return;
@@ -529,7 +544,9 @@ export function CinemaStage({
       cameraRef.current = vLine?.camera ? cameraAt(vLine.camera, vAge, focus, vLine.durationSec ?? 3) : IDENTITY_VIEW;
 
       // route C: the world (backdrop + motion layers + actors) may bump 1 px on a rumble beat
-      const motion = backdropOverride ? undefined : currentScene.motion;
+      // ambient motion of the painting on screen + the scene's own scripted motion (movers...)
+      const bgKey = backdropRef.startsWith("bg:") ? backdropRef.slice(3) : "";
+      const motion = [...(story.backdropMotion?.[bgKey] ?? []), ...(backdropOverride ? [] : currentScene.motion ?? [])];
       const bgImg = imgs[backdropRef.startsWith("bg:") ? backdropRef : `bg:${backdropRef}`];
       const bump = sceneRumble(motion, elapsed);
       if (bump) drawBackdrop(ctx, backdropRef, t, imgs); // fills the row the shift uncovers

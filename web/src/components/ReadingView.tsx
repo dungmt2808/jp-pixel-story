@@ -355,7 +355,14 @@ export function ReadingView({
                   <figcaption>
                     <span>🎬 Cảnh bạn đã xem trong hoạt ảnh</span>
                     {chapterScene >= 0 && (
-                      <button type="button" className="rd-link" onClick={() => onBackToStory(chapterScene)}>
+                      <button
+                        type="button"
+                        className="rd-link"
+                        onClick={() => {
+                          retroAudio.playClick(); // a gesture: unlocks audio so the scene starts with its music
+                          onBackToStory(chapterScene);
+                        }}
+                      >
                         ▶ Xem lại cảnh này
                       </button>
                     )}
