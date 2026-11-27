@@ -117,7 +117,8 @@ export function App() {
   );
   const [autoplay, setAutoplay] = useState<boolean>(initialAutoplay);
   const [mode, setMode] = useState<AppMode>(initialMode);
-  const [stageStartScene, setStageStartScene] = useState(0);
+  const initialScene = Math.max(0, Number.parseInt(initialParams.get("scene") ?? "0", 10) || 0);
+  const [stageStartScene, setStageStartScene] = useState(initialScene);
   const [story, setStory] = useState<StoryData | null>(null);
   const [dictationPack, setDictationPack] = useState<DictationPack | null>(null);
   const [choukaiExam, setChoukaiExam] = useState<ChoukaiExamData | null>(null);

@@ -376,10 +376,12 @@ def test_vibe_names_match_the_web_engine() -> None:
         return set(re.findall(r'"([a-z_]+)"', block))
 
     emotes = quoted(re.search(r"EMOTE_NAMES = \[(.*?)\]", vibe, re.S).group(1))
+    actions = quoted(re.search(r"ACTION_NAMES = \[(.*?)\]", vibe, re.S).group(1))
     cameras = quoted(re.search(r"export type CameraMove = (.*?);", vibe, re.S).group(1))
     lights = set(re.findall(r"^\s{2}([a-z_]+): \{", re.search(r"LIGHTS: Record<string, Grade> = \{(.*?)\n\};", vibe, re.S).group(1), re.M))
     sfx = quoted(re.search(r"SFX_NAMES = \[(.*?)\]", themes, re.S).group(1))
     assert emotes == cv.VIBE_EMOTES
+    assert actions == cv.VIBE_ACTIONS
     assert cameras == cv.VIBE_CAMERAS
     assert lights == cv.VIBE_LIGHTS
     assert sfx == cv.VIBE_SFX
@@ -543,3 +545,40 @@ def test_validator_flags_a_character_shown_twice(tmp_path: Path) -> None:
     scene["actors"] = []
     (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
     assert not any("[Double Character]" in w for w in validate_story_folder(sdir, web_public_dir=pub)["warnings"])
+
+
+def test_validator_allows_shared_sprite_cast_and_castPortrait_without_static_portraits(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "kotoba_ep1", category="story")
+    for key in ("stackchan_neutral", "stackchan_happy"):
+        sp = pub / "shared" / "kotoba-mura" / "sprites" / key
+        sp.mkdir(parents=True)
+        Image.new("RGBA", (32, 16), (36, 23, 18, 255)).save(sp / "spritesheet.png")
+        (sp / "meta.json").write_text(json.dumps({
+            "spritesheet": "spritesheet.png", "frameWidth": 16, "frameHeight": 16, "frameCount": 2,
+            "palette": "jp_story_master", "clips": {"idle": [0], "talk": [1, 0]},
+        }))
+    story = {
+        "id": "kotoba_ep1", "engine": "cinema", "palette": "jp_story_master",
+        "cast": {"left": {"voice": "stackchan", "portrait": "stackchan_neutral"}},
+        "assets": {
+            "backgrounds": {}, "portraits": {},
+            "sprites": {
+                "stackchan_neutral": "/shared/kotoba-mura/sprites/stackchan_neutral/meta.json",
+                "stackchan_happy": "/shared/kotoba-mura/sprites/stackchan_happy/meta.json",
+            },
+        },
+        "scenes": [{
+            "id": "s1", "type": "cinema_dialogue", "backdrop": "set:shibuya",
+            "lines": [{
+                "id": "l1", "voice": "stackchan", "jaPlain": "おはよう！", "jaRuby": "おはよう！",
+                "vi": "Chào buổi sáng!", "audioUrl": "/stories/kotoba_ep1/audio/l1.mp3",
+                "castPortrait": {"left": "stackchan_happy"},
+            }],
+        }],
+        "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []},
+    }
+    (sdir / "audio").mkdir(parents=True, exist_ok=True)
+    (sdir / "audio" / "l1.mp3").write_bytes(b"\xff\xfb" + b"\x00" * 600)
+    (sdir / "story.json").write_text(json.dumps(story, ensure_ascii=False), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    assert res["ok"], f"Unexpected issues: {res['issues']}"

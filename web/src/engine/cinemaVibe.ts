@@ -51,6 +51,70 @@ const BITMAPS: Record<string, string[][]> = {
 
 export const EMOTE_NAMES = ["sweat", "anger", "heart", "sparkle", "shock", "question", "note", "dots", "gloom"] as const;
 
+// ---------------------------------------------------------------------------------------------
+// Actor body actions (whole-pixel offsets, deterministic by line age -> crisp in live & MP4).
+// ---------------------------------------------------------------------------------------------
+export const ACTION_NAMES = ["hop", "bow", "startle", "shiver", "lean", "sway"] as const;
+export type ActorAction = (typeof ACTION_NAMES)[number];
+
+export interface ActorMotionOffset {
+  dx: number;
+  dy: number;
+  headDy: number;
+}
+
+const ZERO_OFFSET: ActorMotionOffset = { dx: 0, dy: 0, headDy: 0 };
+
+/**
+ * Deterministic whole-pixel motion for a bust actor `age` seconds into a line.
+ * Every value is an integer so pixel art never smears.
+ */
+export function actorActionOffset(action: string | undefined, age: number, side: "left" | "right"): ActorMotionOffset {
+  if (!action) return ZERO_OFFSET;
+  const t = Math.max(0, age);
+  const inward = side === "left" ? 1 : -1;
+  switch (action) {
+    case "hop": {
+      // two joyful bounces in the first 0.72 s
+      if (t >= 0.72) return ZERO_OFFSET;
+      const u = (t % 0.36) / 0.36;
+      return { dx: 0, dy: -Math.round(Math.sin(u * Math.PI) * 6), headDy: 0 };
+    }
+    case "bow": {
+      // polite Japanese ojigi: dip down, hold briefly, rise cleanly
+      let k = 0;
+      if (t < 0.25) k = t / 0.25;
+      else if (t < 0.85) k = 1;
+      else if (t < 1.15) k = 1 - (t - 0.85) / 0.3;
+      return { dx: 0, dy: Math.round(k * 4), headDy: Math.round(k * 2) };
+    }
+    case "startle": {
+      // quick surprised jolt upward + 2-tick horizontal rattle
+      if (t >= 0.4) return ZERO_OFFSET;
+      const dy = t < 0.14 ? -Math.round((1 - t / 0.14) * 6) : 0;
+      const dx = t < 0.26 ? (Math.floor(t * 24) % 2 === 0 ? 2 : -2) : 0;
+      return { dx, dy, headDy: 0 };
+    }
+    case "shiver": {
+      // low-battery / cold / nervous tremble + slight slump
+      const dx = t < 1.8 ? (Math.floor(t * 24) % 2 === 0 ? 1 : -1) : 0;
+      return { dx, dy: 2, headDy: 1 };
+    }
+    case "lean": {
+      // step eagerly toward stage center while speaking
+      const u = 1 - Math.pow(1 - Math.min(1, t / 0.28), 3);
+      return { dx: inward * Math.round(u * 10), dy: 0, headDy: 0 };
+    }
+    case "sway": {
+      // cheerful rhythmic side-to-side sway
+      const s = Math.sin(t * 5.5);
+      return { dx: Math.round(s * 2), dy: -Math.abs(Math.round(s)), headDy: 0 };
+    }
+    default:
+      return ZERO_OFFSET;
+  }
+}
+
 function drawBitmap(ctx: CanvasRenderingContext2D, rows: string[], x: number, y: number): void {
   rows.forEach((row, j) => {
     for (let i = 0; i < row.length; i++) {

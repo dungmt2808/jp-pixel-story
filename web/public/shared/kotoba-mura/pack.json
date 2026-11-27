@@ -1,0 +1,79 @@
+{
+  "id": "kotoba-mura",
+  "assets": {
+    "backgrounds": {
+      "kotoba_garden": "/shared/kotoba-mura/bg_kotoba_garden.png",
+      "kotoba_inn_lobby": "/shared/kotoba-mura/bg_kotoba_inn_lobby.png"
+    },
+    "sprites": {
+      "stackchan_neutral": "/shared/kotoba-mura/sprites/stackchan_neutral/meta.json",
+      "stackchan_happy": "/shared/kotoba-mura/sprites/stackchan_happy/meta.json",
+      "stackchan_lowbat": "/shared/kotoba-mura/sprites/stackchan_lowbat/meta.json",
+      "stackchan_walk": "/shared/kotoba-mura/sprites/stackchan_walk/meta.json",
+      "lin_neutral": "/shared/kotoba-mura/sprites/lin_neutral/meta.json",
+      "lin_walk": "/shared/kotoba-mura/sprites/lin_walk/meta.json",
+      "hana_warm": "/shared/kotoba-mura/sprites/hana_warm/meta.json"
+    },
+    "rigs": {
+      "lin_neutral": "/shared/kotoba-mura/sprites/lin_neutral/rig/rig.json",
+      "hana_warm": "/shared/kotoba-mura/sprites/hana_warm/rig/rig.json"
+    }
+  },
+  "name": "ことば村 (Làng Kotoba — Vũ trụ dùng chung)",
+  "palette": "jp_story_master",
+  "voices": {
+    "narrator": {
+      "label": "ナレーター (No.7・読み聞かせ)",
+      "speakerId": 31,
+      "speedScale": 0.92,
+      "intonationScale": 1.08,
+      "pauseLengthScale": 1.12
+    },
+    "stackchan": {
+      "label": "スタックちゃん (白上虎太郎)",
+      "speakerId": 12,
+      "speedScale": 0.96,
+      "intonationScale": 1.16,
+      "pauseLengthScale": 1.05
+    },
+    "lin": {
+      "label": "リンさん (小夜/SAYO)",
+      "speakerId": 46,
+      "speedScale": 0.92,
+      "intonationScale": 1.12,
+      "pauseLengthScale": 1.1
+    },
+    "hana": {
+      "label": "はなさん (WhiteCUL)",
+      "speakerId": 23,
+      "speedScale": 0.9,
+      "intonationScale": 1.08,
+      "pauseLengthScale": 1.14
+    },
+    "soncho": {
+      "label": "村長 (青山龍星)",
+      "speakerId": 13,
+      "speedScale": 0.9,
+      "intonationScale": 1.1,
+      "pauseLengthScale": 1.14
+    }
+  },
+  "cast": {
+    "stackchan": {
+      "voice": "stackchan",
+      "portrait": "stackchan_neutral"
+    },
+    "lin": {
+      "voice": "lin",
+      "portrait": "lin_neutral"
+    },
+    "hana": {
+      "voice": "hana",
+      "portrait": "hana_warm"
+    },
+    "soncho": {
+      "voice": "soncho",
+      "portrait": "soncho_warm"
+    }
+  }
+}

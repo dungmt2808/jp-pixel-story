@@ -20,6 +20,7 @@ RUBY_BRACE_RE = re.compile(r"\{([^|}]+)\|([^}]+)\}")
 
 # Names the cinema "vibe kit" understands (keep in sync with cinemaVibe.ts / audio/themes.ts).
 VIBE_EMOTES = {"sweat", "anger", "heart", "sparkle", "shock", "question", "note", "dots", "gloom"}
+VIBE_ACTIONS = {"hop", "bow", "startle", "shiver", "lean", "sway"}
 VIBE_CAMERAS = {"push", "punch", "close", "shake", "pan_left", "pan_right"}
 VIBE_SFX = {"pop", "ding", "whoosh", "boing", "shock", "sparkle", "thud", "gloom", "heart"}
 VIBE_LIGHTS = {"day", "morning", "golden", "dusk", "night", "rain", "warm"}
@@ -374,6 +375,10 @@ def validate_story_folder(
             lid = line.get("id", default_id)
             if line.get("emote") and line["emote"] not in VIBE_EMOTES:
                 issues.append(f"[Unknown Emote] {lid}: '{line['emote']}' (use one of {sorted(VIBE_EMOTES)})")
+            if line.get("action") and line["action"] not in VIBE_ACTIONS:
+                issues.append(f"[Unknown Action] {lid}: '{line['action']}' (use one of {sorted(VIBE_ACTIONS)})")
+            if line.get("actionSide") and line["actionSide"] not in ("left", "right"):
+                issues.append(f"[Unknown Side] {lid}/actionSide: '{line['actionSide']}' (use 'left' or 'right')")
             if line.get("camera") and line["camera"] not in VIBE_CAMERAS:
                 issues.append(f"[Unknown Camera] {lid}: '{line['camera']}' (use one of {sorted(VIBE_CAMERAS)})")
             if line.get("sfx") and line["sfx"] not in VIBE_SFX | {"none"}:
@@ -382,20 +387,30 @@ def validate_story_folder(
             if telop:
                 text = telop if isinstance(telop, str) else telop.get("text", "")
                 _check_ruby_segments(f"{lid}/telop", text, issues)
-            portraits = (data.get("assets") or {}).get("portraits") or {}
+            assets_map = data.get("assets") or {}
+            actor_keys = (
+                set((assets_map.get("portraits") or {}).keys())
+                | set((assets_map.get("sprites") or {}).keys())
+                | set((assets_map.get("rigs") or {}).keys())
+            )
             for side, key in (line.get("castPortrait") or {}).items():
                 if side not in ("left", "right"):
                     issues.append(f"[Unknown Side] {lid}/castPortrait: '{side}' (use 'left' or 'right')")
-                elif key not in portraits:
-                    issues.append(f"[Missing Portrait] {lid}/castPortrait.{side}: '{key}' is not in assets.portraits")
+                elif key not in actor_keys:
+                    issues.append(f"[Missing Portrait] {lid}/castPortrait.{side}: '{key}' is not in assets.portraits/sprites/rigs")
             if line.get("bgm") and line["bgm"] not in VIBE_BGM:
                 warnings.append(f"[Unknown BGM] {lid}: '{line['bgm']}' falls back to 'default'")
             for side in line.get("castExit") or []:
                 if side not in ("left", "right"):
                     issues.append(f"[Unknown Side] {lid}/castExit: '{side}' (use 'left' or 'right')")
-        # cast (story-wide and per scene): portraits must exist
+        # cast (story-wide and per scene): portraits/sprites/rigs must exist
         if data.get("engine") == "cinema":
-            portraits = (data.get("assets") or {}).get("portraits") or {}
+            assets_map = data.get("assets") or {}
+            actor_keys = (
+                set((assets_map.get("portraits") or {}).keys())
+                | set((assets_map.get("sprites") or {}).keys())
+                | set((assets_map.get("rigs") or {}).keys())
+            )
             casts = [("cast", data.get("cast") or {})] + [
                 (f"{sc.get('id', '?')}/cast", sc.get("cast") or {}) for sc in data.get("scenes", [])
             ]
@@ -403,8 +418,8 @@ def validate_story_folder(
                 for side, actor in cast.items():
                     if side not in ("left", "right"):
                         issues.append(f"[Unknown Side] {where}: '{side}' (use 'left' or 'right')")
-                    elif isinstance(actor, dict) and actor.get("portrait") and actor["portrait"] not in portraits:
-                        issues.append(f"[Missing Portrait] {where}.{side}: '{actor['portrait']}' is not in assets.portraits")
+                    elif isinstance(actor, dict) and actor.get("portrait") and actor["portrait"] not in actor_keys:
+                        issues.append(f"[Missing Portrait] {where}.{side}: '{actor['portrait']}' is not in assets.portraits/sprites/rigs")
         # style consistency: painted pixel backgrounds and code-drawn (proc:) backdrops look like
         # two different worlds in one video, so mixing them is flagged
         if data.get("engine") == "cinema":

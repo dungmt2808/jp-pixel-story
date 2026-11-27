@@ -1,0 +1,77 @@
+{
+  "spritesheet": "spritesheet.png",
+  "frameWidth": 96,
+  "frameHeight": 96,
+  "frameCount": 4,
+  "palette": "jp_story_master",
+  "frames": [
+    "frame_00.png",
+    "frame_01.png",
+    "frame_02.png",
+    "frame_03.png"
+  ],
+  "pivot": {
+    "x": 47,
+    "y": 96
+  },
+  "fps": 8.0,
+  "clips": {
+    "idle": {
+      "frames": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "talk": {
+      "frames": [
+        1,
+        3,
+        1,
+        0
+      ],
+      "fps": 8.0,
+      "loop": true
+    }
+  },
+  "scale": 0.284866,
+  "registration": "bust",
+  "expressionRegion": [
+    27,
+    30,
+    64,
+    56
+  ],
+  "frameExpressionRegions": {
+    "1": [
+      38,
+      48,
+      56,
+      56
+    ],
+    "2": [
+      27,
+      30,
+      64,
+      46
+    ],
+    "3": [
+      38,
+      48,
+      56,
+      56
+    ]
+  },
+  "lockedToFrame": 0
+}

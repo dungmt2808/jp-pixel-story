@@ -36,11 +36,14 @@ export interface PersonMove {
   who: string;
   /** Walk / run to this x (px per second `speed`, default 24). */
   walkTo?: number;
+  /** Optional vertical destination paired with `walkTo` (ground depth change). */
+  walkToY?: number;
   speed?: number;
   /** Pose once arrived (default "stand"); "exit" hides the person on arrival. */
   then?: Pose | "exit";
   /** Instant changes. */
   x?: number;
+  y?: number;
   face?: Face;
   pose?: Pose;
   show?: boolean;
@@ -48,6 +51,10 @@ export interface PersonMove {
   fadeOut?: number;
   /** Hop up and down for N seconds (joy). */
   hop?: number;
+  /** Shiver ±1px horizontally for N seconds (cold, startled, low battery). */
+  shiver?: number;
+  /** Polite Japanese bow dip for N seconds. */
+  bow?: number;
 }
 
 export interface PersonState {
@@ -76,16 +83,22 @@ export function personAt(def: PersonDef, moves: { move: PersonMove; time: number
     if (time > t) break;
     if (move.show !== undefined) s.visible = move.show;
     if (move.x !== undefined) s.x = move.x;
+    if (move.y !== undefined) s.y = move.y;
     if (move.face) s.face = move.face;
     if (move.pose) s.pose = move.pose;
-    if (move.walkTo !== undefined) {
+    if (move.walkTo !== undefined || move.walkToY !== undefined) {
       s.visible = true;
-      const from = s.x;
+      const fromX = s.x;
+      const fromY = s.y;
+      const toX = move.walkTo ?? fromX;
+      const toY = move.walkToY ?? fromY;
       const speed = Math.max(1, move.speed ?? 24);
-      const dur = Math.abs(move.walkTo - from) / speed;
+      const dist = Math.hypot(toX - fromX, toY - fromY);
+      const dur = dist / speed;
       const k = dur === 0 ? 1 : clamp((t - time) / dur, 0, 1);
-      s.x = from + (move.walkTo - from) * k;
-      if (move.walkTo !== from) s.face = move.walkTo > from ? "right" : "left";
+      s.x = fromX + (toX - fromX) * k;
+      s.y = fromY + (toY - fromY) * k;
+      if (toX !== fromX) s.face = toX > fromX ? "right" : "left";
       if (k < 1) {
         s.pose = speed > 40 ? "run" : "walk";
       } else if (move.then === "exit") {
@@ -98,6 +111,17 @@ export function personAt(def: PersonDef, moves: { move: PersonMove; time: number
     if (move.hop) {
       const age = t - time;
       if (age < move.hop) s.lift = -Math.round(Math.abs(Math.sin(age * 10)) * 4);
+    }
+    if (move.bow) {
+      const age = t - time;
+      if (age < move.bow) {
+        const u = age / move.bow;
+        s.lift = u < 0.2 ? Math.round((u / 0.2) * 2) : u > 0.8 ? Math.round(((1 - u) / 0.2) * 2) : 2;
+      }
+    }
+    if (move.shiver) {
+      const age = t - time;
+      if (age < move.shiver) s.x += Math.floor(age * 24) % 2 === 0 ? 1 : -1;
     }
   }
   if (s.alpha <= 0) s.visible = false;

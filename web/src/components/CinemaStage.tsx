@@ -39,7 +39,7 @@ import { VIRTUAL_H, VIRTUAL_W } from "../engine/pixelRenderer";
 import { drawRig, rigHeadFrame, rigPose } from "../engine/rigAnimator";
 import { drawSpriteFrame, frameAt } from "../engine/spriteAnimator";
 import { useStageRuntime } from "../engine/useStageRuntime";
-import { cameraAt, drawEmote, drawLightGrade, IDENTITY_VIEW, lineSfx } from "../engine/cinemaVibe";
+import { actorActionOffset, cameraAt, drawEmote, drawLightGrade, IDENTITY_VIEW, lineSfx } from "../engine/cinemaVibe";
 import { drawSceneMotion, sceneRumble } from "../engine/sceneMotion";
 import { backdropAt, cueMoves, cueTime, setStateAt, type CueAnchors } from "../engine/cues";
 import { drawPerson, personAt, personBox, type PersonState } from "../engine/people";
@@ -110,13 +110,23 @@ function drawActor(
     sprites: ReturnType<typeof useStageRuntime>["spritesRef"]["current"];
     rigs: ReturnType<typeof useStageRuntime>["rigsRef"]["current"];
   },
-  state: { talking: boolean; active: boolean; listening: boolean; enterProgress: number; t: number }
+  state: {
+    talking: boolean;
+    active: boolean;
+    listening: boolean;
+    enterProgress: number;
+    t: number;
+    action?: string;
+    actionAge?: number;
+  }
 ): void {
   const ease = easeOutCubic(state.enterProgress);
   const dir = side === "left" ? -1 : 1;
   const slide = Math.round(26 * (1 - ease)) * dir;
   const focusShift = state.active ? 0 : 4 * dir;
-  const x = actorX(side, actor) + slide + focusShift;
+  const act = actorActionOffset(state.action, state.actionAge ?? 0, side);
+  const x = actorX(side, actor) + slide + focusShift + act.dx;
+  const groundY = VIRTUAL_H + act.dy;
   const scale = Math.max(1, Math.floor(actor.scale ?? 1));
 
   ctx.save();
@@ -125,12 +135,14 @@ function drawActor(
   ctx.globalAlpha = clamp01(ease);
   const { rig, sheet } = actorAnimation(actor, res);
   if (rig) {
-    const pose = rigPose(state, state.t, side === "left" ? 0 : 1.3);
+    const basePose = rigPose(state, state.t, side === "left" ? 0 : 1.3);
+    const pose = { ...basePose, headDy: basePose.headDy + act.headDy };
     const frame = rigHeadFrame(rig.data, state.talking, state.t, actor.talkClip, actor.idleClip);
-    drawRig(ctx, rig, frame, x, VIRTUAL_H, pose, { scale, flipX: actor.flipX });
+    drawRig(ctx, rig, frame, x, groundY, pose, { scale, flipX: actor.flipX });
   } else if (sheet) {
     const clip = state.talking ? actor.talkClip ?? "talk" : actor.idleClip ?? "idle";
-    drawSpriteFrame(ctx, sheet, frameAt(sheet.meta, clip, state.t), x, VIRTUAL_H, { scale, flipX: actor.flipX });
+    const talkBob = state.talking && Math.floor(state.t * 4) % 2 === 0 ? -1 : 0;
+    drawSpriteFrame(ctx, sheet, frameAt(sheet.meta, clip, state.t), x, groundY + talkBob, { scale, flipX: actor.flipX });
   } else {
     const im = actor.portrait ? res.imgs[`p:${actor.portrait}`] : undefined;
     if (im) {
@@ -142,7 +154,7 @@ function drawActor(
         ctx.translate(x * 2, 0);
         ctx.scale(-1, 1);
       }
-      drawPixelImage(ctx, im, x - Math.floor(w / 2), VIRTUAL_H - h + breath + talkBob + 1, w, h);
+      drawPixelImage(ctx, im, x - Math.floor(w / 2), groundY - h + breath + talkBob + 1, w, h);
     }
   }
   ctx.restore();
@@ -203,6 +215,8 @@ export function CinemaStage({
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [foundIds, setFoundIds] = useState<string[]>([]);
   const [reachedEnd, setReachedEnd] = useState(false);
+  const [cameraZoomed, setCameraZoomed] = useState(false);
+  const cameraZoomedRef = useRef(false);
 
   const currentScene = story.scenes[sceneIdx];
   const kind = cinemaSceneKind(currentScene.type);
@@ -258,6 +272,8 @@ export function CinemaStage({
     setFoundIds([]);
     foundRef.current = [];
     setDraggingId(null);
+    cameraZoomedRef.current = false;
+    setCameraZoomed(false);
     completingRef.current = false;
     dragRef.current = initDrag(currentScene.interaction?.items ?? []);
     dragIdxRef.current = -1;
@@ -565,7 +581,10 @@ export function CinemaStage({
   const registerProgressRef = useRef(registerProgress);
   registerProgressRef.current = registerProgress;
 
-  const visibleLabels = (currentScene.labels ?? []).filter((l) => l.afterLine === undefined || lineIdx >= l.afterLine || phase !== "lines");
+  const showLabels = !cameraZoomed && phase !== "interact";
+  const visibleLabels = showLabels
+    ? (currentScene.labels ?? []).filter((l) => l.afterLine === undefined || lineIdx >= l.afterLine || phase !== "lines")
+    : [];
   const labelsRef = useRef(visibleLabels);
   labelsRef.current = visibleLabels;
 
@@ -618,6 +637,11 @@ export function CinemaStage({
             ? [focusBox.x, focusBox.top + focusBox.h * 0.3]
             : [VIRTUAL_W / 2, VIRTUAL_H / 2];
       cameraRef.current = vLine?.camera ? cameraAt(vLine.camera, vAge, focus, vLine.durationSec ?? 3) : IDENTITY_VIEW;
+      const zoomed = Boolean(vLine?.camera) || cameraRef.current.zoom > 1.01;
+      if (zoomed !== cameraZoomedRef.current) {
+        cameraZoomedRef.current = zoomed;
+        setCameraZoomed(zoomed);
+      }
 
       // route C: the world (backdrop + motion layers + actors) may bump 1 px on a rumble beat
       // ambient motion of the painting on screen + the scene's own scripted motion (movers...)
@@ -663,6 +687,7 @@ export function CinemaStage({
 
       if (kind !== "intro") {
         const speaking = speakingRef.current;
+        const actionSide = vLine?.action ? (vLine.actionSide ?? vLine.emoteSide ?? speakerSide) : undefined;
         sides.forEach((side, i) => {
           const base = cast[side];
           if (!base) return;
@@ -676,6 +701,8 @@ export function CinemaStage({
             ...focus,
             enterProgress: Math.min(elapsed / (0.5 + i * 0.1), 1) * stay,
             t,
+            action: side === actionSide ? vLine?.action : undefined,
+            actionAge: vAge,
           });
         });
       }
@@ -730,13 +757,25 @@ export function CinemaStage({
             registerProgressRef.current(1);
           }
         }
-        const im = h.item ? imgs[`i:${h.item}`] : undefined;
-        if (im) {
-          const tilt = hr.holding ? -2 : 0;
-          drawPixelImage(ctx, im, Math.round(h.x - im.naturalWidth / 2), Math.round(h.y - im.naturalHeight - 10) + tilt, im.naturalWidth, im.naturalHeight);
+        if (interacting) {
+          if (!hr.holding && h.streamTo) drawTargetGlow(ctx, h.streamTo, t, 12);
+          const im = h.item ? imgs[`i:${h.item}`] : undefined;
+          const canCx = Math.round(h.x);
+          const canCy = Math.round(h.y + 18);
+          if (im) {
+            const bob = hr.holding ? Math.round(Math.sin(t * 10) * 1) : Math.round(Math.sin(t * 3.5) * 1);
+            ctx.save();
+            ctx.translate(canCx, canCy + bob);
+            if (hr.holding) ctx.rotate(0.32);
+            drawPixelImage(ctx, im, -Math.floor(im.naturalWidth / 2), -Math.floor(im.naturalHeight / 2), im.naturalWidth, im.naturalHeight);
+            ctx.restore();
+          }
+          if (hr.holding && h.streamTo) {
+            const spout: Vec = im ? [canCx + Math.floor(im.naturalWidth / 2) - 1, canCy + 2] : [h.x + 8, h.y + 8];
+            drawStream(ctx, spout, h.streamTo, t, h.streamColor);
+          }
+          drawMeter(ctx, h.x, h.y, 56, hr.progress);
         }
-        if (hr.holding && h.streamTo) drawStream(ctx, [h.x + 8, h.y - 12], h.streamTo, t);
-        drawMeter(ctx, h.x, h.y, 64, hr.progress);
       }
 
       // one light grade over the whole world layer (backdrop, actors, items) = one time of day
@@ -757,8 +796,10 @@ export function CinemaStage({
         }
       }
 
-      for (const l of labelsRef.current) {
-        if (l.to) drawLeaderLine(ctx, [l.x, l.y + 6], l.to);
+      if (!zoomed) {
+        for (const l of labelsRef.current) {
+          if (l.to) drawLeaderLine(ctx, [l.x, l.y + 6], l.to);
+        }
       }
       particlesRef.current = stepAndDrawParticles(ctx, particlesRef.current, dt);
       if (story.look?.vignette) drawDitherVignette(ctx);
@@ -912,8 +953,8 @@ export function CinemaStage({
               </div>
             ) : null
           )}
-        {interaction?.type === "hold" && interaction.hold && (
-          <div className="cine-tag" style={toPct(interaction.hold.x, interaction.hold.y + 16)}>
+        {interaction?.type === "hold" && phase === "interact" && interaction.hold && (
+          <div className="cine-tag" style={toPct(interaction.hold.x, interaction.hold.y - 12)}>
             <RubyText segments={interaction.hold.label} showFurigana={showFurigana} />
           </div>
         )}

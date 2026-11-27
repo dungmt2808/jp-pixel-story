@@ -32,6 +32,10 @@ export interface DialogueLine {
   emoteSide?: "left" | "right";
   /** Route B: the emote (and camera focus) goes to this person of `scene.people`. */
   emoteWho?: string;
+  /** Vibe kit: whole-pixel actor gesture ("hop", "bow", "startle", "shiver", "lean", "sway"). */
+  action?: string;
+  /** Which actor performs `action` (default: `emoteSide`, else the speaker). */
+  actionSide?: "left" | "right";
   /** Switch a cast member's portrait from this line on (expressions): { "left": "minh_happy" }. */
   castPortrait?: Partial<Record<"left" | "right", string>>;
   /** Vibe kit: switch the BGM when this line starts (same names as `scene.bgm`); lasts until the next scene. */
@@ -193,6 +197,8 @@ export interface HoldGauge {
   item?: string;
   /** Particle stream from the item to this point while holding (pouring, watering...). */
   streamTo?: [number, number];
+  /** Optional colour for the particle stream (default tea green `#93b85a`; e.g. `#7ec8f0` for water). */
+  streamColor?: string;
 }
 
 /** Data-driven mini-game of a scene (played after the scene's lines). */

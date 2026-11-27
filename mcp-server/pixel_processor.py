@@ -505,6 +505,7 @@ def process_sprite_sheet(
     outline_color: str | None = "#241712",
     lock_expressions: bool = False,
     expression_region: list[int] | None = None,
+    frame_regions: dict[str, list[int]] | None = None,
     record_provenance: bool = True,
     source: dict[str, Any] | None = None,
     facing: str = "",
@@ -675,7 +676,12 @@ def process_sprite_sheet(
     if lock_expressions:
         from pixel_rig import lock_expressions as _lock
 
-        lock_report = _lock(out_dir, region=expression_region or "auto", record_provenance=False)
+        lock_report = _lock(
+            out_dir,
+            region=expression_region or "auto",
+            frame_regions=frame_regions,
+            record_provenance=False,
+        )
     if record_provenance:
         provenance.record(
             "process_sprite_sheet",
@@ -683,6 +689,7 @@ def process_sprite_sheet(
                  bg_mode=bg_mode, tolerance=tolerance, align_bottom=align_bottom, registration=registration, fps=fps,
                  clips=clips, padding=padding, grid=grid, cleanup=cleanup, outline_color=outline_color,
                  lock_expressions=lock_expressions, expression_region=expression_region,
+                 **({"frame_regions": frame_regions} if frame_regions else {}),
                  **({"facing": facing} if facing else {}),
                  **({"split": split} if split != "grid" else {}),
                  **({"pixel_pitch": pixel_pitch} if pixel_pitch else {})),

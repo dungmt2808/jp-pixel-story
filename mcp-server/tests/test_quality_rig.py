@@ -280,6 +280,28 @@ def test_lock_expressions_removes_body_flicker(tmp_path: Path) -> None:
     assert not np.array_equal(strip[:, 48:96][20:24], strip[:, 0:48][20:24])  # mouth still animates
 
 
+def test_lock_expressions_frame_regions_freezes_eyes_while_talking(tmp_path: Path) -> None:
+    sdir = _bust_sheet(tmp_path, noise=False)
+    # Introduce an unwanted pupil shift on talking frame 1 and mouth shift on blink frame 2
+    strip = np.array(Image.open(sdir / "spritesheet.png"))
+    strip[12:15, 48 + 18 : 48 + 21] = (255, 255, 255, 255)  # shifted eye in frame 1
+    strip[20:22, 96 + 21 : 96 + 27] = (200, 80, 80, 255)  # shifted mouth in frame 2
+    Image.fromarray(strip, "RGBA").save(sdir / "spritesheet.png")
+
+    res = lock_expressions(
+        sdir,
+        region=[16, 11, 32, 25],
+        frame_regions={"1": [20, 19, 28, 25], "2": [16, 11, 32, 16]},
+    )
+    assert res["flicker_pixels_after"] == [0, 0, 0, 0]
+    out = np.array(Image.open(sdir / "spritesheet.png"))
+    f0, f1, f2 = out[:, 0:48], out[:, 48:96], out[:, 96:144]
+    assert np.array_equal(f1[11:16, 16:32], f0[11:16, 16:32])  # eyes frozen on talk frame 1
+    assert not np.array_equal(f1[19:25, 20:28], f0[19:25, 20:28])  # mouth still animates on talk frame 1
+    assert np.array_equal(f2[19:25, 20:28], f0[19:25, 20:28])  # mouth frozen on blink frame 2
+    assert not np.array_equal(f2[11:16, 16:32], f0[11:16, 16:32])  # eyes blink on blink frame 2
+
+
 def test_add_expression_appends_frame_and_clip(tmp_path: Path) -> None:
     sdir = _bust_sheet(tmp_path, noise=False)
     patch = np.zeros((2, 6, 4), np.uint8)

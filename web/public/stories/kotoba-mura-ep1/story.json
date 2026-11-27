@@ -1,0 +1,1300 @@
+{
+  "id": "kotoba-mura-ep1",
+  "engine": "cinema",
+  "series": "ことば村の小さな旅館 · Tập 1",
+  "titleJa": "ことば村の朝と電池切れ",
+  "titleVi": "Tập 1 · Buổi sáng ở Làng Kotoba & Cú hết pin của Stack-chan",
+  "level": "JLPT N4",
+  "author": "kotoba-mura-studio",
+  "palette": "jp_story_master",
+  "brand": "kotoba-mura · jp-pixel-story",
+  "bgm": "happy",
+  "artQuality": {
+    "outlineColor": "#241712",
+    "minOutlineCompliance": 0.95,
+    "maxOrphanRatio": 0.08
+  },
+  "artExceptions": {
+    "/shared/kotoba-mura/sprites/stackchan_walk/spritesheet.png": {
+      "noise": "Compact 32x38 multi-frame walk sprite uses intentional 1px OLED face and joint detail pixels."
+    },
+    "/shared/kotoba-mura/sprites/lin_walk/spritesheet.png": {
+      "noise": "Compact 40x64 multi-frame walk sprite uses intentional 1px face, ponytail tie, and apron highlight pixels."
+    }
+  },
+  "assets": {
+    "backgrounds": {
+      "kotoba_garden": "/shared/kotoba-mura/bg_kotoba_garden.png",
+      "kotoba_inn_lobby": "/shared/kotoba-mura/bg_kotoba_inn_lobby.png"
+    },
+    "portraits": {},
+    "sprites": {
+      "stackchan_neutral": "/shared/kotoba-mura/sprites/stackchan_neutral/meta.json",
+      "stackchan_happy": "/shared/kotoba-mura/sprites/stackchan_happy/meta.json",
+      "stackchan_lowbat": "/shared/kotoba-mura/sprites/stackchan_lowbat/meta.json",
+      "stackchan_walk": "/shared/kotoba-mura/sprites/stackchan_walk/meta.json",
+      "lin_neutral": "/shared/kotoba-mura/sprites/lin_neutral/meta.json",
+      "lin_walk": "/shared/kotoba-mura/sprites/lin_walk/meta.json",
+      "hana_warm": "/shared/kotoba-mura/sprites/hana_warm/meta.json"
+    },
+    "rigs": {
+      "lin_neutral": "/shared/kotoba-mura/sprites/lin_neutral/rig/rig.json",
+      "hana_warm": "/shared/kotoba-mura/sprites/hana_warm/rig/rig.json"
+    },
+    "cardPortrait": "/shared/kotoba-mura/sprites/stackchan_happy/frame_00.png",
+    "items": {
+      "watering_can": "/shared/kotoba-mura/items/watering_can.png"
+    }
+  },
+  "backdropMotion": {
+    "kotoba_inn_lobby": [
+      {
+        "type": "steam",
+        "at": [
+          [
+            233,
+            114
+          ],
+          [
+            238,
+            116
+          ]
+        ],
+        "rate": 1.6,
+        "height": 22,
+        "color": "#f6eed8"
+      },
+      {
+        "type": "glow",
+        "at": [
+          226,
+          126
+        ],
+        "r": 56,
+        "color": "#ffcf78",
+        "period": 2.4,
+        "min": 0.45,
+        "max": 0.8,
+        "flicker": true
+      },
+      {
+        "type": "glow",
+        "at": [
+          269,
+          111
+        ],
+        "r": 32,
+        "color": "#ffe38c",
+        "period": 3.8,
+        "min": 0.35,
+        "max": 0.6
+      }
+    ],
+    "kotoba_garden": [
+      {
+        "type": "glow",
+        "at": [
+          22,
+          91
+        ],
+        "r": 34,
+        "color": "#ffcf78",
+        "period": 4.2,
+        "min": 0.35,
+        "max": 0.6
+      },
+      {
+        "type": "glow",
+        "at": [
+          70,
+          134
+        ],
+        "r": 24,
+        "color": "#ffe38c",
+        "period": 2.8,
+        "min": 0.4,
+        "max": 0.7,
+        "flicker": true
+      },
+      {
+        "type": "shimmer",
+        "rect": [
+          202,
+          82,
+          46,
+          26
+        ],
+        "minLuma": 155,
+        "speed": 1.8
+      }
+    ]
+  },
+  "cast": {
+    "left": {
+      "voice": "lin",
+      "portrait": "lin_neutral",
+      "idleClip": "idle",
+      "talkClip": "talk"
+    },
+    "right": {
+      "voice": "stackchan",
+      "portrait": "stackchan_neutral",
+      "idleClip": "idle",
+      "talkClip": "talk"
+    }
+  },
+  "voices": {
+    "narrator": {
+      "label": "ナレーター (No.7・読み聞かせ)",
+      "speakerId": 31,
+      "speedScale": 0.92,
+      "intonationScale": 1.08,
+      "pauseLengthScale": 1.12
+    },
+    "stackchan": {
+      "label": "スタックちゃん (白上虎太郎)",
+      "speakerId": 12,
+      "speedScale": 0.96,
+      "intonationScale": 1.16,
+      "pauseLengthScale": 1.05
+    },
+    "lin": {
+      "label": "リンさん (小夜/SAYO)",
+      "speakerId": 46,
+      "speedScale": 0.92,
+      "intonationScale": 1.12,
+      "pauseLengthScale": 1.1
+    },
+    "hana": {
+      "label": "はなさん (WhiteCUL)",
+      "speakerId": 23,
+      "speedScale": 0.9,
+      "intonationScale": 1.08,
+      "pauseLengthScale": 1.14
+    }
+  },
+  "characterCard": {
+    "nameJa": "スタックちゃん (STACK-CHAN)",
+    "subtitle": "ことば{畑|はたけ}の{小|ちい}さなロボット · {相棒|あいぼう}マスコット",
+    "facts": [
+      {
+        "label": "TÍNH CÁCH",
+        "value": "いつも{元気|げんき}で{好奇心|こうきしん}いっぱい (Luôn tràn năng lượng & tò mò, xưng 「ぼく」)"
+      },
+      {
+        "label": "NHIỆM VỤ",
+        "value": "{毎朝|まいあさ}、ことば{畑|はたけ}の{五|いつ}つの{葉|は}に{水|みず}をあげます (Sáng nào cũng trông nom 5 chiếc lá non)"
+      },
+      {
+        "label": "ĐIỂM YẾU",
+        "value": "{走|はし}りすぎると、すぐ{電池|でんち}が{切|き}れてしまいます (Chạy nhanh quá là hay cạn pin giữa đường!)"
+      },
+      {
+        "label": "BÍ MẬT TẬP 2",
+        "value": "{古|ふる}い{地図|ちず}を{持|も}ったおじいさんが「ことば{屋|や}」へやって{来|き}ます……！",
+        "locked": true
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "sc01_intro",
+      "type": "cinema_intro",
+      "backdrop": "bg:kotoba_garden",
+      "light": "morning",
+      "overlays": [
+        "petals"
+      ],
+      "bgm": "happy",
+      "people": {
+        "stackchan": {
+          "kind": "sprite:stackchan_walk",
+          "x": 54,
+          "y": 174,
+          "face": "right"
+        },
+        "lin": {
+          "kind": "sprite:lin_walk",
+          "x": 18,
+          "y": 176,
+          "face": "right"
+        }
+      },
+      "cues": [
+        {
+          "at": 0,
+          "people": [
+            {
+              "who": "stackchan",
+              "walkTo": 224,
+              "speed": 30,
+              "then": "stand"
+            },
+            {
+              "who": "lin",
+              "walkTo": 172,
+              "speed": 24,
+              "then": "stand"
+            }
+          ]
+        },
+        {
+          "at": 5.8,
+          "people": [
+            {
+              "who": "stackchan",
+              "face": "left",
+              "hop": 1.2
+            }
+          ]
+        }
+      ],
+      "titleCard": {
+        "title": "ことば{村|むら}の{朝|あさ}と{電池切|でんちぎ}れ",
+        "subtitle": "KOTOBA VILLAGE · EPISODE 1 · JLPT N4",
+        "credit": "ことば村の小さな旅館 · Tập 1"
+      },
+      "actionLabel": "はじめる · BẮT ĐẦU",
+      "lines": [
+        {
+          "id": "k01",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "山のふもとに、小さな旅館「ことば屋」と畑のある「ことば村」があります。",
+          "jaRuby": "{山|やま}のふもとに、{小|ちい}さな{旅館|りょかん}「ことば{屋|や}」と{畑|はたけ}のある「ことば{村|むら}」があります。",
+          "vi": "Dưới chân núi có ngôi làng nhỏ tên Kotoba-mura, nơi có quán trọ nhỏ Kotoba-ya và khu vườn Kotoba-batake.",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k01.mp3",
+          "durationSec": 10.645,
+          "ttsHash": "3569f8d90c17"
+        }
+      ]
+    },
+    {
+      "id": "sc02_inn_keigo",
+      "type": "cinema_checklist",
+      "backdrop": "bg:kotoba_inn_lobby",
+      "light": "warm",
+      "bgm": "calm",
+      "stamp": "旅館ことば屋 · 朝",
+      "cast": {
+        "left": {
+          "voice": "lin",
+          "portrait": "lin_neutral",
+          "idleClip": "idle",
+          "talkClip": "talk"
+        },
+        "right": {
+          "voice": "hana",
+          "portrait": "hana_warm",
+          "idleClip": "idle",
+          "talkClip": "talk"
+        }
+      },
+      "labels": [
+        {
+          "text": "{宿帳|やどちょう}",
+          "sub": "sổ đăng ký khách",
+          "x": 74,
+          "y": 64,
+          "to": [
+            74,
+            98
+          ],
+          "afterLine": 2
+        },
+        {
+          "text": "{囲炉裏|いろり}",
+          "sub": "lò sưởi truyền thống",
+          "x": 226,
+          "y": 78,
+          "to": [
+            226,
+            122
+          ],
+          "afterLine": 0
+        }
+      ],
+      "lines": [
+        {
+          "id": "k02",
+          "voice": "hana",
+          "speakerLabel": "はなさん",
+          "jaPlain": "リンさん、おはようございます。今日から「ことば屋」の仕事ですね。よろしくお願いします。",
+          "jaRuby": "リンさん、おはようございます。{今日|きょう}から「ことば{屋|や}」の{仕事|しごと}ですね。よろしくお{願|ねが}いします。",
+          "vi": "Chào buổi sáng Lin! Từ hôm nay em bắt đầu làm việc ở quán trọ Kotoba-ya nhé. Mong được đồng hành cùng em.",
+          "action": "bow",
+          "emote": "note",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k02.mp3",
+          "durationSec": 8.661,
+          "ttsHash": "cd0849589660"
+        },
+        {
+          "id": "k03",
+          "voice": "lin",
+          "speakerLabel": "リンさん",
+          "jaPlain": "おはようございます、はなさん！敬語も毎日練習しています！",
+          "jaRuby": "おはようございます、はなさん！{敬語|けいご}も{毎日|まいにち}{練習|れんしゅう}しています！",
+          "vi": "Em chào buổi sáng chị Hana! Em cũng luyện tập kính ngữ mỗi ngày ạ!",
+          "action": "bow",
+          "emote": "sparkle",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k03.mp3",
+          "durationSec": 5.877,
+          "ttsHash": "d0704fe0d4bc"
+        },
+        {
+          "id": "k04",
+          "voice": "hana",
+          "speakerLabel": "はなさん",
+          "jaPlain": "では、お客さまに宿帳へ名前を書いていただくとき、どう言いますか？",
+          "jaRuby": "では、お{客|きゃく}さまに{宿帳|やどちょう}へ{名前|なまえ}を{書|か}いていただくとき、どう{言|い}いますか？",
+          "vi": "Vậy khi mời khách viết tên vào sổ đăng ký, em sẽ nói thế nào nhỉ?",
+          "action": "lean",
+          "emote": "question",
+          "camera": "push",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k04.mp3",
+          "durationSec": 6.389,
+          "ttsHash": "1b506ef32aa0"
+        }
+      ],
+      "minigame": {
+        "mode": "one",
+        "autoPick": "okaki_kudasai",
+        "prompt": "Chọn câu kính ngữ đúng để mời khách viết tên vào sổ",
+        "choices": [
+          {
+            "id": "okaki_shimasu",
+            "labelJa": "こちらにお名前をお書きします",
+            "labelRuby": "こちらにお{名前|なまえ}をお{書|か}きします",
+            "labelVi": "(Bẫy hay nhầm) Em xin phép viết tên ạ",
+            "effect": "polite_bow",
+            "responseLine": {
+              "id": "k04_a",
+              "voice": "hana",
+              "speakerLabel": "はなさん",
+              "jaPlain": "あら、「お書きします」は自分が書くときの言い方ですよ。お客さまには「お書きください」ですね。",
+              "jaRuby": "あら、「お{書|か}きします」は{自分|じぶん}が{書|か}くときの{言|い}い{方|かた}ですよ。お{客|きゃく}さまには「お{書|か}きください」ですね。",
+              "vi": "Ồ, 「お書きします」 là khi chính mình viết cơ. Mời khách viết phải nói là 「お書きください」 nhé em!",
+              "action": "startle",
+              "emote": "sweat",
+              "telop": {
+                "text": "お〜します ＝ {自分|じぶん}がする！",
+                "sub": "Khiêm nhường ngữ (mình làm) ≠ mời khách",
+                "color": "shu"
+              },
+              "audioUrl": "/stories/kotoba-mura-ep1/audio/k04_a.mp3",
+              "durationSec": 9.248,
+              "ttsHash": "7c5e5698a375"
+            }
+          },
+          {
+            "id": "okaki_kudasai",
+            "labelJa": "こちらにお名前をお書きください",
+            "labelRuby": "こちらにお{名前|なまえ}をお{書|か}きください",
+            "labelVi": "Mời quý khách viết tên vào đây ạ",
+            "effect": "polite_bow",
+            "responseLine": {
+              "id": "k04_b",
+              "voice": "hana",
+              "speakerLabel": "はなさん",
+              "jaPlain": "そのとおり！とても丁寧で、いい敬語ですね。",
+              "jaRuby": "そのとおり！とても{丁寧|ていねい}で、いい{敬語|けいご}ですね。",
+              "vi": "Chính xác! Rất lịch sự, kính ngữ chuẩn lắm đó em!",
+              "action": "bow",
+              "emote": "sparkle",
+              "camera": "punch",
+              "telop": {
+                "text": "お{書|か}きください！◎",
+                "sub": "Tôn kính ngữ mời khách chuẩn xác!",
+                "color": "gold"
+              },
+              "audioUrl": "/stories/kotoba-mura-ep1/audio/k04_b.mp3",
+              "durationSec": 4.544,
+              "ttsHash": "0ca0b7f7436b"
+            }
+          }
+        ]
+      },
+      "actionLabel": "TIẾP TỤC →"
+    },
+    {
+      "id": "sc03_stackchan_run",
+      "type": "cinema_dialogue",
+      "backdrop": "bg:kotoba_inn_lobby",
+      "light": "warm",
+      "bgm": "happy",
+      "actors": [],
+      "stamp": "玄関からスタックちゃん！",
+      "people": {
+        "lin": {
+          "kind": "sprite:lin_walk",
+          "x": 112,
+          "y": 162,
+          "face": "right"
+        },
+        "stackchan": {
+          "kind": "sprite:stackchan_walk",
+          "x": 304,
+          "y": 156,
+          "face": "left",
+          "hidden": true
+        }
+      },
+      "cues": [
+        {
+          "line": 0,
+          "people": [
+            {
+              "who": "stackchan",
+              "show": true,
+              "walkTo": 174,
+              "walkToY": 162,
+              "speed": 54,
+              "then": "stand"
+            }
+          ]
+        },
+        {
+          "line": 0,
+          "delay": 2.4,
+          "people": [
+            {
+              "who": "stackchan",
+              "hop": 1.2
+            }
+          ]
+        },
+        {
+          "line": 1,
+          "people": [
+            {
+              "who": "lin",
+              "walkTo": 142,
+              "walkToY": 162,
+              "speed": 26,
+              "then": "stand"
+            }
+          ]
+        },
+        {
+          "line": 1,
+          "delay": 1.2,
+          "people": [
+            {
+              "who": "lin",
+              "bow": 1.0
+            }
+          ]
+        },
+        {
+          "line": 2,
+          "people": [
+            {
+              "who": "stackchan",
+              "walkTo": 304,
+              "walkToY": 156,
+              "speed": 50,
+              "then": "exit"
+            }
+          ]
+        },
+        {
+          "line": 2,
+          "delay": 0.7,
+          "people": [
+            {
+              "who": "lin",
+              "walkTo": 304,
+              "walkToY": 156,
+              "speed": 36,
+              "then": "exit"
+            }
+          ]
+        }
+      ],
+      "lines": [
+        {
+          "id": "k05",
+          "voice": "stackchan",
+          "speakerLabel": "スタックちゃん",
+          "jaPlain": "リンさん、リンさん！大変だよ！ことば畑の芽が水を待っているよ！",
+          "jaRuby": "リンさん、リンさん！{大変|たいへん}だよ！ことば{畑|はたけ}の{芽|め}が{水|みず}を{待|ま}っているよ！",
+          "vi": "Chị Lin ơi, chị Lin ơi! Nguy rồi! Mấy mầm cây ngoài vườn Kotoba đang chờ tưới nước đấy!",
+          "emote": "sparkle",
+          "emoteWho": "stackchan",
+          "camera": "punch",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k05.mp3",
+          "durationSec": 6.08,
+          "ttsHash": "8c5dabede51f"
+        },
+        {
+          "id": "k06",
+          "voice": "lin",
+          "speakerLabel": "リンさん",
+          "jaPlain": "わっ、スタックちゃん！そんなに走ると、また電池が減ってしまいますよ！",
+          "jaRuby": "わっ、スタックちゃん！そんなに{走|はし}ると、また{電池|でんち}が{減|へ}ってしまいますよ！",
+          "vi": "Á, Stack-chan! Chạy nhanh như thế là pin lại tụt hết mất đấy!",
+          "emote": "shock",
+          "emoteWho": "lin",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k06.mp3",
+          "durationSec": 6.443,
+          "ttsHash": "9ecb7999af4d"
+        },
+        {
+          "id": "k07",
+          "voice": "stackchan",
+          "speakerLabel": "スタックちゃん",
+          "jaPlain": "ぼくは大丈夫！早くいっしょに見に行こう！",
+          "jaRuby": "ぼくは{大丈夫|だいじょうぶ}！{早|はや}くいっしょに{見|み}に{行|い}こう！",
+          "vi": "Tớ không sao đâu! Mau cùng ra xem đi nào!",
+          "emote": "note",
+          "emoteWho": "stackchan",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k07.mp3",
+          "durationSec": 3.477,
+          "ttsHash": "5b784e30ae31"
+        }
+      ],
+      "actionLabel": "RA VƯỜN →"
+    },
+    {
+      "id": "sc04_garden_water",
+      "type": "cinema_dialogue",
+      "backdrop": "bg:kotoba_garden",
+      "light": "morning",
+      "bgm": "happy",
+      "actors": [],
+      "stamp": "ことば畑 · 朝の水やり",
+      "people": {
+        "lin": {
+          "kind": "sprite:lin_walk",
+          "x": 34,
+          "y": 170,
+          "face": "right"
+        },
+        "stackchan": {
+          "kind": "sprite:stackchan_walk",
+          "x": 78,
+          "y": 168,
+          "face": "right"
+        }
+      },
+      "labels": [
+        {
+          "text": "ガラスの{屋根|やね}",
+          "sub": "mái kính che lá non",
+          "x": 246,
+          "y": 36,
+          "to": [
+            232,
+            82
+          ],
+          "afterLine": 0
+        },
+        {
+          "text": "{郵便受|ゆうびんう}け",
+          "sub": "hòm thư báo sáng",
+          "x": 284,
+          "y": 74,
+          "to": [
+            277,
+            114
+          ],
+          "afterLine": 1
+        }
+      ],
+      "cues": [
+        {
+          "line": 0,
+          "people": [
+            {
+              "who": "stackchan",
+              "walkTo": 246,
+              "walkToY": 156,
+              "speed": 38,
+              "then": "stand"
+            }
+          ]
+        },
+        {
+          "line": 0,
+          "delay": 4.4,
+          "people": [
+            {
+              "who": "stackchan",
+              "face": "left",
+              "hop": 1.0
+            }
+          ]
+        },
+        {
+          "line": 1,
+          "people": [
+            {
+              "who": "lin",
+              "walkTo": 112,
+              "walkToY": 164,
+              "speed": 28,
+              "then": "stand"
+            }
+          ]
+        },
+        {
+          "doneLine": 0,
+          "people": [
+            {
+              "who": "stackchan",
+              "face": "left",
+              "shiver": 2.8
+            }
+          ]
+        },
+        {
+          "doneLine": 1,
+          "people": [
+            {
+              "who": "lin",
+              "walkTo": 198,
+              "walkToY": 158,
+              "speed": 36,
+              "then": "stand"
+            }
+          ]
+        }
+      ],
+      "lines": [
+        {
+          "id": "k08",
+          "voice": "stackchan",
+          "speakerLabel": "スタックちゃん",
+          "jaPlain": "見て見て！ガラスの屋根の下で、小さな葉が五つも育っているんだよ！",
+          "jaRuby": "{見|み}て{見|み}て！ガラスの{屋根|やね}の{下|した}で、{小|ちい}さな{葉|は}が{五|いつ}つも{育|そだ}っているんだよ！",
+          "vi": "Xem này xem này! Dưới mái kính có tận năm chiếc lá nhỏ đang lớn lên đấy!",
+          "emote": "heart",
+          "emoteWho": "stackchan",
+          "camera": "pan_right",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k08.mp3",
+          "durationSec": 5.707,
+          "ttsHash": "7824cad93572"
+        },
+        {
+          "id": "k09",
+          "voice": "lin",
+          "speakerLabel": "リンさん",
+          "jaPlain": "ほんとうだ、かわいい！じゃあ、乾く前にみんなで水をあげましょう！",
+          "jaRuby": "ほんとうだ、かわいい！じゃあ、{乾|かわ}く{前|まえ}にみんなで{水|みず}をあげましょう！",
+          "vi": "Thật luôn, đáng yêu quá! Nào, trước khi đất khô mình cùng tưới nước cho cây nhé!",
+          "emote": "sparkle",
+          "emoteWho": "lin",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k09.mp3",
+          "durationSec": 7.093,
+          "ttsHash": "91a143315adf"
+        }
+      ],
+      "interaction": {
+        "type": "hold",
+        "hint": "Giữ chuột (hoặc giữ ngón tay) để tưới nước cho 5 chiếc lá non dưới mái kính",
+        "hold": {
+          "label": "{水|みず}やり",
+          "x": 184,
+          "y": 60,
+          "durationSec": 2.0,
+          "item": "watering_can",
+          "streamTo": [
+            224,
+            100
+          ],
+          "streamColor": "#76cdd6"
+        },
+        "doneLines": [
+          {
+            "id": "k10",
+            "voice": "stackchan",
+            "speakerLabel": "スタックちゃん",
+            "jaPlain": "ピ……ピ……あっ！走りすぎて、電池が切れてしまいそう……！",
+            "jaRuby": "ピ……ピ……あっ！{走|はし}りすぎて、{電池|でんち}が{切|き}れてしまいそう……！",
+            "vi": "Píp…… píp…… á! Chạy nhiều quá nên pin sắp cạn mất rồi……!",
+            "emote": "shock",
+            "emoteWho": "stackchan",
+            "camera": "shake",
+            "telop": {
+              "text": "ピ……ピ……{電池切|でんちぎ}れ！",
+              "sub": "Ôi không! Sắp cạn pin rồi!",
+              "color": "shu"
+            },
+            "audioUrl": "/stories/kotoba-mura-ep1/audio/k10.mp3",
+            "durationSec": 5.483,
+            "ttsHash": "2fee7e2a2753"
+          },
+          {
+            "id": "k11",
+            "voice": "lin",
+            "speakerLabel": "リンさん",
+            "jaPlain": "たいへん！スタックちゃん、すぐ旅館へ運んで充電しますね！",
+            "jaRuby": "たいへん！スタックちゃん、すぐ{旅館|りょかん}へ{運|はこ}んで{充電|じゅうでん}しますね！",
+            "vi": "Nguy rồi! Stack-chan cố lên, chị mang em về quán trọ sạc pin ngay đây!",
+            "emote": "sweat",
+            "emoteWho": "lin",
+            "audioUrl": "/stories/kotoba-mura-ep1/audio/k11.mp3",
+            "durationSec": 5.813,
+            "ttsHash": "314e703b7207"
+          }
+        ]
+      },
+      "actionLabel": "GIẢI CỨU STACK-CHAN →"
+    },
+    {
+      "id": "sc05_rescue_drag",
+      "type": "cinema_dialogue",
+      "backdrop": "bg:kotoba_garden",
+      "light": "golden",
+      "bgm": "calm",
+      "actors": [],
+      "stamp": "電池切れピンチ！",
+      "people": {
+        "lin": {
+          "kind": "sprite:lin_walk",
+          "x": 92,
+          "y": 170,
+          "face": "right"
+        },
+        "stackchan": {
+          "kind": "sprite:stackchan_walk",
+          "x": 236,
+          "y": 168,
+          "face": "left",
+          "hideWhileInteract": true
+        }
+      },
+      "cues": [
+        {
+          "line": 0,
+          "people": [
+            {
+              "who": "stackchan",
+              "shiver": 2.4
+            }
+          ]
+        },
+        {
+          "done": true,
+          "people": [
+            {
+              "who": "stackchan",
+              "x": 118,
+              "y": 170,
+              "face": "left"
+            }
+          ]
+        },
+        {
+          "doneLine": 0,
+          "people": [
+            {
+              "who": "lin",
+              "walkTo": 24,
+              "speed": 28,
+              "then": "exit"
+            },
+            {
+              "who": "stackchan",
+              "walkTo": 40,
+              "speed": 28,
+              "then": "exit"
+            }
+          ]
+        }
+      ],
+      "lines": [
+        {
+          "id": "k12",
+          "voice": "stackchan",
+          "speakerLabel": "スタックちゃん",
+          "jaPlain": "ピ……もう一歩も動けないよ……リンさん、助けて……。",
+          "jaRuby": "ピ……もう{一歩|いっぽ}も{動|うご}けないよ……リンさん、{助|たす}けて……。",
+          "vi": "Píp…… tớ không nhúc nhích nổi một bước nào nữa…… chị Lin ơi, cứu tớ……",
+          "emote": "gloom",
+          "emoteWho": "stackchan",
+          "camera": "push",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k12.mp3",
+          "durationSec": 4.651,
+          "ttsHash": "a73437c09a5a"
+        }
+      ],
+      "interaction": {
+        "type": "drag",
+        "hint": "Kéo Stack-chan đang hết pin lại gần Lin để đưa về quán trọ",
+        "items": [
+          {
+            "id": "rescue_sc",
+            "person": "stackchan",
+            "from": [
+              236,
+              168
+            ],
+            "to": [
+              118,
+              170
+            ],
+            "label": "スタックちゃん",
+            "labelVi": "Bế về sạc pin"
+          }
+        ],
+        "doneLine": {
+          "id": "k13",
+          "voice": "lin",
+          "speakerLabel": "リンさん",
+          "jaPlain": "よし、任せて！囲炉裏のそばで暖まりながら充電しようね！",
+          "jaRuby": "よし、{任|まか}せて！{囲炉裏|いろり}のそばで{暖|あたた}まりながら{充電|じゅうでん}しようね！",
+          "vi": "Được rồi, cứ để chị lo! Mình về sạc pin cạnh lò sưởi ấm nhé!",
+          "emote": "heart",
+          "emoteWho": "lin",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k13.mp3",
+          "durationSec": 5.973,
+          "ttsHash": "4b92ee867e4c"
+        }
+      },
+      "actionLabel": "VỀ QUÁN TRỌ →"
+    },
+    {
+      "id": "sc06_outro_recharged",
+      "type": "cinema_outro",
+      "backdrop": "bg:kotoba_inn_lobby",
+      "light": "warm",
+      "bgm": "happy",
+      "actors": [
+        "left",
+        "right"
+      ],
+      "cast": {
+        "left": {
+          "voice": "lin",
+          "portrait": "lin_neutral",
+          "idleClip": "idle",
+          "talkClip": "talk"
+        },
+        "right": {
+          "voice": "stackchan",
+          "portrait": "stackchan_lowbat",
+          "idleClip": "idle",
+          "talkClip": "talk"
+        }
+      },
+      "summary": "HOÀN THÀNH TẬP 1! {旅館|りょかん} · {敬語|けいご} · お{書|か}きください · {電池|でんち} · {充電|じゅうでん}",
+      "outroLabels": {
+        "reading": "📖 ĐỌC BÀI & LÀM QUIZ →",
+        "dictation": "🎧 LUYỆN NGHE CHÉP",
+        "card": "THẺ STACK-CHAN"
+      },
+      "lines": [
+        {
+          "id": "k14",
+          "voice": "lin",
+          "speakerLabel": "リンさん",
+          "jaPlain": "囲炉裏のそばで充電中……。スタックちゃん、元気になったかな？",
+          "jaRuby": "{囲炉裏|いろり}のそばで{充電中|じゅうでんちゅう}……。スタックちゃん、{元気|げんき}になったかな？",
+          "vi": "Đang sạc pin cạnh lò sưởi rồi……. Stack-chan đã khỏe lại chưa nhỉ?",
+          "action": "lean",
+          "emote": "dots",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k14.mp3",
+          "durationSec": 5.739,
+          "ttsHash": "1d9ad8bc013f"
+        },
+        {
+          "id": "k15",
+          "voice": "stackchan",
+          "speakerLabel": "スタックちゃん",
+          "jaPlain": "ピ……ピ……98パーセント……99パーセント……。",
+          "jaRuby": "ピ……ピ……98パーセント……99パーセント……。",
+          "vi": "Píp…… píp…… 98 phần trăm…… 99 phần trăm……",
+          "castPortrait": {
+            "right": "stackchan_lowbat"
+          },
+          "action": "shiver",
+          "emote": "sweat",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k15.mp3",
+          "durationSec": 5.035,
+          "ttsHash": "f21d28e5e683"
+        },
+        {
+          "id": "k16",
+          "voice": "stackchan",
+          "speakerLabel": "スタックちゃん",
+          "jaPlain": "ピポッ！充電完了！リンさん、ありがとう！今日も一緒にがんばろうね！",
+          "jaRuby": "ピポッ！{充電完了|じゅうでんかんりょう}！リンさん、ありがとう！{今日|きょう}も{一緒|いっしょ}にがんばろうね！",
+          "vi": "Pí-pốp! Sạc đầy rồi! Cảm ơn chị Lin nhé! Hôm nay mình lại cùng cố gắng nào!",
+          "castPortrait": {
+            "right": "stackchan_happy"
+          },
+          "action": "hop",
+          "emote": "sparkle",
+          "camera": "punch",
+          "telop": {
+            "text": "{充電完了|じゅうでんかんりょう}！100%！",
+            "sub": "Sạc đầy 100% rồi!",
+            "color": "gold"
+          },
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k16.mp3",
+          "durationSec": 6.453,
+          "ttsHash": "dd9530175687"
+        },
+        {
+          "id": "k17",
+          "voice": "lin",
+          "speakerLabel": "リンさん",
+          "jaPlain": "うん！お客さまが来たら、「こちらにお名前をお書きください」って元気に言うよ！",
+          "jaRuby": "うん！お{客|きゃく}さまが{来|き}たら、「こちらにお{名前|なまえ}をお{書|か}きください」って{元気|げんき}に{言|い}うよ！",
+          "vi": "Ừ! Khi khách đến, chị sẽ thật tự tin nói: \"Mời quý khách viết tên vào đây ạ\"!",
+          "action": "bow",
+          "emote": "heart",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k17.mp3",
+          "durationSec": 7.168,
+          "ttsHash": "0a4d57129764"
+        },
+        {
+          "id": "k18",
+          "voice": "narrator",
+          "speakerLabel": "ナレーター",
+          "jaPlain": "そのとき、玄関の戸が開いて、古い地図を持ったおじいさんがやって来ました……。",
+          "jaRuby": "そのとき、{玄関|げんかん}の{戸|と}が{開|あ}いて、{古|ふる}い{地図|ちず}を{持|も}ったおじいさんがやって{来|き}ました……。",
+          "vi": "Đúng lúc ấy, cánh cửa quán trọ mở ra, và một ông cụ cầm tấm bản đồ cũ bước vào……. (Còn tiếp Tập 2!)",
+          "action": "sway",
+          "actionSide": "right",
+          "emote": "question",
+          "camera": "push",
+          "audioUrl": "/stories/kotoba-mura-ep1/audio/k18.mp3",
+          "durationSec": 8.693,
+          "ttsHash": "40b92d21bd66"
+        }
+      ]
+    }
+  ],
+  "reading": {
+    "sectionTitle": "ことば村の朝と電池切れ",
+    "subtitle": "Bài đọc · Buổi sáng ở Làng Kotoba (Tập 1)",
+    "sentences": [
+      {
+        "id": "kr1",
+        "voice": "narrator",
+        "speakerLabel": "ナレーター",
+        "jaPlain": "ベトナムから来たリンさんは、ことば村の小さな旅館「ことば屋」で働き始めました。",
+        "jaRuby": "ベトナムから{来|き}たリンさんは、ことば{村|むら}の{小|ちい}さな{旅館|りょかん}「ことば{屋|や}」で{働|はたら}き{始|はじ}めました。",
+        "vi": "Lin từ Việt Nam đến và bắt đầu làm việc tại quán trọ nhỏ Kotoba-ya ở làng Kotoba.",
+        "highlightVocabIds": [
+          "ryokan"
+        ],
+        "audioUrl": "/stories/kotoba-mura-ep1/audio/kr1.mp3",
+        "durationSec": 10.123,
+        "ttsHash": "6bd081d57dee"
+      },
+      {
+        "id": "kr2",
+        "voice": "narrator",
+        "speakerLabel": "ナレーター",
+        "jaPlain": "朝、はなさんから「こちらにお名前をお書きください」という丁寧な敬語を教えてもらいました。",
+        "jaRuby": "{朝|あさ}、はなさんから「こちらにお{名前|なまえ}をお{書|か}きください」という{丁寧|ていねい}な{敬語|けいご}を{教|おし}えてもらいました。",
+        "vi": "Buổi sáng, Lin được chị Hana dạy câu kính ngữ lịch sự 「こちらにお名前をお書きください」.",
+        "highlightVocabIds": [
+          "keigo",
+          "teinei"
+        ],
+        "highlightGrammarIds": [
+          "g_okudasai"
+        ],
+        "audioUrl": "/stories/kotoba-mura-ep1/audio/kr2.mp3",
+        "durationSec": 10.923,
+        "ttsHash": "1cfcce9818fb"
+      },
+      {
+        "id": "kr3",
+        "voice": "narrator",
+        "speakerLabel": "ナレーター",
+        "jaPlain": "そのあと、ことば畑の小さなロボット・スタックちゃんに呼ばれて、五つの芽に水をあげました。",
+        "jaRuby": "そのあと、ことば{畑|はたけ}の{小|ちい}さなロボット・スタックちゃんに{呼|よ}ばれて、{五|いつ}つの{芽|め}に{水|みず}をあげました。",
+        "vi": "Sau đó, được robot nhỏ Stack-chan của vườn Kotoba gọi, Lin ra tưới nước cho năm mầm cây.",
+        "highlightVocabIds": [
+          "hatake",
+          "me"
+        ],
+        "audioUrl": "/stories/kotoba-mura-ep1/audio/kr3.mp3",
+        "durationSec": 10.891,
+        "ttsHash": "091797313c18"
+      },
+      {
+        "id": "kr4",
+        "voice": "narrator",
+        "speakerLabel": "ナレーター",
+        "jaPlain": "ところが、スタックちゃんは走りすぎて、畑の真ん中で電池が切れてしまいました。",
+        "jaRuby": "ところが、スタックちゃんは{走|はし}りすぎて、{畑|はたけ}の{真|ま}ん{中|なか}で{電池|でんち}が{切|き}れてしまいました。",
+        "vi": "Thế nhưng vì chạy nhanh quá, Stack-chan đã cạn sạch pin ngay giữa vườn.",
+        "highlightVocabIds": [
+          "denchi"
+        ],
+        "highlightGrammarIds": [
+          "g_sugiru",
+          "g_teshimau"
+        ],
+        "audioUrl": "/stories/kotoba-mura-ep1/audio/kr4.mp3",
+        "durationSec": 8.875,
+        "ttsHash": "5ba6999f0108"
+      },
+      {
+        "id": "kr5",
+        "voice": "narrator",
+        "speakerLabel": "ナレーター",
+        "jaPlain": "リンさんはスタックちゃんを旅館へ運び、囲炉裏のそばで充電してあげました。",
+        "jaRuby": "リンさんはスタックちゃんを{旅館|りょかん}へ{運|はこ}び、{囲炉裏|いろり}のそばで{充電|じゅうでん}してあげました。",
+        "vi": "Lin mang Stack-chan về quán trọ và sạc pin cho cậu bên cạnh lò sưởi irori.",
+        "highlightVocabIds": [
+          "irori",
+          "juuden"
+        ],
+        "audioUrl": "/stories/kotoba-mura-ep1/audio/kr5.mp3",
+        "durationSec": 7.723,
+        "ttsHash": "db4edf240483"
+      },
+      {
+        "id": "kr6",
+        "voice": "narrator",
+        "speakerLabel": "ナレーター",
+        "jaPlain": "充電が終わって元気になったとき、古い地図を持ったお客さまが玄関に現れました。",
+        "jaRuby": "{充電|じゅうでん}が{終|お}わって{元気|げんき}になったとき、{古|ふる}い{地図|ちず}を{持|も}ったお{客|きゃく}さまが{玄関|げんかん}に{現|あらわ}れました。",
+        "vi": "Đúng lúc sạc đầy và khỏe lại, một vị khách cầm tấm bản đồ cũ xuất hiện ngoài cửa quán.",
+        "highlightVocabIds": [
+          "juuden"
+        ],
+        "audioUrl": "/stories/kotoba-mura-ep1/audio/kr6.mp3",
+        "durationSec": 8.96,
+        "ttsHash": "98212e72cde7"
+      }
+    ],
+    "chapters": [
+      {
+        "id": "ch1",
+        "title": "ことば{屋|や}の{朝|あさ}と{敬語|けいご}",
+        "titleVi": "Buổi sáng ở quán trọ & bài học kính ngữ",
+        "sentenceIds": [
+          "kr1",
+          "kr2"
+        ],
+        "scene": "sc02_inn_keigo"
+      },
+      {
+        "id": "ch2",
+        "title": "ことば{畑|はたけ}の{水|みず}やりと{電池切|でんちぎ}れ",
+        "titleVi": "Tưới vườn Kotoba & cú hết pin giữa đường",
+        "sentenceIds": [
+          "kr3",
+          "kr4"
+        ],
+        "scene": "sc04_garden_water"
+      },
+      {
+        "id": "ch3",
+        "title": "{囲炉裏|いろり}のそばで{充電完了|じゅうでんかんりょう}",
+        "titleVi": "Sạc đầy bên lò sưởi & vị khách bí ẩn",
+        "sentenceIds": [
+          "kr5",
+          "kr6"
+        ],
+        "scene": "sc06_outro_recharged"
+      }
+    ],
+    "vocab": [
+      {
+        "id": "ryokan",
+        "word": "旅館",
+        "reading": "りょかん",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Quán trọ truyền thống kiểu Nhật",
+        "note": "Thường có sàn chiếu tatami, cửa trượt shoji và phục vụ bữa ăn / suối nước nóng.",
+        "hanViet": "LỮ QUÁN"
+      },
+      {
+        "id": "keigo",
+        "word": "敬語",
+        "reading": "けいご",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Kính ngữ",
+        "note": "Gồm 3 nhóm: Tôn kính ngữ (尊敬語), Khiêm nhường ngữ (謙譲語), Lịch sự ngữ (丁寧語).",
+        "hanViet": "KÍNH NGỮ"
+      },
+      {
+        "id": "teinei",
+        "word": "丁寧",
+        "reading": "ていねい",
+        "level": "N4",
+        "partOfSpeech": "Tính từ đuôi な",
+        "meaningVi": "Lịch sự, cẩn thận, chu đáo",
+        "note": "「丁寧な敬語」: kính ngữ lịch sự.",
+        "hanViet": "ĐINH NINH"
+      },
+      {
+        "id": "hatake",
+        "word": "畑",
+        "reading": "はたけ",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Vườn rau, ruộng cạn",
+        "note": "Tên add-on ことば畑 nghĩa là \"vườn từ vựng\".",
+        "hanViet": "ĐIỀN (Quốc tự)"
+      },
+      {
+        "id": "me",
+        "word": "芽",
+        "reading": "め",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Mầm cây, chồi non",
+        "note": "「芽が出る」: nảy mầm.",
+        "hanViet": "NHA"
+      },
+      {
+        "id": "denchi",
+        "word": "電池",
+        "reading": "でんち",
+        "level": "N4",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Pin",
+        "note": "「電池が切れる」: hết pin; 「電池切れ」: tình trạng hết pin.",
+        "hanViet": "ĐIỆN TRÌ"
+      },
+      {
+        "id": "juuden",
+        "word": "充電",
+        "reading": "じゅうでん",
+        "level": "N4",
+        "partOfSpeech": "Danh từ / する",
+        "meaningVi": "Sạc pin",
+        "note": "「充電中」: đang sạc pin; 「充電完了」: sạc đầy xong.",
+        "hanViet": "SUNG ĐIỆN"
+      },
+      {
+        "id": "irori",
+        "word": "囲炉裏",
+        "reading": "いろり",
+        "level": "N3",
+        "partOfSpeech": "Danh từ",
+        "meaningVi": "Lò sưởi âm sàn truyền thống Nhật",
+        "note": "Khoét giữa sàn nhà để đốt củi sưởi ấm và treo ấm trà sắt phía trên.",
+        "hanViet": "VI LÔ LÝ"
+      }
+    ],
+    "grammar": [
+      {
+        "id": "g_okudasai",
+        "pattern": "お + V(ます) + ください  vs  お + V(ます) + します",
+        "level": "N4",
+        "meaningVi": "Xin mời quý khách làm V (Tôn kính) ≠ Em xin phép làm V (Khiêm nhường)",
+        "explanation": "Bẫy kinh điển của JLPT N4! 「お書きください」 là mời đối phương viết; còn 「お書きします」 là chính mình viết giúp đối phương.",
+        "exampleJa": "こちらにお名前をお書きください。",
+        "exampleRuby": "こちらにお{名前|なまえ}をお{書|か}きください。",
+        "exampleVi": "Xin mời quý khách viết tên vào đây ạ."
+      },
+      {
+        "id": "g_sugiru",
+        "pattern": "V(ます) + すぎる",
+        "level": "N4",
+        "meaningVi": "Làm V quá mức",
+        "explanation": "Bỏ ます rồi thêm すぎる để diễn tả hành động vượt quá mức bình thường, thường dẫn đến kết quả không tốt.",
+        "exampleJa": "走りすぎて、電池が切れました。",
+        "exampleRuby": "{走|はし}りすぎて、{電池|でんち}が{切|き}れました。",
+        "exampleVi": "Vì chạy nhiều quá nên đã hết pin."
+      },
+      {
+        "id": "g_teshimau",
+        "pattern": "V-て + しまう",
+        "level": "N4",
+        "meaningVi": "Lỡ / mất rồi (tiếc nuối hoặc hoàn toàn)",
+        "explanation": "Diễn tả sự việc xảy ra ngoài ý muốn, đáng tiếc (tụt pin mất, hết pin mất).",
+        "exampleJa": "電池が減ってしまいますよ。",
+        "exampleRuby": "{電池|でんち}が{減|へ}ってしまいますよ。",
+        "exampleVi": "Pin sẽ tụt mất đấy!"
+      },
+      {
+        "id": "g_maeni",
+        "pattern": "V-る + 前に",
+        "level": "N4",
+        "meaningVi": "Trước khi làm V",
+        "explanation": "Động từ luôn chia ở thể từ điển (V-る) bất kể thì của vế sau là quá khứ hay hiện tại.",
+        "exampleJa": "乾く前に水をあげましょう。",
+        "exampleRuby": "{乾|かわ}く{前|まえ}に{水|みず}をあげましょう。",
+        "exampleVi": "Trước khi đất khô, mình hãy tưới nước nhé."
+      }
+    ],
+    "quiz": [
+      {
+        "id": "kq1",
+        "questionJa": "お{客|きゃく}さまに{宿帳|やどちょう}へ{名前|なまえ}を{書|か}いてほしいとき、どれが{正|ただ}しいですか。",
+        "questionVi": "Khi muốn mời khách viết tên vào sổ đăng ký, câu nào đúng?",
+        "options": [
+          {
+            "ja": "こちらにお{名前|なまえ}をお{書|か}きします。"
+          },
+          {
+            "ja": "こちらにお{名前|なまえ}をお{書|か}きください。"
+          },
+          {
+            "ja": "こちらにお{名前|なまえ}を{書|か}いてあげます。"
+          }
+        ],
+        "correctIndex": 1,
+        "explanationVi": "「お＋Vます＋ください」 là tôn kính ngữ mời khách thực hiện hành động. 「お書きします」 là khiêm nhường ngữ (mình tự viết)."
+      },
+      {
+        "id": "kq2",
+        "questionJa": "スタックちゃんはなぜ{畑|はたけ}で{動|うご}けなくなりましたか。",
+        "questionVi": "Vì sao Stack-chan không thể cử động ngoài vườn?",
+        "options": [
+          {
+            "ja": "{水|みず}にぬれたから。"
+          },
+          {
+            "ja": "{走|はし}りすぎて{電池|でんち}が{切|き}れたから。"
+          },
+          {
+            "ja": "{眠|ねむ}くなったから。"
+          }
+        ],
+        "correctIndex": 1,
+        "explanationVi": "Stack-chan chạy nhanh quá nên hết sạch pin giữa vườn (走りすぎて、電池が切れてしまいました)."
+      },
+      {
+        "id": "kq3",
+        "questionJa": "リンさんはどこでスタックちゃんを{充電|じゅうでん}しましたか。",
+        "questionVi": "Lin đã sạc pin cho Stack-chan ở đâu?",
+        "options": [
+          {
+            "ja": "{郵便受|ゆうびんう}けのとなり"
+          },
+          {
+            "ja": "ガラスの{屋根|やね}の{下|した}"
+          },
+          {
+            "ja": "{旅館|りょかん}の{囲炉裏|いろり}のそば"
+          }
+        ],
+        "correctIndex": 2,
+        "explanationVi": "Lin mang Stack-chan về quán trọ và sạc bên cạnh lò sưởi irori (旅館へ運び、囲炉裏のそばで充電しました)."
+      },
+      {
+        "id": "kq4",
+        "questionJa": "さいごに{玄関|げんかん}へやって{来|き}たのはだれですか。",
+        "questionVi": "Cuối tập, ai đã bước vào cửa quán trọ?",
+        "options": [
+          {
+            "ja": "{古|ふる}い{地図|ちず}を{持|も}ったおじいさん"
+          },
+          {
+            "ja": "はなさんのおばあさん"
+          },
+          {
+            "ja": "{郵便|ゆうびん}やさん"
+          }
+        ],
+        "correctIndex": 0,
+        "explanationVi": "Kết mở nối sang Tập 2: một ông cụ cầm tấm bản đồ cũ (古い地図を持ったおじいさん) bước vào quán trọ!"
+      }
+    ]
+  }
+}

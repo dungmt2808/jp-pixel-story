@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "assets": {
+    "watering_can.png": {
+      "steps": [
+        {
+          "op": "relock_palette",
+          "params": {
+            "palette_name": "jp_story_master"
+          },
+          "input": {
+            "path": "art-src/shared/kotoba-mura/raw_item_watering_can.png",
+            "sha": "f478f877990ec4e1"
+          },
+          "at": "2026-11-27T13:52:48+00:00"
+        }
+      ],
+      "output": {
+        "sha": "f478f877990ec4e1"
+      }
+    }
+  }
+}

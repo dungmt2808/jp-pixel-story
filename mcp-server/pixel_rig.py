@@ -87,35 +87,56 @@ def lock_expressions(
     sheet_dir: str | Path,
     *,
     region: str | list[int] = "auto",
+    frame_regions: dict[str, list[int]] | None = None,
     base_frame: int = 0,
     record_provenance: bool = True,
 ) -> dict[str, Any]:
-    """Make every frame identical to the base frame outside the expression region."""
+    """Make every frame identical to the base frame outside its expression region.
+
+    `frame_regions` (optional): per-frame override map like ``{"1": mouth_box, "2": eye_box,
+    "3": mouth_box}`` so talking frames never shift the eyes and blink frames never shift the mouth.
+    """
     sdir = Path(sheet_dir).expanduser().resolve()
     meta, frames = _load_sheet(sdir)
-    box = detect_expression_region(frames, base_frame) if region == "auto" else list(region)
+    default_box = detect_expression_region(frames, base_frame) if region == "auto" else list(region)
+    per_frame = {int(k): list(v) for k, v in (frame_regions or {}).items()}
     base = frames[base_frame]
-    outside = np.ones(base.shape[:2], dtype=bool)
-    if box:
-        x0, y0, x1, y1 = box
-        outside[y0:y1, x0:x1] = False
-    before = [int((_diff(f, base) & outside).sum()) for f in frames]
+
+    def _box_for(idx: int) -> list[int] | None:
+        return per_frame.get(idx, default_box)
+
+    before = []
     locked = []
-    for f in frames:
-        g = base.copy()
+    after = []
+    for i, f in enumerate(frames):
+        box = _box_for(i)
+        outside = np.ones(base.shape[:2], dtype=bool)
         if box:
+            x0, y0, x1, y1 = box
+            outside[y0:y1, x0:x1] = False
+        before.append(int((_diff(f, base) & outside).sum()))
+        g = base.copy()
+        if i != base_frame and box:
+            x0, y0, x1, y1 = box
             g[y0:y1, x0:x1] = f[y0:y1, x0:x1]
         locked.append(g)
-    meta["expressionRegion"] = box
+        after.append(int((_diff(g, base) & outside).sum()))
+    meta["expressionRegion"] = default_box
+    if per_frame:
+        meta["frameExpressionRegions"] = {str(k): v for k, v in sorted(per_frame.items())}
     meta["lockedToFrame"] = base_frame
     _save_sheet(sdir, meta, locked)
     if record_provenance:
-        provenance.record("lock_expressions", {"region": region, "base_frame": base_frame}, output=sdir, in_place=True)
+        prov_params: dict[str, Any] = {"region": region, "base_frame": base_frame}
+        if frame_regions:
+            prov_params["frame_regions"] = frame_regions
+        provenance.record("lock_expressions", prov_params, output=sdir, in_place=True)
     return {
         "ok": True,
-        "region": box,
+        "region": default_box,
+        **({"frame_regions": {str(k): v for k, v in sorted(per_frame.items())}} if per_frame else {}),
         "flicker_pixels_before": before,
-        "flicker_pixels_after": [int((_diff(f, base) & outside).sum()) for f in locked],
+        "flicker_pixels_after": after,
     }
 
 

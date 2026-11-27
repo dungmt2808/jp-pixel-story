@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "assets": {
+    "rig": {
+      "steps": [
+        {
+          "op": "build_rig",
+          "params": {
+            "neck_row": 59,
+            "neck_extension": 3
+          },
+          "input": {
+            "path": "web/public/shared/kotoba-mura/sprites/hana_warm",
+            "sha": "c017efe3da1457e4"
+          },
+          "at": "2026-11-27T13:47:05+00:00"
+        }
+      ],
+      "output": {
+        "sha": "74135ae133c7a2bc"
+      }
+    }
+  }
+}

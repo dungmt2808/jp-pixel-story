@@ -20,3 +20,14 @@ This repository is an interactive **2D Pixel Art Japanese Learning Platform & Fu
 
 ## Workflow Skill & Schema References
 Always follow the `jp-pixel-story` skill (`.agents/plugins/jp-pixel-studio/skills/jp-pixel-story/SKILL.md`, mirrored to `.claude/skills/jp-pixel-story/`) whenever creating new stories, JLPT exam packs, pixel assets, or VOICEVOX audio.
+
+## Visual QA & Story-Authoring Guardrails (Lessons Learned — Do Not Regress)
+Always verify these checks on every new story, sprite sheet, and background before shipping:
+1. **Lock eyes on talk frames (`frame_regions` in `art.json`):** For 4-frame bust sheets (`0=neutral`, `1=open mouth`, `2=blink`, `3=small mouth`), always set `frame_regions` so talk frames `1` and `3` ONLY overwrite the mouth box (`eye_diff == 0`) and blink frame `2` ONLY overwrites the eye box. Never allow pupils or eyebrows to jitter/dart while a character speaks.
+2. **Despill chroma-green halos & clean skin speckles before quantization:** Run VFX green-screen despill (`G <= max(R, B)` on non-background pixels) on characters without green clothing so zero green pixels remain near hair/collars, and verify zoomed 3× processed sheets visually.
+3. **No Bayer checkerboard dots for light or corners:** Keep `look.vignette` off unless explicitly requested (avoids chunky black corner dots on bright scenes), and keep `drawGlow` (`web/src/engine/sceneMotion.ts`) as a soft warm radial gradient rather than a Bayer dot grid.
+4. **Never leave floating labels or mini-game UI out of phase:**
+   - Hide HTML `cine-tag` labels AND canvas `drawLeaderLine` whenever `cameraRef.current.zoom > 1.01` so tags never detach from zoomed canvas lines or collide with emotes.
+   - Draw `hold` interaction items, target rings, and progress meters **only while `phase === "interact"`** (never before lines finish, and never lingering after completion during `doneLine`/`ready`).
+5. **Match interactive targets to the exact spoken landmark & clear character faces:** Plot a 320×200 coordinate grid on every new background before placing `people`, `labels`, `hold`, or `drag` targets. Ensure the action hits the exact object mentioned in dialogue (e.g., watering directly into the glass seedling cover `ガラスの屋根`, not an unrelated bed) and never overlaps any character's face.
+6. **Authentic Japanese architecture scale:** When depicting traditional Japanese inns (`旅館ことば屋`) in exterior shots, draw a larger, unmistakably traditional Japanese ryokan (curved *kawara* tile roof, *noren* curtain, glowing *shoji* lattice windows, *engawa* veranda, stone lantern) rather than a small Western-style cabin/shed.

@@ -17,7 +17,6 @@ import type { Vec } from "./cinemaUi";
 
 export const VW = 320;
 export const VH = 200;
-const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
 
 export type Rect = [number, number, number, number];
 
@@ -269,35 +268,18 @@ function drawSweep(ctx: CanvasRenderingContext2D, fx: SweepFx, t: number): void 
   ctx.restore();
 }
 
-// dithered halo sprites cached per light and per strength step (13 steps are plenty for pixel art)
-const glowCache = new Map<string, HTMLCanvasElement>();
-function glowSprite(fx: GlowFx, step: number): HTMLCanvasElement {
-  const [cx, cy] = fx.at;
-  const r = fx.r;
-  const key = JSON.stringify([cx, cy, r, fx.color ?? "#ffd9a0", step]);
-  const hit = glowCache.get(key);
-  if (hit) return hit;
-  const x0 = Math.floor(cx - r);
-  const y0 = Math.floor(cy - r);
-  const c = canvas(2 * r + 2, 2 * r + 2);
-  const g = c.getContext("2d");
-  if (g) {
-    g.fillStyle = fx.color ?? "#ffd9a0";
-    const k = step / 12;
-    for (let y = y0; y <= cy + r; y++) {
-      for (let x = x0; x <= cx + r; x++) {
-        const d = Math.hypot(x - cx, y - cy) / r;
-        if (d >= 1) continue;
-        // Bayer cell from SCREEN coordinates so the dots line up with every other dithered layer
-        if (BAYER[(y & 3) * 4 + (x & 3)] < (1 - d) * k * 16) g.fillRect(x - x0, y - y0, 1, 1);
-      }
-    }
-  }
-  glowCache.set(key, c);
-  return c;
+/** Parse #rrggbb into an rgba() string for smooth soft light glows. */
+function hexRgba(hex: string, alpha: number): string {
+  const clean = hex.replace("#", "");
+  const full = clean.length === 3 ? clean.split("").map((c) => c + c).join("") : clean;
+  const n = Number.parseInt(full, 16);
+  const r = Number.isFinite(n) ? (n >> 16) & 255 : 255;
+  const g = Number.isFinite(n) ? (n >> 8) & 255 : 217;
+  const b = Number.isFinite(n) ? n & 255 : 160;
+  return `rgba(${r},${g},${b},${Math.max(0, Math.min(1, alpha)).toFixed(3)})`;
 }
 
-/** Strength 0..1 of a glow at time t (pure, so it can be tested and cached by step). */
+/** Strength 0..1 of a glow at time t (pure, so it can be tested). */
 export function glowStrength(fx: Pick<GlowFx, "period" | "min" | "max" | "flicker">, t: number): number {
   const period = fx.period ?? 3;
   const lo = fx.min ?? 0.25;
@@ -308,12 +290,21 @@ export function glowStrength(fx: Pick<GlowFx, "period" | "min" | "max" | "flicke
 }
 
 function drawGlow(ctx: CanvasRenderingContext2D, fx: GlowFx, t: number): void {
-  const step = Math.round(glowStrength(fx, t) * 12);
-  if (step <= 0) return;
+  const k = glowStrength(fx, t);
+  if (k <= 0.01) return;
+  const [cx, cy] = fx.at;
+  const r = Math.max(4, fx.r);
+  const col = fx.color ?? "#ffd9a0";
   ctx.save();
   ctx.globalCompositeOperation = "screen";
-  ctx.globalAlpha = 0.55; // half-strength dots: a soft dithered halo, not a visible dot grid
-  ctx.drawImage(glowSprite(fx, step), Math.floor(fx.at[0] - fx.r), Math.floor(fx.at[1] - fx.r));
+  const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+  grad.addColorStop(0, hexRgba(col, 0.52 * k));
+  grad.addColorStop(0.45, hexRgba(col, 0.24 * k));
+  grad.addColorStop(1, hexRgba(col, 0));
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.fill();
   ctx.restore();
 }
 
@@ -408,15 +399,11 @@ function drawSteam(ctx: CanvasRenderingContext2D, fx: SteamFx, t: number): void 
       const age = t - born;
       if (age < 0 || age > life) continue;
       const u = age / life;
-      const px = Math.round(sx + Math.sin(age * 2.6 + n * 1.7) * (1 + u * 2));
+      const px = Math.round(sx + Math.sin(age * 2.6 + n * 1.7) * (1 + u * 2.5));
       const py = Math.round(sy - u * height);
-      // fade out with ordered dithering instead of alpha (stays pixel-crisp)
-      const keep = (1 - u) * 16;
-      const size = u < 0.45 ? 2 : 1;
-      if (BAYER[(py & 3) * 4 + (px & 3)] < keep) {
-        ctx.globalAlpha = 0.55;
-        ctx.fillRect(px, py, size, size);
-      }
+      const size = u < 0.5 ? 2 : 1;
+      ctx.globalAlpha = Math.sin(u * Math.PI) * 0.48;
+      ctx.fillRect(px, py, size, size);
     }
   });
   ctx.restore();

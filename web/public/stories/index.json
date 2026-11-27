@@ -129,6 +129,23 @@
       "theme": "jlpt_exam"
     },
     {
+      "id": "kotoba-mura-ep1",
+      "category": "story",
+      "kind": "engine",
+      "thumbStyle": "image",
+      "thumbImage": "shared/kotoba-mura/bg_kotoba_garden.png",
+      "artBadge": "🤖 SERIES ことば村 · TẬP 1",
+      "titleJa": "ことば村の朝と電池切れ",
+      "titleVi": "Tập 1 · Buổi sáng ở Làng Kotoba & Cú hết pin của Stack-chan",
+      "level": "JLPT N4",
+      "description": "Tập 1 series ことば村 (dàn cast dùng chung Stack-chan · Lin · Hana): học bẫy kính ngữ お書きください vs お書きします, Stack-chan chạy lon ton vào quán trọ, tưới 5 chiếc lá non ngoài vườn và kéo giải cứu Stack-chan hết pin về sạc cạnh lò sưởi + 26 giọng VOICEVOX + bài đọc 3 chương & quiz N4.",
+      "sceneCount": 6,
+      "vocabCount": 8,
+      "grammarCount": 4,
+      "quizCount": 4,
+      "theme": "jp_story_master"
+    },
+    {
       "id": "tsuru-ongaeshi",
       "category": "story",
       "kind": "engine",

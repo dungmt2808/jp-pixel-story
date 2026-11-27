@@ -476,6 +476,29 @@ test("route B people: walk at a speed, face the way they go, then sit / exit; fa
   assert.equal(people.personAt(def, [{ move: { who: "h", fadeOut: 2 }, time: 1 }], 5).visible, false);
   assert.ok(people.personAt(def, [{ move: { who: "h", hop: 1 }, time: 0 }], 0.15).lift < 0);
   assert.equal(people.personAt({ ...def, hidden: true }, [], 0).visible, false);
+  // 2D walk (walkToY), shiver, and polite bow
+  const diag = people.personAt(def, [{ move: { who: "h", walkTo: 130, walkToY: 190, speed: 50 }, time: 0 }], 0.5);
+  assert.equal(diag.x, 115);
+  assert.equal(diag.y, 170);
+  assert.equal(diag.pose, "run");
+  assert.notEqual(people.personAt(def, [{ move: { who: "h", shiver: 1 }, time: 0 }], 0.05).x, 100);
+  assert.equal(people.personAt(def, [{ move: { who: "h", bow: 1 }, time: 0 }], 0.5).lift, 2);
+});
+
+test("actorActionOffset moves bust actors by whole pixels only", () => {
+  for (const act of vibe.ACTION_NAMES) {
+    for (let i = 0; i < 40; i++) {
+      const o = vibe.actorActionOffset(act, i * 0.05, "left");
+      assert.ok(Number.isInteger(o.dx) && Number.isInteger(o.dy) && Number.isInteger(o.headDy), act);
+    }
+  }
+  assert.ok(vibe.actorActionOffset("hop", 0.18, "left").dy < 0);
+  assert.equal(vibe.actorActionOffset("hop", 1.0, "left").dy, 0);
+  assert.ok(vibe.actorActionOffset("bow", 0.5, "right").dy > 0);
+  assert.ok(vibe.actorActionOffset("bow", 0.5, "right").headDy > 0);
+  assert.ok(vibe.actorActionOffset("lean", 0.4, "left").dx > 0);
+  assert.ok(vibe.actorActionOffset("lean", 0.4, "right").dx < 0);
+  assert.deepEqual(vibe.actorActionOffset("unknown", 0.2, "left"), { dx: 0, dy: 0, headDy: 0 });
 });
 
 test("cues fire from line / done-line / interaction anchors; set state remembers when and what changed", () => {

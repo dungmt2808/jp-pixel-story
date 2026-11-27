@@ -1,0 +1,197 @@
+{
+  "shared": "kotoba-mura",
+  "name": "ことば村 (Làng Kotoba — Vũ trụ dùng chung)",
+  "palette": "jp_story_master",
+  "voices": {
+    "narrator": {
+      "label": "ナレーター (No.7・読み聞かせ)",
+      "speakerId": 31,
+      "speedScale": 0.92,
+      "intonationScale": 1.08,
+      "pauseLengthScale": 1.12
+    },
+    "stackchan": {
+      "label": "スタックちゃん (白上虎太郎)",
+      "speakerId": 12,
+      "speedScale": 0.96,
+      "intonationScale": 1.16,
+      "pauseLengthScale": 1.05
+    },
+    "lin": {
+      "label": "リンさん (小夜/SAYO)",
+      "speakerId": 46,
+      "speedScale": 0.92,
+      "intonationScale": 1.12,
+      "pauseLengthScale": 1.1
+    },
+    "hana": {
+      "label": "はなさん (WhiteCUL)",
+      "speakerId": 23,
+      "speedScale": 0.9,
+      "intonationScale": 1.08,
+      "pauseLengthScale": 1.14
+    },
+    "soncho": {
+      "label": "村長 (青山龍星)",
+      "speakerId": 13,
+      "speedScale": 0.9,
+      "intonationScale": 1.1,
+      "pauseLengthScale": 1.14
+    }
+  },
+  "cast": {
+    "stackchan": { "voice": "stackchan", "portrait": "stackchan_neutral" },
+    "lin": { "voice": "lin", "portrait": "lin_neutral" },
+    "hana": { "voice": "hana", "portrait": "hana_warm" },
+    "soncho": { "voice": "soncho", "portrait": "soncho_warm" }
+  },
+  "backgrounds": [
+    {
+      "key": "kotoba_garden",
+      "raw": "raw_bg_kotoba_garden.png",
+      "dither": 18
+    },
+    {
+      "key": "kotoba_inn_lobby",
+      "raw": "raw_bg_kotoba_inn_lobby.png",
+      "dither": 18
+    },
+    {
+      "key": "kotoba_inn_front",
+      "raw": "raw_bg_kotoba_inn_front.png",
+      "dither": 18
+    },
+    {
+      "key": "kotoba_inn_kitchen",
+      "raw": "raw_bg_kotoba_inn_kitchen.png",
+      "dither": 18
+    },
+    {
+      "key": "kotoba_mountain_yuzu",
+      "raw": "raw_bg_kotoba_mountain_yuzu.png",
+      "dither": 18
+    }
+  ],
+  "characters": [
+    {
+      "key": "stackchan_neutral",
+      "raw": "raw_sheet_stackchan_neutral.png",
+      "kind": "bust",
+      "frame": [68, 68],
+      "grid": "none",
+      "registration": "centroid",
+      "padding": 2,
+      "expression_region": [15, 13, 52, 44],
+      "rig": false
+    },
+    {
+      "key": "stackchan_happy",
+      "raw": "raw_sheet_stackchan_happy.png",
+      "kind": "bust",
+      "frame": [68, 68],
+      "grid": "none",
+      "registration": "centroid",
+      "padding": 2,
+      "expression_region": [15, 13, 52, 44],
+      "rig": false
+    },
+    {
+      "key": "stackchan_lowbat",
+      "raw": "raw_sheet_stackchan_lowbat.png",
+      "kind": "bust",
+      "frame": [68, 68],
+      "grid": "none",
+      "registration": "centroid",
+      "padding": 2,
+      "expression_region": [15, 13, 52, 44],
+      "rig": false
+    },
+    {
+      "key": "stackchan_walk",
+      "raw": "raw_walk_stackchan.png",
+      "kind": "walk",
+      "frame": [32, 38],
+      "stride": 18
+    },
+    {
+      "key": "lin_neutral",
+      "raw": "raw_sheet_lin_neutral.png",
+      "kind": "bust",
+      "frame": [96, 96],
+      "grid": "none",
+      "expression_region": [28, 30, 68, 59],
+      "frame_regions": {
+        "1": [38, 49, 58, 59],
+        "2": [27, 30, 68, 47],
+        "3": [38, 49, 58, 59]
+      }
+    },
+    {
+      "key": "lin_happy",
+      "raw": "raw_sheet_lin_happy.png",
+      "kind": "bust",
+      "frame": [96, 96],
+      "grid": "none"
+    },
+    {
+      "key": "lin_flustered",
+      "raw": "raw_sheet_lin_flustered.png",
+      "kind": "bust",
+      "frame": [96, 96],
+      "grid": "none"
+    },
+    {
+      "key": "lin_walk",
+      "raw": "raw_walk_lin.png",
+      "kind": "walk",
+      "frames": 8,
+      "frame": [40, 64],
+      "stride": 28,
+      "clips": {
+        "walk": { "frames": [0, 1, 2, 3, 4, 5], "fps": 9, "stridePx": 28 },
+        "idle": { "frames": [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7], "fps": 4 }
+      }
+    },
+    {
+      "key": "hana_warm",
+      "raw": "raw_sheet_hana_warm.png",
+      "kind": "bust",
+      "frame": [96, 96],
+      "grid": "none",
+      "expression_region": [27, 30, 64, 56],
+      "frame_regions": {
+        "1": [38, 48, 56, 56],
+        "2": [27, 30, 64, 46],
+        "3": [38, 48, 56, 56]
+      },
+      "neck_row": 59
+    },
+    {
+      "key": "hana_happy",
+      "raw": "raw_sheet_hana_happy.png",
+      "kind": "bust",
+      "frame": [96, 96],
+      "grid": "none"
+    },
+    {
+      "key": "hana_walk",
+      "raw": "raw_walk_hana.png",
+      "kind": "walk",
+      "frame": [40, 64],
+      "stride": 28
+    },
+    {
+      "key": "soncho_warm",
+      "raw": "raw_sheet_soncho_warm.png",
+      "kind": "bust",
+      "frame": [96, 96]
+    },
+    {
+      "key": "soncho_walk",
+      "raw": "raw_walk_soncho.png",
+      "kind": "walk",
+      "frame": [40, 64],
+      "stride": 26
+    }
+  ]
+}

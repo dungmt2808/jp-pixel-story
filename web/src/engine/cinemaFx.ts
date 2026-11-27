@@ -166,14 +166,28 @@ export function stepAndDrawParticles(ctx: CanvasRenderingContext2D, list: Partic
   return alive;
 }
 
-/** Falling stream of pixels (pouring tea, watering...) from a source to a target. */
+/** Falling shower/stream of pixels (pouring tea, watering plants...) from a source to a target. */
 export function drawStream(ctx: CanvasRenderingContext2D, from: Vec, to: Vec, t: number, color = "#93b85a"): void {
-  ctx.fillStyle = color;
-  const n = 10;
-  for (let i = 0; i < n; i++) {
-    const u = (i / n + t * 2.2) % 1;
-    const x = from[0] + (to[0] - from[0]) * u;
-    const y = from[1] + (to[1] - from[1]) * u + Math.sin(u * Math.PI) * -6;
-    ctx.fillRect(Math.round(x), Math.round(y), 2, 2);
+  // 3 parallel curved streams fanning slightly like a watering rose / spout + splashes on impact
+  const jets = [-4, 0, 5];
+  const n = 7;
+  for (let j = 0; j < jets.length; j++) {
+    const spread = jets[j];
+    for (let i = 0; i < n; i++) {
+      const u = (i / n + t * 2.4 + j * 0.23) % 1;
+      const x = from[0] + (to[0] + spread - from[0]) * u;
+      // parabolic arc: pops gently out of spout then falls downward under gravity
+      const y = from[1] + (to[1] - from[1]) * (u * u * 0.75 + u * 0.25) - Math.sin(u * Math.PI) * 5;
+      ctx.fillStyle = i % 3 === 0 ? CREAM : color;
+      ctx.fillRect(Math.round(x), Math.round(y), 2, u > 0.35 ? 3 : 2);
+    }
+  }
+  // Sparkling splash droplets bouncing where the water lands on the soil/leaves
+  for (let s = 0; s < 5; s++) {
+    const phase = (t * 4.2 + s * 0.21) % 1;
+    const sx = to[0] + (s - 2) * 5 + Math.round(Math.cos(s * 2.1) * phase * 4);
+    const sy = to[1] - Math.round(Math.sin(phase * Math.PI) * 5);
+    ctx.fillStyle = s % 2 === 0 ? CREAM : color;
+    ctx.fillRect(Math.round(sx), Math.round(sy), 1, 1);
   }
 }
