@@ -238,3 +238,33 @@ def test_slicer_writes_walk_stride_and_facing(tmp_path: Path) -> None:
         process_sprite_sheet(raw, tmp_path / "bad", cols=4, clips={"walk": {"frames": [0], "stridePx": 0}})
     with pytest.raises(ValueError):
         process_sprite_sheet(raw, tmp_path / "bad2", cols=4, facing="up")
+
+
+def test_slicer_split_by_gaps_finds_unevenly_spaced_figures(tmp_path: Path) -> None:
+    # 4 figures that do NOT sit in 4 equal cells: the last one straddles the cell border
+    sheet = Image.new("RGB", (1024, 256), GREEN)
+    draw = ImageDraw.Draw(sheet)
+    for x in (-40, 180, 430, 690):
+        _draw_character(draw, x, 0)
+    raw = tmp_path / "uneven.png"
+    sheet.save(raw)
+    with pytest.raises(ValueError, match="found 4 figures"):  # the count must match cols
+        process_sprite_sheet(raw, tmp_path / "bad", cols=3, split="gaps", bg_mode="chroma_green")
+    res = process_sprite_sheet(raw, tmp_path / "out", cols=4, split="gaps", frame_width=48, frame_height=64,
+                               bg_mode="chroma_green", palette_name="ramen_midnight", registration="centroid")
+    frames = [np.array(Image.open(f)) for f in res["frame_files"]]
+    boxes = [_body_columns(f) for f in frames]
+    assert len({b[2] - b[0] for b in boxes}) == 1  # every figure whole, same width
+
+
+def test_slicer_pixel_pitch_fixes_the_scale(tmp_path: Path) -> None:
+    raw = tmp_path / "raw.png"
+    _make_sheet(raw, arm_frame=None)
+    res = process_sprite_sheet(raw, tmp_path / "out", cols=4, frame_width=48, frame_height=64,
+                               bg_mode="chroma_green", palette_name="ramen_midnight", pixel_pitch=4)
+    assert res["scale"] == 0.25
+    x0, y0, x1, y1 = _body_columns(np.array(Image.open(res["frame_files"][0])))
+    assert (x1 - x0 + 1, y1 - y0 + 1) == (16, 32)  # the 64x128 body at 1/4
+    with pytest.raises(ValueError, match="frame of at least"):
+        process_sprite_sheet(raw, tmp_path / "small", cols=4, frame_width=16, frame_height=16,
+                             bg_mode="chroma_green", pixel_pitch=4)

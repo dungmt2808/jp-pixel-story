@@ -305,6 +305,8 @@ def pixellab_slice_spritesheet(
     lock_expressions: bool = False,
     source: dict[str, Any] | None = None,
     facing: str = "",
+    split: str = "grid",
+    pixel_pitch: float = 0.0,
 ) -> str:
     """Slice a raw AI spritesheet grid into registered, palette-locked animation frames + spritesheet.png + meta.json.
 
@@ -317,6 +319,8 @@ def pixellab_slice_spritesheet(
     Full-body walkers (route B `sprite:<key>` people): registration='centroid', facing='right' (the way the
     sheet looks) and a walk clip with stridePx, e.g. {"walk": {"frames": [0,1,2,3,4,5,6,7], "fps": 10,
     "stridePx": 24}}: the player then picks walk frames by distance travelled, so feet never slide.
+    split='gaps' finds unevenly spaced figures in one row by the empty columns between them (cols = how
+    many); pixel_pitch (source px per drawn pixel) fixes the scale so all sheets of a story match.
     """
     result = process_sprite_sheet(
         input_path=input_path,
@@ -338,6 +342,8 @@ def pixellab_slice_spritesheet(
         lock_expressions=lock_expressions,
         source=source,
         facing=facing,
+        split=split,
+        pixel_pitch=pixel_pitch,
     )
     return json.dumps(result, ensure_ascii=False, indent=2)
 

@@ -1,7 +1,7 @@
 {
   "spritesheet": "spritesheet.png",
-  "frameWidth": 32,
-  "frameHeight": 48,
+  "frameWidth": 40,
+  "frameHeight": 64,
   "frameCount": 10,
   "palette": "jp_story_master",
   "frames": [
@@ -17,8 +17,8 @@
     "frame_09.png"
   ],
   "pivot": {
-    "x": 15,
-    "y": 47
+    "x": 19,
+    "y": 63
   },
   "fps": 10.0,
   "clips": {
@@ -35,7 +35,7 @@
       ],
       "fps": 10.0,
       "loop": true,
-      "stridePx": 24.0
+      "stridePx": 32.0
     },
     "idle": {
       "frames": [
@@ -56,7 +56,7 @@
       "loop": true
     }
   },
-  "scale": 0.14791,
+  "scale": 0.181818,
   "registration": "centroid",
   "facing": "right"
 }

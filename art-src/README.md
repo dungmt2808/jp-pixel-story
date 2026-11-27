@@ -28,5 +28,5 @@ The first stories (`tsuru-ongaeshi`, `jlpt-n4-2025-07-rain-bgm`, `ramen-midnight
 
 New art always starts from a raw image in this folder (see `PROMPTS.md` of each story).
 
-`hanami-first/raw_walk_*.png` (full-body walk cycles for route B people) are also code-drawn
-stand-ins (`standin_walk.py`); `PROMPTS-walk.md` has the prompts for the real sheets.
+`hanami-first/raw_walk_*.png` are real walk-cycle sheets (full-body route B people) made from
+`PROMPTS-walk.md`; `standin_walk.py` draws the code stand-ins used before them.

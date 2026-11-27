@@ -1,9 +1,9 @@
 # はじめてのお花見 — sheet đi bộ của Minh & Yui (nhân vật toàn thân, kiểu PixelLab)
 
-Cảnh mở đầu giờ có Minh và Yui **đi bộ** vào công viên (route B `people` trên nền vẽ). Hai sheet
-hiện tại (`raw_walk_minh.png`, `raw_walk_yui.png`) là **bản tạm vẽ bằng code**
-(`standin_walk.py`) để thử toàn bộ đường ống. Bạn tạo 2 ảnh thật theo prompt dưới, lưu đè đúng tên,
-chạy một lệnh ở cuối — story không phải sửa gì.
+Cảnh mở đầu có Minh và Yui **đi bộ** vào công viên (route B `people` trên nền vẽ).
+`raw_walk_minh.png` và `raw_walk_yui.png` là sheet thật bạn đã tạo từ các prompt dưới đây
+(bản tạm vẽ bằng code trước đó: `standin_walk.py`). Muốn vẽ lại, lưu đè đúng tên và chạy lệnh
+ở cuối — story không phải sửa gì.
 
 ## Bố cục sheet (quan trọng nhất)
 
@@ -42,18 +42,27 @@ anti-aliasing, text, numbers, frame borders, grid lines, front view, back view, 
 
 ## Sau khi có ảnh
 
-Lưu vào thư mục này (`art-src/hanami-first/`) đúng 2 tên trên, rồi tái tạo sprite từ bản ghi
-provenance (giữ nguyên mọi thông số cắt: 10 ô, khung 32×48, `registration="centroid"`,
-`bg_mode="chroma_green"`, `facing="right"`, clip `walk` 8 khung với `stridePx: 24`, clip `idle`):
+Lưu vào thư mục này (`art-src/hanami-first/`) đúng 2 tên trên, rồi cắt lại với cùng thông số đang
+ghi trong `web/public/stories/hanami-first/assets/sprites/provenance.json`:
 
 ```bash
-cd mcp-server && uv run python -c "import provenance, json; print(json.dumps(provenance.reprocess('../web/public/stories/hanami-first/assets/sprites/provenance.json'), indent=2))"
+cd mcp-server && uv run python -c "
+from pixel_processor import process_sprite_sheet
+for who, stride in (('minh', 28), ('yui', 32)):
+    process_sprite_sheet(f'../art-src/hanami-first/raw_walk_{who}.png',
+        f'../web/public/stories/hanami-first/assets/sprites/{who}_walk',
+        cols=10, frame_width=40, frame_height=64, registration='centroid', bg_mode='chroma_green',
+        cleanup=True, facing='right', split='gaps', pixel_pitch=5.5, fps=10,
+        clips={'walk': {'frames': list(range(8)), 'fps': 10, 'stridePx': stride},
+               'idle': {'frames': [8] * 11 + [9], 'fps': 4}},
+        source={'artist': 'user', 'brief': 'art-src/hanami-first/PROMPTS-walk.md'})"
 ```
 
-`reprocess` sẽ báo `differs from record` cho `yui_walk` / `minh_walk` (đúng, vì ảnh gốc đã đổi) —
-khi đó gọi lại tool `pixellab_slice_spritesheet` với cùng thông số (hoặc nhờ Claude) để ghi sprite và
-provenance mới. Xem trước: mở truyện, cảnh đầu — hai bạn đi từ trái vào, Minh dừng lại quay đầu chờ,
-Yui đi tới rồi quay sang nói chuyện.
+- `split='gaps'`: nhân vật trong ảnh tạo ra không cách đều đúng 10 ô, tool tìm từng nhân vật theo
+  khoảng trống giữa chúng (phải đúng 10 nhân vật).
+- `pixel_pitch=5.5`: mỗi "pixel vẽ" trong ảnh rộng ~5.5 px (ảnh 2000 px). Cố định tỉ lệ để 1 pixel
+  sprite = 1 pixel vẽ và hai nhân vật cùng một tỉ lệ thế giới. Ảnh to/nhỏ hơn thì đổi số này
+  (2000 px → 5.5; 4000 px → 11).
 
 **Mẹo sải bước:** nếu chân trông như trượt trên cỏ, chỉnh `stridePx` trong `meta.json` của sprite
 (số px nhân vật đi được trong 1 chu kỳ 8 khung ≈ 2 × độ dài một bước chân trên màn hình). Player chọn
