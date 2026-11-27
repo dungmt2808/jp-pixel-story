@@ -498,3 +498,30 @@ def test_sprite_people_need_idle_and_a_walk_clip_with_a_stride(tmp_path: Path) -
     assert "[Foot Slide] sc1/a" in warnings
     assert "sc1/b: 'static' has no 'idle' clip" in warnings and "sc1/b: walks but 'static' has no 'walk' clip" in warnings
     assert "sc1/c" not in warnings
+
+
+def test_reading_page_needs_chapters_hanviet_and_known_vocab(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "reader", category="story")
+    story = {
+        "id": "reader", "engine": "cinema", "assets": {"backgrounds": {}, "portraits": {}},
+        "scenes": [{"id": "sc1", "lines": []}],
+        "reading": {
+            "sentences": [{"id": "r1", "voice": "narrator", "jaPlain": "約束をまもる。", "jaRuby": "{約束|やくそく}をまもる。",
+                           "vi": "giữ lời hứa", "highlightVocabIds": ["yakusoku", "ghost"]}],
+            "vocab": [{"id": "yakusoku", "word": "約束", "reading": "やくそく", "meaningVi": "lời hứa"},
+                      {"id": "mamoru", "word": "まもる", "reading": "まもる", "meaningVi": "giữ"}],
+            "grammar": [], "quiz": [],
+        },
+    }
+    (sdir / "story.json").write_text(json.dumps(story, ensure_ascii=False), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    warnings, issues = " | ".join(res["warnings"]), " | ".join(res["issues"])
+    assert "[Unknown Vocab] reading/r1: highlightVocabIds ['ghost']" in issues
+    assert "[No Chapters]" in warnings
+    assert "[No Hán Việt] yakusoku" in warnings and "mamoru" not in warnings  # kana words need none
+    story["reading"]["chapters"] = [{"id": "c1", "title": "{約束|やくそく}", "sentenceIds": ["r1"], "scene": "sc1"}]
+    story["reading"]["vocab"][0]["hanViet"] = "ƯỚC THÚC"
+    story["reading"]["sentences"][0]["highlightVocabIds"] = ["yakusoku"]
+    (sdir / "story.json").write_text(json.dumps(story, ensure_ascii=False), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    assert not any(t in " | ".join(res["warnings"] + res["issues"]) for t in ("[No Chapters]", "[No Hán Việt]", "[Unknown Vocab]"))

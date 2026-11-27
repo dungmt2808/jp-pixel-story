@@ -402,13 +402,24 @@
     ],
     "vocab": [
       {
+        "id": "omoshiroi",
+        "word": "面白い",
+        "reading": "おもしろい",
+        "level": "N5",
+        "partOfSpeech": "Tính từ đuôi い",
+        "meaningVi": "Thú vị, hay",
+        "note": "面白いことを知りました (biết được một điều thú vị). Khác 楽しい (vui, tự mình thấy vui).",
+        "hanViet": "DIỆN BẠCH"
+      },
+      {
         "id": "fukuro",
         "word": "袋",
         "reading": "ふくろ",
         "level": "N4",
         "partOfSpeech": "Danh từ",
         "meaningVi": "Cái túi, bao đựng",
-        "note": "紙の袋 (túi giấy) ↔ ビニール袋 (túi ni-lông chống nước). Từ rất hay gặp trong JLPT N4!"
+        "note": "紙の袋 (túi giấy) ↔ ビニール袋 (túi ni-lông chống nước). Từ rất hay gặp trong JLPT N4!",
+        "hanViet": "ĐẠI"
       },
       {
         "id": "tenin",
@@ -417,7 +428,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ",
         "meaningVi": "Nhân viên cửa hàng",
-        "note": "Phân biệt 店員 (nhân viên bán hàng) và 客 (きゃく — khách hàng)."
+        "note": "Phân biệt 店員 (nhân viên bán hàng) và 客 (きゃく — khách hàng).",
+        "hanViet": "ĐIẾM VIÊN"
       },
       {
         "id": "mawari",
@@ -426,7 +438,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ",
         "meaningVi": "Xung quanh",
-        "note": "周りには窓もない (xung quanh cũng không có cửa sổ)."
+        "note": "周りには窓もない (xung quanh cũng không có cửa sổ).",
+        "hanViet": "CHU"
       },
       {
         "id": "kasa",
@@ -435,7 +448,8 @@
         "level": "N5–N4",
         "partOfSpeech": "Danh từ",
         "meaningVi": "Cái ô (dù)",
-        "note": "傘を持つ (cầm ô) / 傘をさす (che ô)."
+        "note": "傘を持つ (cầm ô) / 傘をさす (che ô).",
+        "hanViet": "TẢN"
       },
       {
         "id": "senpai",
@@ -444,7 +458,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ",
         "meaningVi": "Tiền bối, đàn anh/đàn chị khóa trên",
-        "note": "Trái nghĩa là 後輩 (こうはい — hậu bối)."
+        "note": "Trái nghĩa là 後輩 (こうはい — hậu bối).",
+        "hanViet": "TIÊN BỐI"
       },
       {
         "id": "tokubetsu",
@@ -453,7 +468,8 @@
         "level": "N4",
         "partOfSpeech": "Tính từ đuôi な",
         "meaningVi": "Đặc biệt",
-        "note": "Trái nghĩa với 普通 (ふつう — thông thường)."
+        "note": "Trái nghĩa với 普通 (ふつう — thông thường).",
+        "hanViet": "ĐẶC BIỆT"
       },
       {
         "id": "imi",
@@ -462,7 +478,8 @@
         "level": "N4",
         "partOfSpeech": "Danh từ",
         "meaningVi": "Ý nghĩa",
-        "note": "ほかにも意味がある (ngoài ra còn có ý nghĩa khác nữa)."
+        "note": "ほかにも意味がある (ngoài ra còn có ý nghĩa khác nữa).",
+        "hanViet": "Ý VỊ"
       }
     ],
     "grammar": [
@@ -580,6 +597,55 @@
         ],
         "correctIndex": 1,
         "explanationVi": "Đáp án chuẩn JLPT: 2. Cẩn thận bẫy câu 4 (đó là điều tôi TƯỞNG trước đó, không phải điều mới biết!). Điều mới biết là trung tâm thương mại dùng âm nhạc để báo thời tiết cho nhân viên!"
+      }
+    ],
+    "chapters": [
+      {
+        "id": "ch1",
+        "title": "デパートの{音楽|おんがく}",
+        "titleVi": "Âm nhạc ở trung tâm thương mại",
+        "sentenceIds": [
+          "dr_01"
+        ],
+        "scene": "depato_intro"
+      },
+      {
+        "id": "ch2",
+        "title": "「{外|そと}は{雨|あめ}のようです」",
+        "titleVi": "“Hình như ngoài trời đang mưa”",
+        "sentenceIds": [
+          "dr_02",
+          "dr_03"
+        ],
+        "scene": "depato_counter_clue"
+      },
+      {
+        "id": "ch3",
+        "title": "{本当|ほんとう}に{雨|あめ}",
+        "titleVi": "Trời mưa thật",
+        "sentenceIds": [
+          "dr_04"
+        ],
+        "scene": "depato_step_rain"
+      },
+      {
+        "id": "ch4",
+        "title": "{北村|きたむら}さんの{話|はなし}",
+        "titleVi": "Anh Kitamura kể",
+        "sentenceIds": [
+          "dr_05",
+          "dr_06"
+        ],
+        "scene": "depato_campus_reveal"
+      },
+      {
+        "id": "ch5",
+        "title": "{音楽|おんがく}の{意味|いみ}",
+        "titleVi": "Ý nghĩa của bản nhạc",
+        "sentenceIds": [
+          "dr_07"
+        ],
+        "scene": "depato_outro"
       }
     ]
   },
