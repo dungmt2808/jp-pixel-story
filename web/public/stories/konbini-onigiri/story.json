@@ -1,6 +1,6 @@
 {
   "id": "konbini-onigiri",
-  "engine": "pixel",
+  "engine": "cinema",
   "series": "jp-pixel-story",
   "titleJa": "夜のコンビニ",
   "titleVi": "Lần đầu mua cơm nắm lúc nửa đêm",
@@ -49,7 +49,7 @@
   "scenes": [
     {
       "id": "skyline_intro",
-      "type": "skyline_intro",
+      "type": "cinema_intro",
       "bannerTitle": "TOKYO 23:45",
       "actionLabel": "はじめる · BEGIN",
       "lines": [
@@ -94,12 +94,21 @@
           "durationSec": 3.317,
           "ttsHash": "587fd2be82dd"
         }
-      ]
+      ],
+      "backdrop": "set:konbini_skyline",
+      "actors": [],
+      "set": {
+        "title": ""
+      },
+      "titleCard": {
+        "title": "{夜|よる}のコンビニ",
+        "subtitle": "TOKYO 23:45 · JLPT N5–N4",
+        "credit": "Tình huống đời sống · mua cơm nắm lúc nửa đêm"
+      }
     },
     {
       "id": "exterior_zoom",
-      "type": "exterior_zoom",
-      "locationBadge": "EKIMAE KONBINI · 駅前のコンビニ",
+      "type": "cinema_dialogue",
       "lines": [
         {
           "id": "s02_l01",
@@ -149,11 +158,14 @@
           "durationSec": 5.216,
           "ttsHash": "3e4baab8ceae"
         }
-      ]
+      ],
+      "backdrop": "set:konbini_exterior",
+      "actors": [],
+      "stamp": "EKIMAE KONBINI · 駅前のコンビニ"
     },
     {
       "id": "konbini_walkin",
-      "type": "konbini_walkin",
+      "type": "cinema_dialogue",
       "whoButtonLabel": "? この人はだれ",
       "actionLabel": "おにぎりを買う →",
       "lines": [
@@ -171,7 +183,13 @@
           "vi": "Xin kính chào quý khách!",
           "audioUrl": "/stories/konbini-onigiri/audio/s03_l01.wav",
           "durationSec": 1.291,
-          "ttsHash": "ddb695b4d41c"
+          "ttsHash": "ddb695b4d41c",
+          "sfx": "ding",
+          "telop": {
+            "text": "いらっしゃいませ！",
+            "sub": "Xin kính chào quý khách!",
+            "color": "shu"
+          }
         },
         {
           "id": "s03_l02",
@@ -201,50 +219,85 @@
           "vi": "Đói bụng quá đi. Chọn cơm nắm cá hồi vậy!",
           "audioUrl": "/stories/konbini-onigiri/audio/s03_l02.wav",
           "durationSec": 3.115,
-          "ttsHash": "8e47a30f61cc"
+          "ttsHash": "8e47a30f61cc",
+          "emote": "note"
         }
-      ]
+      ],
+      "backdrop": "set:konbini_interior",
+      "actors": []
     },
     {
       "id": "drag_counter",
-      "type": "drag_counter",
-      "instruction": "DRAG ONIGIRI A TO REGISTER TRAY B · レジへ運ぼう",
-      "lines": [
+      "type": "cinema_dialogue",
+      "lines": [],
+      "backdrop": "set:konbini_counter",
+      "actors": [],
+      "interaction": {
+        "type": "drag",
+        "hint": "Kéo cơm nắm từ kệ A đến khay tính tiền B",
+        "items": [
+          {
+            "id": "onigiri",
+            "item": "onigiri",
+            "from": [
+              64,
+              136
+            ],
+            "to": [
+              212,
+              122
+            ],
+            "label": "おにぎり",
+            "labelVi": "cơm nắm"
+          }
+        ],
+        "doneDelaySec": 0.8,
+        "doneLines": [
+          {
+            "id": "s04_l01",
+            "voice": "clerk",
+            "speakerLabel": "店員",
+            "jaPlain": "おにぎりお一つですね。百六十円になります。",
+            "ttsText": "おにぎりおひとつですね。ひゃくろくじゅうえんになります。",
+            "jaRuby": [
+              {
+                "t": "おにぎりお"
+              },
+              {
+                "t": "一",
+                "r": "ひと"
+              },
+              {
+                "t": "つですね。160"
+              },
+              {
+                "t": "円",
+                "r": "えん"
+              },
+              {
+                "t": "になります。"
+              }
+            ],
+            "vi": "Một chiếc cơm nắm đúng không ạ. Của bạn hết 160 yên.",
+            "audioUrl": "/stories/konbini-onigiri/audio/s04_l01.wav",
+            "durationSec": 3.808,
+            "ttsHash": "691a53487069",
+            "camera": "push"
+          }
+        ]
+      },
+      "cues": [
         {
-          "id": "s04_l01",
-          "voice": "clerk",
-          "speakerLabel": "店員",
-          "jaPlain": "おにぎりお一つですね。百六十円になります。",
-          "ttsText": "おにぎりおひとつですね。ひゃくろくじゅうえんになります。",
-          "jaRuby": [
-            {
-              "t": "おにぎりお"
-            },
-            {
-              "t": "一",
-              "r": "ひと"
-            },
-            {
-              "t": "つですね。160"
-            },
-            {
-              "t": "円",
-              "r": "えん"
-            },
-            {
-              "t": "になります。"
-            }
-          ],
-          "vi": "Một chiếc cơm nắm đúng không ạ. Của bạn hết 160 yên.",
-          "audioUrl": "/stories/konbini-onigiri/audio/s04_l01.wav",
-          "durationSec": 3.808,
-          "ttsHash": "691a53487069"
+          "done": true,
+          "set": {
+            "scanned": 1
+          }
         }
       ]
     },
     {
       "id": "closeup_choice",
-      "type": "closeup_choice",
+      "type": "cinema_checklist",
       "lines": [
         {
           "id": "s05_l01",
@@ -267,7 +320,13 @@
           "vi": "Cơm nắm này, bạn có muốn hâm nóng không ạ?",
           "audioUrl": "/stories/konbini-onigiri/audio/s05_l01.wav",
           "durationSec": 2.336,
-          "ttsHash": "7a6f90a41146"
+          "ttsHash": "7a6f90a41146",
+          "telop": {
+            "text": "{温|あたた}めますか？",
+            "sub": "Có cần hâm nóng không ạ?",
+            "color": "shu"
+          },
+          "sfx": "pop"
         },
         {
           "id": "s05_l02",
@@ -297,7 +356,9 @@
           "vi": "À, là từ \"hâm nóng\"! Trả lời thế nào bây giờ nhỉ?",
           "audioUrl": "/stories/konbini-onigiri/audio/s05_l02.wav",
           "durationSec": 3.019,
-          "ttsHash": "128024d9f9fc"
+          "ttsHash": "128024d9f9fc",
+          "emote": "question",
+          "camera": "punch"
         }
       ],
       "minigame": {
@@ -341,7 +402,8 @@
               "vi": "Vâng, nhờ anh/chị hâm nóng giúp em ạ!",
               "audioUrl": "/stories/konbini-onigiri/audio/s05_c01.wav",
               "durationSec": 1.984,
-              "ttsHash": "d9c5975e4edf"
+              "ttsHash": "d9c5975e4edf",
+              "emote": "sparkle"
             }
           },
           {
@@ -382,15 +444,34 @@
               "vi": "Không, như vậy là ổn rồi ạ.",
               "audioUrl": "/stories/konbini-onigiri/audio/s05_c02.wav",
               "durationSec": 2.165,
-              "ttsHash": "a3e05229fe13"
+              "ttsHash": "a3e05229fe13",
+              "emote": "note"
             }
           }
-        ]
-      }
+        ],
+        "mode": "one",
+        "autoPick": "warm_yes"
+      },
+      "backdrop": "set:konbini_closeup",
+      "actors": [],
+      "cues": [
+        {
+          "choice": "warm_yes",
+          "set": {
+            "effect": "microwave"
+          }
+        },
+        {
+          "choice": "warm_no",
+          "set": {
+            "effect": "polite_bow"
+          }
+        }
+      ]
     },
     {
       "id": "outro_celebrate",
-      "type": "outro_celebrate",
+      "type": "cinema_outro",
       "lines": [
         {
           "id": "s06_l01",
@@ -475,9 +556,28 @@
           "vi": "Lần đầu tự mua đồ ở cửa hàng tiện lợi đã thành công rực rỡ! Nhờ chiếc cơm nắm ấm nóng, bao mệt mỏi cũng tan biến.",
           "audioUrl": "/stories/konbini-onigiri/audio/s06_l02.wav",
           "durationSec": 6.731,
-          "ttsHash": "ddea9c46932d"
+          "ttsHash": "ddea9c46932d",
+          "emote": "sparkle",
+          "telop": {
+            "text": "{大成功|だいせいこう}！",
+            "sub": "Thành công rực rỡ!",
+            "color": "gold"
+          }
         }
-      ]
+      ],
+      "backdrop": "set:konbini_outro",
+      "actors": [],
+      "bgm": "happy",
+      "cues": [
+        {
+          "at": 0,
+          "ifChoice": "warm_yes",
+          "set": {
+            "warmed": 1
+          }
+        }
+      ],
+      "summary": "「{温|あたた}めますか？」→「はい、お{願|ねが}いします」/「いいえ、{大丈夫|だいじょうぶ}です」"
     }
   ],
   "reading": {
@@ -979,5 +1079,20 @@
         "explanationVi": "Trong giao tiếp thực tế ở Nhật, 「大丈夫です」 dùng rất nhiều để từ chối nhẹ nhàng."
       }
     ]
+  },
+  "bgm": "calm",
+  "brand": "jp-pixel-story.vn",
+  "assets": {
+    "backgrounds": {},
+    "portraits": {},
+    "items": {
+      "onigiri": "/stories/konbini-onigiri/assets/items/onigiri.png"
+    }
+  },
+  "cast": {},
+  "artQuality": {
+    "outlineColor": "#0b0e1a",
+    "minOutlineCompliance": 0.9,
+    "maxOrphanRatio": 0.1
   }
 }

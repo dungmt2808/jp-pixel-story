@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "assets": {
+    "onigiri.png": {
+      "steps": [
+        {
+          "op": "render_proc_item",
+          "params": {
+            "script": "web/scripts/render_proc_items.mjs",
+            "draw": "drawOnigiri(ctx, 32, 32, 2, false, 0);"
+          },
+          "input": null,
+          "source": {
+            "kind": "code",
+            "note": "drawn by web/src/engine/pixelRenderer.ts"
+          }
+        }
+      ],
+      "output": {
+        "sha": "97e54ff303b9d5b2"
+      }
+    }
+  }
+}

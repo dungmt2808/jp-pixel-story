@@ -85,6 +85,8 @@ export interface MoverFx {
   front?: Rect[];
   /** "always" (default: waits at the start, stays at the end) or "moving" (only while travelling). */
   show?: "always" | "moving";
+  /** Start counting `delaySec` from a cue anchor (e.g. { "done": true }) instead of the scene start. */
+  startOn?: import("./cues").SceneCue;
 }
 export interface RumbleFx {
   type: "rumble";

@@ -7,7 +7,7 @@
 import type { StoryData } from "../types/story";
 import { cueMoves, setStateAt, type CueAnchors } from "./cues";
 import { drawPerson, personAt } from "./people";
-import { PROC_SETS } from "./proc/shibuya";
+import { PROC_SETS } from "./proc/sets";
 
 const cache = new Map<string, string>();
 

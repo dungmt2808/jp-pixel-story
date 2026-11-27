@@ -32,6 +32,8 @@ export interface DialogueLine {
   emoteSide?: "left" | "right";
   /** Route B: the emote (and camera focus) goes to this person of `scene.people`. */
   emoteWho?: string;
+  /** Switch a cast member's portrait from this line on (expressions): { "left": "minh_happy" }. */
+  castPortrait?: Partial<Record<"left" | "right", string>>;
   /** Vibe kit: camera move while the line plays ("push", "punch", "close", "shake", "pan_left", "pan_right"). */
   camera?: string;
   /** Vibe kit: big variety-show caption over the stage (ruby allowed). */
@@ -62,6 +64,10 @@ export interface MiniGameChoice {
 }
 
 export interface SceneMiniGame {
+  /** "one": pick a single answer (then continue); default: try every choice. */
+  mode?: "one" | "all";
+  /** Choice the autoplay director picks in "one" mode (default: the first). */
+  autoPick?: string;
   prompt: string;
   choices: MiniGameChoice[];
 }

@@ -141,6 +141,9 @@ def reprocess(manifest_path: str | Path, names: list[str] | None = None) -> dict
             target = Path(td) / name
             status = "identical"
             for step in entry["steps"]:
+                if step["op"] == "render_proc_item":
+                    status = "generated from code: re-run web/scripts/render_proc_items.mjs"
+                    break
                 fn = ops.get(step["op"])
                 if fn is None:
                     status = f"unknown op {step['op']}"
@@ -171,4 +174,6 @@ def reprocess(manifest_path: str | Path, names: list[str] | None = None) -> dict
                 elif path_sha(current) != entry["output"]["sha"]:
                     status = "file edited after processing"
         results[name] = status
-    return {"manifest": str(mpath), "results": results, "ok": all(v == "identical" for v in results.values())}
+    # code-generated assets are rebuilt by their script, not by this replay
+    ok = all(v == "identical" or v.startswith("generated from code") for v in results.values())
+    return {"manifest": str(mpath), "results": results, "ok": ok}

@@ -34,6 +34,7 @@ const motion = await loadTsModule("src/engine/sceneMotion.ts");
 const people = await loadTsModule("src/engine/people.ts");
 const cues = await loadTsModule("src/engine/cues.ts");
 const shibuya = await loadTsModule("src/engine/proc/shibuya.ts");
+const sets = await loadTsModule("src/engine/proc/sets.ts");
 const rig = await loadTsModule("src/engine/rigAnimator.ts");
 const ui = await loadTsModule("src/engine/cinemaUi.ts");
 
@@ -487,7 +488,8 @@ test("shibuya train: arrives, waits at the platform, leaves; nothing before its 
   assert.ok(shibuya.trainX("go", 10, 15.5) > 120, "leaving");
   assert.equal(shibuya.trainX("go", 10, 17), null, "gone");
   assert.equal(typeof shibuya.trainX("loop", undefined, 3), "number");
-  assert.deepEqual(Object.keys(shibuya.PROC_SETS).sort(), ["shibuya", "shibuya_today"]);
+  assert.deepEqual(Object.keys(shibuya.SHIBUYA_SETS).sort(), ["shibuya", "shibuya_today"]);
+  for (const k of ["shibuya", "konbini_counter", "konbini_outro"]) assert.ok(sets.PROC_SETS[k], k);
 });
 
 console.log(`\nALL ${passed} ENGINE TESTS PASSED!`);

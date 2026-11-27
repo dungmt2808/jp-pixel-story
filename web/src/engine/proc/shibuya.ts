@@ -289,7 +289,7 @@ export function drawShibuyaToday(c: Ctx, st: SetState): void {
   c.restore();
 }
 
-export const PROC_SETS: Record<string, (c: Ctx, st: SetState) => void> = {
+export const SHIBUYA_SETS: Record<string, (c: Ctx, st: SetState) => void> = {
   shibuya: drawShibuya,
   shibuya_today: drawShibuyaToday,
 };

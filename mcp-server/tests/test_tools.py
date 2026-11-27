@@ -442,8 +442,11 @@ def test_done_lines_are_voiced_and_route_b_is_validated(tmp_path: Path) -> None:
     import content_validator as cv
 
     web = Path(__file__).resolve().parents[2] / "web" / "src" / "engine"
-    sets = (web / "proc" / "shibuya.ts").read_text(encoding="utf-8")
-    assert set(re.findall(r"^  (\w+): draw\w+,$", sets, re.M)) == cv.PROC_SETS
+    names: set[str] = set()
+    for f in ("shibuya.ts", "konbini.ts"):
+        src = (web / "proc" / f).read_text(encoding="utf-8")
+        names |= set(re.findall(r"^  (\w+): (?:draw\w+,|\(c, st\))", src, re.M))
+    assert names == cv.PROC_SETS
 
     pub, sdir = _setup_mock_catalog(tmp_path, "route-b", category="story")
     bad = {

@@ -19,9 +19,15 @@ export interface SceneCue {
   line?: number;
   doneLine?: number;
   done?: boolean;
+  /** Anchor: when this choice of the scene's mini-game was picked. */
+  choice?: string;
+  /** Filter: only when this choice was picked (in any scene so far). */
+  ifChoice?: string;
   delay?: number;
   set?: Record<string, unknown>;
   people?: PersonMove[];
+  /** Switch the scene backdrop ("bg:<key>" / "set:<name>" / "proc:<name>") at this moment. */
+  backdrop?: string;
 }
 
 export interface CueAnchors {
@@ -31,12 +37,18 @@ export interface CueAnchors {
   doneLines: number[];
   /** Scene time at which the interaction completed. */
   done?: number;
+  /** Scene time each choice of this scene was picked. */
+  choices?: Record<string, number>;
+  /** Every choice id picked so far in the story (for `ifChoice`). */
+  picked?: string[];
 }
 
 /** When a cue fires (scene seconds), or null while its anchor has not happened yet. */
 export function cueTime(cue: SceneCue, a: CueAnchors): number | null {
+  if (cue.ifChoice && !(a.picked ?? []).includes(cue.ifChoice)) return null;
   let base: number | undefined;
-  if (cue.line !== undefined) base = a.lines[cue.line];
+  if (cue.choice !== undefined) base = a.choices?.[cue.choice];
+  else if (cue.line !== undefined) base = a.lines[cue.line];
   else if (cue.doneLine !== undefined) base = a.doneLines[cue.doneLine];
   else if (cue.done) base = a.done;
   else base = cue.at ?? 0;
@@ -80,4 +92,15 @@ export function cueMoves(cues: SceneCue[] | undefined, a: CueAnchors): { move: P
     for (const move of cue.people ?? []) out.push({ move, time });
   }
   return out;
+}
+
+/** The backdrop at scene time t: the latest fired cue `backdrop`, else the scene's own. */
+export function backdropAt(base: string, cues: SceneCue[] | undefined, a: CueAnchors, t: number): string {
+  let best: { ref: string; time: number } | null = null;
+  for (const cue of cues ?? []) {
+    if (!cue.backdrop) continue;
+    const time = cueTime(cue, a);
+    if (time !== null && time <= t && (!best || time >= best.time)) best = { ref: cue.backdrop, time };
+  }
+  return best ? best.ref : base;
 }

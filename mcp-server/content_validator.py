@@ -26,7 +26,7 @@ VIBE_LIGHTS = {"day", "morning", "golden", "dusk", "night", "rain", "warm"}
 VIBE_BGM = {"default", "depato_sunny", "depato_rain", "calm", "night", "happy", "bright", "sad", "tender", "rain", "none"}
 MOTION_TYPES = {"scroll", "sweep", "glow", "shimmer", "steam", "mover", "rumble"}
 PERSON_KINDS = {"dog", "bronze-dog", "sensei", "person"}
-PROC_SETS = {"shibuya", "shibuya_today"}
+PROC_SETS = {"shibuya", "shibuya_today", "konbini_skyline", "konbini_exterior", "konbini_interior", "konbini_counter", "konbini_closeup", "konbini_outro"}
 
 
 def vocab_needles(v: dict[str, Any]) -> list[str]:
