@@ -3315,14 +3315,15 @@ rt {
 
 /* Vibe kit: telop = a name-plate caption over the stage. One flat plate per caption: cream text
    on a solid colour with a 1-pixel-style dark border — no text outline, no drop shadow (two
-   layers around each glyph read as a doubled, blurry print). The Vietnamese ribbon hangs under it. */
+   layers around each glyph read as a doubled, blurry print), set straight. The Vietnamese ribbon
+   hangs under it. */
 .cine-telop {
   position: absolute;
   z-index: 6;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translate(-50%, -50%) rotate(-2deg);
+  transform: translate(-50%, -50%);
   text-align: center;
   pointer-events: none;
   animation: cine-telop-pop 0.32s steps(4) both;
@@ -3365,9 +3366,9 @@ rt {
   text-overflow: ellipsis;
 }
 @keyframes cine-telop-pop {
-  0% { transform: translate(-50%, -50%) rotate(-2deg) scale(1.6); opacity: 0; }
-  60% { transform: translate(-50%, -50%) rotate(-2deg) scale(0.95); opacity: 1; }
-  100% { transform: translate(-50%, -50%) rotate(-2deg) scale(1); opacity: 1; }
+  0% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
+  60% { transform: translate(-50%, -50%) scale(0.95); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
 
 /* furigana on the cream story card (the global gold rt is unreadable on cream) */
