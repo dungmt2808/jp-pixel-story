@@ -903,6 +903,9 @@
     },
     "/stories/tsuru-ongaeshi/assets/item_cloth.png": {
       "noise": "woven silk texture of the cloth roll (12.2% after cleanup, reviewed)"
+    },
+    "/stories/tsuru-ongaeshi/assets/sprites/yosaku_walk/spritesheet.png": {
+      "noise": "kimono weave, scarf and leg wraps at 40x64 (18.2% after cleanup, reviewed)"
     }
   }
 }

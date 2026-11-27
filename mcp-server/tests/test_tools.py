@@ -525,3 +525,21 @@ def test_reading_page_needs_chapters_hanviet_and_known_vocab(tmp_path: Path) -> 
     (sdir / "story.json").write_text(json.dumps(story, ensure_ascii=False), encoding="utf-8")
     res = validate_story_folder(sdir, web_public_dir=pub)
     assert not any(t in " | ".join(res["warnings"] + res["issues"]) for t in ("[No Chapters]", "[No Hán Việt]", "[Unknown Vocab]"))
+
+
+def test_validator_flags_a_character_shown_twice(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "twice", category="story")
+    sp = sdir / "assets" / "sprites" / "lisa_walk"
+    sp.mkdir(parents=True)
+    (sp / "meta.json").write_text(json.dumps({"frameWidth": 8, "frameHeight": 8, "frameCount": 2,
+                                              "clips": {"idle": [0], "walk": {"frames": [0, 1], "stridePx": 20}}}))
+    scene = {"id": "end", "type": "cinema_outro", "backdrop": "set:shibuya", "lines": [],
+             "people": {"lisa": {"kind": "sprite:lisa_walk", "x": 10}}}
+    story = {"id": "twice", "engine": "cinema", "cast": {"left": {"voice": "lisa", "portrait": "lisa"}},
+             "assets": {"backgrounds": {}, "portraits": {}, "sprites": {"lisa_walk": "/stories/twice/assets/sprites/lisa_walk/meta.json"}},
+             "scenes": [scene], "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []}}
+    (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
+    assert any(w.startswith("[Double Character] end") for w in validate_story_folder(sdir, web_public_dir=pub)["warnings"])
+    scene["actors"] = []
+    (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
+    assert not any("[Double Character]" in w for w in validate_story_folder(sdir, web_public_dir=pub)["warnings"])

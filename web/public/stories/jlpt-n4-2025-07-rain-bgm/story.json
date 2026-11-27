@@ -209,9 +209,7 @@
       "type": "cinema_dialogue",
       "backdrop": "bg:rain",
       "overlay": "rain",
-      "actors": [
-        "left"
-      ],
+      "actors": [],
       "bgm": "depato_rain",
       "stamp": "さくらデパート · 出口",
       "lines": [
@@ -231,7 +229,8 @@
             "text": "{本当|ほんとう}に{雨|あめ}！",
             "sub": "Trời mưa thật!",
             "color": "ai"
-          }
+          },
+          "emoteWho": "student"
         }
       ],
       "people": {
@@ -743,5 +742,13 @@
         "speed": 0.7
       }
     ]
+  },
+  "artExceptions": {
+    "/stories/jlpt-n4-2025-07-rain-bgm/assets/sprites/kitamura/spritesheet.png": {
+      "noise": "knitted cardigan texture (10.8% after cleanup, reviewed)"
+    },
+    "/stories/jlpt-n4-2025-07-rain-bgm/assets/sprites/student_walk/spritesheet.png": {
+      "noise": "jacket folds and the shopping bag at 40x64 (10.4% after cleanup, reviewed)"
+    }
   }
 }

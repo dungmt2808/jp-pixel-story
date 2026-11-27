@@ -470,6 +470,25 @@ def validate_story_folder(
                             f"[Foot Slide] {sc.get('id')}/{pid}: the 'walk' clip of '{kind[7:]}' has no stridePx "
                             "(px per cycle), so frames follow time and the feet slide"
                         )
+            # the same character twice: a bust portrait on stage AND its walking sprite in the shot
+            if people and data.get("engine") == "cinema":
+                kind_of = str(sc.get("type", ""))
+                default_sides = [] if kind_of == "cinema_intro" else ["left"] if kind_of == "cinema_outro" else ["left", "right"]
+                sides = sc.get("actors", default_sides)
+                cast = {**(data.get("cast") or {}), **(sc.get("cast") or {})}
+                names = {side: {str(cast[side].get("voice", "")), str(cast[side].get("portrait", ""))} - {""}
+                         for side in sides if isinstance(cast.get(side), dict)}
+                for pid, pdef in people.items():
+                    kind = str(pdef.get("kind", ""))
+                    if not kind.startswith("sprite:"):
+                        continue
+                    stem = kind[7:].removesuffix("_walk")
+                    for side, ids in names.items():
+                        if stem in ids or pid in ids or any(i.startswith(stem + "_") for i in ids):
+                            warnings.append(
+                                f"[Double Character] {sc.get('id')}: '{pid}' walks in the shot while the {side} portrait "
+                                f"is the same character; set `actors` without '{side}' (use `emoteWho` for the reactions)"
+                            )
             n_lines = len(sc.get("lines") or [])
             inter = sc.get("interaction") or {}
             n_done = (1 if inter.get("doneLine") else 0) + len(inter.get("doneLines") or [])
