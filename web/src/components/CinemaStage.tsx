@@ -549,7 +549,11 @@ export function CinemaStage({
       const motion = [...(story.backdropMotion?.[bgKey] ?? []), ...(backdropOverride ? [] : currentScene.motion ?? [])];
       const bgImg = imgs[backdropRef.startsWith("bg:") ? backdropRef : `bg:${backdropRef}`];
       const bump = sceneRumble(motion, elapsed);
-      if (bump) drawBackdrop(ctx, backdropRef, t, imgs); // fills the row the shift uncovers
+      if (bump) {
+        // the 1 px shift uncovers the top row: copy just that row from the painting
+        if (bgImg) ctx.drawImage(bgImg, 0, 0, VIRTUAL_W, bump, 0, 0, VIRTUAL_W, bump);
+        else drawBackdrop(ctx, backdropRef, t, imgs);
+      }
       ctx.save();
       if (bump) ctx.translate(0, bump);
       if (!drawBackdrop(ctx, backdropRef, t, imgs)) {
