@@ -367,6 +367,23 @@ test("camera: identity by default, push eases in toward the speaker, crops stay 
   assert.deepEqual([vibe.cameraAt("shake", 2, [0, 0]).cx, vibe.cameraAt("shake", 2, [0, 0]).cy], [160, 100]);
 });
 
+test("drawEmote never throws, even when the frame timestamp is older than the line start", () => {
+  // regression: rAF `now` can precede the line start -> negative age -> frames[-1] -> TypeError,
+  // which killed the render loop and froze the backgrounds on the live site
+  const calls = [];
+  const ctx = {
+    fillStyle: "",
+    save() {}, restore() {}, translate() {}, scale() {},
+    fillRect(x, y, w, h) { calls.push([x, y, w, h]); },
+  };
+  for (const name of vibe.EMOTE_NAMES) {
+    for (const age of [-0.25, -0.004, 0, 0.1, 0.5, 3.3, 60]) {
+      assert.doesNotThrow(() => vibe.drawEmote(ctx, name, 100, 80, age, 2), `${name} @ ${age}`);
+    }
+  }
+  assert.ok(calls.length > 0);
+});
+
 test("lineSfx: explicit sfx wins, 'none' silences, emotes bring a default sound", () => {
   assert.equal(vibe.lineSfx({ emote: "shock" }), "shock");
   assert.equal(vibe.lineSfx({ emote: "shock", sfx: "ding" }), "ding");

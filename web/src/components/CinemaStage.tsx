@@ -515,7 +515,8 @@ export function CinemaStage({
       // vibe kit: who is speaking, how long into the line
       const vibe = vibeRef.current;
       const vLine = speakingRef.current !== null ? vibe.line : null;
-      const vAge = (now - vibe.start) / 1000;
+      // rAF `now` is the frame start and can be slightly older than the line start
+      const vAge = Math.max(0, (now - vibe.start) / 1000);
       const onStage = kind === "intro" ? [] : sides;
       const speakerSide = vLine ? onStage.find((sd) => cast[sd]?.voice === vLine.voice) : undefined;
       // the camera frames whoever reacts (emoteSide) or else the speaker

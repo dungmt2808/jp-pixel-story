@@ -4,10 +4,15 @@
  * (`export_video.mjs --check`). Fails on page errors, missing audio, overlapping voice lines, or a
  * story that never reaches its last scene.
  *
- * Usage: node check_all.mjs --url http://127.0.0.1:4173
+ * Then a REAL-TIME smoke pass (no virtual clock, like a visitor on GitHub Pages): each story autoplays
+ * for a few seconds and any page error / console error fails the gate. The virtual clock alone missed
+ * a crash that only happened when requestAnimationFrame timestamps preceded the line start.
+ *
+ * Usage: node check_all.mjs --url http://127.0.0.1:4173 [--realtime-sec 18] [--no-realtime]
  */
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -29,7 +34,36 @@ for (const id of stories) {
   if (res.status !== 0) failed.push(id);
 }
 console.log(`\nStage E2E: ${stories.length - failed.length}/${stories.length} stories played to the end cleanly.`);
-if (failed.length) {
-  console.error(`FAILED: ${failed.join(", ")}`);
+
+const realtimeFailed = [];
+if (url && !process.argv.includes("--no-realtime")) {
+  const secIdx = process.argv.indexOf("--realtime-sec");
+  const seconds = secIdx >= 0 ? Number(process.argv[secIdx + 1]) : 18;
+  const { chromium } = createRequire(import.meta.url)("playwright");
+  const browser = await chromium.launch({ args: ["--autoplay-policy=no-user-gesture-required"] });
+  try {
+    for (const id of stories) {
+      const page = await browser.newPage({ viewport: { width: 1100, height: 900 } });
+      const errors = [];
+      page.on("pageerror", (e) => errors.push(`pageerror: ${e.message}`));
+      page.on("console", (m) => m.type() === "error" && errors.push(`console: ${m.text()}`));
+      await page.goto(`${url}/?story=${encodeURIComponent(id)}&autoplay=true`, { waitUntil: "load" });
+      await page.waitForTimeout(seconds * 1000);
+      await page.close();
+      if (errors.length) {
+        realtimeFailed.push(id);
+        console.error(`realtime ${id}: ${errors.slice(0, 3).join(" | ")}`);
+      } else {
+        console.log(`realtime ${id}: ${seconds}s, no errors`);
+      }
+    }
+  } finally {
+    await browser.close();
+  }
+  console.log(`Real-time smoke: ${stories.length - realtimeFailed.length}/${stories.length} stories ran without errors.`);
+}
+
+if (failed.length || realtimeFailed.length) {
+  console.error(`FAILED: ${[...failed, ...realtimeFailed.map((id) => `${id} (realtime)`)].join(", ")}`);
   process.exit(1);
 }
