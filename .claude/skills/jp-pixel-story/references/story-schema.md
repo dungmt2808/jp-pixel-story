@@ -107,8 +107,11 @@ Full example: `web/public/stories/hanami-first/story.json`.
 ### Cinematic player v2 (Classmate-style chrome, labels & mini-games)
 
 `CinemaStage` renders every cinema story as one player: a top bar (title + `?` card, `ふ` furigana, `JA·VI`, mute, close),
-the 16:10 pixel stage, and a caption bar *under* the stage (speaker, Japanese with ruby, Vietnamese, or the
-interaction hint / outro buttons). All coordinates below are in the 320x200 virtual frame. Example: `hanami-first`.
+the 16:10 pixel stage, and a caption bar *under* the stage (speaker, Japanese with ruby, Vietnamese, or the outro
+buttons). During an interaction its `hint` sits at the TOP of the frame (the stamp and brand step aside), so lines
+spoken while tapping keep their subtitles. UI type: Japanese labels / telops in DotGothic16, Vietnamese UI lines in
+VT323 (DotGothic16 and Press Start 2P have no Vietnamese letters). Tags near the frame edge hang inwards.
+All coordinates below are in the 320x200 virtual frame. Example: `hanami-first`.
 
 ```json
 {

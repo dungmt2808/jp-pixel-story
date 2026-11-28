@@ -25,11 +25,14 @@ import {
 } from "../engine/cinemaModel";
 import {
   dropDragItem,
+  HOLD_ITEM_DY,
+  HOLD_METER_W,
   hintText,
   hitTapSpot,
   initDrag,
   pickDragItem,
   stepHold,
+  tagEdge,
   toPct,
   type DragItemState,
   type Vec,
@@ -327,6 +330,8 @@ export function CinemaStage({
       if (holdLeft > 0) await sleep(holdLeft);
       if (cancelled) return;
       if (currentScene.interaction) {
+        // the last line's subtitle goes: during the interaction the caption only shows what is said now
+        setActiveLine(null);
         setPhase("interact");
       } else {
         setPhase("ready");
@@ -816,7 +821,7 @@ export function CinemaStage({
           if (!hr.holding && h.streamTo) drawTargetGlow(ctx, h.streamTo, t, 12);
           const im = h.item ? imgs[`i:${h.item}`] : undefined;
           const canCx = Math.round(h.x);
-          const canCy = Math.round(h.y + 18);
+          const canCy = Math.round(h.y + HOLD_ITEM_DY);
           if (im) {
             const bob = hr.holding ? Math.round(Math.sin(t * 10) * 1) : Math.round(Math.sin(t * 3.5) * 1);
             ctx.save();
@@ -829,7 +834,7 @@ export function CinemaStage({
             const spout: Vec = im ? [canCx + Math.floor(im.naturalWidth / 2) - 1, canCy + 2] : [h.x + 8, h.y + 8];
             drawStream(ctx, spout, h.streamTo, t, h.streamColor);
           }
-          drawMeter(ctx, h.x, h.y, 56, hr.progress);
+          drawMeter(ctx, h.x, h.y, HOLD_METER_W, hr.progress);
         }
       }
 
@@ -889,12 +894,13 @@ export function CinemaStage({
   const labels = currentScene.outroLabels ?? {};
   const isLast = sceneIdx + 1 >= story.scenes.length;
 
+  // the interaction instruction sits at the top of the frame (like the reference player), so the
+  // caption bar stays free for the subtitles of lines spoken during the interaction (tap spots)
+  const stageHint = phase === "interact" && interaction ? hintText(interaction.hint, progress, total) : null;
   let caption: ReactNode = null;
   const choicePrompt = kind === "checklist" && phase === "ready" && checkedIds.length === 0 ? currentScene.minigame?.prompt : undefined;
   if (choicePrompt) {
     caption = <div className="cine-cap-hint">{choicePrompt.toLocaleUpperCase("vi-VN")}</div>;
-  } else if (phase === "interact" && interaction) {
-    caption = <div className="cine-cap-hint">{hintText(interaction.hint, progress, total)}</div>;
   } else if (kind === "outro" && phase === "ready") {
     caption = (
       <>
@@ -974,16 +980,17 @@ export function CinemaStage({
           onPointerUp={(e) => releaseAt(toVirtual(e))}
           onPointerCancel={(e) => releaseAt(toVirtual(e))}
         />
-        <div className="cine-brand">{story.brand ?? "jp-pixel-story"}</div>
+        {!stageHint && <div className="cine-brand">{story.brand ?? "jp-pixel-story"}</div>}
 
-        {stamp && kind !== "intro" && (
+        {stamp && kind !== "intro" && !stageHint && (
           <div className="cine-stamp" style={toPct(stamp.x ?? 160, stamp.y ?? 18)}>
             {stamp.text}
           </div>
         )}
+        {stageHint && <div className="cine-hint">{stageHint}</div>}
 
         {visibleLabels.map((l, i) => (
-          <div key={`${sceneIdx}-${i}`} className={`cine-tag ${l.style === "letter" ? "letter" : ""}`} style={toPct(l.x, l.y)}>
+          <div key={`${sceneIdx}-${i}`} className={`cine-tag ${l.style === "letter" ? "letter" : ""} ${tagEdge(l.x)}`} style={toPct(l.x, l.y)}>
             <RubyText segments={l.text} showFurigana={showFurigana} />
             {l.sub && <span className="cine-tag-sub">{l.sub}</span>}
           </div>
@@ -996,7 +1003,7 @@ export function CinemaStage({
             const pdef = it.person ? currentScene.people?.[it.person] : undefined;
             const lift = pdef ? personBox(pdef.kind, spritesRef.current).h + 12 : 22;
             return (
-              <div key={it.id} className="cine-tag" style={toPct(it.from[0], it.from[1] - lift)}>
+              <div key={it.id} className={`cine-tag ${tagEdge(it.from[0])}`} style={toPct(it.from[0], it.from[1] - lift)}>
                 <RubyText segments={it.label} showFurigana={showFurigana} />
                 {it.labelVi && <span className="cine-tag-sub">{it.labelVi}</span>}
               </div>
@@ -1005,14 +1012,14 @@ export function CinemaStage({
         {interaction?.type === "tap" &&
           (interaction.spots ?? []).map((s) =>
             foundIds.includes(s.id) && s.label ? (
-              <div key={s.id} className="cine-tag" style={toPct(s.x, s.y - 18)}>
+              <div key={s.id} className={`cine-tag ${tagEdge(s.x)}`} style={toPct(s.x, s.y - 18)}>
                 <RubyText segments={s.label} showFurigana={showFurigana} />
                 {s.labelVi && <span className="cine-tag-sub">{s.labelVi}</span>}
               </div>
             ) : null
           )}
         {interaction?.type === "hold" && phase === "interact" && interaction.hold && (
-          <div className="cine-tag" style={toPct(interaction.hold.x, interaction.hold.y - 12)}>
+          <div className={`cine-tag ${tagEdge(interaction.hold.x)}`} style={toPct(interaction.hold.x, interaction.hold.y - 12)}>
             <RubyText segments={interaction.hold.label} showFurigana={showFurigana} />
           </div>
         )}

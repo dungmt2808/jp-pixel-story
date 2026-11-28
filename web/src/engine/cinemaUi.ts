@@ -14,6 +14,16 @@ export function toPct(x: number, y: number): { left: string; top: string } {
   return { left: `${(x / VW) * 100}%`, top: `${(y / VH) * 100}%` };
 }
 
+/**
+ * Centred tags near the frame edge would be cut off: anchor them by their inner side instead
+ * (class for `.cine-tag`): "edge-l" left of x = 48, "edge-r" right of x = 272, else "".
+ */
+export function tagEdge(x: number): "" | "edge-l" | "edge-r" {
+  if (x < 48) return "edge-l";
+  if (x > VW - 48) return "edge-r";
+  return "";
+}
+
 /** Bresenham line: every integer pixel between two points (for crisp 1px leader lines). */
 export function pixelLine(a: Vec, b: Vec): Vec[] {
   let [x0, y0] = [Math.round(a[0]), Math.round(a[1])];
@@ -117,6 +127,80 @@ export function stepHold(progress: number, holding: boolean, dt: number, duratio
   const rate = 1 / Math.max(0.2, durationSec);
   const next = holding ? progress + dt * rate : progress - dt * rate * 0.35;
   return Math.max(0, Math.min(1, next));
+}
+
+// ---------------------------------------------------------------------------------------------
+// Stage layout boxes (shared by the stage drawing and the "never cover a face" test)
+// ---------------------------------------------------------------------------------------------
+
+/** [x0, y0, x1, y1] in virtual pixels, x1/y1 exclusive. */
+export type Box = [number, number, number, number];
+
+/** The hold item is drawn this far below `hold.y`; the meter sits at `hold.y`, this wide. */
+export const HOLD_ITEM_DY = 18;
+export const HOLD_METER_W = 56;
+const HOLD_METER_H = 6;
+
+export function boxesOverlap(a: Box, b: Box): boolean {
+  return a[0] < b[2] && b[0] < a[2] && a[1] < b[3] && b[1] < a[3];
+}
+
+/**
+ * Face of a frameless bust actor on the stage: its sprite's expression region (eyes + mouth, from
+ * art.json `expression_region` / `frame_regions`) placed where `drawActor` puts the frame
+ * (pivot on `pivotX`, feet on the stage bottom, whole-pixel scale). Null without a region.
+ */
+export function bustFaceBox(
+  pivotX: number,
+  meta: { pivot?: { x: number; y: number }; frameWidth: number; frameHeight: number; expressionRegion?: number[] | null; frameExpressionRegions?: Record<string, number[]> },
+  scale = 1,
+  flipX = false
+): Box | null {
+  const regions = [meta.expressionRegion, ...Object.values(meta.frameExpressionRegions ?? {})].filter(
+    (r): r is number[] => Array.isArray(r) && r.length === 4
+  );
+  if (!regions.length) return null;
+  const rx0 = Math.min(...regions.map((r) => r[0]));
+  const ry0 = Math.min(...regions.map((r) => r[1]));
+  const rx1 = Math.max(...regions.map((r) => r[2]));
+  const ry1 = Math.max(...regions.map((r) => r[3]));
+  const k = Math.max(1, Math.floor(scale));
+  const px = meta.pivot?.x ?? Math.floor(meta.frameWidth / 2);
+  const py = meta.pivot?.y ?? meta.frameHeight;
+  const left = pivotX - px * k;
+  const top = VH - py * k;
+  const [fx0, fx1] = flipX ? [meta.frameWidth - rx1, meta.frameWidth - rx0] : [rx0, rx1];
+  return [left + fx0 * k, top + ry0 * k, left + fx1 * k, top + ry1 * k];
+}
+
+/** Everything a hold interaction draws: the held item (if any) and the progress meter. */
+export function holdBoxes(hold: { x: number; y: number }, item?: { w: number; h: number }): Box[] {
+  const mx = Math.round(hold.x - HOLD_METER_W / 2);
+  const my = Math.round(hold.y);
+  const out: Box[] = [[mx - 1, my - 1, mx + HOLD_METER_W + 1, my + HOLD_METER_H + 1]];
+  if (item) {
+    const cx = Math.round(hold.x);
+    const cy = Math.round(hold.y + HOLD_ITEM_DY);
+    // the item tilts and bobs while held: keep 2 px of slack around it
+    out.push([cx - Math.floor(item.w / 2) - 2, cy - Math.floor(item.h / 2) - 2, cx + Math.ceil(item.w / 2) + 2, cy + Math.ceil(item.h / 2) + 2]);
+  }
+  return out;
+}
+
+/** A drag item at its start and at its target. */
+export function dragBoxes(drag: { from: Vec; to: Vec }, item: { w: number; h: number }): Box[] {
+  return [drag.from, drag.to].map(([x, y]) => [
+    Math.round(x - item.w / 2),
+    Math.round(y - item.h / 2),
+    Math.round(x + item.w / 2),
+    Math.round(y + item.h / 2),
+  ]);
+}
+
+/** The tappable circle of a tap spot, as a box. */
+export function tapBox(spot: TapSpot): Box {
+  const r = spot.r ?? 12;
+  return [spot.x - r, spot.y - r, spot.x + r, spot.y + r];
 }
 
 // ---------------------------------------------------------------------------------------------

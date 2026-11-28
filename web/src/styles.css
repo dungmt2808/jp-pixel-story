@@ -24,6 +24,8 @@
   --font-pixel-en: "Press Start 2P", "DotGothic16", monospace;
   --font-vi: "Be Vietnam Pro", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* pixel font WITH Vietnamese letters (DotGothic16 / Press Start 2P have no ắ ệ đ ư ờ ự) */
+  --font-pixel-vi: "VT323", "JetBrains Mono", monospace;
 }
 
 * {
@@ -3228,11 +3230,15 @@ rt {
 }
 
 .cine-tag {
-  font-family: var(--font-jp);
-  font-size: max(11px, 1.45cqw);
+  font-family: var(--font-jp-pixel);
+  font-size: max(11px, 1.5cqw);
   line-height: 1.25;
   padding: 0.2cqw 0.7cqw;
 }
+
+/* tags near the frame edge hang inwards instead of being cut off (cinemaUi.tagEdge) */
+.cine-tag.edge-l { transform: translate(-2cqw, -50%); }
+.cine-tag.edge-r { transform: translate(calc(-100% + 2cqw), -50%); }
 
 .cine-tag rt {
   color: #b8382c;
@@ -3248,11 +3254,12 @@ rt {
 
 .cine-tag-sub {
   display: block;
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 0.68em;
+  font-family: var(--font-pixel-vi);
+  font-weight: 400;
+  font-size: 0.95em; /* VT323 has a small x-height */
+  line-height: 1.05;
   color: #6e3f27;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
 }
 
 .cine-counter {
@@ -3260,10 +3267,30 @@ rt {
   top: auto;
   bottom: 3.5%;
   transform: translateX(-50%);
-  font-weight: 800;
-  font-size: max(11px, 1.5cqw);
+  font-family: var(--font-pixel-vi);
+  font-size: max(14px, 2.1cqw);
   letter-spacing: 0.1em;
   padding: 0.25cqw 1.2cqw;
+}
+
+.cine-hint {
+  position: absolute;
+  left: 50%;
+  top: 3.2%;
+  transform: translateX(-50%);
+  max-width: 86%;
+  width: max-content;
+  padding: 0.2cqw 1.2cqw 0.1cqw;
+  background: rgba(16, 19, 34, 0.86);
+  border: max(1px, 0.2cqw) solid #f6eed8;
+  color: #f6eed8;
+  font-family: var(--font-pixel-vi);
+  font-size: max(14px, 2.05cqw);
+  line-height: 1.1;
+  letter-spacing: 0.05em;
+  text-align: center;
+  pointer-events: none;
+  z-index: 6;
 }
 
 .cine-titlecard {
@@ -3422,9 +3449,9 @@ rt {
 }
 
 .cine-cap-hint {
-  font-weight: 800;
-  font-size: max(11px, 1.4cqw);
-  letter-spacing: 0.14em;
+  font-family: var(--font-pixel-vi);
+  font-size: max(15px, 2.1cqw);
+  letter-spacing: 0.08em;
   color: #f6eed8;
 }
 
@@ -4098,8 +4125,8 @@ rt {
 .cine-telop.ai { --telop-bg: #22365a; --telop-fg: #fff8ea; --telop-rt: #c9d6f0; }
 .cine-telop.white { --telop-bg: #fff8ea; --telop-fg: #241712; --telop-rt: #9a5b2e; }
 .cine-telop-t {
-  font-family: "Shippori Mincho", var(--font-jp), serif;
-  font-weight: 800;
+  font-family: var(--font-jp-pixel);
+  font-weight: 400;
   font-size: max(18px, 4.4cqw);
   line-height: 1.2;
   color: var(--telop-fg);
@@ -4118,10 +4145,10 @@ rt {
   max-width: 82cqw;
   margin-top: calc(-1 * max(2px, 0.35cqw));
   padding: 0.25cqw 1.1cqw;
-  font-family: "Be Vietnam Pro", sans-serif;
-  font-weight: 700;
-  font-size: max(10px, 1.45cqw);
-  line-height: 1.35;
+  font-family: var(--font-pixel-vi);
+  font-weight: 400;
+  font-size: max(13px, 1.95cqw);
+  line-height: 1.15;
   color: #fff8ea;
   background: #241712;
   white-space: nowrap;
@@ -4137,17 +4164,17 @@ rt {
    portraits (the part of the shot nobody stands in), with its speech bubble above ---- */
 .cine-mascot {
   position: absolute;
-  left: 50%;
+  left: 1.5%;
   bottom: 0;
   z-index: 7;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  transform: translateX(-50%);
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  gap: 1.8cqw;
   pointer-events: none;
 }
 .cine-mascot-bot {
-  width: 12.5cqw; /* 20 art px x 6 = 120 px on the 960 px export stage: whole pixels */
+  width: 10cqw; /* 20 art px x 5 = 96 px on the 960 px export stage: whole pixels */
   height: auto;
   image-rendering: pixelated;
   animation: cine-mascot-in 0.36s steps(6) both;
@@ -4177,6 +4204,21 @@ rt {
   border-style: solid;
   border-width: max(8px, 1.4cqw) max(6px, 1cqw) 0 max(6px, 1cqw);
   border-color: #241712 transparent transparent transparent;
+}
+/* corner tip: a compact lower-third to the right of the robot, tail pointing left at it */
+.cine-mascot > .cine-mascot-bubble {
+  max-width: 62cqw;
+  margin-bottom: 1.4cqw;
+  padding: 0.6cqw 1.2cqw 0.7cqw;
+  font-size: max(12px, 1.6cqw);
+  line-height: 1.4;
+}
+.cine-mascot > .cine-mascot-bubble::after {
+  left: calc(-1 * max(9px, 1.5cqw));
+  bottom: 1.2cqw;
+  transform: none;
+  border-width: max(6px, 0.9cqw) max(9px, 1.5cqw) max(6px, 0.9cqw) 0;
+  border-color: transparent #241712 transparent transparent;
 }
 .cine-mascot-ja {
   margin-top: 0.5cqw;

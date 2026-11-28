@@ -4,6 +4,7 @@
  * utils.test.mjs: esbuild bundles each TS module in memory, Node's assert checks it.
  */
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { build } from "esbuild";
@@ -546,6 +547,59 @@ test("StackChan mascot: full-body frames, talking mouth, moods from emotes, ward
   assert.equal(mascot.moodForEmote("question"), "think");
   assert.equal(mascot.moodForEmote(undefined), undefined);
   assert.ok(mascot.WEAR_IDS.includes("nonla") && mascot.SHELL_IDS.includes("sakura"));
+});
+
+test("tags near the frame edge hang inwards instead of being cut off", () => {
+  assert.equal(ui.tagEdge(20), "edge-l");
+  assert.equal(ui.tagEdge(160), "");
+  assert.equal(ui.tagEdge(302), "edge-r");
+});
+
+// --- authoring guardrail: interactions never cover a face (AGENTS.md rule 5) --------------------
+
+test("no hold / drag / tap target of any cinema story covers an on-stage character's face", () => {
+  const publicDir = path.join(webRoot, "public");
+  const pngSize = (url) => {
+    const b = fs.readFileSync(path.join(publicDir, url.replace(/^\//, "")));
+    return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) };
+  };
+  const problems = [];
+  let checked = 0;
+  for (const id of fs.readdirSync(path.join(publicDir, "stories"))) {
+    const file = path.join(publicDir, "stories", id, "story.json");
+    if (!fs.existsSync(file)) continue;
+    const story = JSON.parse(fs.readFileSync(file, "utf8"));
+    if (story.engine !== "cinema") continue;
+    const cast = cinema.resolveCast(story);
+    for (const scene of story.scenes ?? []) {
+      const inter = scene.interaction;
+      if (!inter) continue;
+      const faces = [];
+      for (const side of cinema.visibleActors(scene)) {
+        const actor = cast[side];
+        const key = actor && (actor.sprite ?? actor.rig ?? actor.portrait);
+        const metaUrl = key && story.assets?.sprites?.[key];
+        if (!metaUrl || actor.mascot) continue;
+        const meta = JSON.parse(fs.readFileSync(path.join(publicDir, metaUrl.replace(/^\//, "")), "utf8"));
+        const face = ui.bustFaceBox(cinema.actorX(side, actor), meta, actor.scale ?? 1, actor.flipX);
+        // inactive actors step 4 px outward, so keep 4 px of slack on both sides
+        if (face) faces.push({ side, box: [face[0] - 4, face[1], face[2] + 4, face[3]] });
+      }
+      const targets = [];
+      const itemSize = (k) => (k && story.assets?.items?.[k] ? pngSize(story.assets.items[k]) : { w: 16, h: 16 });
+      if (inter.hold) ui.holdBoxes(inter.hold, inter.hold.item ? itemSize(inter.hold.item) : undefined).forEach((b) => targets.push(["hold", b]));
+      for (const it of inter.items ?? []) ui.dragBoxes(it, itemSize(it.item)).forEach((b) => targets.push([`drag ${it.id}`, b]));
+      for (const sp of inter.spots ?? []) targets.push([`tap ${sp.id}`, ui.tapBox(sp)]);
+      for (const f of faces) {
+        for (const [what, b] of targets) {
+          checked += 1;
+          if (ui.boxesOverlap(f.box, b)) problems.push(`${id}/${scene.id}: ${what} [${b}] covers the ${f.side} face [${f.box}]`);
+        }
+      }
+    }
+  }
+  assert.ok(checked > 0, "no interaction was checked");
+  assert.deepEqual(problems, []);
 });
 
 console.log(`\nALL ${passed} ENGINE TESTS PASSED!`);

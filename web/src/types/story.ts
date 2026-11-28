@@ -227,7 +227,7 @@ export interface HoldGauge {
 /** Data-driven mini-game of a scene (played after the scene's lines). */
 export interface SceneInteraction {
   type: "drag" | "tap" | "hold";
-  /** Vietnamese instruction; shown uppercase in the caption bar with progress. */
+  /** Vietnamese instruction; shown uppercase at the top of the frame with progress (the caption bar keeps the subtitles). */
   hint: string;
   items?: DragItem[];
   spots?: TapSpot[];

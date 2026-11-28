@@ -280,8 +280,8 @@
           "x": 116,
           "y": 76,
           "to": [
-            108,
-            128
+            125,
+            124
           ]
         }
       ],
@@ -318,8 +318,8 @@
         "hint": "Giữ tay vào chiếc nón để giúp ông lão đan xong chiếc nón rơm thứ 5",
         "hold": {
           "label": "{笠|かさ}を{編|あ}む",
-          "x": 80,
-          "y": 124,
+          "x": 125,
+          "y": 110,
           "durationSec": 1.8,
           "item": "straw_hat"
         },
@@ -1196,9 +1196,9 @@
           },
           {
             "id": "door_thud",
-            "x": 292,
-            "y": 116,
-            "r": 24,
+            "x": 302,
+            "y": 82,
+            "r": 18,
             "label": "{玄関|げんかん}の{音|おと}",
             "labelVi": "tiếng đặt đồ trước cửa",
             "line": {
