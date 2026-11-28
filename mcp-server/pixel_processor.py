@@ -123,12 +123,18 @@ def _downsample_rgba(
     *,
     alpha_threshold: int = 128,
     coverage: float = 0.40,
+    keep_lines: float = 0.0,
 ) -> np.ndarray:
     """Area-sample an RGBA array onto an ``out_w x out_h`` grid with hard binary alpha.
 
     Every target pixel looks at the source cell it covers: it becomes opaque only when at
     least ``coverage`` of that cell is opaque, and takes the per-channel median colour of the
     opaque source pixels (robust against anti-aliased edges, so no mixels or halos).
+
+    ``keep_lines`` (0 = off): at big reductions (a 1250 px painting -> a 104 px figure) a mouth or an
+    eyelid is thinner than one target cell and the median erases it. When at least this share of a
+    cell is clearly darker than the cell's median (luma 40+ lower), the cell takes the median of those
+    dark pixels instead, so thin dark features (mouths, eyes, brows, creases) survive.
     """
     src_h, src_w = arr.shape[:2]
     out = np.zeros((out_h, out_w, 4), dtype=np.uint8)
@@ -145,7 +151,13 @@ def _downsample_rgba(
             if np.mean(opaque_mask) < coverage:
                 continue
             opaque_rgb = cell[:, :, :3][opaque_mask]
-            out[ty, tx, :3] = np.median(opaque_rgb, axis=0).astype(np.uint8)
+            colour = np.median(opaque_rgb, axis=0)
+            if keep_lines > 0 and len(opaque_rgb) >= 4:
+                luma = opaque_rgb[:, :3].astype(np.float64) @ np.array([0.2126, 0.7152, 0.0722])
+                dark = luma < np.median(luma) - 40
+                if dark.mean() >= keep_lines:
+                    colour = np.median(opaque_rgb[dark], axis=0)
+            out[ty, tx, :3] = colour.astype(np.uint8)
             out[ty, tx, 3] = 255
     return out
 
@@ -519,6 +531,7 @@ def process_sprite_sheet(
     split: str = "grid",
     pixel_pitch: float = 0.0,
     max_colors: int = 0,
+    keep_lines: float = 0.0,
 ) -> dict[str, Any]:
     """Slice a raw AI spritesheet grid into registered, pixel-perfect animation frames.
 
@@ -643,7 +656,7 @@ def process_sprite_sheet(
     for idx, arr in enumerate(cells):
         canvas = np.zeros((frame_height, frame_width, 4), dtype=np.uint8)
         if boxes:
-            small = _downsample_rgba(arr[uy0:uy1, ux0:ux1], out_w, out_h)
+            small = _downsample_rgba(arr[uy0:uy1, ux0:ux1], out_w, out_h, keep_lines=keep_lines)
             canvas[off_y : off_y + out_h, off_x : off_x + out_w] = small
         locked = quantize_to_palette(Image.fromarray(canvas, mode="RGBA"), palette_name)
         if cleanup:
@@ -717,7 +730,8 @@ def process_sprite_sheet(
                  **({"facing": facing} if facing else {}),
                  **({"split": split} if split != "grid" else {}),
                  **({"pixel_pitch": pixel_pitch} if pixel_pitch else {}),
-                 **({"max_colors": max_colors} if max_colors else {})),
+                 **({"max_colors": max_colors} if max_colors else {}),
+                 **({"keep_lines": keep_lines} if keep_lines else {})),
             output=out_dir, input_path=inp, source=source,
         )
 

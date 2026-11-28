@@ -57,7 +57,7 @@
             "path": "art-src/hanami-first/raw_sheet_minh.png",
             "sha": "a1bf27e073aca7f7"
           },
-          "at": "2026-11-28T07:11:54+00:00",
+          "at": "2026-11-28T09:15:47+00:00",
           "source": {
             "tool": "make_raw_art.py stand-in (code-drawn, AI-like defects)",
             "note": "replace with your generator's prompt/seed"
@@ -65,7 +65,7 @@
         }
       ],
       "output": {
-        "sha": "b3c13e2c680c508a"
+        "sha": "21f36bee1a432e66"
       }
     },
     "yui": {
@@ -124,7 +124,7 @@
             "path": "art-src/hanami-first/raw_sheet_yui.png",
             "sha": "e4e2f0f7ba3924f3"
           },
-          "at": "2026-11-28T07:11:54+00:00",
+          "at": "2026-11-28T09:15:47+00:00",
           "source": {
             "tool": "make_raw_art.py stand-in (code-drawn, AI-like defects)",
             "note": "replace with your generator's prompt/seed"
@@ -132,7 +132,7 @@
         }
       ],
       "output": {
-        "sha": "230aa9561fdc73bb"
+        "sha": "a1ddad8fef88aa98"
       }
     },
     "yui_walk": {
@@ -198,7 +198,7 @@
             "path": "art-src/hanami-first/raw_walk_yui.png",
             "sha": "5226f65ab3471191"
           },
-          "at": "2026-11-28T07:11:54+00:00",
+          "at": "2026-11-28T09:15:47+00:00",
           "source": {
             "artist": "user",
             "brief": "art-src/hanami-first/PROMPTS-walk.md"
@@ -206,7 +206,7 @@
         }
       ],
       "output": {
-        "sha": "e880e51aa8f14ac3"
+        "sha": "a4f1b2b8e2d6a6f3"
       }
     },
     "minh_walk": {
@@ -272,7 +272,7 @@
             "path": "art-src/hanami-first/raw_walk_minh.png",
             "sha": "a9ea673d7661de37"
           },
-          "at": "2026-11-28T07:11:54+00:00",
+          "at": "2026-11-28T09:15:47+00:00",
           "source": {
             "artist": "user",
             "brief": "art-src/hanami-first/PROMPTS-walk.md"
@@ -280,7 +280,7 @@
         }
       ],
       "output": {
-        "sha": "caf4709f3db741dd"
+        "sha": "5e3c8d288c3d10ef"
       }
     }
   }

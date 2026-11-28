@@ -57,7 +57,7 @@
             "path": "art-src/ramen-midnight/raw_sheet_minh_neutral.png",
             "sha": "116152fc92361e92"
           },
-          "at": "2026-11-28T07:10:16+00:00",
+          "at": "2026-11-28T09:17:00+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -66,7 +66,7 @@
         }
       ],
       "output": {
-        "sha": "eb194dfef0fb16ce"
+        "sha": "f1dfb46d362cf4bf"
       }
     },
     "chef_warm": {
@@ -130,7 +130,7 @@
             "path": "art-src/ramen-midnight/raw_sheet_chef_warm.png",
             "sha": "eb56dd2f1362ba1f"
           },
-          "at": "2026-11-28T07:10:16+00:00",
+          "at": "2026-11-28T09:17:00+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -139,7 +139,7 @@
         }
       ],
       "output": {
-        "sha": "8a66302bfaf8098a"
+        "sha": "dfc8eb11776d37c8"
       }
     },
     "minh_happy": {
@@ -203,7 +203,7 @@
             "path": "art-src/ramen-midnight/raw_sheet_minh_happy.png",
             "sha": "d9898d72e118795f"
           },
-          "at": "2026-11-28T07:10:16+00:00",
+          "at": "2026-11-28T09:17:00+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -212,7 +212,7 @@
         }
       ],
       "output": {
-        "sha": "ca4011f166c5dd08"
+        "sha": "9c7fd634bd165227"
       }
     },
     "minh_thinking": {
@@ -271,7 +271,7 @@
             "path": "art-src/ramen-midnight/raw_sheet_minh_thinking.png",
             "sha": "b477cb5c59c485ba"
           },
-          "at": "2026-11-28T07:10:16+00:00",
+          "at": "2026-11-28T09:17:00+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -280,7 +280,7 @@
         }
       ],
       "output": {
-        "sha": "84ad49a622edebba"
+        "sha": "989eeeacd4279f54"
       }
     },
     "chef_happy": {
@@ -339,7 +339,7 @@
             "path": "art-src/ramen-midnight/raw_sheet_chef_happy.png",
             "sha": "ab701a8761729273"
           },
-          "at": "2026-11-28T07:10:16+00:00",
+          "at": "2026-11-28T09:17:00+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -348,7 +348,7 @@
         }
       ],
       "output": {
-        "sha": "d623c78fc0db9a61"
+        "sha": "de79752fc9b4c25e"
       }
     },
     "minh_walk": {
@@ -413,7 +413,7 @@
             "path": "art-src/ramen-midnight/raw_walk_minh.png",
             "sha": "94db4f02112ac4a4"
           },
-          "at": "2026-11-28T07:10:16+00:00",
+          "at": "2026-11-28T09:17:00+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -422,7 +422,7 @@
         }
       ],
       "output": {
-        "sha": "6e0c3e4631a29142"
+        "sha": "b9b0e5acb4fd0f5f"
       }
     }
   }

@@ -57,7 +57,7 @@
             "path": "art-src/jlpt-n4-2025-07-rain-bgm/raw_sheet_student.png",
             "sha": "3dafbfabf1743e27"
           },
-          "at": "2026-11-28T07:09:34+00:00",
+          "at": "2026-11-28T09:16:31+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -66,7 +66,7 @@
         }
       ],
       "output": {
-        "sha": "eb8e75d688898521"
+        "sha": "a2826f8221f261b7"
       }
     },
     "clerk": {
@@ -125,7 +125,7 @@
             "path": "art-src/jlpt-n4-2025-07-rain-bgm/raw_sheet_clerk.png",
             "sha": "d737d556043297c9"
           },
-          "at": "2026-11-28T07:09:34+00:00",
+          "at": "2026-11-28T09:16:31+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -134,7 +134,7 @@
         }
       ],
       "output": {
-        "sha": "684e8323866ba689"
+        "sha": "a86bb5ec1ace4cf2"
       }
     },
     "student_walk": {
@@ -199,7 +199,7 @@
             "path": "art-src/jlpt-n4-2025-07-rain-bgm/raw_walk_student.png",
             "sha": "34d64602cb436863"
           },
-          "at": "2026-11-28T07:09:34+00:00",
+          "at": "2026-11-28T09:16:31+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -208,7 +208,7 @@
         }
       ],
       "output": {
-        "sha": "4a51acbb38624ed7"
+        "sha": "89e45311620ee7ea"
       }
     },
     "kitamura": {
@@ -267,7 +267,7 @@
             "path": "art-src/jlpt-n4-2025-07-rain-bgm/raw_sheet_kitamura.png",
             "sha": "60a383a543432265"
           },
-          "at": "2026-11-28T07:09:34+00:00",
+          "at": "2026-11-28T09:16:31+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -276,7 +276,7 @@
         }
       ],
       "output": {
-        "sha": "85435f55cdea2042"
+        "sha": "e45273ada024fcb3"
       }
     }
   }

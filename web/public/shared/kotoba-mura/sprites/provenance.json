@@ -62,7 +62,7 @@
             "path": "art-src/shared/kotoba-mura/raw_sheet_stackchan_neutral.png",
             "sha": "298a42e0bdcf082c"
           },
-          "at": "2026-11-28T07:07:24+00:00",
+          "at": "2026-11-28T09:15:04+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -71,7 +71,7 @@
         }
       ],
       "output": {
-        "sha": "8a0d4bbe77f9fb02"
+        "sha": "56d6626d1d2367f4"
       }
     },
     "stackchan_happy": {
@@ -135,7 +135,7 @@
             "path": "art-src/shared/kotoba-mura/raw_sheet_stackchan_happy.png",
             "sha": "024efcbc5eaf4a9c"
           },
-          "at": "2026-11-28T07:07:24+00:00",
+          "at": "2026-11-28T09:15:04+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -144,7 +144,7 @@
         }
       ],
       "output": {
-        "sha": "e33bf1a56689e1a5"
+        "sha": "f30f79731e9c7789"
       }
     },
     "stackchan_lowbat": {
@@ -208,7 +208,7 @@
             "path": "art-src/shared/kotoba-mura/raw_sheet_stackchan_lowbat.png",
             "sha": "4708e4166cff5ac8"
           },
-          "at": "2026-11-28T07:07:24+00:00",
+          "at": "2026-11-28T09:15:04+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -217,7 +217,7 @@
         }
       ],
       "output": {
-        "sha": "a7954c745fa8c61c"
+        "sha": "3369564b8b5ab0ab"
       }
     },
     "stackchan_walk": {
@@ -282,7 +282,7 @@
             "path": "art-src/shared/kotoba-mura/raw_walk_stackchan.png",
             "sha": "a340673f6348b6d0"
           },
-          "at": "2026-11-28T07:07:24+00:00",
+          "at": "2026-11-28T09:15:04+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -291,7 +291,7 @@
         }
       ],
       "output": {
-        "sha": "05f29b9252e46876"
+        "sha": "2f1dd1805c6fbfb7"
       }
     },
     "lin_neutral": {
@@ -375,7 +375,7 @@
             "path": "art-src/shared/kotoba-mura/raw_sheet_lin_neutral.png",
             "sha": "4620903705a21885"
           },
-          "at": "2026-11-28T07:07:24+00:00",
+          "at": "2026-11-28T09:15:04+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -384,7 +384,7 @@
         }
       ],
       "output": {
-        "sha": "3774b3784bb0a638"
+        "sha": "c572abc5676137c4"
       }
     },
     "lin_walk": {
@@ -447,7 +447,7 @@
             "path": "art-src/shared/kotoba-mura/raw_walk_lin.png",
             "sha": "8dfc117770be4813"
           },
-          "at": "2026-11-28T07:07:24+00:00",
+          "at": "2026-11-28T09:15:04+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -456,7 +456,7 @@
         }
       ],
       "output": {
-        "sha": "960d63b9f1d3001f"
+        "sha": "8cb9bd1d4f10e1fb"
       }
     },
     "hana_warm": {
@@ -540,7 +540,7 @@
             "path": "art-src/shared/kotoba-mura/raw_sheet_hana_warm.png",
             "sha": "bed5cabe39d37be9"
           },
-          "at": "2026-11-28T07:07:24+00:00",
+          "at": "2026-11-28T09:15:04+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -549,7 +549,7 @@
         }
       ],
       "output": {
-        "sha": "0405dc05667311e8"
+        "sha": "ab1d45e146236c50"
       }
     }
   }

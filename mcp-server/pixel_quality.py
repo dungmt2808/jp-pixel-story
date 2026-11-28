@@ -407,26 +407,62 @@ def pixel_perfect_outline(arr: np.ndarray, outline_hex: str = "#241712") -> tupl
 
 
 def limit_colors(arr: np.ndarray, max_colors: int) -> tuple[np.ndarray, int]:
-    """Merge the least-used colours into their perceptually nearest remaining colour."""
+    """Cut a sprite down to `max_colors` by merging the colours that cost least to lose.
+
+    The cost of merging a colour into its perceptually nearest remaining colour is
+    `pixel count x OKLab distance^2`: near-identical shades (noise from resampling) go first, while a
+    rare but distinct colour (a mouth, rosy cheeks, an eye highlight) is kept. Merging the RAREST colours
+    first (the previous rule) erased exactly those small facial features.
+    Deterministic: ties go to the lower colour key.
+    """
     out = arr.copy()
     k = _key(arr)
     opaque = k >= 0
     vals, cnt = np.unique(k[opaque], return_counts=True)
     if max_colors <= 0 or len(vals) <= max_colors:
         return out, 0
-    order = list(vals[np.argsort(cnt)])  # rarest first
-    keep = set(int(v) for v in vals)
+    n = len(vals)
+    rgb = np.stack([(vals >> 16) & 255, (vals >> 8) & 255, vals & 255], axis=1).astype(np.float64)
+    lab = srgb_to_oklab(rgb)
+    counts = cnt.astype(np.float64)
+    alive = np.ones(n, dtype=bool)
+    nn = np.zeros(n, dtype=np.int64)
+    nd = np.zeros(n, dtype=np.float64)
+
+    def refresh(idx: np.ndarray) -> None:
+        live = np.nonzero(alive)[0]
+        for chunk in np.array_split(idx, max(1, len(idx) // 512 + 1)):
+            if not len(chunk):
+                continue
+            d = ((lab[chunk, None, :] - lab[None, live, :]) ** 2).sum(-1)
+            d[live[None, :] == chunk[:, None]] = np.inf  # not itself
+            j = d.argmin(1)
+            nn[chunk] = live[j]
+            nd[chunk] = d[np.arange(len(chunk)), j]
+
+    refresh(np.arange(n))
+    parent = np.arange(n)
     merged = 0
-    while len(keep) > max_colors:
-        victim = int(order.pop(0))
-        keep.discard(victim)
-        rest = np.array(sorted(keep), dtype=np.int64)
-        rest_rgb = np.array([_rgb_of(int(v)) for v in rest], dtype=np.uint8)
-        target = int(rest[nearest_palette_indices(np.array([_rgb_of(victim)], dtype=np.uint8), rest_rgb)[0]])
-        mask = k == victim
-        out[mask, :3] = _rgb_of(target)
-        k[mask] = target
+    while alive.sum() > max_colors:
+        cost = np.where(alive, counts * nd, np.inf)
+        victim = int(np.argmin(cost))  # vals are sorted: ties -> lower key
+        target = int(nn[victim])
+        alive[victim] = False
+        parent[victim] = target
+        counts[target] += counts[victim]
         merged += 1
+        stale = np.nonzero(alive & ((nn == victim) | (np.arange(n) == target)))[0]
+        refresh(stale)
+
+    def root(i: int) -> int:
+        while parent[i] != i:
+            i = int(parent[i])
+        return i
+
+    lut = {int(vals[i]): int(vals[root(i)]) for i in range(n) if parent[i] != i}
+    for old, new in lut.items():
+        mask = k == old
+        out[mask, :3] = _rgb_of(new)
     return out, merged
 
 

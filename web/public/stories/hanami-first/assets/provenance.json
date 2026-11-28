@@ -16,7 +16,7 @@
             "path": "art-src/hanami-first/raw_bg_park.png",
             "sha": "265e87d88f45bb23"
           },
-          "at": "2026-11-28T07:11:54+00:00",
+          "at": "2026-11-28T09:15:47+00:00",
           "source": {
             "tool": "make_raw_art.py stand-in (code-drawn, AI-like defects)",
             "note": "replace with your generator's prompt/seed"
@@ -24,7 +24,7 @@
         }
       ],
       "output": {
-        "sha": "08094797c29d3279"
+        "sha": "9a17969e6b547dbc"
       }
     },
     "bg_picnic.png": {
@@ -42,7 +42,7 @@
             "path": "art-src/hanami-first/raw_bg_picnic.png",
             "sha": "58ee922d69330a9c"
           },
-          "at": "2026-11-28T07:11:54+00:00",
+          "at": "2026-11-28T09:15:47+00:00",
           "source": {
             "tool": "make_raw_art.py stand-in (code-drawn, AI-like defects)",
             "note": "replace with your generator's prompt/seed"
@@ -50,7 +50,7 @@
         }
       ],
       "output": {
-        "sha": "56ebcd0ceeb6e346"
+        "sha": "1380ae1d5d6e6bb3"
       }
     }
   }

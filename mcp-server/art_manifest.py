@@ -292,7 +292,7 @@ def _apply_pose_sheet(
                 poses={n: [str(p) for p in ps] for n, ps in poses.items()},
                 pixel_pitch=float(ch["pixel_pitch"]), palette_name=palette,
                 bg_mode=ch.get("bg_mode", "chroma_green"), max_colors=int(budget), fps=float(ch.get("fps", 4)),
-                facing=ch.get("facing", "right"),
+                facing=ch.get("facing", "right"), keep_lines=float(ch.get("keep_lines", 0.3)),
                 source={"kind": "art-manifest", "manifest": manifest_path.name, "character": key},
             )
         except ValueError as err:

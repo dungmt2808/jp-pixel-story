@@ -432,3 +432,26 @@ def test_chroma_green_keeps_green_objects(tmp_path: Path) -> None:
     greenish = body[(body[:, 1] > 100) & (body[:, 1] > body[:, 0])]
     assert len(greenish) > 0.5 * len(body)  # the body is still green, not black
     assert a[20, 20, 3] == 0  # enclosed green-screen pocket removed
+
+
+def test_limit_colors_keeps_a_rare_distinct_colour_over_common_near_duplicates() -> None:
+    """A mouth (3 px) must survive while 20 px of near-identical skin shades are merged."""
+    a = np.zeros((10, 10, 4), np.uint8)
+    a[:, :] = (240, 190, 150, 255)  # skin
+    a[:2, :] = (236, 186, 146, 255)  # 20 px of a near-duplicate skin shade
+    a[5, 4:7] = (150, 60, 60, 255)  # a 3 px mouth
+    out, merged = limit_colors(a, 2)
+    colours = {tuple(c) for c in out[:, :, :3].reshape(-1, 3)}
+    assert merged == 1 and (150, 60, 60) in colours and (236, 186, 146) not in colours
+
+
+def test_keep_lines_downsample_keeps_a_thin_mouth() -> None:
+    from pixel_processor import _downsample_rgba
+
+    src = np.zeros((110, 110, 4), np.uint8)
+    src[:, :] = (240, 190, 150, 255)
+    src[57:62, 40:70] = (120, 50, 50, 255)  # a 5 px line in 11 px cells: under half of any cell
+    plain = _downsample_rgba(src, 10, 10)
+    kept = _downsample_rgba(src, 10, 10, keep_lines=0.3)
+    dark = lambda a: int((a[:, :, 0] < 200).sum())  # noqa: E731
+    assert dark(plain) == 0 and dark(kept) == 2  # the two cells the line fully crosses

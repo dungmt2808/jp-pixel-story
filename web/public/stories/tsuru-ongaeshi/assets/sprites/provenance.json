@@ -57,7 +57,7 @@
             "path": "art-src/tsuru-ongaeshi/raw_sheet_otsu_gentle.png",
             "sha": "488a283a776bb545"
           },
-          "at": "2026-11-28T07:08:58+00:00",
+          "at": "2026-11-28T09:16:10+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -66,7 +66,7 @@
         }
       ],
       "output": {
-        "sha": "58b3f10f449f6709"
+        "sha": "92714897d30bfaf1"
       }
     },
     "otsu_plead": {
@@ -125,7 +125,7 @@
             "path": "art-src/tsuru-ongaeshi/raw_sheet_otsu_plead.png",
             "sha": "38d50985a894de94"
           },
-          "at": "2026-11-28T07:08:58+00:00",
+          "at": "2026-11-28T09:16:10+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -134,7 +134,7 @@
         }
       ],
       "output": {
-        "sha": "2cbfac0c0c9ab725"
+        "sha": "039ac3562c9803bb"
       }
     },
     "yosaku_walk": {
@@ -199,7 +199,7 @@
             "path": "art-src/tsuru-ongaeshi/raw_walk_yosaku.png",
             "sha": "83b4435b9d2ba6ce"
           },
-          "at": "2026-11-28T07:08:58+00:00",
+          "at": "2026-11-28T09:16:10+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -208,7 +208,7 @@
         }
       ],
       "output": {
-        "sha": "752068e5cec589cd"
+        "sha": "0e1e4ba0afd927ad"
       }
     },
     "yosaku": {
@@ -267,7 +267,7 @@
             "path": "art-src/tsuru-ongaeshi/raw_sheet_yosaku.png",
             "sha": "808ba86f4af18baf"
           },
-          "at": "2026-11-28T07:08:58+00:00",
+          "at": "2026-11-28T09:16:10+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -276,7 +276,7 @@
         }
       ],
       "output": {
-        "sha": "b50ede000e7ceee5"
+        "sha": "87cac4ae592d4351"
       }
     }
   }

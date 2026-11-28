@@ -22,7 +22,7 @@
             "path": "art-src/hanami-first/raw_item_bento.png",
             "sha": "246b1a41afe39dfd"
           },
-          "at": "2026-11-28T07:11:54+00:00",
+          "at": "2026-11-28T09:15:47+00:00",
           "source": {
             "tool": "make_raw_items.py stand-in (code-drawn, AI-like defects)",
             "note": "replace with your generator's prompt/seed"
@@ -30,7 +30,7 @@
         }
       ],
       "output": {
-        "sha": "22cc2d9622b3ba23"
+        "sha": "2ba3be088d7b3dd0"
       }
     },
     "teapot.png": {
@@ -54,7 +54,7 @@
             "path": "art-src/hanami-first/raw_item_teapot.png",
             "sha": "bd3e2e6da5d58ade"
           },
-          "at": "2026-11-28T07:11:54+00:00",
+          "at": "2026-11-28T09:15:47+00:00",
           "source": {
             "tool": "make_raw_items.py stand-in (code-drawn, AI-like defects)",
             "note": "replace with your generator's prompt/seed"
@@ -62,7 +62,7 @@
         }
       ],
       "output": {
-        "sha": "d92699e0d0cda749"
+        "sha": "1d6816348eb6e09f"
       }
     },
     "sakura.png": {
@@ -86,7 +86,7 @@
             "path": "art-src/hanami-first/raw_item_sakura.png",
             "sha": "ac31906604b01831"
           },
-          "at": "2026-11-28T07:11:54+00:00",
+          "at": "2026-11-28T09:15:47+00:00",
           "source": {
             "tool": "make_raw_items.py stand-in (code-drawn, AI-like defects)",
             "note": "replace with your generator's prompt/seed"
@@ -94,7 +94,7 @@
         }
       ],
       "output": {
-        "sha": "9276f221ad1ee8b8"
+        "sha": "46003af9ee290284"
       }
     }
   }

@@ -9,7 +9,8 @@ only in the arm + lever region, swapped in one frame. Pipeline:
    everywhere else. Image models shift the colours of an edit by a few levels, enough to flip many
    pixels to a neighbouring palette entry (a flickering jacket); spliced, face and body are identical;
 2. slice every pose with the sheet pipeline at ONE fixed `pixel_pitch` (raw px per art px), so all
-   poses share the character's scale;
+   poses share the character's scale; `keep_lines` keeps thin dark features (mouth, eyes) that an
+   ~11x reduction would otherwise average away (0.3: mouths and eyes kept, wrinkles not blotchy);
 3. stand every pose on the same pivot (feet centre + ground line) in one common frame size;
 4. one colour budget (`max_colors`) for the whole sheet, the same merge in every frame;
 5. lock each edit to its base outside the box that really moved (no 1px drift around the face).
@@ -89,6 +90,7 @@ def process_pose_sheet(
     facing: str = "right",
     splice_threshold: int = 60,
     splice_grow: int = 31,
+    keep_lines: float = 0.3,
     record_provenance: bool = True,
     source: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
@@ -119,7 +121,7 @@ def process_pose_sheet(
             process_sprite_sheet(sheet_path, pose_dir, cols=len(imgs), frame_width=fw, frame_height=fh,
                                  palette_name=palette_name, bg_mode=bg_mode, tolerance=tolerance,
                                  registration="cell", split="grid", cleanup=True, pixel_pitch=pixel_pitch,
-                                 padding=padding, record_provenance=False)
+                                 padding=padding, keep_lines=keep_lines, record_provenance=False)
             frames = [np.array(Image.open(pose_dir / f"frame_{i:02d}.png").convert("RGBA")) for i in range(len(imgs))]
             groups.append((name, frames))
 
@@ -205,7 +207,8 @@ def process_pose_sheet(
             "process_pose_sheet",
             dict(poses={k: [provenance._portable(v) for v in vs] for k, vs in poses.items()}, pixel_pitch=pixel_pitch,
                  palette_name=palette_name, bg_mode=bg_mode, tolerance=tolerance, max_colors=max_colors,
-                 padding=padding, fps=fps, facing=facing, splice_threshold=splice_threshold, splice_grow=splice_grow),
+                 padding=padding, fps=fps, facing=facing, splice_threshold=splice_threshold, splice_grow=splice_grow,
+                 keep_lines=keep_lines),
             output=out, input_path=input_path, source=source,
         )
     return {"ok": True, "output_dir": str(out), "frame": [fw, fh], "frames": len(cells), "poses": pose_frames,

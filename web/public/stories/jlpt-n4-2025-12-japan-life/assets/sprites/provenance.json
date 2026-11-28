@@ -57,7 +57,7 @@
             "path": "art-src/jlpt-n4-2025-12-japan-life/raw_sheet_lisa.png",
             "sha": "0ccb5d5efaf039d2"
           },
-          "at": "2026-11-28T07:07:55+00:00",
+          "at": "2026-11-28T09:15:28+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -66,7 +66,7 @@
         }
       ],
       "output": {
-        "sha": "dc30757d871b75cb"
+        "sha": "f62c21b062ab4814"
       }
     },
     "haruko": {
@@ -125,7 +125,7 @@
             "path": "art-src/jlpt-n4-2025-12-japan-life/raw_sheet_haruko.png",
             "sha": "4e06856c9112ddd8"
           },
-          "at": "2026-11-28T07:07:55+00:00",
+          "at": "2026-11-28T09:15:28+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -134,7 +134,7 @@
         }
       ],
       "output": {
-        "sha": "9ce9e740ba7bffc5"
+        "sha": "c10dcc8a7eeb7756"
       }
     },
     "lisa_walk": {
@@ -199,7 +199,7 @@
             "path": "art-src/jlpt-n4-2025-12-japan-life/raw_walk_lisa.png",
             "sha": "de34f39d9090767a"
           },
-          "at": "2026-11-28T07:07:55+00:00",
+          "at": "2026-11-28T09:15:28+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -208,7 +208,7 @@
         }
       ],
       "output": {
-        "sha": "1b61c7af3361b981"
+        "sha": "1a8c62f71270a46b"
       }
     }
   }

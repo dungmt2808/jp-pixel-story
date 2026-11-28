@@ -16,7 +16,7 @@
             "path": "art-src/kasa-jizo/raw_bg_hut_hearth.png",
             "sha": "2c86f4c5afbe1f85"
           },
-          "at": "2026-11-28T08:33:12+00:00",
+          "at": "2026-11-28T09:14:10+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -25,7 +25,7 @@
         }
       ],
       "output": {
-        "sha": "75cd8443bc827de8"
+        "sha": "49ec5c08e2b66e9d"
       }
     },
     "bg_village_market.png": {
@@ -43,7 +43,7 @@
             "path": "art-src/kasa-jizo/raw_bg_village_market.png",
             "sha": "6999cf52024539f2"
           },
-          "at": "2026-11-28T08:33:13+00:00",
+          "at": "2026-11-28T09:14:10+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -52,7 +52,7 @@
         }
       ],
       "output": {
-        "sha": "b20bbd469a7e1407"
+        "sha": "e605bc721f6431f2"
       }
     },
     "bg_jizo_road.png": {
@@ -70,7 +70,7 @@
             "path": "art-src/kasa-jizo/raw_bg_jizo_road.png",
             "sha": "14f4f185ef81e266"
           },
-          "at": "2026-11-28T08:33:13+00:00",
+          "at": "2026-11-28T09:14:11+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -79,7 +79,7 @@
         }
       ],
       "output": {
-        "sha": "f53840aaedfb6613"
+        "sha": "fc71bb9b5ab4cf18"
       }
     },
     "bg_hut_morning.png": {
@@ -97,7 +97,7 @@
             "path": "art-src/kasa-jizo/raw_bg_hut_morning.png",
             "sha": "4ea68032ca68699d"
           },
-          "at": "2026-11-28T08:33:13+00:00",
+          "at": "2026-11-28T09:14:11+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -106,7 +106,7 @@
         }
       ],
       "output": {
-        "sha": "28479a96965291d2"
+        "sha": "cd0a629a831a8de9"
       }
     }
   }
