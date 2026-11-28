@@ -430,7 +430,8 @@ def pixellab_apply_art_manifest(
     backgrounds in story.json. `objects` are cut out of a background as mover sprites.
     `characters`: `bust` expression sheets (key = a portrait key: sliced at the portrait's size,
     expressions locked, rig built, registered under the same key so the portrait talks and
-    blinks) and `walk` cycles (route B people sprites). `items`: hand-made pixel props.
+    blinks), `walk` cycles (route B people sprites) and `poses` (key poses + state edits of one
+character in one sheet, for acting and `interaction.drive`). `items`: hand-made pixel props.
     `palette_build` + a new `palette` name: the story's own palette is built from its art first
     (once; `rebuild_palette=True` after new art). Missing raw files are listed under
     `waiting_for_art`. `only` (e.g. ["characters"]) runs just those sections."""

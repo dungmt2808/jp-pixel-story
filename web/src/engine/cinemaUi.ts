@@ -129,6 +129,26 @@ export function stepHold(progress: number, holding: boolean, dt: number, duratio
   return Math.max(0, Math.min(1, next));
 }
 
+/**
+ * Frame of a driven key pose (`interaction.drive`) at this moment.
+ * - holding: loop `frames` at `fps` while `active` (held / dragged), else the base frame;
+ * - progress: step through `frames` with progress 0..1 (the last frame only when complete);
+ * - step: for `stepSec` after a step, play the frames after the base once, then rest on the base.
+ */
+export function driveFrame(
+  frames: number[],
+  by: "holding" | "progress" | "step",
+  s: { active: boolean; progress: number; t: number; stepAge: number | null; fps?: number; stepSec?: number }
+): number {
+  const n = frames.length;
+  if (n <= 1) return frames[0] ?? 0;
+  if (by === "holding") return s.active ? frames[Math.floor(s.t * (s.fps ?? 4)) % n] : frames[0];
+  if (by === "progress") return frames[Math.min(n - 1, Math.floor(Math.max(0, s.progress) * (n - 1) + 1e-6))];
+  const len = s.stepSec ?? 0.6;
+  if (s.stepAge === null || s.stepAge < 0 || s.stepAge >= len) return frames[0];
+  return frames[1 + Math.min(n - 2, Math.floor((s.stepAge / len) * (n - 1)))];
+}
+
 // ---------------------------------------------------------------------------------------------
 // Stage layout boxes (shared by the stage drawing and the "never cover a face" test)
 // ---------------------------------------------------------------------------------------------

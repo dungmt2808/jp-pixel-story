@@ -547,6 +547,38 @@ def test_validator_flags_a_character_shown_twice(tmp_path: Path) -> None:
     assert not any("[Double Character]" in w for w in validate_story_folder(sdir, web_public_dir=pub)["warnings"])
 
 
+def test_validator_checks_key_poses_drive_and_the_interaction_shot(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "poses", category="story")
+    sp = sdir / "assets" / "sprites" / "jii_poses"
+    sp.mkdir(parents=True)
+    (sp / "meta.json").write_text(json.dumps({"frameWidth": 8, "frameHeight": 8, "frameCount": 3,
+                                              "clips": {"idle": [0], "weave": [0], "weave_loop": [0, 1], "bow": [2]},
+                                              "poses": {"weave": [0, 1], "bow": [2]}}))
+    scene = {"id": "work", "type": "cinema_explore", "lines": [], "actors": ["left"],
+             "people": {"jii": {"kind": "sprite:jii_poses", "x": 60, "y": 170, "pose": "weave"}},
+             "cues": [{"at": 1, "people": [{"who": "jii", "pose": "dance"}]}],
+             "interaction": {"type": "hold", "hint": "giữ", "hold": {"label": "x", "x": 60, "y": 40, "durationSec": 1},
+                             "drive": {"who": "jii", "pose": "fly", "by": "sometimes"}}}
+    story = {"id": "poses", "engine": "cinema", "cast": {"left": {"voice": "jii", "sprite": "jii"}},
+             "assets": {"backgrounds": {}, "portraits": {}, "sprites": {"jii_poses": "/stories/poses/assets/sprites/jii_poses/meta.json"}},
+             "scenes": [scene], "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []}}
+    (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    issues, warnings = " | ".join(res["issues"]), " | ".join(res["warnings"])
+    assert "[Unknown Pose] work/jii: 'dance'" in issues
+    assert "pose 'fly' is not a key pose of 'jii'" in issues and "drive.by must be" in issues
+    assert "[Double Character] work" in warnings  # the bust of jii AND jii's poses in one shot
+    # fixed: real poses, and the posing body replaces the bust only while the player acts
+    scene["cues"][0]["people"][0]["pose"] = "bow"
+    scene["interaction"]["drive"] = {"who": "jii", "pose": "weave", "by": "holding"}
+    scene["interaction"]["actors"] = []
+    scene["people"]["jii"]["onlyWhileInteract"] = True
+    (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    joined = " | ".join(res["issues"] + res["warnings"])
+    assert not any(t in joined for t in ("[Unknown Pose]", "[Bad Drive]", "[Double Character]")), joined
+
+
 def test_validator_allows_shared_sprite_cast_and_castPortrait_without_static_portraits(tmp_path: Path) -> None:
     pub, sdir = _setup_mock_catalog(tmp_path, "kotoba_ep1", category="story")
     for key in ("stackchan_neutral", "stackchan_happy"):

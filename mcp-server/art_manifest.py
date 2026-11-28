@@ -36,6 +36,13 @@ blinks, nods) wherever it appears, `castPortrait` switches included. `walk`: a f
 cycle (8 walk + idle + blink, side view facing right) registered as `assets.sprites[key]` for
 route B `people` (`kind: "sprite:<key>"`). Figures are found by the gaps between them, so the
 generator does not have to space them evenly.
+`poses`: key poses of a character for acting (`pixel_pose.py`), e.g.
+  { "key": "ojiisan_poses", "kind": "poses", "pixel_pitch": 11,
+    "poses": { "weave": ["raw_pose_weave.png", "raw_pose_weave_b.png"], "bow": ["raw_pose_bow.png"] } }
+Each pose is a base painting plus optional EDITS of it ("change only the hands"); edits are spliced
+into the base at raw size, every pose shares one pitch, one pivot and one colour budget, and the
+sheet is registered as `assets.sprites[key]` with clips `<pose>` / `<pose>_loop` and `poses` frame
+groups, for `people` (`kind: "sprite:<key>"`, `pose: "<pose>"`) and `interaction.drive`.
 
 Hand-made pixel items (`items`):
   { "key": "straw_hat", "raw": "raw_item_straw_hat.png", "size": [26, 16] }
@@ -248,6 +255,53 @@ def apply_art_manifest(
     return result
 
 
+def _apply_pose_sheet(
+    ch: dict[str, Any],
+    manifest: dict[str, Any],
+    manifest_path: Path,
+    assets: dict[str, Any],
+    assets_dir: Path,
+    url_base: str,
+    palette: str,
+    waiting: list[dict[str, str]],
+    problems: list[str],
+    dry_run: bool,
+) -> dict[str, Any] | None:
+    """Key poses of one character: `poses: {name: [base raw, edit raws...]}` -> one sprite sheet."""
+    from pixel_pose import process_pose_sheet
+
+    key = ch["key"]
+    poses = {name: [manifest_path.parent / r for r in (raws if isinstance(raws, list) else [raws])]
+             for name, raws in (ch.get("poses") or {}).items()}
+    if not poses or not ch.get("pixel_pitch"):
+        problems.append(f"{key}: a 'poses' sheet needs `poses` {{name: [base, edits...]}} and one `pixel_pitch`")
+        return None
+    missing = [p for ps in poses.values() for p in ps if not p.exists()]
+    if missing:
+        for p in missing:
+            waiting.append({"key": key, "raw": str(p.relative_to(REPO_ROOT)) if p.is_relative_to(REPO_ROOT) else str(p)})
+        return None
+    url = f"{url_base}/sprites/{key}/meta.json"
+    entry: dict[str, Any] = {"key": key, "kind": "poses", "sprite": url, "poses": list(poses)}
+    if not dry_run:
+        budget = ch.get("max_colors", (manifest.get("palette_build") or {}).get("sprite_max_colors", 0))
+        try:
+            res = process_pose_sheet(
+                next(iter(poses.values()))[0], assets_dir / "sprites" / key,
+                poses={n: [str(p) for p in ps] for n, ps in poses.items()},
+                pixel_pitch=float(ch["pixel_pitch"]), palette_name=palette,
+                bg_mode=ch.get("bg_mode", "chroma_green"), max_colors=int(budget), fps=float(ch.get("fps", 4)),
+                facing=ch.get("facing", "right"),
+                source={"kind": "art-manifest", "manifest": manifest_path.name, "character": key},
+            )
+        except ValueError as err:
+            problems.append(f"{key}: {err}")
+            return None
+        entry["frame"] = res["frame"]
+    assets.setdefault("sprites", {})[key] = url
+    return entry
+
+
 def _apply_items(
     manifest: dict[str, Any],
     manifest_path: Path,
@@ -356,10 +410,16 @@ def _apply_characters(
     done: list[dict[str, Any]] = []
     for ch in manifest.get("characters", []):
         key, kind = ch["key"], ch.get("kind", "bust")
-        raw = manifest_path.parent / ch["raw"]
-        if kind not in ("bust", "walk"):
-            problems.append(f"{key}: kind must be 'bust' or 'walk'")
+        if kind not in ("bust", "walk", "poses"):
+            problems.append(f"{key}: kind must be 'bust', 'walk' or 'poses'")
             continue
+        if kind == "poses":
+            pose_entry = _apply_pose_sheet(ch, manifest, manifest_path, assets, assets_dir, url_base, palette,
+                                           waiting, problems, dry_run)
+            if pose_entry:
+                done.append(pose_entry)
+            continue
+        raw = manifest_path.parent / ch["raw"]
         portrait_url = (assets.get("portraits") or {}).get(key)
         if kind == "bust" and not portrait_url and not is_shared and not ch.get("frame"):
             problems.append(f"{key}: a bust sheet animates a portrait; '{key}' is not in assets.portraits")

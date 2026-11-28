@@ -90,7 +90,7 @@ def test_art_manifest_characters_animate_portraits_and_add_walkers(tmp_path: Pat
     res = apply_art_manifest(art / "art.json", public_root=public, only=["characters"])
     assert [c["key"] for c in res["characters"]] == ["yui", "yui_walk"]
     assert "ghost: a bust sheet animates a portrait" in " ".join(res["problems"])
-    assert "kind must be 'bust' or 'walk'" in " ".join(res["problems"])
+    assert "kind must be 'bust', 'walk' or 'poses'" in " ".join(res["problems"])
     saved = json.loads((sdir / "story.json").read_text())
     assert saved["assets"]["sprites"]["yui"].endswith("sprites/yui/meta.json")
     assert saved["assets"]["rigs"]["yui"].endswith("sprites/yui/rig/rig.json")

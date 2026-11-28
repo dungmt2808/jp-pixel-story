@@ -549,6 +549,36 @@ test("StackChan mascot: full-body frames, talking mouth, moods from emotes, ward
   assert.ok(mascot.WEAR_IDS.includes("nonla") && mascot.SHELL_IDS.includes("sakura"));
 });
 
+test("interaction.drive picks key-pose frames: loop while held, step with progress, one-shot per step", () => {
+  const f = [3, 4];
+  const base = { active: false, progress: 0, t: 0, stepAge: null };
+  // holding: base frame at rest, the loop while the player holds
+  assert.equal(ui.driveFrame(f, "holding", base), 3);
+  assert.deepEqual([0, 0.25, 0.5].map((t) => ui.driveFrame(f, "holding", { ...base, active: true, t, fps: 4 })), [3, 4, 3]);
+  // progress: a lever only flips when complete; 3 frames split the range
+  assert.equal(ui.driveFrame(f, "progress", { ...base, progress: 0.99 }), 3);
+  assert.equal(ui.driveFrame(f, "progress", { ...base, progress: 1 }), 4);
+  assert.equal(ui.driveFrame([0, 1, 2], "progress", { ...base, progress: 0.5 }), 1);
+  // step: the other frames once after each step, then back to the base
+  assert.equal(ui.driveFrame(f, "step", { ...base, stepAge: 0.1 }), 4);
+  assert.equal(ui.driveFrame(f, "step", { ...base, stepAge: 0.7 }), 3);
+  assert.equal(ui.driveFrame([7], "step", { ...base, stepAge: 0.1 }), 7);
+});
+
+test("key-pose sheets: meta poses are validated and give each pose its frames", () => {
+  const meta = sprite.normalizeSpriteMeta({
+    frameWidth: 10, frameHeight: 10, frameCount: 5,
+    clips: { idle: [0], weave: [0], weave_loop: [0, 1], bow: [4] },
+    poses: { weave: [0, 1], place_hat: [2, 3], bow: [4] },
+  });
+  assert.deepEqual(sprite.poseFrames(meta, "place_hat"), [2, 3]);
+  assert.deepEqual(sprite.poseFrames({ ...meta, poses: undefined }, "weave"), [0, 1]);
+  assert.throws(() => sprite.normalizeSpriteMeta({ frameWidth: 10, frameHeight: 10, frameCount: 2, poses: { x: [5] } }));
+  // any clip name is a pose for a sprite person (cue `pose: "bow"`)
+  const st = people.personAt({ kind: "sprite:o", x: 10 }, [{ move: { who: "o", pose: "bow" }, time: 1 }], 2);
+  assert.equal(st.pose, "bow");
+});
+
 test("tags near the frame edge hang inwards instead of being cut off", () => {
   assert.equal(ui.tagEdge(20), "edge-l");
   assert.equal(ui.tagEdge(160), "");
@@ -575,7 +605,8 @@ test("no hold / drag / tap target of any cinema story covers an on-stage charact
       const inter = scene.interaction;
       if (!inter) continue;
       const faces = [];
-      for (const side of cinema.visibleActors(scene)) {
+      // busts on stage while the player acts (interaction.actors overrides the scene's)
+      for (const side of inter.actors ?? cinema.visibleActors(scene)) {
         const actor = cast[side];
         const key = actor && (actor.sprite ?? actor.rig ?? actor.portrait);
         const metaUrl = key && story.assets?.sprites?.[key];

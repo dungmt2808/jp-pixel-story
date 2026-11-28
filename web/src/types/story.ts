@@ -224,6 +224,26 @@ export interface HoldGauge {
   streamColor?: string;
 }
 
+/**
+ * An interaction moving a character: frames of a key pose (`assets.sprites` sheet of kind "poses")
+ * chosen by the player's input. `by`:
+ * - "holding": the pose's frames loop while the player holds (hold) / drags (drag), base frame otherwise;
+ * - "progress": frames step through with the progress (2 frames = before / after, like a lever);
+ * - "step": each completed step (tap found, item placed) plays the pose's other frames once.
+ */
+export interface InteractionDrive {
+  /** Key of `scene.people` (a `sprite:<key>` person). */
+  who: string;
+  pose: string;
+  by: "holding" | "progress" | "step";
+  /** Loop speed for "holding" (frames per second, default 4). */
+  fps?: number;
+  /** Length of a "step" (seconds, default 0.6). */
+  stepSec?: number;
+  /** A small flash here when the frame changes ("progress" / "step"), hiding the cut. */
+  flash?: [number, number];
+}
+
 /** Data-driven mini-game of a scene (played after the scene's lines). */
 export interface SceneInteraction {
   type: "drag" | "tap" | "hold";
@@ -232,6 +252,10 @@ export interface SceneInteraction {
   items?: DragItem[];
   spots?: TapSpot[];
   hold?: HoldGauge;
+  /** Busts on stage WHILE the interaction runs (default: the scene's `actors`); [] = a medium shot of `people`. */
+  actors?: ("left" | "right")[];
+  /** The player's action drives a key pose of a scene person (the reference lever: arm and lever are one painting). */
+  drive?: InteractionDrive;
   /** Voice line played when the interaction is completed. */
   doneLine?: DialogueLine;
   /** Several lines after completion (cues can anchor on them with `doneLine: i`). */

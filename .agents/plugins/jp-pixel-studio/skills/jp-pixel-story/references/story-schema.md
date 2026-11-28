@@ -142,7 +142,7 @@ All coordinates below are in the 320x200 virtual frame. Example: `hanami-first`.
 - `stamp`: string or `{ text, x?, y? }` — typewriter-style location/date stamp (top-left by default).
 - `labels[]`: pixel tags `{ text, sub?, x, y, to?, afterLine?, style? }`; `to` draws a crisp 1px leader line, `sub` (Vietnamese)
   hides when VI is off, `afterLine` delays the tag until that line (0-based) starts.
-- `interaction` runs after the scene's lines; the caption shows `hint` in uppercase with progress (`1/3`).
+- `interaction` runs after the scene's lines; `hint` shows in uppercase at the top of the frame with progress (`1/3`).
   `drag` (items from `from` to `to`, dotted arc hint + target glow), `tap` (find `spots`, optional `line` per spot),
   `hold` (press-and-hold meter for `durationSec`, optional `item` sprite + pixel `streamTo`). `doneLine` plays on completion.
   In `autoplay` / exported videos a pixel cursor performs the interaction, so MP4s show the whole game.
@@ -251,6 +251,33 @@ the world changes with the story. Example: `hachiko` (ported from the old standa
 - Lines: `emoteWho` puts the emote (and camera focus) on a person. Interactions: `doneLines` (several lines after the
   game, cues can anchor on them), `doneDelaySec` (let the cues play first), drag `items[].person` drags a person.
 - `holdSec`: minimum time on screen (scenes without lines, e.g. seasons passing).
+
+### Acting with key poses (`kind: "poses"` sheets, `interaction.actors`, `interaction.drive`)
+
+Characters act by CHANGING POSE (a new drawing per beat, like the reference player's Edison: walk in, write,
+hold up the bulb, hand on chin, hand on the lever), not by sliding one portrait around. Make the art with
+`art-src/<story>/art.json` characters of `kind: "poses"` (prompts and the splice technique:
+`art-src/kasa-jizo/PROMPTS-poses.md`): every pose of a character in ONE sheet, one pitch, one pivot (feet),
+one colour budget; meta clips `<pose>` (base frame) / `<pose>_loop` and `poses: {name: [frames]}`.
+```json
+"people": { "ojiisan_work": { "kind": "sprite:ojiisan_poses", "x": 80, "y": 168, "pose": "weave",
+                              "onlyWhileInteract": true } },
+"interaction": { "type": "hold", "hint": "Giữ tay để ông lão đan nón", "actors": [],
+                 "hold": { "label": "{笠|かさ}を{編|あ}む", "x": 80, "y": 50, "durationSec": 1.8 },
+                 "drive": { "who": "ojiisan_work", "pose": "weave", "by": "holding", "fps": 4 } }
+```
+- `interaction.actors`: busts on stage WHILE the player acts (default: the scene's `actors`). `[]` cuts to a medium
+  shot of `people`; the busts come back for the `doneLine` (a reaction shot).
+- people `onlyWhileInteract: true`: the posing body exists only during the interaction (the opposite of
+  `hideWhileInteract`), so the same character is never on stage twice (validator `[Double Character]` knows this).
+- `interaction.drive` `{ who, pose, by, fps?, stepSec?, flash? }`: the player's input picks the frame of that key pose
+  (the reference lever: arm and lever are ONE painting per state). `by`: `holding` (frames loop while held /
+  dragged), `progress` (frames step through the progress; 2 frames = before/after, the last only when complete),
+  `step` (each placed item / found spot plays the other frames once). `flash: [x, y]` sparkles on a frame change.
+- A pose for a line or a moment: any clip is a `pose` of a sprite person, e.g. cue
+  `{ "done": true, "people": [{ "who": "ojiisan_bow", "show": true }] }` with `pose: "bow"` when the narration says
+  he bows. The validator flags `[Unknown Pose]` (not a clip of the sheet) and `[Bad Drive]`.
+- Do not put ~100 px key poses in the same shot as an old 64 px walk sheet: one pitch per character per shot.
 - The validator checks person kinds, cue anchors/people, `emoteWho`, set names; `set:` counts as code-drawn for `[Style Mix]`.
 
 ### Route C — motion layers on painted backgrounds (`scene.motion`)

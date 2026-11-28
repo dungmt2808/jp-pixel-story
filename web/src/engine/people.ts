@@ -13,7 +13,8 @@ import { clamp, mixc, R, SPRF, type Ctx } from "./proc/pixelKit";
 import { drawStackChanMini, MINI_H, MINI_W, type MascotWear } from "./mascot/stackchan";
 import { drawSpriteFrame, frameAt, frameAtDistance, type SpriteSheet } from "./spriteAnimator";
 
-export type Pose = "stand" | "walk" | "sit" | "run" | "jump" | "wave";
+/** Built-in poses; a sprite person also takes any clip of its sheet (key poses: "weave", "bow"...). */
+export type Pose = "stand" | "walk" | "sit" | "run" | "jump" | "wave" | (string & {});
 export type Face = "left" | "right";
 
 export interface PersonDef {
@@ -31,6 +32,8 @@ export interface PersonDef {
   hidden?: boolean;
   /** Hidden while the scene's interaction runs (the player drags a stand-in). */
   hideWhileInteract?: boolean;
+  /** Shown ONLY while the scene's interaction runs (a key pose acting the action, see interaction.drive). */
+  onlyWhileInteract?: boolean;
   /** kind "stackchan": wardrobe ({ head: "nonla", neck: "scarf", shell: "sakura" }) and pixel scale (default 2). */
   wear?: MascotWear;
   scale?: number;
@@ -201,13 +204,17 @@ function drawPasserby(c: Ctx, s: PersonState, def: PersonDef, t: number): void {
   R(c, x + 1 - step, y + 17, 2, 6, "#1b1c22");
 }
 
-/** Draw one person (sprite people use their meta clips: idle / walk / sit / run). */
+/**
+ * Draw one person (sprite people use their meta clips: idle / walk / sit / run, or a key pose).
+ * `frame`: an exact sheet frame (an interaction driving a key pose) instead of the clip's.
+ */
 export function drawPerson(
   c: Ctx,
   def: PersonDef,
   s: PersonState,
   t: number,
-  sprites: Record<string, SpriteSheet>
+  sprites: Record<string, SpriteSheet>,
+  frame?: number
 ): void {
   if (!s.visible) return;
   c.save();
@@ -235,8 +242,8 @@ export function drawPerson(
       const clip = s.pose === "stand" ? "idle" : s.pose;
       const name = sheet.meta.clips[clip] ? clip : "idle";
       const moving = s.pose === "walk" || s.pose === "run";
-      const frame = moving ? frameAtDistance(sheet.meta, name, s.x, t) : frameAt(sheet.meta, name, t);
-      drawSpriteFrame(c, sheet, frame, Math.round(s.x), Math.round(s.y + s.lift), {
+      const fr = frame ?? (moving ? frameAtDistance(sheet.meta, name, s.x, t) : frameAt(sheet.meta, name, t));
+      drawSpriteFrame(c, sheet, fr, Math.round(s.x), Math.round(s.y + s.lift), {
         flipX: s.face !== (sheet.meta.facing ?? "right"),
       });
     }

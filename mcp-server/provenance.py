@@ -121,6 +121,7 @@ def adopt_legacy(path: str | Path, note: str = "") -> None:
 
 def _ops() -> dict[str, Callable[..., Any]]:
     import pixel_extract as pe
+    import pixel_pose as ppose
     import pixel_processor as pp
     import pixel_rig as pr
     import pixel_tools as pt
@@ -136,6 +137,7 @@ def _ops() -> dict[str, Callable[..., Any]]:
         "add_expression": lambda i, o, **k: pr.add_expression(o, record_provenance=False, **k),
         "build_rig": lambda i, o, **k: pr.build_rig(i, o, record_provenance=False, **k),
         "extract_object": lambda i, o, **k: pe.extract_object(i, o, record_provenance=False, **k),
+        "process_pose_sheet": lambda i, o, **k: ppose.process_pose_sheet(i, o, record_provenance=False, **k),
     }
 
 

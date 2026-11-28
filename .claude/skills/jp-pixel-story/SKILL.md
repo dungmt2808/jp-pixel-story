@@ -59,6 +59,9 @@ Make painted scenes move (route C): `scene.motion` layers + art.json `objects` t
 (story-schema.md "Route C"; art-style.md §6 compares the three art routes).
 Route B (code-drawn worlds, full-body characters walking, the world changing with the story): `backdrop: "set:<name>"`,
 `people`, `cues` — story-schema.md "Route B"; new sets go in `web/src/engine/proc/` and `PROC_SETS`.
+Acting: give main characters KEY POSES tied to the lesson's verbs (編む, かぶせる, お辞儀する) — art.json `kind: "poses"`
+(a base painting + "change only the hands" edits), shown as `people` with `pose`, and let interactions drive them
+(`interaction.drive`, `interaction.actors: []` for a medium shot) — story-schema.md "Acting with key poses".
 Stages are routed by `story.engine` (`web/src/engine/stageEngines.ts`), never by story id.
 
 Read schema references before creating files:

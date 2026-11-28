@@ -513,6 +513,7 @@ def validate_story_folder(
         # route B: people + cues (web/src/engine/people.ts, cues.ts) and code-drawn set: backdrops
         for sc in data.get("scenes", []):
             people = sc.get("people") or {}
+            sprite_meta: dict[str, dict[str, Any]] = {}
             for pid, pdef in people.items():
                 kind = str(pdef.get("kind", ""))
                 if kind not in PERSON_KINDS and not kind.startswith("sprite:"):
@@ -522,7 +523,9 @@ def validate_story_folder(
                     issues.append(f"[Missing Asset] {sc.get('id')}/{pid}: sprite '{kind[7:]}' is not in assets.sprites")
                 if sprite_url:
                     meta_fp = public_root / str(sprite_url).lstrip("/")
-                    clips = json.loads(meta_fp.read_text(encoding="utf-8")).get("clips", {}) if meta_fp.exists() else {}
+                    meta_json = json.loads(meta_fp.read_text(encoding="utf-8")) if meta_fp.exists() else {}
+                    clips = meta_json.get("clips", {})
+                    sprite_meta[pid] = meta_json
                     walks = any(
                         mv.get("who") == pid and mv.get("walkTo") is not None
                         for cue in sc.get("cues") or [] for mv in cue.get("people") or []
@@ -536,19 +539,43 @@ def validate_story_folder(
                             f"[Foot Slide] {sc.get('id')}/{pid}: the 'walk' clip of '{kind[7:]}' has no stridePx "
                             "(px per cycle), so frames follow time and the feet slide"
                         )
-            # the same character twice: a bust portrait on stage AND its walking sprite in the shot
+            # key poses: a cue / drive pose must exist in the person's sheet
+            sc_inter = sc.get("interaction") or {}
+            builtin_poses = {"stand", "walk", "sit", "run", "jump", "wave"}
+            for cue in sc.get("cues") or []:
+                for mv in cue.get("people") or []:
+                    meta_json = sprite_meta.get(str(mv.get("who")))
+                    pose = mv.get("pose") or mv.get("then")
+                    if meta_json and pose and pose not in builtin_poses | {"exit"} and pose not in meta_json.get("clips", {}):
+                        issues.append(f"[Unknown Pose] {sc.get('id')}/{mv.get('who')}: '{pose}' is not a clip of its sheet")
+            drive = sc_inter.get("drive")
+            if drive:
+                who = str(drive.get("who", ""))
+                meta_json = sprite_meta.get(who)
+                if who not in people or not str(people[who].get("kind", "")).startswith("sprite:"):
+                    issues.append(f"[Bad Drive] {sc.get('id')}: drive.who '{who}' must be a sprite person of scene.people")
+                elif meta_json and drive.get("pose") not in (meta_json.get("poses") or {}) and \
+                        f"{drive.get('pose')}_loop" not in meta_json.get("clips", {}):
+                    issues.append(f"[Bad Drive] {sc.get('id')}: pose '{drive.get('pose')}' is not a key pose of '{who}'")
+                if drive.get("by") not in ("holding", "progress", "step"):
+                    issues.append(f"[Bad Drive] {sc.get('id')}: drive.by must be 'holding', 'progress' or 'step'")
+            if any(side not in ("left", "right") for side in sc_inter.get("actors") or []):
+                issues.append(f"[Bad Actors] {sc.get('id')}: interaction.actors takes 'left' / 'right'")
+            # the same character twice: a bust portrait on stage AND its walking / posing sprite in the shot
             if people and data.get("engine") == "cinema":
                 kind_of = str(sc.get("type", ""))
                 default_sides = [] if kind_of == "cinema_intro" else ["left"] if kind_of == "cinema_outro" else ["left", "right"]
                 sides = sc.get("actors", default_sides)
                 cast = {**(data.get("cast") or {}), **(sc.get("cast") or {})}
-                names = {side: {str(cast[side].get("voice", "")), str(cast[side].get("portrait", ""))} - {""}
-                         for side in sides if isinstance(cast.get(side), dict)}
                 for pid, pdef in people.items():
                     kind = str(pdef.get("kind", ""))
                     if not kind.startswith("sprite:"):
                         continue
-                    stem = kind[7:].removesuffix("_walk")
+                    # a person shown only while the player acts shares the stage with interaction.actors
+                    shared = sc_inter.get("actors", sides) if pdef.get("onlyWhileInteract") and sc_inter else sides
+                    names = {side: {str(cast[side].get("voice", "")), str(cast[side].get("portrait", ""))} - {""}
+                             for side in shared if isinstance(cast.get(side), dict)}
+                    stem = kind[7:].removesuffix("_walk").removesuffix("_poses")
                     for side, ids in names.items():
                         if stem in ids or pid in ids or any(i.startswith(stem + "_") for i in ids):
                             warnings.append(

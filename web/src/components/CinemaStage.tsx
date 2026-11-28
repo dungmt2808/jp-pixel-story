@@ -24,6 +24,7 @@ import {
   type Side,
 } from "../engine/cinemaModel";
 import {
+  driveFrame,
   dropDragItem,
   HOLD_ITEM_DY,
   HOLD_METER_W,
@@ -40,7 +41,7 @@ import {
 import { drawPixelImage } from "../engine/pixelScale";
 import { VIRTUAL_H, VIRTUAL_W } from "../engine/pixelRenderer";
 import { drawRig, rigHeadFrame, rigPose } from "../engine/rigAnimator";
-import { drawSpriteFrame, frameAt } from "../engine/spriteAnimator";
+import { drawSpriteFrame, frameAt, poseFrames } from "../engine/spriteAnimator";
 import { useStageRuntime } from "../engine/useStageRuntime";
 import { actorActionOffset, cameraAt, drawEmote, drawLightGrade, IDENTITY_VIEW, lineSfx } from "../engine/cinemaVibe";
 import { drawSceneMotion, sceneRumble } from "../engine/sceneMotion";
@@ -254,6 +255,10 @@ export function CinemaStage({
   const dragIdxRef = useRef(-1);
   const pointerRef = useRef<Vec>([0, 0]);
   const holdRef = useRef({ progress: 0, holding: false });
+  // interaction.drive: steps done so far, when the last one happened, the frame drawn last
+  const stepCountRef = useRef(0);
+  const stepAtRef = useRef<number | null>(null);
+  const driveFrameRef = useRef<number | null>(null);
   const particlesRef = useRef<Particle[]>([]);
   const cursorRef = useRef({ x: 160, y: 120, down: false, visible: false });
   const phaseRef = useRef<Phase>("lines");
@@ -297,6 +302,9 @@ export function CinemaStage({
     dragRef.current = initDrag(currentScene.interaction?.items ?? []);
     dragIdxRef.current = -1;
     holdRef.current = { progress: 0, holding: false };
+    stepCountRef.current = 0;
+    stepAtRef.current = null;
+    driveFrameRef.current = null;
     particlesRef.current = [];
     if (sceneIdx === story.scenes.length - 1) setReachedEnd(true);
 
@@ -441,6 +449,8 @@ export function CinemaStage({
 
   const registerProgress = useCallback(
     (n: number, leadLine?: DialogueLine) => {
+      if (n > stepCountRef.current) stepAtRef.current = performance.now();
+      stepCountRef.current = n;
       setProgress(n);
       if (n >= total) void completeInteraction(leadLine);
     },
@@ -677,7 +687,10 @@ export function CinemaStage({
       const vLine = speakingRef.current !== null ? vibe.line : null;
       // rAF `now` is the frame start and can be slightly older than the line start
       const vAge = Math.max(0, (now - vibe.start) / 1000);
-      const onStage = kind === "intro" ? [] : sides;
+      const phaseNow = phaseRef.current;
+      // interaction.actors: who stays on stage while the player acts ([] = a medium shot of `people`)
+      const sidesNow = phaseNow === "interact" && inter?.actors ? inter.actors : sides;
+      const onStage = kind === "intro" ? [] : sidesNow;
       const speakerSide = vLine ? onStage.find((sd) => cast[sd]?.voice === vLine.voice) : undefined;
       // the camera frames whoever reacts (emoteSide) or else the speaker
       const focusSide = vLine?.emoteSide && onStage.includes(vLine.emoteSide) ? vLine.emoteSide : speakerSide;
@@ -734,21 +747,40 @@ export function CinemaStage({
         for (const [id, def] of Object.entries(currentScene.people)) {
           const st = personAt(def, moves.filter((m) => m.move.who === id), elapsed);
           peopleStateRef.current[id] = st;
-          if (def.hideWhileInteract && phaseRef.current === "interact") continue;
+          if (def.hideWhileInteract && phaseNow === "interact") continue;
+          if (def.onlyWhileInteract && phaseNow !== "interact") continue;
           // the mascot in the shot says the tip itself: it waves while its bubble is up
           const saying = tipWhoRef.current === id && !st.pose.startsWith("walk") ? { ...st, pose: "wave" as const } : st;
-          drawPerson(ctx, def, saying, t, spritesRef.current);
+          // interaction.drive: the player's action picks the frame of this person's key pose
+          let frame: number | undefined;
+          const drv = inter?.drive?.who === id ? inter.drive : undefined;
+          const sheet = drv && def.kind.startsWith("sprite:") ? spritesRef.current[def.kind.slice(7)] : undefined;
+          if (drv && sheet && inter) {
+            const steps = inter.type === "drag" ? inter.items?.length ?? 1 : inter.type === "tap" ? inter.spots?.length ?? 1 : 1;
+            const finished = phaseNow === "doneLine" || phaseNow === "ready";
+            const progress01 = finished ? 1 : inter.type === "hold" ? holdRef.current.progress : stepCountRef.current / Math.max(1, steps);
+            const active = phaseNow === "interact" && (inter.type === "hold" ? holdRef.current.holding : dragIdxRef.current >= 0);
+            const stepAge = stepAtRef.current === null ? null : (now - stepAtRef.current) / 1000;
+            frame = driveFrame(poseFrames(sheet.meta, drv.pose), drv.by, {
+              active, progress: progress01, t, stepAge, fps: drv.fps, stepSec: drv.stepSec,
+            });
+            if (drv.flash && drv.by !== "holding" && driveFrameRef.current !== null && frame !== driveFrameRef.current) {
+              spawnBurst(particlesRef.current, drv.flash, ["#ffffff", "#ffe38c", "#f6eed8"], 10, 36);
+            }
+            driveFrameRef.current = frame;
+          }
+          drawPerson(ctx, def, drv ? { ...saying, pose: drv.pose } : saying, t, spritesRef.current, frame);
         }
       }
 
       if (kind !== "intro") {
         const speaking = speakingRef.current;
         const actionSide = vLine?.action ? (vLine.actionSide ?? vLine.emoteSide ?? speakerSide) : undefined;
-        sides.forEach((side, i) => {
+        sidesNow.forEach((side, i) => {
           const base = cast[side];
           if (!base) return;
           const actor = portraitsRef.current[side] ? { ...base, portrait: portraitsRef.current[side] } : base;
-          const focus = actorFocus(side, cast, speaking, sides);
+          const focus = actorFocus(side, cast, speaking, sidesNow);
           // line `castExit`: the actor slides back out the way it came in
           const exitAt = exitRef.current[side];
           const stay = exitAt === undefined ? 1 : clamp01(1 - (now - exitAt) / 600);
@@ -769,7 +801,7 @@ export function CinemaStage({
       ctx.restore();
 
       // interaction layer
-      const interacting = phaseRef.current === "interact";
+      const interacting = phaseNow === "interact";
       if (inter?.type === "drag") {
         const items = dragRef.current;
         const firstOpen = items.findIndex((it) => !it.placed);

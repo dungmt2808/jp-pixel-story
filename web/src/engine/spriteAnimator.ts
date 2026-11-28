@@ -28,6 +28,8 @@ export interface SpriteMeta {
   palette?: string;
   /** Side-view sheets: the way the character looks in the source frames (default "right"). */
   facing?: "left" | "right";
+  /** Key-pose sheets (art.json kind "poses"): frames of each pose, base painting first. */
+  poses?: Record<string, number[]>;
 }
 
 export interface SpriteSheet {
@@ -76,7 +78,26 @@ export function normalizeSpriteMeta(raw: Record<string, unknown>): SpriteMeta {
     clips,
     palette: raw.palette ? String(raw.palette) : undefined,
     facing: raw.facing === "left" ? "left" : raw.facing === "right" ? "right" : undefined,
+    poses: normalizePoses(raw.poses, frameCount),
   };
+}
+
+function normalizePoses(raw: unknown, frameCount: number): Record<string, number[]> | undefined {
+  if (!raw || typeof raw !== "object") return undefined;
+  const out: Record<string, number[]> = {};
+  for (const [name, frames] of Object.entries(raw as Record<string, unknown>)) {
+    const list = Array.isArray(frames) ? frames.map(Number) : [];
+    if (list.length === 0 || list.some((f) => !(f >= 0 && f < frameCount))) {
+      throw new Error(`pose "${name}" has frames outside 0..${frameCount - 1}`);
+    }
+    out[name] = list;
+  }
+  return out;
+}
+
+/** Frames of a key pose: meta `poses`, else the clip `<pose>_loop`, else the clip `<pose>`. */
+export function poseFrames(meta: SpriteMeta, pose: string): number[] {
+  return meta.poses?.[pose] ?? meta.clips[`${pose}_loop`]?.frames ?? meta.clips[pose]?.frames ?? [0];
 }
 
 /**
