@@ -319,3 +319,55 @@ export function drawThoughtFrame(
   ctx.fillRect(x0 + 2, y0 + 2, W - 4, H - 4);
   return [x0 + 2, y0 + 2];
 }
+
+/**
+ * High-contrast pulsing pixel beacon for `tap` hotspots so targets stand out clearly on both
+ * bright snow and dark interiors: dark-outlined ripple ring + vermilion/gold badge + bobbing ▼ arrow.
+ */
+export function drawTapBeacon(ctx: CanvasRenderingContext2D, at: Vec, t: number, seed = 0): void {
+  const cx = Math.round(at[0]);
+  const cy = Math.round(at[1]);
+  const pulse = (t * 1.4 + seed * 0.17) % 1;
+  const r = Math.round(7 + pulse * 6);
+
+  // Expanding dashed pixel ring (dark outline + warm gold inner pixel so it pops on white snow)
+  const steps = 24;
+  for (let i = 0; i < steps; i++) {
+    if (i % 2 === 1) continue;
+    const ang = (i / steps) * Math.PI * 2 + t * 0.8;
+    const rx = Math.round(cx + Math.cos(ang) * r);
+    const ry = Math.round(cy + Math.sin(ang) * r * 0.85);
+    ctx.fillStyle = OUTLINE;
+    ctx.fillRect(rx - 1, ry - 1, 3, 3);
+    ctx.fillStyle = pulse < 0.65 ? GOLD : "#f4a442";
+    ctx.fillRect(rx, ry, 1, 1);
+  }
+
+  // Crisp 9x9 dark-outlined pixel badge with pulsing vermilion/amber fill and bright '+' center
+  ctx.fillStyle = OUTLINE;
+  ctx.fillRect(cx - 4, cy - 3, 9, 7);
+  ctx.fillRect(cx - 3, cy - 4, 7, 9);
+
+  const bright = Math.sin(t * 5 + seed) > 0;
+  ctx.fillStyle = bright ? "#b8382c" : "#d96934";
+  ctx.fillRect(cx - 3, cy - 2, 7, 5);
+  ctx.fillRect(cx - 2, cy - 3, 5, 7);
+
+  ctx.fillStyle = CREAM;
+  ctx.fillRect(cx, cy - 2, 1, 5);
+  ctx.fillRect(cx - 2, cy, 5, 1);
+
+  // Bobbing pixel arrow ▼ pointing straight down at the clickable target
+  const bob = Math.round(Math.sin(t * 6 + seed) * 1.5);
+  const ay = cy - 9 + bob;
+  ctx.fillStyle = OUTLINE;
+  ctx.fillRect(cx - 4, ay - 3, 9, 2);
+  ctx.fillRect(cx - 3, ay - 1, 7, 1);
+  ctx.fillRect(cx - 2, ay, 5, 1);
+  ctx.fillRect(cx - 1, ay + 1, 3, 1);
+  ctx.fillStyle = GOLD;
+  ctx.fillRect(cx - 3, ay - 2, 7, 1);
+  ctx.fillRect(cx - 2, ay - 1, 5, 1);
+  ctx.fillRect(cx - 1, ay, 3, 1);
+  ctx.fillRect(cx, ay + 1, 1, 1);
+}

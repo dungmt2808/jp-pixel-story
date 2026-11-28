@@ -12,6 +12,7 @@ import {
   drawLeaderLine,
   drawMeter,
   drawStream,
+  drawTapBeacon,
   drawTargetGlow,
   spawnBurst,
   stepAndDrawParticles,
@@ -960,10 +961,7 @@ export function CinemaStage({
           if (found && im) {
             drawPixelImage(ctx, im, Math.round(s.x - im.naturalWidth / 2), Math.round(s.y - im.naturalHeight / 2), im.naturalWidth, im.naturalHeight);
           } else if (!found && interacting) {
-            const tw = Math.sin(t * 3 + s.x) > 0.2;
-            ctx.fillStyle = tw ? "#ffe38c" : "#f6eed8";
-            ctx.fillRect(Math.round(s.x), Math.round(s.y) - 2, 1, 5);
-            ctx.fillRect(Math.round(s.x) - 2, Math.round(s.y), 5, 1);
+            drawTapBeacon(ctx, [s.x, s.y], t, s.x);
           }
         }
       } else if (inter?.type === "slide" && inter.slide && interacting) {
