@@ -14,8 +14,9 @@ only in the arm + lever region, swapped in one frame. Pipeline:
 4. one colour budget (`max_colors`) for the whole sheet, the same merge in every frame;
 5. lock each edit to its base outside the box that really moved (no 1px drift around the face).
 
-meta.json gets a clip per pose (`<pose>`: the base frame, `<pose>_loop`: all its frames) and
-`poses: {name: [frame indices]}` for interactions that drive a pose (`interaction.drive`).
+meta.json gets a clip per pose (`<pose>`: the base frame, `<pose>_loop`: all its frames, `<pose>_b`,
+`<pose>_c`...: each edit, named like its raw file) and `poses: {name: [frame indices]}` for interactions
+that drive a pose (`interaction.drive`).
 """
 
 from __future__ import annotations
@@ -179,6 +180,9 @@ def process_pose_sheet(
         clips[name] = {"frames": [idx[0]], "fps": float(fps), "loop": True}
         if len(idx) > 1:
             clips[f"{name}_loop"] = {"frames": idx, "fps": float(fps), "loop": True}
+        for k, frame in enumerate(idx[1:], start=1):
+            # one clip per edit, named like its raw (raw_pose_x_b.png -> "x_b"): a cue can hold that state
+            clips[f"{name}_{chr(ord('a') + k)}"] = {"frames": [frame], "fps": float(fps), "loop": True}
     meta = {
         "spritesheet": "spritesheet.png",
         "frameWidth": fw,

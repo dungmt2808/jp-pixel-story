@@ -571,8 +571,16 @@ def validate_story_folder(
                     kind = str(pdef.get("kind", ""))
                     if not kind.startswith("sprite:"):
                         continue
-                    # a person shown only while the player acts shares the stage with interaction.actors
-                    shared = sc_inter.get("actors", sides) if pdef.get("onlyWhileInteract") and sc_inter else sides
+                    # a person shown only while the player acts shares the stage with interaction.actors;
+                    # a hidden person shown by cues that all cut (`actors`) shares it with those cuts
+                    shown_by = [cue for cue in sc.get("cues") or [] for mv in cue.get("people") or []
+                                if mv.get("who") == pid and (mv.get("show") or mv.get("walkTo") is not None)]
+                    if pdef.get("onlyWhileInteract") and sc_inter:
+                        shared = sc_inter.get("actors", sides)
+                    elif pdef.get("hidden") and shown_by and all("actors" in cue for cue in shown_by):
+                        shared = sorted({side for cue in shown_by for side in cue["actors"]})
+                    else:
+                        shared = sides
                     names = {side: {str(cast[side].get("voice", "")), str(cast[side].get("portrait", ""))} - {""}
                              for side in shared if isinstance(cast.get(side), dict)}
                     stem = kind[7:].removesuffix("_walk").removesuffix("_poses")
@@ -593,13 +601,22 @@ def validate_story_folder(
                     issues.append(f"[Bad Cue] {where}: doneLine {cue['doneLine']} does not exist ({n_done} done-lines)")
                 if cue.get("done") and not inter:
                     issues.append(f"[Bad Cue] {where}: 'done' needs a scene interaction")
+                if "spot" in cue and cue["spot"] not in {sp.get("id") for sp in inter.get("spots") or []}:
+                    issues.append(f"[Bad Cue] {where}: spot '{cue['spot']}' is not a tap spot of this scene")
+                if "choice" in cue and cue["choice"] not in {ch.get("id") for ch in (sc.get("minigame") or {}).get("choices") or []}:
+                    issues.append(f"[Bad Cue] {where}: choice '{cue['choice']}' is not a choice of this scene")
+                if any(side not in ("left", "right") for side in cue.get("actors") or []):
+                    issues.append(f"[Bad Actors] {where}: cue actors take 'left' / 'right'")
                 for mv in cue.get("people") or []:
                     if mv.get("who") not in people:
                         issues.append(f"[Bad Cue] {where}: person '{mv.get('who')}' is not in scene.people")
             for item in inter.get("items") or []:
                 if item.get("person") and item["person"] not in people:
                     issues.append(f"[Bad Interaction] {sc.get('id')}: drag person '{item['person']}' is not in scene.people")
-            for ln in [*(sc.get("lines") or []), *(inter.get("doneLines") or []), *([inter["doneLine"]] if inter.get("doneLine") else [])]:
+            spoken = [*(sc.get("lines") or []), *(inter.get("doneLines") or []), *([inter["doneLine"]] if inter.get("doneLine") else []),
+                      *[sp["line"] for sp in inter.get("spots") or [] if sp.get("line")],
+                      *[ch["responseLine"] for ch in (sc.get("minigame") or {}).get("choices") or [] if ch.get("responseLine")]]
+            for ln in spoken:
                 if ln.get("emoteWho") and ln["emoteWho"] not in people:
                     issues.append(f"[Bad Cue] {sc.get('id')}/{ln.get('id')}: emoteWho '{ln['emoteWho']}' is not in scene.people")
             bd = str(sc.get("backdrop", ""))

@@ -57,7 +57,8 @@ def test_pose_sheet_shares_pitch_pivot_and_locks_edits(tmp_path: Path) -> None:
     )
     meta = json.loads((out / "meta.json").read_text())
     assert meta["poses"] == {"reach": [0, 1], "stand": [2]}
-    assert {"idle", "reach", "reach_loop", "stand"} <= set(meta["clips"])
+    assert {"idle", "reach", "reach_loop", "reach_b", "stand"} <= set(meta["clips"])
+    assert meta["clips"]["reach_b"]["frames"] == [1]  # each edit is a clip named like its raw (raw_pose_reach_b)
     assert meta["frameCount"] == 3 and Image.open(out / "spritesheet.png").size == (meta["frameWidth"] * 3, meta["frameHeight"])
     frames = [np.array(Image.open(out / f"frame_{i:02d}.png").convert("RGBA")) for i in range(3)]
     # same pivot: both poses stand on the same ground line, feet centred on the pivot

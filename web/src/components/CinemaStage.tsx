@@ -46,7 +46,7 @@ import { useStageRuntime } from "../engine/useStageRuntime";
 import { actorActionOffset, cameraAt, drawEmote, drawLightGrade, IDENTITY_VIEW, lineSfx } from "../engine/cinemaVibe";
 import { drawSceneMotion, sceneRumble } from "../engine/sceneMotion";
 import { BUST_H, BUST_TOP, BUST_W, drawStackChanBust, moodForEmote } from "../engine/mascot/stackchan";
-import { backdropAt, cueMoves, cueTime, setStateAt, type CueAnchors } from "../engine/cues";
+import { actorsAt, backdropAt, cueMoves, cueTime, setStateAt, type CueAnchors } from "../engine/cues";
 import { drawPerson, personAt, personBox, type PersonState } from "../engine/people";
 import { PROC_SETS } from "../engine/proc/sets";
 import { logStoryEvent, voiceHoldMs } from "../engine/stageRuntime";
@@ -282,7 +282,7 @@ export function CinemaStage({
     if (!assetsReady) return;
     let cancelled = false;
     sceneStartRef.current = performance.now();
-    anchorsRef.current = { lines: [], doneLines: [], choices: {}, picked: pickedRef.current };
+    anchorsRef.current = { lines: [], doneLines: [], choices: {}, spots: {}, picked: pickedRef.current };
     portraitsRef.current = {};
     exitRef.current = {};
     peopleStateRef.current = {};
@@ -479,6 +479,8 @@ export function CinemaStage({
         const id = hitTapSpot(interaction.spots ?? [], foundRef.current, p);
         if (id) {
           const spot = interaction.spots?.find((s) => s.id === id);
+          // cue anchor `spot`: the world reacts to this find (a pose, a cut...)
+          anchorsRef.current.spots = { ...(anchorsRef.current.spots ?? {}), [id]: (performance.now() - sceneStartRef.current) / 1000 };
           retroAudio.playBeepScan();
           spawnBurst(particlesRef.current, [spot?.x ?? p[0], spot?.y ?? p[1]], ["#ffe38c", "#f6eed8"], 10, 45);
           const next = [...foundRef.current, id];
@@ -688,8 +690,10 @@ export function CinemaStage({
       // rAF `now` is the frame start and can be slightly older than the line start
       const vAge = Math.max(0, (now - vibe.start) / 1000);
       const phaseNow = phaseRef.current;
-      // interaction.actors: who stays on stage while the player acts ([] = a medium shot of `people`)
-      const sidesNow = phaseNow === "interact" && inter?.actors ? inter.actors : sides;
+      // interaction.actors: who stays on stage while the player acts ([] = a medium shot of `people`);
+      // otherwise a cue `actors` may cut to another shot (a key pose acting a line)
+      const cutSides = actorsAt(sides, currentScene.cues, anchorsRef.current, elapsed);
+      const sidesNow = phaseNow === "interact" && inter?.actors ? inter.actors : cutSides;
       const onStage = kind === "intro" ? [] : sidesNow;
       const speakerSide = vLine ? onStage.find((sd) => cast[sd]?.voice === vLine.voice) : undefined;
       // the camera frames whoever reacts (emoteSide) or else the speaker

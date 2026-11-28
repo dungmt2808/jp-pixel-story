@@ -274,6 +274,15 @@ one colour budget; meta clips `<pose>` (base frame) / `<pose>_loop` and `poses: 
   (the reference lever: arm and lever are ONE painting per state). `by`: `holding` (frames loop while held /
   dragged), `progress` (frames step through the progress; 2 frames = before/after, the last only when complete),
   `step` (each placed item / found spot plays the other frames once). `flash: [x, y]` sparkles on a frame change.
+- Cuts inside a scene: a cue `actors` changes the busts on stage from that moment (`[]` = medium shot), e.g. a
+  choice that makes her pour tea: `{ "choice": "warm_tea", "actors": [], "people": [{ "who": "oba_tea", "show": true,
+  "fadeIn": 0.25 }] }` then `{ "choice": "warm_tea", "delay": 1, "people": [{ "who": "oba_tea", "pose": "pour_tea_b" }] }`.
+  Each edit of a pose is its own clip named like its raw (`raw_pose_obaasan_pour_tea_b.png` -> `pour_tea_b`), so a cue
+  can hold a state. Cue anchor `spot: "<tap spot id>"` fires when the player finds that spot (she gasps at the shoji).
+  People `hidden` + a cue `show` (with `fadeIn`) step into the shot; put `emoteWho` on lines whose speaker is a person
+  (choice `responseLine`s and spot `line`s included). Keep a posing body above the bottom row (y <= 178) in scenes
+  with choice buttons. The validator checks `spot` / `choice` anchors and knows that a hidden person shown only by
+  cutting cues never meets their own bust.
 - A pose for a line or a moment: any clip is a `pose` of a sprite person, e.g. cue
   `{ "done": true, "people": [{ "who": "ojiisan_bow", "show": true }] }` with `pose: "bow"` when the narration says
   he bows. The validator flags `[Unknown Pose]` (not a clip of the sheet) and `[Bad Drive]`.

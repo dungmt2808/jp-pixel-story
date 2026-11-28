@@ -579,6 +579,27 @@ test("key-pose sheets: meta poses are validated and give each pose its frames", 
   assert.equal(st.pose, "bow");
 });
 
+test("cue `spot` anchors on a found tap spot; cue `actors` cuts the shot; people fade in", () => {
+  const cueList = [
+    { spot: "shoji", people: [{ who: "oba", pose: "peek_b" }] },
+    { choice: "tea", actors: [], people: [{ who: "oba", show: true, fadeIn: 0.5 }] },
+  ];
+  const a = { lines: [], doneLines: [], choices: {}, spots: {} };
+  assert.equal(cues.cueTime(cueList[0], a), null); // not found yet
+  assert.deepEqual(cues.actorsAt(["left", "right"], cueList, a, 9), ["left", "right"]);
+  a.spots.shoji = 3.2;
+  a.choices.tea = 5;
+  assert.equal(cues.cueTime(cueList[0], a), 3.2);
+  assert.deepEqual(cues.actorsAt(["left", "right"], cueList, a, 4.9), ["left", "right"]);
+  assert.deepEqual(cues.actorsAt(["left", "right"], cueList, a, 5), []); // the cut
+  const moves = cues.cueMoves(cueList, a);
+  const def = { kind: "sprite:oba", x: 10, hidden: true };
+  assert.equal(people.personAt(def, moves, 4).visible, false);
+  assert.equal(people.personAt(def, moves, 4).pose, "peek_b");
+  assert.equal(people.personAt(def, moves, 5.25).alpha, 0.5);
+  assert.equal(people.personAt(def, moves, 6).alpha, 1);
+});
+
 test("tags near the frame edge hang inwards instead of being cut off", () => {
   assert.equal(ui.tagEdge(20), "edge-l");
   assert.equal(ui.tagEdge(160), "");
@@ -605,8 +626,9 @@ test("no hold / drag / tap target of any cinema story covers an on-stage charact
       const inter = scene.interaction;
       if (!inter) continue;
       const faces = [];
-      // busts on stage while the player acts (interaction.actors overrides the scene's)
-      for (const side of inter.actors ?? cinema.visibleActors(scene)) {
+      // busts on stage while the player acts (interaction.actors overrides the scene's; else any cue cut)
+      const cutSides = (scene.cues ?? []).flatMap((c) => c.actors ?? []);
+      for (const side of inter.actors ?? [...new Set([...cinema.visibleActors(scene), ...cutSides])]) {
         const actor = cast[side];
         const key = actor && (actor.sprite ?? actor.rig ?? actor.portrait);
         const metaUrl = key && story.assets?.sprites?.[key];

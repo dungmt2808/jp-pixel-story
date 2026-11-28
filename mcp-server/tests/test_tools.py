@@ -579,6 +579,39 @@ def test_validator_checks_key_poses_drive_and_the_interaction_shot(tmp_path: Pat
     assert not any(t in joined for t in ("[Unknown Pose]", "[Bad Drive]", "[Double Character]")), joined
 
 
+def test_validator_cut_cues_spot_anchors_and_reaction_targets(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "cuts", category="story")
+    sp = sdir / "assets" / "sprites" / "oba_poses"
+    sp.mkdir(parents=True)
+    (sp / "meta.json").write_text(json.dumps({"frameWidth": 8, "frameHeight": 8, "frameCount": 2,
+                                              "clips": {"idle": [0], "tea": [0], "tea_b": [1]}, "poses": {"tea": [0, 1]}}))
+    scene = {"id": "tea", "type": "cinema_checklist", "lines": [], "actors": ["left", "right"],
+             "people": {"oba": {"kind": "sprite:oba_poses", "x": 200, "y": 190, "hidden": True}},
+             "cues": [{"choice": "warm", "people": [{"who": "oba", "show": True}]},
+                      {"spot": "nowhere", "actors": ["middle"]},
+                      {"choice": "ghost", "people": [{"who": "oba", "pose": "tea_b"}]}],
+             "minigame": {"kind": "choice", "mode": "one", "choices": [
+                 {"id": "warm", "labelJa": "x", "responseLine": {"id": "r1", "voice": "ji", "jaPlain": "x", "jaRuby": "x",
+                                                                 "vi": "x", "emoteWho": "nobody"}}]}}
+    story = {"id": "cuts", "engine": "cinema", "cast": {"left": {"voice": "ji"}, "right": {"voice": "oba", "sprite": "oba"}},
+             "assets": {"backgrounds": {}, "portraits": {}, "sprites": {"oba_poses": "/stories/cuts/assets/sprites/oba_poses/meta.json"}},
+             "scenes": [scene], "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []}}
+    (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    issues, warnings = " | ".join(res["issues"]), " | ".join(res["warnings"])
+    assert "spot 'nowhere' is not a tap spot" in issues and "choice 'ghost' is not a choice" in issues
+    assert "[Bad Actors] tea/cues[1]" in issues and "emoteWho 'nobody'" in issues
+    assert "[Double Character] tea" in warnings  # she appears while her bust is still on stage
+    # fixed: the cue that shows her cuts to a medium shot, the reaction lands on her
+    scene["cues"] = [{"choice": "warm", "actors": [], "people": [{"who": "oba", "show": True}]},
+                     {"choice": "warm", "delay": 1, "people": [{"who": "oba", "pose": "tea_b"}]}]
+    scene["minigame"]["choices"][0]["responseLine"]["emoteWho"] = "oba"
+    (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
+    res = validate_story_folder(sdir, web_public_dir=pub)
+    joined = " | ".join(res["issues"] + res["warnings"])
+    assert not any(t in joined for t in ("[Bad Cue]", "[Bad Actors]", "[Double Character]", "[Unknown Pose]")), joined
+
+
 def test_validator_allows_shared_sprite_cast_and_castPortrait_without_static_portraits(tmp_path: Path) -> None:
     pub, sdir = _setup_mock_catalog(tmp_path, "kotoba_ep1", category="story")
     for key in ("stackchan_neutral", "stackchan_happy"):

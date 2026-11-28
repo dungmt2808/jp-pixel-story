@@ -56,6 +56,8 @@ export interface PersonMove {
   show?: boolean;
   /** Fade out over N seconds (a goodbye). */
   fadeOut?: number;
+  /** Fade in over N seconds (with `show`: someone steps into the shot). */
+  fadeIn?: number;
   /** Hop up and down for N seconds (joy). */
   hop?: number;
   /** Shiver ±1px horizontally for N seconds (cold, startled, low battery). */
@@ -115,6 +117,7 @@ export function personAt(def: PersonDef, moves: { move: PersonMove; time: number
       }
     }
     if (move.fadeOut) s.alpha = 1 - clamp((t - time) / move.fadeOut, 0, 1);
+    if (move.fadeIn) s.alpha = clamp((t - time) / move.fadeIn, 0, 1);
     if (move.hop) {
       const age = t - time;
       if (age < move.hop) s.lift = -Math.round(Math.abs(Math.sin(age * 10)) * 4);

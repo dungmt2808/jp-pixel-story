@@ -5,7 +5,9 @@
  *     { "line": 1, "set": { "train": "go" } },                     // when line 1 starts
  *     { "done": true, "delay": 1.0, "set": { "clock": 5.5 } },     // 1 s after the mini-game
  *     { "doneLine": 2, "set": { "weather": "rain" } },             // when the 3rd done-line starts
- *     { "at": 2.5, "people": [{ "who": "hachi", "walkTo": 228 }] } // 2.5 s into the scene
+ *     { "at": 2.5, "people": [{ "who": "hachi", "walkTo": 228 }] }, // 2.5 s into the scene
+ *     { "spot": "shoji", "people": [{ "who": "oba", "pose": "peek_b" }] }, // when that tap spot is found
+ *     { "choice": "tea", "actors": [], "people": [{ "who": "oba", "show": true }] } // cut to a medium shot
  *   ]
  *
  * Anchor times are recorded by the stage as they happen (scene clock), so the same data gives the
@@ -21,6 +23,8 @@ export interface SceneCue {
   done?: boolean;
   /** Anchor: when this choice of the scene's mini-game was picked. */
   choice?: string;
+  /** Anchor: when this tap spot of the scene's interaction was found. */
+  spot?: string;
   /** Filter: only when this choice was picked (in any scene so far). */
   ifChoice?: string;
   delay?: number;
@@ -28,6 +32,8 @@ export interface SceneCue {
   people?: PersonMove[];
   /** Switch the scene backdrop ("bg:<key>" / "set:<name>" / "proc:<name>") at this moment. */
   backdrop?: string;
+  /** A cut: the busts on stage from this moment ([] = a medium shot of `people`, e.g. a key pose). */
+  actors?: ("left" | "right")[];
 }
 
 export interface CueAnchors {
@@ -39,6 +45,8 @@ export interface CueAnchors {
   done?: number;
   /** Scene time each choice of this scene was picked. */
   choices?: Record<string, number>;
+  /** Scene time each tap spot of this scene was found. */
+  spots?: Record<string, number>;
   /** Every choice id picked so far in the story (for `ifChoice`). */
   picked?: string[];
 }
@@ -48,6 +56,7 @@ export function cueTime(cue: SceneCue, a: CueAnchors): number | null {
   if (cue.ifChoice && !(a.picked ?? []).includes(cue.ifChoice)) return null;
   let base: number | undefined;
   if (cue.choice !== undefined) base = a.choices?.[cue.choice];
+  else if (cue.spot !== undefined) base = a.spots?.[cue.spot];
   else if (cue.line !== undefined) base = a.lines[cue.line];
   else if (cue.doneLine !== undefined) base = a.doneLines[cue.doneLine];
   else if (cue.done) base = a.done;
@@ -103,4 +112,15 @@ export function backdropAt(base: string, cues: SceneCue[] | undefined, a: CueAnc
     if (time !== null && time <= t && (!best || time >= best.time)) best = { ref: cue.backdrop, time };
   }
   return best ? best.ref : base;
+}
+
+/** The busts on stage at scene time t: the latest fired cue `actors` (a cut), else the scene's own. */
+export function actorsAt<S extends string>(base: S[], cues: SceneCue[] | undefined, a: CueAnchors, t: number): S[] {
+  let best: { actors: S[]; time: number } | null = null;
+  for (const cue of cues ?? []) {
+    if (!cue.actors) continue;
+    const time = cueTime(cue, a);
+    if (time !== null && time <= t && (!best || time >= best.time)) best = { actors: cue.actors as S[], time };
+  }
+  return best ? best.actors : base;
 }
