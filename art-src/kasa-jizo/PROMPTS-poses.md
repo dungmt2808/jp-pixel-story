@@ -84,3 +84,29 @@ Attach as references: `raw_sheet_ojiisan_warm.png` (identity), `raw_walk_ojiisan
 models need a key from a Google AI Studio project with billing enabled: on the free tier their quota
 is 0 (HTTP 429 `RESOURCE_EXHAUSTED`, which is what happened in the cloud session that wrote this).
 Without a paid key, paste the prompts into the Gemini app with the three reference images attached.
+
+## Result (2026-11-28): PASS, with two notes
+
+Five raws arrived (made in the Gemini app): `raw_pose_weave`, `raw_pose_weave_b`, `raw_pose_place_hat`,
+`raw_pose_place_hat_b`, `raw_pose_bow` (no separate `stand`; the bow is used as a single pose).
+Processed with the real sheet pipeline (chroma green, `kasa_jizo` palette, `pixel_pitch` 11 = one fixed
+scale for every pose, cleanup, sheet colour budget) and composited on the story backgrounds:
+
+| Check | Result |
+| :--- | :--- |
+| Same grandfather at 320×200 | yes: standing ≈ 104 px, kneeling ≈ 101 px; face, topknot, tenugui, patched hanten all read |
+| Edits change only the arms | yes: in the raws the face box changes 0.5 % (weave) / 1.9 % (place_hat); the moved part is 7–10 % of the image, like the reference lever (7 %) |
+| Outline | 0.998–1.0 (≥ 0.94) |
+| Noise (isolated px) | 11–13 % at 20–24 colours: over the 10 % rule, from the real straw weave / quilting texture |
+
+What the pipeline needs for poses (Bước 3, `kind: "pose"` in art.json):
+1. **Splice the edit at RAW level**: edit pixels only where the pose moved (diff > 60, speckle removed,
+   grown 31 px), base pixels everywhere else. The model's edit shifts colours by ~4/255 overall, enough to
+   flip many jacket pixels to a neighbouring palette entry (visible flicker); spliced, the face and body
+   are byte-identical between the two frames.
+2. Then lock the auto-detected moved box (`frame_regions`), as for talk/blink frames.
+3. One `pixel_pitch` for every pose of a character, and do not put these ~104 px poses in the same shot
+   as the old 64 px walk sheet (the scale jump is obvious): regenerate the walk at the same pitch if a
+   scene needs both.
+4. Noise: give full-body textured poses a reasoned `artExceptions` entry (woven straw, quilted cotton), or
+   a per-kind threshold.
