@@ -75,6 +75,7 @@ jobs:
           for i in $(seq 1 30); do curl -sf http://127.0.0.1:4173/ > /dev/null && break; sleep 1; done
           npm run check:all -- --url http://127.0.0.1:4173
           npm run test:e2e -- --url http://127.0.0.1:4173 --story konbini-onigiri --fps 5
+          npm run test:input -- --url http://127.0.0.1:4173
 
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request'

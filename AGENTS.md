@@ -11,8 +11,8 @@ This repository is an interactive **2D Pixel Art Japanese Learning Platform & Fu
   `cd mcp-server && PYTHONPATH=. uv run pytest -v`
 - Run frontend unit tests (`ruby.ts`, `dictation.ts`, stage engine):
   `cd web && npm test`
-- Run exporter unit tests / play every animated story end-to-end / A/V sync test:
-  `cd exporter && npm test && npm run check:all -- --url <preview url> && npm run test:e2e -- --url <preview url>`
+- Run exporter unit tests / play every animated story end-to-end / A/V sync test / real mouse input (slide, turn):
+  `cd exporter && npm test && npm run check:all -- --url <preview url> && npm run test:e2e -- --url <preview url> && npm run test:input -- --url <preview url>`
 - Run interactive web app locally:
   `cd web && npm run dev`
 - Type-check & build production bundle:
