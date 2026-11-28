@@ -385,16 +385,26 @@
       ],
       "lines": [],
       "interaction": {
-        "type": "tap",
-        "hint": "Chạm vào khe cửa fusuma để mở",
-        "spots": [
-          {
-            "id": "fusuma",
-            "x": 247,
-            "y": 98,
-            "r": 22
-          }
-        ],
+        "type": "slide",
+        "hint": "Kéo cánh cửa fusuma sang trái để nhìn vào phòng dệt",
+        "slide": {
+          "from": [
+            242,
+            98
+          ],
+          "to": [
+            210,
+            98
+          ],
+          "label": "{開|あ}ける",
+          "panel": [
+            207,
+            58,
+            246,
+            137
+          ],
+          "reveal": "bg:loom"
+        },
         "doneLine": {
           "id": "t05_l01",
           "voice": "narrator",

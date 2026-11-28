@@ -590,15 +590,15 @@
       },
       "cues": [
         {
-          "on": {
-            "line": 0
-          },
-          "move": {
-            "who": "ojiisan",
-            "walkTo": 150,
-            "speed": 36,
-            "then": "stand"
-          }
+          "line": 0,
+          "people": [
+            {
+              "who": "ojiisan",
+              "walkTo": 112,
+              "speed": 36,
+              "then": "stand"
+            }
+          ]
         }
       ],
       "lines": [
@@ -635,7 +635,31 @@
               "emote": "gloom",
               "audioUrl": "/stories/kasa-jizo/audio/k11a.mp3",
               "durationSec": 6.288,
-              "ttsHash": "47b875f7f353"
+              "ttsHash": "47b875f7f353",
+              "emoteWho": "ojiisan",
+              "thought": {
+                "who": "ojiisan",
+                "images": [
+                  {
+                    "sprite": "obaasan",
+                    "frame": 0,
+                    "crop": [
+                      22,
+                      0,
+                      72,
+                      48
+                    ]
+                  },
+                  {
+                    "item": "mochi_gift",
+                    "scale": 2
+                  }
+                ],
+                "at": [
+                  72,
+                  52
+                ]
+              }
             }
           },
           {
@@ -711,15 +735,15 @@
       },
       "cues": [
         {
-          "on": {
-            "line": 0
-          },
-          "move": {
-            "who": "ojiisan",
-            "walkTo": 78,
-            "speed": 34,
-            "then": "stand"
-          }
+          "line": 0,
+          "people": [
+            {
+              "who": "ojiisan",
+              "walkTo": 78,
+              "speed": 34,
+              "then": "stand"
+            }
+          ]
         }
       ],
       "lines": [

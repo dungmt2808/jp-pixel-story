@@ -393,16 +393,17 @@
         }
       ],
       "interaction": {
-        "type": "tap",
-        "hint": "Bấm vào đồng hồ của nhà ga",
-        "spots": [
-          {
-            "id": "clock",
-            "x": 272,
-            "y": 78,
-            "r": 10
-          }
-        ],
+        "type": "turn",
+        "hint": "Xoay kim phút đồng hồ nhà ga đến 5 giờ rưỡi — giờ thầy về",
+        "turn": {
+          "x": 252,
+          "y": 64,
+          "r": 30,
+          "from": 4.8,
+          "to": 5.5,
+          "kind": "clock",
+          "label": "{駅|えき}の{時計|とけい}"
+        },
         "doneDelaySec": 7.4,
         "doneLines": [
           {
