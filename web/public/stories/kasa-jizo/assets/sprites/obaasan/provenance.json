@@ -11,13 +11,13 @@
           },
           "input": {
             "path": "web/public/stories/kasa-jizo/assets/sprites/obaasan",
-            "sha": "91b0cff9621aca62"
+            "sha": "060901308134b7c8"
           },
-          "at": "2026-11-28T06:20:04+00:00"
+          "at": "2026-11-28T08:33:16+00:00"
         }
       ],
       "output": {
-        "sha": "81f529e26a9cc155"
+        "sha": "579180f290a3e8cf"
       }
     }
   }

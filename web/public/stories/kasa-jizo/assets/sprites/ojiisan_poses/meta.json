@@ -39,6 +39,13 @@
       "fps": 4.0,
       "loop": true
     },
+    "weave_b": {
+      "frames": [
+        1
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
     "place_hat": {
       "frames": [
         2
@@ -49,6 +56,13 @@
     "place_hat_loop": {
       "frames": [
         2,
+        3
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "place_hat_b": {
+      "frames": [
         3
       ],
       "fps": 4.0,
@@ -86,7 +100,7 @@
     },
     "place_hat": {
       "3": [
-        43,
+        47,
         14,
         106,
         56

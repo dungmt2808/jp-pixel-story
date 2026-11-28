@@ -173,3 +173,19 @@ Cozy 16-bit Japanese retro adventure game pixel art (GBA / Eastward aesthetic). 
 Edit this image. Keep her head, face, hair, body, legs and colours pixel-identical and in the same position. Change ONLY her two hands and forearms: both hands now raised in front of her mouth in surprise, fingers spread a little, as if she just saw six snowy figures outside. Background stays flat #00FF00.
 Cozy 16-bit Japanese retro adventure game pixel art (GBA / Eastward aesthetic). Warm dark espresso-brown outlines (#241712), never pure black. Crisp chunky pixel clusters, clean 3-tone cel shading, every pixel clearly visible. NO text, NO watermark, NO UI, NO blur.
 ```
+
+## Obaasan result (2026-11-28): PASS
+
+The 7 images arrived (Gemini app). At pixel_pitch 11 she stands 100–104 px, like ojiisan; every edit
+changes only the hand / teapot / hands-at-mouth area (0.8–2.5 % of the image). Sheet `obaasan_poses`
+(66×106 frames, facing left, 24 colours; reasoned noise exception for the quilted kimono and woven
+apron). Used in kasa-jizo:
+- `pack_departure`: either answer cuts to her waving at the entrance (`see_off_loop`, mirrored to face it);
+- `home_empty`: 熱いお茶を飲みましょう cuts to her kneeling by the irori, pot level, then pouring (`pour_tea_b`);
+- `midnight_song`: during the tap game she listens at the shoji (`peek`); finding the window spot
+  (cue anchor `spot`) turns it into the gasp (`peek_b`) as she says 「あっ！…」;
+- `new_year_gifts`: a POV of the yard full of gifts; at 「お地蔵様、本当にありがとうございます！」 the couple
+  fades in by the porch, she praying (`thanks`), he bowing (`bow`).
+`raw_pose_place_hat.png` was replaced by the lossless PNG of the same image (the first copy came through a
+webp re-encode; mean difference ~1/255).
+

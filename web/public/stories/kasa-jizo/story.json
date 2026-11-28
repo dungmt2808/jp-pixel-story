@@ -19,6 +19,9 @@
     },
     "/stories/kasa-jizo/assets/sprites/ojiisan_poses/spritesheet.png": {
       "noise": "Full-body key poses (~104 px) keep the woven straw of the sugegasa and the quilted, patched hanten as 1px texture; 24-colour budget and despeckle already applied (art-src/kasa-jizo/PROMPTS-poses.md)."
+    },
+    "/stories/kasa-jizo/assets/sprites/obaasan_poses/spritesheet.png": {
+      "noise": "Full-body key poses (~104 px) keep the quilted grid of the terracotta kimono and the woven apron as 1px texture; 24-colour budget and despeckle already applied (art-src/kasa-jizo/PROMPTS-poses.md)."
     }
   },
   "bgm": "calm",
@@ -42,7 +45,8 @@
       "ojiisan": "/stories/kasa-jizo/assets/sprites/ojiisan/meta.json",
       "obaasan": "/stories/kasa-jizo/assets/sprites/obaasan/meta.json",
       "ojiisan_walk": "/stories/kasa-jizo/assets/sprites/ojiisan_walk/meta.json",
-      "ojiisan_poses": "/stories/kasa-jizo/assets/sprites/ojiisan_poses/meta.json"
+      "ojiisan_poses": "/stories/kasa-jizo/assets/sprites/ojiisan_poses/meta.json",
+      "obaasan_poses": "/stories/kasa-jizo/assets/sprites/obaasan_poses/meta.json"
     },
     "rigs": {
       "ojiisan": "/stories/kasa-jizo/assets/sprites/ojiisan/rig/rig.json",
@@ -375,6 +379,40 @@
         "left",
         "right"
       ],
+      "people": {
+        "obaasan_wave": {
+          "kind": "sprite:obaasan_poses",
+          "x": 252,
+          "y": 178,
+          "face": "right",
+          "pose": "see_off_loop",
+          "hidden": true
+        }
+      },
+      "cues": [
+        {
+          "choice": "promise_mochi",
+          "actors": [],
+          "people": [
+            {
+              "who": "obaasan_wave",
+              "show": true,
+              "fadeIn": 0.25
+            }
+          ]
+        },
+        {
+          "choice": "promise_early",
+          "actors": [],
+          "people": [
+            {
+              "who": "obaasan_wave",
+              "show": true,
+              "fadeIn": 0.25
+            }
+          ]
+        }
+      ],
       "lines": [
         {
           "id": "k05",
@@ -407,10 +445,10 @@
               "jaRuby": "ふふ、{無理|むり}をしないでくださいね。{囲炉裏|いろり}を{温|あたた}めて{待|ま}っていますから。",
               "vi": "Hi hi, ông đừng cố quá sức nhé. Tôi sẽ nhóm bếp lửa thật ấm đợi ông về.",
               "emote": "heart",
-              "action": "sway",
               "audioUrl": "/stories/kasa-jizo/audio/k06a.mp3",
               "durationSec": 6.024,
-              "ttsHash": "759a6ec3fc61"
+              "ttsHash": "759a6ec3fc61",
+              "emoteWho": "obaasan_wave"
             }
           },
           {
@@ -425,10 +463,10 @@
               "jaRuby": "ええ、{体|からだ}を{冷|ひ}やさないようにしてくださいね。いってらっしゃいませ。",
               "vi": "Vâng, ông nhớ giữ ấm đừng để bị lạnh nhé. Ông đi mạnh giỏi ạ.",
               "emote": "heart",
-              "action": "bow",
               "audioUrl": "/stories/kasa-jizo/audio/k06b.mp3",
               "durationSec": 6.192,
-              "ttsHash": "254d81d5b723"
+              "ttsHash": "254d81d5b723",
+              "emoteWho": "obaasan_wave"
             }
           }
         ]
@@ -1108,6 +1146,39 @@
         "left",
         "right"
       ],
+      "people": {
+        "obaasan_tea": {
+          "kind": "sprite:obaasan_poses",
+          "x": 208,
+          "y": 178,
+          "face": "left",
+          "pose": "pour_tea",
+          "hidden": true
+        }
+      },
+      "cues": [
+        {
+          "choice": "warm_tea",
+          "actors": [],
+          "people": [
+            {
+              "who": "obaasan_tea",
+              "show": true,
+              "fadeIn": 0.25
+            }
+          ]
+        },
+        {
+          "choice": "warm_tea",
+          "delay": 1.0,
+          "people": [
+            {
+              "who": "obaasan_tea",
+              "pose": "pour_tea_b"
+            }
+          ]
+        }
+      ],
       "lines": [
         {
           "id": "k20",
@@ -1158,7 +1229,8 @@
               "emote": "note",
               "audioUrl": "/stories/kasa-jizo/audio/k22a.mp3",
               "durationSec": 5.712,
-              "ttsHash": "8fe2e9b7f5b5"
+              "ttsHash": "8fe2e9b7f5b5",
+              "emoteWho": "obaasan_tea"
             }
           },
           {
@@ -1199,6 +1271,27 @@
           "period": 1.6
         }
       ],
+      "people": {
+        "obaasan_peek": {
+          "kind": "sprite:obaasan_poses",
+          "x": 96,
+          "y": 188,
+          "face": "left",
+          "pose": "peek",
+          "onlyWhileInteract": true
+        }
+      },
+      "cues": [
+        {
+          "spot": "shoji_peek",
+          "people": [
+            {
+              "who": "obaasan_peek",
+              "pose": "peek_b"
+            }
+          ]
+        }
+      ],
       "lines": [
         {
           "id": "k23",
@@ -1229,6 +1322,7 @@
       "interaction": {
         "type": "tap",
         "hint": "Chạm vào ô cửa sổ shoji và góc cửa nhà để lắng nghe tiếng bước chân ngoài tuyết",
+        "actors": [],
         "spots": [
           {
             "id": "shoji_peek",
@@ -1248,7 +1342,8 @@
               "sfx": "sparkle",
               "audioUrl": "/stories/kasa-jizo/audio/k25a.mp3",
               "durationSec": 6.144,
-              "ttsHash": "9ae27f45a4f6"
+              "ttsHash": "9ae27f45a4f6",
+              "emoteWho": "obaasan_peek"
             }
           },
           {
@@ -1292,13 +1387,40 @@
       "stamp": "元日の朝 · お地蔵様の恩返し",
       "actors": [],
       "people": {
-        "ojiisan": {
-          "kind": "sprite:ojiisan_walk",
-          "x": 112,
-          "y": 162,
-          "face": "right"
+        "ojiisan_thanks": {
+          "kind": "sprite:ojiisan_poses",
+          "x": 62,
+          "y": 192,
+          "face": "right",
+          "pose": "bow",
+          "hidden": true
+        },
+        "obaasan_thanks": {
+          "kind": "sprite:obaasan_poses",
+          "x": 114,
+          "y": 192,
+          "face": "right",
+          "pose": "thanks",
+          "hidden": true
         }
       },
+      "cues": [
+        {
+          "spot": "gift_mochi2",
+          "people": [
+            {
+              "who": "obaasan_thanks",
+              "show": true,
+              "fadeIn": 0.4
+            },
+            {
+              "who": "ojiisan_thanks",
+              "show": true,
+              "fadeIn": 0.4
+            }
+          ]
+        }
+      ],
       "lines": [
         {
           "id": "k26",

@@ -12,11 +12,11 @@
             "path": "art-src/kasa-jizo/raw_item_straw_hat.png",
             "sha": "ba36f1a94dc15d44"
           },
-          "at": "2026-11-28T06:20:13+00:00"
+          "at": "2026-11-28T08:33:42+00:00"
         }
       ],
       "output": {
-        "sha": "fd7a0d353365b366"
+        "sha": "2beb03d2e7c54d5b"
       }
     },
     "tenugui.png": {
@@ -30,11 +30,11 @@
             "path": "art-src/kasa-jizo/raw_item_tenugui.png",
             "sha": "fc49052fb7e20139"
           },
-          "at": "2026-11-28T06:20:13+00:00"
+          "at": "2026-11-28T08:33:42+00:00"
         }
       ],
       "output": {
-        "sha": "57f7861399402e26"
+        "sha": "2b0493470d552a81"
       }
     },
     "mochi_gift.png": {
@@ -48,11 +48,11 @@
             "path": "art-src/kasa-jizo/raw_item_mochi_gift.png",
             "sha": "15211a90de0d5d4c"
           },
-          "at": "2026-11-28T06:20:14+00:00"
+          "at": "2026-11-28T08:33:42+00:00"
         }
       ],
       "output": {
-        "sha": "2186b9641e794f0f"
+        "sha": "b67b8735033b2fec"
       }
     },
     "rice_bale.png": {
@@ -66,11 +66,11 @@
             "path": "art-src/kasa-jizo/raw_item_rice_bale.png",
             "sha": "6742696263d1161c"
           },
-          "at": "2026-11-28T06:20:14+00:00"
+          "at": "2026-11-28T08:33:42+00:00"
         }
       ],
       "output": {
-        "sha": "eb773ad852653c21"
+        "sha": "8b79f0798de7b0ac"
       }
     }
   }

@@ -1,0 +1,149 @@
+{
+  "spritesheet": "spritesheet.png",
+  "frameWidth": 66,
+  "frameHeight": 106,
+  "frameCount": 7,
+  "palette": "kasa_jizo",
+  "frames": [
+    "frame_00.png",
+    "frame_01.png",
+    "frame_02.png",
+    "frame_03.png",
+    "frame_04.png",
+    "frame_05.png",
+    "frame_06.png"
+  ],
+  "pivot": {
+    "x": 33,
+    "y": 105
+  },
+  "fps": 4.0,
+  "clips": {
+    "idle": {
+      "frames": [
+        0
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "see_off": {
+      "frames": [
+        0
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "see_off_loop": {
+      "frames": [
+        0,
+        1
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "see_off_b": {
+      "frames": [
+        1
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "pour_tea": {
+      "frames": [
+        2
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "pour_tea_loop": {
+      "frames": [
+        2,
+        3
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "pour_tea_b": {
+      "frames": [
+        3
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "peek": {
+      "frames": [
+        4
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "peek_loop": {
+      "frames": [
+        4,
+        5
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "peek_b": {
+      "frames": [
+        5
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "thanks": {
+      "frames": [
+        6
+      ],
+      "fps": 4.0,
+      "loop": true
+    }
+  },
+  "poses": {
+    "see_off": [
+      0,
+      1
+    ],
+    "pour_tea": [
+      2,
+      3
+    ],
+    "peek": [
+      4,
+      5
+    ],
+    "thanks": [
+      6
+    ]
+  },
+  "poseRegions": {
+    "see_off": {
+      "1": [
+        2,
+        10,
+        23,
+        49
+      ]
+    },
+    "pour_tea": {
+      "3": [
+        0,
+        36,
+        28,
+        78
+      ]
+    },
+    "peek": {
+      "5": [
+        0,
+        16,
+        48,
+        57
+      ]
+    }
+  },
+  "scale": 0.090909,
+  "registration": "poses",
+  "facing": "left"
+}

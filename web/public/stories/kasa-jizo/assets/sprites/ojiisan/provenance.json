@@ -11,13 +11,13 @@
           },
           "input": {
             "path": "web/public/stories/kasa-jizo/assets/sprites/ojiisan",
-            "sha": "d444981bcea51d79"
+            "sha": "ece811506019fa4e"
           },
-          "at": "2026-11-28T06:20:03+00:00"
+          "at": "2026-11-28T08:33:15+00:00"
         }
       ],
       "output": {
-        "sha": "b19f2e21e9685b2f"
+        "sha": "d4e4e27227a78999"
       }
     }
   }
