@@ -22,12 +22,12 @@
 - **`🇻🇳 Dịch ON/OFF`** trên **tất cả video tương tác** (kể cả Hachikō canvas), trang Bài đọc và phòng luyện JLPT.
 - **🎧 Daily Dictation (`DictationView`):** Chế độ gõ chép chính tả (chấp nhận cả Kanji lẫn Hiragana, diff từng ký tự) & chế độ ghép cụm từ trên điện thoại, phím tắt `Ctrl+Space` / `Alt+H`, tự lưu tiến độ trên trình duyệt.
 
-### 3. Local MCP Server 25 công cụ (`mcp-server/server.py`)
+### 3. Local MCP Server 26 công cụ (`mcp-server/server.py`)
 Dùng tự động cho cả **Antigravity** (`.agents/plugins/jp-pixel-studio/`) và **Claude Code** (`.mcp.json` & `.claude/skills/jp-pixel-story/`):
 - **VOICEVOX TTS (6 tools):** `voicevox_health`, `voicevox_list_speakers`, `voicevox_synthesize_line`, `voicevox_generate_story_audio`, `voicevox_generate_dokkai_audio`, `voicevox_generate_standalone_pack` — cache theo `ttsHash`, lưu tiến độ khi engine lỗi giữa chừng, gói standalone không ghi đè dữ liệu viết tay.
 - **Content QA (2 tools):** `story_validate_content`, `story_validate_catalog` — Furigana, MP3, quiz, thư mục mồ côi, asset lệch bảng màu/thiếu, `meta.json`/`rig.json` hỏng, audio cũ; cảnh báo (hoặc lỗi nếu truyện khai báo `artQuality`) về viền, nhiễu, số màu, thiếu provenance.
 - **Mini-PixelLab — xử lý ảnh (9 tools):** `pixellab_clean_background`, `pixellab_clean_sprite`, `pixellab_slice_spritesheet` (chung tỉ lệ + điểm neo, chống trôi `centroid`/`bust`), `pixellab_detect_grid` + `pixellab_depixelize` (dò lưới pixel giả của ảnh AI → dựng lại pixel thật), `pixellab_cleanup_sprite` + `pixellab_sprite_quality` (dọn nhiễu, ép viền `#241712`, góc pixel-perfect), `pixellab_relock_palette`, `pixellab_list_palettes`.
-- **Mini-PixelLab — bảng màu, nguồn gốc & ảnh mới (4 tools):** `pixellab_extract_palette` (trích/mở rộng bảng màu theo không khí cảnh), `pixellab_reprocess` (dựng lại asset từ `provenance.json`, kiểm tra trùng khớp từng byte), `pixellab_apply_art_manifest` (thả ảnh gốc vào `art-src/<truyện>/` theo `art.json` → tự xử lý và gắn vào đúng cảnh; `palette_build` dựng **bảng màu riêng của truyện** từ chính tranh của truyện, nền không dither, mỗi sheet nhân vật một ngân sách 32 màu), kèm tách vật thể để cho chạy), `pixellab_extract_object` (tách một vật ra khỏi ảnh nền: đũa thần cho pixel art, đường viền lasso cho ảnh gốc; lấp chỗ trống).
+- **Mini-PixelLab — bảng màu, nguồn gốc & ảnh mới (5 tools):** `pixellab_extract_palette` (trích/mở rộng bảng màu theo không khí cảnh), `pixellab_repalette_story` (cho một truyện/series đã có **bảng màu riêng** bằng cách phát lại `provenance.json`: chỉ đổi bảng màu, ảnh cũ không nguồn giữ nguyên byte và giữ màu), `pixellab_reprocess` (dựng lại asset từ `provenance.json`, kiểm tra trùng khớp từng byte), `pixellab_apply_art_manifest` (thả ảnh gốc vào `art-src/<truyện>/` theo `art.json` → tự xử lý và gắn vào đúng cảnh; `palette_build` dựng **bảng màu riêng của truyện** từ chính tranh của truyện, nền không dither, mỗi sheet nhân vật một ngân sách 32 màu), kèm tách vật thể để cho chạy), `pixellab_extract_object` (tách một vật ra khỏi ảnh nền: đũa thần cho pixel art, đường viền lasso cho ảnh gốc; lấp chỗ trống).
 - **Mini-PixelLab — nhân vật (3 tools):** `pixellab_lock_expressions` (áo/tóc không rung giữa các frame), `pixellab_add_expression` (thêm biểu cảm từ mảnh mắt/miệng), `pixellab_build_rig` (tách đầu/thân → thở, gật đầu, nhún khi nói).
 - **JLPT (1 tool):** `jlpt_clean_exam_image`.
 
@@ -53,7 +53,7 @@ jp-pixel-story/
 ├── .claude/skills/jp-pixel-story/     # Bản đồng bộ 100% cho Claude Code
 ├── art-src/                           # Ảnh gốc (không deploy) để dựng lại asset từ provenance.json
 ├── .github/workflows/deploy-pages.yml # CI tự chạy pytest + npm test + npm run build → GitHub Pages
-├── mcp-server/                        # Local Python MCP Server (25 tools + pytest)
+├── mcp-server/                        # Local Python MCP Server (26 tools + pytest)
 ├── web/                               # React + Vite + HTML5 Canvas App + unit tests (npm test)
 │   ├── public/stories/                # 12 bài học (index.json, story/choukai/dokkai/gengo.json, MP3)
 │   ├── src/engine/                    # useStageRuntime, pixelScale, spriteAnimator, cinemaBackdrops...

@@ -440,6 +440,23 @@ character in one sheet, for acting and `interaction.drive`). `items`: hand-made 
 
 
 @mcp.tool()
+def pixellab_repalette_story(
+    story_dir: str, palette_name: str, n_colors: int = 64, dither: float = 0.0, sprite_max_colors: int = 32,
+    dry_run: bool = False,
+) -> str:
+    """Give an existing story (web/public/stories/<id>) or series pack (web/public/shared/<id>) its OWN
+    palette: every asset with a raw source is replayed from provenance.json with the same steps, only
+    the palette changes (backgrounds without dither, sheets with one colour budget); assets without a
+    raw source (legacy masters) stay byte-identical and their colours are kept in the palette. The
+    palette is saved as `palette_name`, story.json / pack.json and the provenance records are updated."""
+    from repalette import repalette_story
+
+    res = repalette_story(story_dir, palette_name, n_colors=n_colors, dither=dither,
+                          sprite_max_colors=sprite_max_colors, dry_run=dry_run)
+    return json.dumps(res, ensure_ascii=False, indent=2)
+
+
+@mcp.tool()
 def pixellab_reprocess(provenance_path: str, names: list[str] | None = None) -> str:
     """Replay the recorded processing of assets (provenance.json) and check the results are byte-identical."""
     return json.dumps(provenance.reprocess(provenance_path, names), ensure_ascii=False, indent=2)
