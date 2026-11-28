@@ -110,3 +110,66 @@ What the pipeline needs for poses (Bước 3, `kind: "pose"` in art.json):
    scene needs both.
 4. Noise: give full-body textured poses a reasoned `artExceptions` entry (woven straw, quilted cotton), or
    a per-kind threshold.
+
+---
+
+# Obaasan (おばあさん) — key poses (Bước 3, second character)
+
+Same technique as ojiisan (base painting + "change only the hands" edits). She faces LEFT (she stands on
+the right of the shot, facing her husband / the hearth); the sheet is mirrored when a scene needs her
+facing right. Reference 2 is one of HIS poses, so she comes out at the same pixel size and shading.
+
+| Save as (in `art-src/kasa-jizo/`) | Pose | Scene and line it acts |
+| :--- | :--- | :--- |
+| `raw_pose_obaasan_see_off.png` + `_see_off_b` | waving goodbye (2-frame wave) | `pack_departure`: 「…いってらっしゃいませ。」 |
+| `raw_pose_obaasan_pour_tea.png` + `_pour_tea_b` | kneeling, pouring tea (level → pouring) | `home_empty`: choice 「熱いお茶を飲みましょう」 |
+| `raw_pose_obaasan_peek.png` + `_peek_b` | peeking out of the shoji, listening → surprise | `midnight_song`: 「あっ！雪の向こうに…影が見えますよ！」 |
+| `raw_pose_obaasan_thanks.png` | palms together, grateful (gassho) | `new_year_gifts`: 「お地蔵様、本当にありがとうございます！」 |
+
+7 images. Make the 4 bases first (attach the 3 references), then each `_b` as an EDIT of its own base
+(attach ONLY that base image). `art.json` already declares the `obaasan_poses` sheet; once the files are
+here, `pixellab_apply_art_manifest` builds it (until then it is listed under `waiting_for_art`).
+
+Prompts (generated from `poses_prompts.json`, same text as `gen_poses.py --set obaasan --print`):
+
+```text
+=== raw_pose_obaasan_see_off.png  (attach: raw_sheet_obaasan_warm.png, raw_pose_place_hat.png, raw_bg_hut_hearth.png)
+Cozy 16-bit Japanese retro adventure game pixel art (GBA / Eastward aesthetic). Warm dark espresso-brown outlines (#241712), never pure black. Crisp chunky pixel clusters, clean 3-tone cel shading, every pixel clearly visible. NO text, NO watermark, NO UI, NO blur.
+The SAME elderly Japanese grandmother as in the reference sheet: silver-white hair combed back into a low round bun at the nape, kind dark eyes, soft rosy cheeks, gentle wrinkles, a terracotta-red quilted winter kimono with a cream inner collar, a long beige-brown work apron tied over it, a dark brown lower kimono, white tabi socks and straw zori sandals. She is about as tall as her husband in reference 2 and drawn at EXACTLY the same pixel size, outline colour and shading as him. Keep her face, hair, outfit colours and proportions identical to reference 1.
+Pose: she stands in a doorway pose, side view facing LEFT, her right hand raised high and open, waving goodbye, the other hand resting on her apron; a warm caring smile, eyes open, as if saying 'itterasshaimase' to her husband walking out into the snow.
+Single character centred on a FLAT SOLID BRIGHT CHROMA GREEN (#00FF00) background, zero shadows, zero floor, zero props except the ones described. Full body visible with empty green margin.
+Reference 1: her expression sheet (identity, outfit colours). Reference 2: a full-body pose of her husband (match its pixel size, chunky pixel clusters, outline colour, shading and body proportions exactly; do NOT draw him). Reference 3: a background of this story (match its warm palette, but do NOT draw the background).
+
+=== raw_pose_obaasan_pour_tea.png  (attach: raw_sheet_obaasan_warm.png, raw_pose_place_hat.png, raw_bg_hut_hearth.png)
+Cozy 16-bit Japanese retro adventure game pixel art (GBA / Eastward aesthetic). Warm dark espresso-brown outlines (#241712), never pure black. Crisp chunky pixel clusters, clean 3-tone cel shading, every pixel clearly visible. NO text, NO watermark, NO UI, NO blur.
+The SAME elderly Japanese grandmother as in the reference sheet: silver-white hair combed back into a low round bun at the nape, kind dark eyes, soft rosy cheeks, gentle wrinkles, a terracotta-red quilted winter kimono with a cream inner collar, a long beige-brown work apron tied over it, a dark brown lower kimono, white tabi socks and straw zori sandals. She is about as tall as her husband in reference 2 and drawn at EXACTLY the same pixel size, outline colour and shading as him. Keep her face, hair, outfit colours and proportions identical to reference 1.
+Pose: she sits on her knees (seiza) on the floor, three-quarter view facing LEFT, holding a small black iron teapot by its handle in her right hand above a small round teacup that she holds in her left hand in front of her knees; the teapot is level (not pouring yet); a soft welcoming smile.
+Single character centred on a FLAT SOLID BRIGHT CHROMA GREEN (#00FF00) background, zero shadows, zero floor, zero props except the ones described. Full body visible with empty green margin.
+Reference 1: her expression sheet (identity, outfit colours). Reference 2: a full-body pose of her husband (match its pixel size, chunky pixel clusters, outline colour, shading and body proportions exactly; do NOT draw him). Reference 3: a background of this story (match its warm palette, but do NOT draw the background).
+
+=== raw_pose_obaasan_peek.png  (attach: raw_sheet_obaasan_warm.png, raw_pose_place_hat.png, raw_bg_hut_hearth.png)
+Cozy 16-bit Japanese retro adventure game pixel art (GBA / Eastward aesthetic). Warm dark espresso-brown outlines (#241712), never pure black. Crisp chunky pixel clusters, clean 3-tone cel shading, every pixel clearly visible. NO text, NO watermark, NO UI, NO blur.
+The SAME elderly Japanese grandmother as in the reference sheet: silver-white hair combed back into a low round bun at the nape, kind dark eyes, soft rosy cheeks, gentle wrinkles, a terracotta-red quilted winter kimono with a cream inner collar, a long beige-brown work apron tied over it, a dark brown lower kimono, white tabi socks and straw zori sandals. She is about as tall as her husband in reference 2 and drawn at EXACTLY the same pixel size, outline colour and shading as him. Keep her face, hair, outfit colours and proportions identical to reference 1.
+Pose: she stands, side view facing LEFT, leaning slightly forward as if peeking out of a paper shoji window, her left hand raised beside her ear to listen, the right hand touching her chin; curious, attentive expression.
+Single character centred on a FLAT SOLID BRIGHT CHROMA GREEN (#00FF00) background, zero shadows, zero floor, zero props except the ones described. Full body visible with empty green margin.
+Reference 1: her expression sheet (identity, outfit colours). Reference 2: a full-body pose of her husband (match its pixel size, chunky pixel clusters, outline colour, shading and body proportions exactly; do NOT draw him). Reference 3: a background of this story (match its warm palette, but do NOT draw the background).
+
+=== raw_pose_obaasan_thanks.png  (attach: raw_sheet_obaasan_warm.png, raw_pose_place_hat.png, raw_bg_hut_hearth.png)
+Cozy 16-bit Japanese retro adventure game pixel art (GBA / Eastward aesthetic). Warm dark espresso-brown outlines (#241712), never pure black. Crisp chunky pixel clusters, clean 3-tone cel shading, every pixel clearly visible. NO text, NO watermark, NO UI, NO blur.
+The SAME elderly Japanese grandmother as in the reference sheet: silver-white hair combed back into a low round bun at the nape, kind dark eyes, soft rosy cheeks, gentle wrinkles, a terracotta-red quilted winter kimono with a cream inner collar, a long beige-brown work apron tied over it, a dark brown lower kimono, white tabi socks and straw zori sandals. She is about as tall as her husband in reference 2 and drawn at EXACTLY the same pixel size, outline colour and shading as him. Keep her face, hair, outfit colours and proportions identical to reference 1.
+Pose: she stands, side view facing LEFT, both palms pressed together in front of her chest in a gesture of prayerful thanks (gassho), head bowed slightly, eyes gently closed, a grateful smile.
+Single character centred on a FLAT SOLID BRIGHT CHROMA GREEN (#00FF00) background, zero shadows, zero floor, zero props except the ones described. Full body visible with empty green margin.
+Reference 1: her expression sheet (identity, outfit colours). Reference 2: a full-body pose of her husband (match its pixel size, chunky pixel clusters, outline colour, shading and body proportions exactly; do NOT draw him). Reference 3: a background of this story (match its warm palette, but do NOT draw the background).
+
+=== raw_pose_obaasan_see_off_b.png  (attach ONLY: raw_pose_obaasan_see_off.png)
+Edit this image. Keep EVERYTHING pixel-identical (face, eyes, hair, body, kimono, apron, legs, colours, position, background) EXCEPT her raised right hand and forearm: tilt the waving hand to the other side, as the next frame of a goodbye wave. Only the raised hand and forearm may change.
+Cozy 16-bit Japanese retro adventure game pixel art (GBA / Eastward aesthetic). Warm dark espresso-brown outlines (#241712), never pure black. Crisp chunky pixel clusters, clean 3-tone cel shading, every pixel clearly visible. NO text, NO watermark, NO UI, NO blur.
+
+=== raw_pose_obaasan_pour_tea_b.png  (attach ONLY: raw_pose_obaasan_pour_tea.png)
+Edit this image. Keep EVERYTHING pixel-identical (face, eyes, hair, body, kimono, apron, legs, teacup, colours, position, background) EXCEPT the teapot and her right hand: tilt the teapot forward so a thin stream of pale green tea pours from its spout into the cup, with a tiny wisp of steam above the cup. Only the teapot, the hand and the tea stream may change.
+Cozy 16-bit Japanese retro adventure game pixel art (GBA / Eastward aesthetic). Warm dark espresso-brown outlines (#241712), never pure black. Crisp chunky pixel clusters, clean 3-tone cel shading, every pixel clearly visible. NO text, NO watermark, NO UI, NO blur.
+
+=== raw_pose_obaasan_peek_b.png  (attach ONLY: raw_pose_obaasan_peek.png)
+Edit this image. Keep her head, face, hair, body, legs and colours pixel-identical and in the same position. Change ONLY her two hands and forearms: both hands now raised in front of her mouth in surprise, fingers spread a little, as if she just saw six snowy figures outside. Background stays flat #00FF00.
+Cozy 16-bit Japanese retro adventure game pixel art (GBA / Eastward aesthetic). Warm dark espresso-brown outlines (#241712), never pure black. Crisp chunky pixel clusters, clean 3-tone cel shading, every pixel clearly visible. NO text, NO watermark, NO UI, NO blur.
+```

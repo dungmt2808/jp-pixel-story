@@ -75,6 +75,19 @@
         "place_hat": ["raw_pose_place_hat.png", "raw_pose_place_hat_b.png"],
         "bow": ["raw_pose_bow.png"]
       }
+    },
+    {
+      "key": "obaasan_poses",
+      "kind": "poses",
+      "pixel_pitch": 11,
+      "max_colors": 24,
+      "facing": "left",
+      "poses": {
+        "see_off": ["raw_pose_obaasan_see_off.png", "raw_pose_obaasan_see_off_b.png"],
+        "pour_tea": ["raw_pose_obaasan_pour_tea.png", "raw_pose_obaasan_pour_tea_b.png"],
+        "peek": ["raw_pose_obaasan_peek.png", "raw_pose_obaasan_peek_b.png"],
+        "thanks": ["raw_pose_obaasan_thanks.png"]
+      }
     }
   ],
   "items": [

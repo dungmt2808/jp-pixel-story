@@ -1,0 +1,65 @@
+{
+  "style": "Cozy 16-bit Japanese retro adventure game pixel art (GBA / Eastward aesthetic). Warm dark espresso-brown outlines (#241712), never pure black. Crisp chunky pixel clusters, clean 3-tone cel shading, every pixel clearly visible. NO text, NO watermark, NO UI, NO blur.",
+  "green": "Single character centred on a FLAT SOLID BRIGHT CHROMA GREEN (#00FF00) background, zero shadows, zero floor, zero props except the ones described. Full body visible with empty green margin.",
+  "sets": {
+    "ojiisan": {
+      "prefix": "raw_pose_",
+      "character": "The SAME elderly Japanese grandfather as in the reference images: white hair tied in a small topknot, bushy white eyebrows, kind wrinkled face, brown patched quilted hanten jacket over a dark navy kimono, blue-and-white tenugui cloth tied at the neck, dark work trousers, straw sandals. Keep his face, hair, outfit colours and proportions identical to the references.",
+      "references": [
+        "raw_sheet_ojiisan_warm.png",
+        "raw_walk_ojiisan.png",
+        "raw_bg_hut_hearth.png"
+      ],
+      "references_note": "Reference 1: his expression sheet (identity). Reference 2: his full-body walk sheet (outfit and body proportions). Reference 3: a background of this story (match its pixel art style, outline colour and shading warmth, but do NOT draw the background).",
+      "base": {
+        "weave": "Pose: he sits on his knees (seiza) on the floor, three-quarter view facing RIGHT, weaving a half-finished golden straw sugegasa hat that rests on his lap; both hands hold straw strands, head tilted down looking at his work with a gentle focused smile.",
+        "place_hat": "Pose: he stands, side view facing RIGHT, both arms raised forward at shoulder height holding a golden straw sugegasa hat with both hands, as if gently placing it on the head of a small stone statue in front of him; kind tender expression.",
+        "stand": "Pose: he stands upright, side view facing RIGHT, hands relaxed at his sides, calm gentle smile."
+      },
+      "edits": {
+        "weave_b": [
+          "weave",
+          "Edit this image. Keep EVERYTHING pixel-identical (face, eyes, hair, body, jacket, colours, position, background) EXCEPT his two hands and the straw strands: move his right hand outward, pulling a straw strand tight, the left hand holding the hat brim. Only the hands region may change."
+        ],
+        "place_hat_b": [
+          "place_hat",
+          "Edit this image. Keep his head, face, body, legs and colours pixel-identical and in the same position. Change ONLY his arms and the hat: arms lowered and stretched further forward, the hat now held lower at chest height, as if it has just been set down. Background stays flat #00FF00."
+        ],
+        "bow": [
+          "stand",
+          "Edit this image. Same character, same outfit, same colours, same feet position and same size. Change his pose to a polite Japanese bow (ojigi): upper body bent forward about 35 degrees from the hips, hands placed on the front of his thighs, eyes looking down. Background stays flat #00FF00."
+        ]
+      }
+    },
+    "obaasan": {
+      "prefix": "raw_pose_obaasan_",
+      "character": "The SAME elderly Japanese grandmother as in the reference sheet: silver-white hair combed back into a low round bun at the nape, kind dark eyes, soft rosy cheeks, gentle wrinkles, a terracotta-red quilted winter kimono with a cream inner collar, a long beige-brown work apron tied over it, a dark brown lower kimono, white tabi socks and straw zori sandals. She is about as tall as her husband in reference 2 and drawn at EXACTLY the same pixel size, outline colour and shading as him. Keep her face, hair, outfit colours and proportions identical to reference 1.",
+      "references": [
+        "raw_sheet_obaasan_warm.png",
+        "raw_pose_place_hat.png",
+        "raw_bg_hut_hearth.png"
+      ],
+      "references_note": "Reference 1: her expression sheet (identity, outfit colours). Reference 2: a full-body pose of her husband (match its pixel size, chunky pixel clusters, outline colour, shading and body proportions exactly; do NOT draw him). Reference 3: a background of this story (match its warm palette, but do NOT draw the background).",
+      "base": {
+        "see_off": "Pose: she stands in a doorway pose, side view facing LEFT, her right hand raised high and open, waving goodbye, the other hand resting on her apron; a warm caring smile, eyes open, as if saying 'itterasshaimase' to her husband walking out into the snow.",
+        "pour_tea": "Pose: she sits on her knees (seiza) on the floor, three-quarter view facing LEFT, holding a small black iron teapot by its handle in her right hand above a small round teacup that she holds in her left hand in front of her knees; the teapot is level (not pouring yet); a soft welcoming smile.",
+        "peek": "Pose: she stands, side view facing LEFT, leaning slightly forward as if peeking out of a paper shoji window, her left hand raised beside her ear to listen, the right hand touching her chin; curious, attentive expression.",
+        "thanks": "Pose: she stands, side view facing LEFT, both palms pressed together in front of her chest in a gesture of prayerful thanks (gassho), head bowed slightly, eyes gently closed, a grateful smile."
+      },
+      "edits": {
+        "see_off_b": [
+          "see_off",
+          "Edit this image. Keep EVERYTHING pixel-identical (face, eyes, hair, body, kimono, apron, legs, colours, position, background) EXCEPT her raised right hand and forearm: tilt the waving hand to the other side, as the next frame of a goodbye wave. Only the raised hand and forearm may change."
+        ],
+        "pour_tea_b": [
+          "pour_tea",
+          "Edit this image. Keep EVERYTHING pixel-identical (face, eyes, hair, body, kimono, apron, legs, teacup, colours, position, background) EXCEPT the teapot and her right hand: tilt the teapot forward so a thin stream of pale green tea pours from its spout into the cup, with a tiny wisp of steam above the cup. Only the teapot, the hand and the tea stream may change."
+        ],
+        "peek_b": [
+          "peek",
+          "Edit this image. Keep her head, face, hair, body, legs and colours pixel-identical and in the same position. Change ONLY her two hands and forearms: both hands now raised in front of her mouth in surprise, fingers spread a little, as if she just saw six snowy figures outside. Background stays flat #00FF00."
+        ]
+      }
+    }
+  }
+}
