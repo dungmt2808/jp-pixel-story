@@ -64,6 +64,17 @@
         "walk": { "frames": [0, 1, 2, 3, 4, 5], "fps": 8, "stridePx": 24 },
         "idle": { "frames": [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7], "fps": 4 }
       }
+    },
+    {
+      "key": "ojiisan_poses",
+      "kind": "poses",
+      "pixel_pitch": 11,
+      "max_colors": 24,
+      "poses": {
+        "weave": ["raw_pose_weave.png", "raw_pose_weave_b.png"],
+        "place_hat": ["raw_pose_place_hat.png", "raw_pose_place_hat_b.png"],
+        "bow": ["raw_pose_bow.png"]
+      }
     }
   ],
   "items": [

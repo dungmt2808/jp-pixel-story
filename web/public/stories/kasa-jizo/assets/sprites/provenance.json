@@ -82,7 +82,7 @@
             "path": "art-src/kasa-jizo/raw_sheet_ojiisan_warm.png",
             "sha": "bd332fc21c3fc2e9"
           },
-          "at": "2026-11-28T02:54:40+00:00",
+          "at": "2026-11-28T06:20:03+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -91,7 +91,7 @@
         }
       ],
       "output": {
-        "sha": "753d40cb71e8d1f1"
+        "sha": "d444981bcea51d79"
       }
     },
     "obaasan": {
@@ -175,7 +175,7 @@
             "path": "art-src/kasa-jizo/raw_sheet_obaasan_warm.png",
             "sha": "9a24f864b5151b26"
           },
-          "at": "2026-11-28T02:54:42+00:00",
+          "at": "2026-11-28T06:20:04+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -184,7 +184,7 @@
         }
       ],
       "output": {
-        "sha": "0d2f25ac6ad90b01"
+        "sha": "91b0cff9621aca62"
       }
     },
     "ojiisan_walk": {
@@ -247,7 +247,7 @@
             "path": "art-src/kasa-jizo/raw_walk_ojiisan.png",
             "sha": "796edef7771b174a"
           },
-          "at": "2026-11-28T02:54:42+00:00",
+          "at": "2026-11-28T06:20:04+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -256,7 +256,52 @@
         }
       ],
       "output": {
-        "sha": "f9e2164114fae703"
+        "sha": "4f73fad00d72b86a"
+      }
+    },
+    "ojiisan_poses": {
+      "steps": [
+        {
+          "op": "process_pose_sheet",
+          "params": {
+            "poses": {
+              "weave": [
+                "art-src/kasa-jizo/raw_pose_weave.png",
+                "art-src/kasa-jizo/raw_pose_weave_b.png"
+              ],
+              "place_hat": [
+                "art-src/kasa-jizo/raw_pose_place_hat.png",
+                "art-src/kasa-jizo/raw_pose_place_hat_b.png"
+              ],
+              "bow": [
+                "art-src/kasa-jizo/raw_pose_bow.png"
+              ]
+            },
+            "pixel_pitch": 11.0,
+            "palette_name": "kasa_jizo",
+            "bg_mode": "chroma_green",
+            "tolerance": 48,
+            "max_colors": 24,
+            "padding": 1,
+            "fps": 4.0,
+            "facing": "right",
+            "splice_threshold": 60,
+            "splice_grow": 31
+          },
+          "input": {
+            "path": "art-src/kasa-jizo/raw_pose_weave.png",
+            "sha": "2fba0c9f8664a3db"
+          },
+          "at": "2026-11-28T06:20:13+00:00",
+          "source": {
+            "kind": "art-manifest",
+            "manifest": "art.json",
+            "character": "ojiisan_poses"
+          }
+        }
+      ],
+      "output": {
+        "sha": "59a0a45329d23801"
       }
     }
   }

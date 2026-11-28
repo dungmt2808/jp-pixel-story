@@ -16,6 +16,9 @@
   "artExceptions": {
     "/stories/kasa-jizo/assets/sprites/ojiisan_walk/spritesheet.png": {
       "noise": "Compact 40x64 8-frame walk sprite uses intentional 1px facial wrinkle and woven straw-hat basket detail pixels."
+    },
+    "/stories/kasa-jizo/assets/sprites/ojiisan_poses/spritesheet.png": {
+      "noise": "Full-body key poses (~104 px) keep the woven straw of the sugegasa and the quilted, patched hanten as 1px texture; 24-colour budget and despeckle already applied (art-src/kasa-jizo/PROMPTS-poses.md)."
     }
   },
   "bgm": "calm",
@@ -38,7 +41,8 @@
     "sprites": {
       "ojiisan": "/stories/kasa-jizo/assets/sprites/ojiisan/meta.json",
       "obaasan": "/stories/kasa-jizo/assets/sprites/obaasan/meta.json",
-      "ojiisan_walk": "/stories/kasa-jizo/assets/sprites/ojiisan_walk/meta.json"
+      "ojiisan_walk": "/stories/kasa-jizo/assets/sprites/ojiisan_walk/meta.json",
+      "ojiisan_poses": "/stories/kasa-jizo/assets/sprites/ojiisan_poses/meta.json"
     },
     "rigs": {
       "ojiisan": "/stories/kasa-jizo/assets/sprites/ojiisan/rig/rig.json",
@@ -316,12 +320,18 @@
       "interaction": {
         "type": "hold",
         "hint": "Giữ tay vào chiếc nón để giúp ông lão đan xong chiếc nón rơm thứ 5",
+        "actors": [],
         "hold": {
           "label": "{笠|かさ}を{編|あ}む",
-          "x": 125,
-          "y": 110,
-          "durationSec": 1.8,
-          "item": "straw_hat"
+          "x": 80,
+          "y": 50,
+          "durationSec": 1.8
+        },
+        "drive": {
+          "who": "ojiisan_work",
+          "pose": "weave",
+          "by": "holding",
+          "fps": 4
         },
         "doneLine": {
           "id": "k04",
@@ -342,7 +352,17 @@
           "ttsHash": "de44f2416dad"
         }
       },
-      "actionLabel": "CHUẨN BỊ RA CHỢ →"
+      "actionLabel": "CHUẨN BỊ RA CHỢ →",
+      "people": {
+        "ojiisan_work": {
+          "kind": "sprite:ojiisan_poses",
+          "x": 80,
+          "y": 168,
+          "face": "right",
+          "pose": "weave",
+          "onlyWhileInteract": true
+        }
+      }
     },
     {
       "id": "pack_departure",
@@ -795,8 +815,8 @@
             "id": "hat1",
             "item": "straw_hat",
             "from": [
-              56,
-              174
+              84,
+              176
             ],
             "to": [
               56,
@@ -809,8 +829,8 @@
             "id": "hat2",
             "item": "straw_hat",
             "from": [
-              108,
-              174
+              124,
+              176
             ],
             "to": [
               99,
@@ -822,8 +842,8 @@
             "id": "hat3",
             "item": "straw_hat",
             "from": [
-              160,
-              174
+              164,
+              176
             ],
             "to": [
               141,
@@ -835,8 +855,8 @@
             "id": "hat4",
             "item": "straw_hat",
             "from": [
-              212,
-              174
+              204,
+              176
             ],
             "to": [
               184,
@@ -848,8 +868,8 @@
             "id": "hat5",
             "item": "straw_hat",
             "from": [
-              264,
-              174
+              244,
+              176
             ],
             "to": [
               227,
@@ -858,6 +878,12 @@
             "label": "{笠|かさ} ⑤"
           }
         ],
+        "drive": {
+          "who": "ojiisan_place",
+          "pose": "place_hat",
+          "by": "step",
+          "stepSec": 0.7
+        },
         "doneLine": {
           "id": "k17",
           "voice": "ojiisan",
@@ -885,7 +911,17 @@
           "ja": "お{地蔵|じぞう}{様|さま}に{笠|かさ}をかぶせてあげました。"
         }
       ],
-      "actionLabel": "GIÚP TƯỢNG THỨ SÁU →"
+      "actionLabel": "GIÚP TƯỢNG THỨ SÁU →",
+      "people": {
+        "ojiisan_place": {
+          "kind": "sprite:ojiisan_poses",
+          "x": 26,
+          "y": 200,
+          "face": "right",
+          "pose": "place_hat",
+          "onlyWhileInteract": true
+        }
+      }
     },
     {
       "id": "sixth_jizo",
@@ -1038,7 +1074,28 @@
           "ja": "{笠|かさ}のかわりに{手|て}ぬぐいをかけました。"
         }
       ],
-      "actionLabel": "TRỞ VỀ NHÀ TRANH →"
+      "actionLabel": "TRỞ VỀ NHÀ TRANH →",
+      "people": {
+        "ojiisan_bow": {
+          "kind": "sprite:ojiisan_poses",
+          "x": 214,
+          "y": 197,
+          "face": "right",
+          "pose": "bow",
+          "hidden": true
+        }
+      },
+      "cues": [
+        {
+          "done": true,
+          "people": [
+            {
+              "who": "ojiisan_bow",
+              "show": true
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "home_empty",

@@ -1,0 +1,99 @@
+{
+  "spritesheet": "spritesheet.png",
+  "frameWidth": 106,
+  "frameHeight": 106,
+  "frameCount": 5,
+  "palette": "kasa_jizo",
+  "frames": [
+    "frame_00.png",
+    "frame_01.png",
+    "frame_02.png",
+    "frame_03.png",
+    "frame_04.png"
+  ],
+  "pivot": {
+    "x": 53,
+    "y": 105
+  },
+  "fps": 4.0,
+  "clips": {
+    "idle": {
+      "frames": [
+        0
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "weave": {
+      "frames": [
+        0
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "weave_loop": {
+      "frames": [
+        0,
+        1
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "place_hat": {
+      "frames": [
+        2
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "place_hat_loop": {
+      "frames": [
+        2,
+        3
+      ],
+      "fps": 4.0,
+      "loop": true
+    },
+    "bow": {
+      "frames": [
+        4
+      ],
+      "fps": 4.0,
+      "loop": true
+    }
+  },
+  "poses": {
+    "weave": [
+      0,
+      1
+    ],
+    "place_hat": [
+      2,
+      3
+    ],
+    "bow": [
+      4
+    ]
+  },
+  "poseRegions": {
+    "weave": {
+      "1": [
+        30,
+        41,
+        96,
+        90
+      ]
+    },
+    "place_hat": {
+      "3": [
+        43,
+        14,
+        106,
+        56
+      ]
+    }
+  },
+  "scale": 0.090909,
+  "registration": "poses",
+  "facing": "right"
+}
