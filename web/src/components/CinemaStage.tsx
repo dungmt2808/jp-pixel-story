@@ -45,7 +45,7 @@ import { BUST_H, BUST_TOP, BUST_W, drawStackChanBust, moodForEmote } from "../en
 import { backdropAt, cueMoves, cueTime, setStateAt, type CueAnchors } from "../engine/cues";
 import { drawPerson, personAt, personBox, type PersonState } from "../engine/people";
 import { PROC_SETS } from "../engine/proc/sets";
-import { logStoryEvent } from "../engine/stageRuntime";
+import { logStoryEvent, voiceHoldMs } from "../engine/stageRuntime";
 import type { CinemaActor, DialogueLine, LineTelop, MascotTip, MiniGameChoice, SceneStamp, StoryData } from "../types/story";
 import { InfoCard } from "./cinema/InfoCard";
 import { MascotBubble, MascotCorner, tipSeconds } from "./cinema/MascotCorner";
@@ -411,10 +411,14 @@ export function CinemaStage({
     };
   }, [recordMode, startMusic]);
 
-  const completeInteraction = useCallback(async () => {
+  const completeInteraction = useCallback(async (leadLine?: DialogueLine) => {
     if (completingRef.current) return;
     completingRef.current = true;
     setPhase("doneLine");
+    if (leadLine) {
+      await playVoiceLine(leadLine);
+      await sleep(300);
+    }
     retroAudio.playFanfare();
     spawnBurst(particlesRef.current, [160, 90], ["#ffe38c", "#f6eed8", "#f4b6c2"], 18, 70);
     anchorsRef.current.done = (performance.now() - sceneStartRef.current) / 1000;
@@ -431,9 +435,9 @@ export function CinemaStage({
   }, [currentScene, playVoiceLine]);
 
   const registerProgress = useCallback(
-    (n: number) => {
+    (n: number, leadLine?: DialogueLine) => {
       setProgress(n);
-      if (n >= total) void completeInteraction();
+      if (n >= total) void completeInteraction(leadLine);
     },
     [completeInteraction, total]
   );
@@ -465,8 +469,12 @@ export function CinemaStage({
           const next = [...foundRef.current, id];
           foundRef.current = next;
           setFoundIds(next);
-          if (spot?.line) void playVoiceLine(spot.line);
-          registerProgress(next.length);
+          if (next.length >= total) {
+            registerProgress(next.length, spot?.line);
+          } else {
+            if (spot?.line) void playVoiceLine(spot.line);
+            registerProgress(next.length);
+          }
         }
       } else if (interaction.type === "hold") {
         holdRef.current.holding = true;
@@ -565,7 +573,7 @@ export function CinemaStage({
             pressAt([s.x, s.y]);
             await sleep(140);
             c.down = false;
-            const spotLine = s.line?.durationSec ? s.line.durationSec * 1000 + 300 : 650;
+            const spotLine = s.line ? voiceHoldMs(s.line.durationSec) + 300 : 650;
             await sleep(spotLine);
           }
         } else if (interaction.type === "hold" && interaction.hold) {

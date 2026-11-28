@@ -371,7 +371,7 @@
       ],
       "minigame": {
         "kind": "choice",
-        "pickOne": true,
+        "mode": "one",
         "autoPick": "promise_mochi",
         "prompt": "Chọn lời dặn ấm áp của ông lão trước khi ra chợ:",
         "choices": [
@@ -461,7 +461,7 @@
       ],
       "minigame": {
         "kind": "choice",
-        "pickOne": true,
+        "mode": "one",
         "autoPick": "polite_call",
         "prompt": "Chọn câu rao bán nón lịch sự kiểu Nhật:",
         "choices": [
@@ -1083,7 +1083,7 @@
       ],
       "minigame": {
         "kind": "choice",
-        "pickOne": true,
+        "mode": "one",
         "autoPick": "warm_tea",
         "prompt": "Đêm giao thừa ấm áp bên bếp lửa, hai ông bà cùng làm gì?",
         "choices": [
