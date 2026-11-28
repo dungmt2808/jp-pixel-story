@@ -3355,16 +3355,34 @@ rt {
 .cine-choice {
   font-family: var(--font-jp);
   font-size: max(11px, 1.45cqw);
+  font-weight: 600;
+  line-height: 1.55;
   background: #f6eed8;
   color: #241712;
   border: max(2px, 0.22cqw) solid #241712;
   box-shadow: max(2px, 0.3cqw) max(2px, 0.3cqw) 0 rgba(16, 19, 34, 0.6);
-  padding: 0.45cqw 1.1cqw;
+  padding: 0.55cqw 1.25cqw 0.45cqw;
   cursor: pointer;
+  transition: transform 0.08s ease, background 0.12s ease;
+}
+
+.cine-choice:hover:not(:disabled) {
+  background: #fff8e4;
+  transform: translateY(-1px);
+}
+
+.cine-choice rt {
+  color: #b8382c;
+  font-size: 0.58em;
+  font-weight: 700;
 }
 
 .cine-choice.done {
   background: #93b85a;
+}
+
+.cine-choice.done rt {
+  color: #241712;
 }
 
 .cine-note {
