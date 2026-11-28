@@ -3,7 +3,7 @@
   "frameWidth": 32,
   "frameHeight": 38,
   "frameCount": 10,
-  "palette": "jp_story_master",
+  "palette": "kotoba_mura",
   "frames": [
     "frame_00.png",
     "frame_01.png",

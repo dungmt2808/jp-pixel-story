@@ -1,6 +1,7 @@
 {
   "story": "tsuru-ongaeshi",
-  "palette": "jp_story_master",
+  "palette": "tsuru_ongaeshi",
+  "sprite_max_colors": 32,
   "characters": [
     {
       "key": "yosaku",

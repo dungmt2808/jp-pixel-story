@@ -3,7 +3,7 @@
   "frameWidth": 96,
   "frameHeight": 96,
   "frameCount": 4,
-  "palette": "jp_story_master",
+  "palette": "tsuru_ongaeshi",
   "frames": [
     "frame_00.png",
     "frame_01.png",
@@ -48,7 +48,7 @@
   "scale": 0.15047,
   "registration": "bust",
   "expressionRegion": [
-    21,
+    20,
     0,
     77,
     53

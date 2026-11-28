@@ -3,7 +3,7 @@
   "frameWidth": 96,
   "frameHeight": 96,
   "frameCount": 4,
-  "palette": "jp_story_master",
+  "palette": "hanami_first",
   "frames": [
     "frame_00.png",
     "frame_01.png",
@@ -55,8 +55,8 @@
   "expressionRegion": [
     20,
     1,
-    72,
-    53
+    75,
+    54
   ],
   "lockedToFrame": 0
 }

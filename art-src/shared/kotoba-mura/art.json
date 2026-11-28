@@ -1,7 +1,8 @@
 {
   "shared": "kotoba-mura",
   "name": "ことば村 (Làng Kotoba — Vũ trụ dùng chung)",
-  "palette": "jp_story_master",
+  "palette": "kotoba_mura",
+  "sprite_max_colors": 32,
   "voices": {
     "narrator": {
       "label": "ナレーター (No.7・読み聞かせ)",
@@ -49,27 +50,27 @@
     {
       "key": "kotoba_garden",
       "raw": "raw_bg_kotoba_garden.png",
-      "dither": 18
+      "dither": 0
     },
     {
       "key": "kotoba_inn_lobby",
       "raw": "raw_bg_kotoba_inn_lobby.png",
-      "dither": 18
+      "dither": 0
     },
     {
       "key": "kotoba_inn_front",
       "raw": "raw_bg_kotoba_inn_front.png",
-      "dither": 18
+      "dither": 0
     },
     {
       "key": "kotoba_inn_kitchen",
       "raw": "raw_bg_kotoba_inn_kitchen.png",
-      "dither": 18
+      "dither": 0
     },
     {
       "key": "kotoba_mountain_yuzu",
       "raw": "raw_bg_kotoba_mountain_yuzu.png",
-      "dither": 18
+      "dither": 0
     }
   ],
   "characters": [

@@ -1,6 +1,7 @@
 {
   "story": "jlpt-n4-2025-07-rain-bgm",
-  "palette": "jp_story_master",
+  "palette": "rain_bgm",
+  "sprite_max_colors": 32,
   "characters": [
     {
       "key": "student",

@@ -10,7 +10,7 @@
             "rows": 1,
             "frame_width": 68,
             "frame_height": 68,
-            "palette_name": "jp_story_master",
+            "palette_name": "kotoba_mura",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -55,13 +55,14 @@
               52,
               44
             ],
-            "split": "gaps"
+            "split": "gaps",
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/shared/kotoba-mura/raw_sheet_stackchan_neutral.png",
             "sha": "298a42e0bdcf082c"
           },
-          "at": "2026-11-27T13:46:56+00:00",
+          "at": "2026-11-28T07:07:24+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -70,7 +71,7 @@
         }
       ],
       "output": {
-        "sha": "20f6fab780a335a8"
+        "sha": "8a0d4bbe77f9fb02"
       }
     },
     "stackchan_happy": {
@@ -82,7 +83,7 @@
             "rows": 1,
             "frame_width": 68,
             "frame_height": 68,
-            "palette_name": "jp_story_master",
+            "palette_name": "kotoba_mura",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -127,13 +128,14 @@
               52,
               44
             ],
-            "split": "gaps"
+            "split": "gaps",
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/shared/kotoba-mura/raw_sheet_stackchan_happy.png",
             "sha": "024efcbc5eaf4a9c"
           },
-          "at": "2026-11-27T13:46:58+00:00",
+          "at": "2026-11-28T07:07:24+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -142,7 +144,7 @@
         }
       ],
       "output": {
-        "sha": "83614c6e9b584569"
+        "sha": "e33bf1a56689e1a5"
       }
     },
     "stackchan_lowbat": {
@@ -154,7 +156,7 @@
             "rows": 1,
             "frame_width": 68,
             "frame_height": 68,
-            "palette_name": "jp_story_master",
+            "palette_name": "kotoba_mura",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -199,13 +201,14 @@
               52,
               44
             ],
-            "split": "gaps"
+            "split": "gaps",
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/shared/kotoba-mura/raw_sheet_stackchan_lowbat.png",
             "sha": "4708e4166cff5ac8"
           },
-          "at": "2026-11-27T13:46:59+00:00",
+          "at": "2026-11-28T07:07:24+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -214,7 +217,7 @@
         }
       ],
       "output": {
-        "sha": "ea765f2f54dc9c33"
+        "sha": "a7954c745fa8c61c"
       }
     },
     "stackchan_walk": {
@@ -226,7 +229,7 @@
             "rows": 1,
             "frame_width": 32,
             "frame_height": 38,
-            "palette_name": "jp_story_master",
+            "palette_name": "kotoba_mura",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -272,13 +275,14 @@
             "lock_expressions": false,
             "expression_region": null,
             "facing": "right",
-            "split": "gaps"
+            "split": "gaps",
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/shared/kotoba-mura/raw_walk_stackchan.png",
             "sha": "a340673f6348b6d0"
           },
-          "at": "2026-11-27T13:47:01+00:00",
+          "at": "2026-11-28T07:07:24+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -287,7 +291,7 @@
         }
       ],
       "output": {
-        "sha": "8961a62d31198411"
+        "sha": "05f29b9252e46876"
       }
     },
     "lin_neutral": {
@@ -299,7 +303,7 @@
             "rows": 1,
             "frame_width": 96,
             "frame_height": 96,
-            "palette_name": "jp_story_master",
+            "palette_name": "kotoba_mura",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -364,13 +368,14 @@
                 59
               ]
             },
-            "split": "gaps"
+            "split": "gaps",
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/shared/kotoba-mura/raw_sheet_lin_neutral.png",
             "sha": "4620903705a21885"
           },
-          "at": "2026-11-27T13:47:02+00:00",
+          "at": "2026-11-28T07:07:24+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -379,7 +384,7 @@
         }
       ],
       "output": {
-        "sha": "8134ce4e246d1cba"
+        "sha": "3774b3784bb0a638"
       }
     },
     "lin_walk": {
@@ -391,7 +396,7 @@
             "rows": 1,
             "frame_width": 40,
             "frame_height": 64,
-            "palette_name": "jp_story_master",
+            "palette_name": "kotoba_mura",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -435,13 +440,14 @@
             "lock_expressions": false,
             "expression_region": null,
             "facing": "right",
-            "split": "gaps"
+            "split": "gaps",
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/shared/kotoba-mura/raw_walk_lin.png",
             "sha": "8dfc117770be4813"
           },
-          "at": "2026-11-27T13:47:04+00:00",
+          "at": "2026-11-28T07:07:24+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -450,7 +456,7 @@
         }
       ],
       "output": {
-        "sha": "c88d1c8d1c75e6a0"
+        "sha": "960d63b9f1d3001f"
       }
     },
     "hana_warm": {
@@ -462,7 +468,7 @@
             "rows": 1,
             "frame_width": 96,
             "frame_height": 96,
-            "palette_name": "jp_story_master",
+            "palette_name": "kotoba_mura",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -527,13 +533,14 @@
                 56
               ]
             },
-            "split": "gaps"
+            "split": "gaps",
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/shared/kotoba-mura/raw_sheet_hana_warm.png",
             "sha": "bed5cabe39d37be9"
           },
-          "at": "2026-11-27T13:47:05+00:00",
+          "at": "2026-11-28T07:07:24+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -542,7 +549,7 @@
         }
       ],
       "output": {
-        "sha": "c017efe3da1457e4"
+        "sha": "0405dc05667311e8"
       }
     }
   }

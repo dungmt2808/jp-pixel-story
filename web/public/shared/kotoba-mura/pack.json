@@ -20,7 +20,7 @@
     }
   },
   "name": "ことば村 (Làng Kotoba — Vũ trụ dùng chung)",
-  "palette": "jp_story_master",
+  "palette": "kotoba_mura",
   "voices": {
     "narrator": {
       "label": "ナレーター (No.7・読み聞かせ)",

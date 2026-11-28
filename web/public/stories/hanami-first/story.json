@@ -6,7 +6,7 @@
   "titleVi": "Lần đầu ngắm hoa anh đào",
   "level": "JLPT N4",
   "author": "jp-pixel-studio",
-  "palette": "jp_story_master",
+  "palette": "hanami_first",
   "artQuality": {
     "outlineColor": "#241712",
     "minOutlineCompliance": 0.98,
@@ -717,6 +717,11 @@
     "wear": {
       "head": "nonla",
       "neck": "scarf"
+    }
+  },
+  "artExceptions": {
+    "/stories/hanami-first/assets/items/sakura.png": {
+      "noise": "15x15 blossom: five lighter-pink rim pixels at the petal tips are the raw art's edge shading, kept by the hanami_first palette; at this size 5 px = 3 % (8-colour budget unchanged)."
     }
   }
 }

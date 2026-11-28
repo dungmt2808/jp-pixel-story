@@ -10,7 +10,7 @@
             "rows": 1,
             "frame_width": 96,
             "frame_height": 96,
-            "palette_name": "jp_story_master",
+            "palette_name": "hanami_first",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -50,13 +50,14 @@
             "cleanup": true,
             "outline_color": "#241712",
             "lock_expressions": true,
-            "expression_region": null
+            "expression_region": null,
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/hanami-first/raw_sheet_minh.png",
             "sha": "a1bf27e073aca7f7"
           },
-          "at": "2026-11-26T14:55:50+00:00",
+          "at": "2026-11-28T07:11:54+00:00",
           "source": {
             "tool": "make_raw_art.py stand-in (code-drawn, AI-like defects)",
             "note": "replace with your generator's prompt/seed"
@@ -64,7 +65,7 @@
         }
       ],
       "output": {
-        "sha": "7a40e4a17954f764"
+        "sha": "b3c13e2c680c508a"
       }
     },
     "yui": {
@@ -76,7 +77,7 @@
             "rows": 1,
             "frame_width": 96,
             "frame_height": 96,
-            "palette_name": "jp_story_master",
+            "palette_name": "hanami_first",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -116,13 +117,14 @@
             "cleanup": true,
             "outline_color": "#241712",
             "lock_expressions": true,
-            "expression_region": null
+            "expression_region": null,
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/hanami-first/raw_sheet_yui.png",
             "sha": "e4e2f0f7ba3924f3"
           },
-          "at": "2026-11-26T14:55:53+00:00",
+          "at": "2026-11-28T07:11:54+00:00",
           "source": {
             "tool": "make_raw_art.py stand-in (code-drawn, AI-like defects)",
             "note": "replace with your generator's prompt/seed"
@@ -130,7 +132,7 @@
         }
       ],
       "output": {
-        "sha": "69428826e4cf6a67"
+        "sha": "230aa9561fdc73bb"
       }
     },
     "yui_walk": {
@@ -142,7 +144,7 @@
             "rows": 1,
             "frame_width": 40,
             "frame_height": 64,
-            "palette_name": "jp_story_master",
+            "palette_name": "hanami_first",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -189,13 +191,14 @@
             "expression_region": null,
             "facing": "right",
             "split": "gaps",
-            "pixel_pitch": 5.5
+            "pixel_pitch": 5.5,
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/hanami-first/raw_walk_yui.png",
             "sha": "5226f65ab3471191"
           },
-          "at": "2026-11-27T09:44:53+00:00",
+          "at": "2026-11-28T07:11:54+00:00",
           "source": {
             "artist": "user",
             "brief": "art-src/hanami-first/PROMPTS-walk.md"
@@ -203,7 +206,7 @@
         }
       ],
       "output": {
-        "sha": "713a2662e830c58a"
+        "sha": "e880e51aa8f14ac3"
       }
     },
     "minh_walk": {
@@ -215,7 +218,7 @@
             "rows": 1,
             "frame_width": 40,
             "frame_height": 64,
-            "palette_name": "jp_story_master",
+            "palette_name": "hanami_first",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -262,13 +265,14 @@
             "expression_region": null,
             "facing": "right",
             "split": "gaps",
-            "pixel_pitch": 5.5
+            "pixel_pitch": 5.5,
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/hanami-first/raw_walk_minh.png",
             "sha": "a9ea673d7661de37"
           },
-          "at": "2026-11-27T09:44:51+00:00",
+          "at": "2026-11-28T07:11:54+00:00",
           "source": {
             "artist": "user",
             "brief": "art-src/hanami-first/PROMPTS-walk.md"
@@ -276,7 +280,7 @@
         }
       ],
       "output": {
-        "sha": "47f54fcd5cf9f2ec"
+        "sha": "caf4709f3db741dd"
       }
     }
   }

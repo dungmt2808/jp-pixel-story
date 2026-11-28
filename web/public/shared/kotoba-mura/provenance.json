@@ -8,15 +8,15 @@
           "params": {
             "target_width": 320,
             "target_height": 200,
-            "palette_name": "jp_story_master",
-            "dither_strength": 18.0,
+            "palette_name": "kotoba_mura",
+            "dither_strength": 0.0,
             "grid": "auto"
           },
           "input": {
             "path": "art-src/shared/kotoba-mura/raw_bg_kotoba_garden.png",
             "sha": "58d9a362b0af4411"
           },
-          "at": "2026-11-27T14:51:02+00:00",
+          "at": "2026-11-28T07:07:24+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -25,7 +25,7 @@
         }
       ],
       "output": {
-        "sha": "5fe843acc6d9909e"
+        "sha": "0f4c3ec450532944"
       }
     },
     "bg_kotoba_inn_lobby.png": {
@@ -35,15 +35,15 @@
           "params": {
             "target_width": 320,
             "target_height": 200,
-            "palette_name": "jp_story_master",
-            "dither_strength": 18.0,
+            "palette_name": "kotoba_mura",
+            "dither_strength": 0.0,
             "grid": "auto"
           },
           "input": {
             "path": "art-src/shared/kotoba-mura/raw_bg_kotoba_inn_lobby.png",
             "sha": "72dc8c1ca0fb0a92"
           },
-          "at": "2026-11-27T14:51:02+00:00",
+          "at": "2026-11-28T07:07:24+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -52,7 +52,7 @@
         }
       ],
       "output": {
-        "sha": "7ea8b08f7e5b73ed"
+        "sha": "7597ffdeb9609da3"
       }
     }
   }

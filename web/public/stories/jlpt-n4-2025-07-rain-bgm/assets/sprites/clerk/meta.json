@@ -3,7 +3,7 @@
   "frameWidth": 96,
   "frameHeight": 96,
   "frameCount": 4,
-  "palette": "jp_story_master",
+  "palette": "rain_bgm",
   "frames": [
     "frame_00.png",
     "frame_01.png",
@@ -51,7 +51,7 @@
     26,
     0,
     73,
-    52
+    53
   ],
   "lockedToFrame": 0
 }

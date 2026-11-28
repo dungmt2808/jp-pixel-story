@@ -3,7 +3,7 @@
   "frameWidth": 40,
   "frameHeight": 64,
   "frameCount": 10,
-  "palette": "ramen_midnight",
+  "palette": "ramen_night",
   "frames": [
     "frame_00.png",
     "frame_01.png",

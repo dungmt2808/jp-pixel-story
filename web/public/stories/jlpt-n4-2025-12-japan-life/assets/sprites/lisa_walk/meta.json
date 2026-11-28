@@ -3,7 +3,7 @@
   "frameWidth": 40,
   "frameHeight": 64,
   "frameCount": 10,
-  "palette": "jp_story_master",
+  "palette": "japan_life",
   "frames": [
     "frame_00.png",
     "frame_01.png",

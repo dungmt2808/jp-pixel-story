@@ -1,6 +1,7 @@
 {
   "story": "ramen-midnight",
-  "palette": "ramen_midnight",
+  "palette": "ramen_night",
+  "sprite_max_colors": 32,
   "characters": [
     {
       "key": "minh_neutral",

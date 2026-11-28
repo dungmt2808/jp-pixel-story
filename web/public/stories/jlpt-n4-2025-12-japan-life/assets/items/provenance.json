@@ -8,7 +8,7 @@
           "params": {
             "target_width": 65,
             "target_height": 23,
-            "palette_name": "jp_story_master",
+            "palette_name": "japan_life",
             "bg_mode": "none",
             "tolerance": 48,
             "align_bottom": false,
@@ -21,7 +21,7 @@
             "path": "art-src/jlpt-n4-2025-12-japan-life/raw_item_plane.png",
             "sha": "86c88739c1df3d51"
           },
-          "at": "2026-11-27T03:57:01+00:00",
+          "at": "2026-11-28T07:07:55+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -30,7 +30,7 @@
         }
       ],
       "output": {
-        "sha": "df392d8d989fbc64"
+        "sha": "c6f3698c9c66e045"
       }
     }
   }

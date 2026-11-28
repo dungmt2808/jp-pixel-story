@@ -35,6 +35,15 @@ bibs weighted up), saves them in `mcp-server/palettes_custom.json`, then locks e
 - **`sprite_max_colors: 32`**: one colour budget per character sheet, shared by every frame (no flicker), like the
   ramps of a hand-made sprite: clean clusters instead of 1px noise from near-identical shades.
 
+**Stories that already shipped** (or after a lot of new art): `pixellab_repalette_story(story_dir, palette_name)`
+replays every asset from its `provenance.json` with the same steps, changing only the palette, background dither (0)
+and colour budgets (sheets 32, props keep their own colour count); rigs are re-cut; assets without a raw source
+(`legacy_master`, cleaned legacy portraits) stay byte-identical and their colours are kept in the palette. Every
+painted story has its own palette now: `kasa_jizo`, `japan_life`, `hanami_first`, `tsuru_ongaeshi`, `rain_bgm`,
+`ramen_night`, and the series palette `kotoba_mura` (shared pack + every Kotoba-mura episode: an episode's
+story.json `palette` is the pack's). Their art.json files carry the palette name, `"sprite_max_colors": 32`
+and background `"dither": 0`, so a later `pixellab_apply_art_manifest` builds new art the same way.
+
 `jp_story_master` (40 colours, the tools' default) stays for code-drawn worlds (`proc:` / `set:`) and older stories:
 the 24 `ramen_midnight` colours + 12 neutral greys / slate blues / earth browns + 4 seasonal accents.
 - **Backgrounds (`320×200`):** `pixellab_clean_background(...)`; `dither_strength=0` with a story palette,

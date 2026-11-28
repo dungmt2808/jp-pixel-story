@@ -6,17 +6,17 @@
         {
           "op": "relock_palette",
           "params": {
-            "palette_name": "jp_story_master"
+            "palette_name": "kotoba_mura"
           },
           "input": {
             "path": "art-src/shared/kotoba-mura/raw_item_watering_can.png",
             "sha": "f478f877990ec4e1"
           },
-          "at": "2026-11-27T13:52:48+00:00"
+          "at": "2026-11-28T07:07:24+00:00"
         }
       ],
       "output": {
-        "sha": "f478f877990ec4e1"
+        "sha": "441c44a1127a1784"
       }
     }
   }
