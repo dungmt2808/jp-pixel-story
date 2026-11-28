@@ -12,6 +12,31 @@ export interface RubySegment {
 /** Supports both legacy RubySegment[] and compact `{漢字|かんじ}` string notation. */
 export type RubyTextValue = string | RubySegment[];
 
+/** One picture inside a thought bubble: an item, or a frame of a sprite sheet (optionally cropped). */
+export interface ThoughtImage {
+  item?: string;
+  sprite?: string;
+  frame?: number;
+  /** [x0, y0, x1, y1] inside the sprite frame (e.g. just the head of a bust). */
+  crop?: [number, number, number, number];
+  /** Whole-number scale (default 2 for items, 1 for sprites). */
+  scale?: number;
+}
+
+/**
+ * A thought bubble: a framed picture beside the thinker, linked by three growing dots (the reference
+ * player's "imagine" inset). The thinker is `who` (a scene person), else `side` (a bust), else the
+ * line's `emoteWho` / speaker. `at`: the panel centre (default: above the thinker, toward the middle).
+ */
+export interface ThoughtSpec {
+  images: ThoughtImage[];
+  who?: string;
+  side?: "left" | "right";
+  at?: [number, number];
+  /** Panel fill (default warm paper "#fff8ea"; a night sky "#2a3559" for dreams). */
+  bg?: string;
+}
+
 export interface DialogueLine {
   id: string;
   voice: string;
@@ -33,6 +58,8 @@ export interface DialogueLine {
   emoteSide?: "left" | "right";
   /** Route B: the emote (and camera focus) goes to this person of `scene.people`. */
   emoteWho?: string;
+  /** A thought bubble while this line plays (what the speaker wishes / imagines: 〜たい, 〜たかった). */
+  thought?: ThoughtSpec;
   /** Vibe kit: whole-pixel actor gesture ("hop", "bow", "startle", "shiver", "lean", "sway"). */
   action?: string;
   /** Which actor performs `action` (default: `emoteSide`, else the speaker). */
@@ -245,13 +272,46 @@ export interface InteractionDrive {
 }
 
 /** Data-driven mini-game of a scene (played after the scene's lines). */
+/**
+ * Slide something along a track (a sliding door, a lever, a curtain): drag the handle from `from` to `to`.
+ * `panel` (a rect of the backdrop, [x0, y0, x1, y1]) moves with the handle; where it was, `reveal`
+ * (another backdrop, e.g. "bg:loom") shows through, so a fusuma really opens on the next room.
+ */
+export interface SlideSpec {
+  from: [number, number];
+  to: [number, number];
+  label?: RubyTextValue;
+  panel?: [number, number, number, number];
+  reveal?: string;
+}
+
+/**
+ * Turn a dial by dragging around it (a clock's minute hand, a stove knob). Drawn large at (x, y), radius r,
+ * with a live readout under it. `clock`: `from` / `to` are hours (4.8 = 4:48); the minute hand turns once
+ * per hour and the readout says the time in Japanese with furigana. `knob`: `from` -> `to` in `unit`
+ * over `turns` turns (default 0.75).
+ */
+export interface TurnSpec {
+  x: number;
+  y: number;
+  r: number;
+  from: number;
+  to: number;
+  kind?: "clock" | "knob";
+  turns?: number;
+  unit?: string;
+  label?: RubyTextValue;
+}
+
 export interface SceneInteraction {
-  type: "drag" | "tap" | "hold";
+  type: "drag" | "tap" | "hold" | "slide" | "turn";
   /** Vietnamese instruction; shown uppercase at the top of the frame with progress (the caption bar keeps the subtitles). */
   hint: string;
   items?: DragItem[];
   spots?: TapSpot[];
   hold?: HoldGauge;
+  slide?: SlideSpec;
+  turn?: TurnSpec;
   /** Busts on stage WHILE the interaction runs (default: the scene's `actors`); [] = a medium shot of `people`. */
   actors?: ("left" | "right")[];
   /** The player's action drives a key pose of a scene person (the reference lever: arm and lever are one painting). */

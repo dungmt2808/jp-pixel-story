@@ -64,6 +64,10 @@ def _check_ruby_segments(label: str, segs: str | list[dict[str, Any]], issues: l
             issues.append(f"[Ruby on non-Kanji] {label}: '{text}' -> '{reading}'")
 
 
+# keys of a scene cue the engine reads (web/src/engine/cues.ts SceneCue)
+CUE_KEYS = {"at", "line", "doneLine", "done", "choice", "spot", "ifChoice", "delay", "set", "people", "backdrop", "actors"}
+
+
 def _off_palette_colors(png_path: Path, palette_name: str) -> int:
     """Number of distinct visible colours in an image that are NOT in the named palette."""
     allowed = {tuple(c) for c in get_palette_rgb(palette_name)}
@@ -348,6 +352,7 @@ def validate_story_folder(
                 texts = [it.get("label") for it in inter.get("items") or []]
                 texts += [sp.get("label") for sp in inter.get("spots") or []]
                 texts += [(inter.get("hold") or {}).get("label")]
+                texts += [(inter.get(k) or {}).get("label") for k in ("slide", "turn")]
                 for i, txt in enumerate(x for x in texts if x):
                     _check_ruby_segments(f"{sc['id']}/interaction.label[{i}]", txt, issues)
                 for key, grp in (("items", inter.get("items") or []), ("spots", inter.get("spots") or [])):
@@ -355,6 +360,19 @@ def validate_story_folder(
                         ref = it.get("item")
                         if ref and ref not in ((data.get("assets") or {}).get("items") or {}):
                             issues.append(f"[Missing Item] {sc['id']}/{key}: '{ref}' is not in assets.items")
+                itype = inter.get("type")
+                if itype not in ("drag", "tap", "hold", "slide", "turn"):
+                    issues.append(f"[Bad Interaction] {sc['id']}: type '{itype}' (drag | tap | hold | slide | turn)")
+                elif itype in ("slide", "turn", "hold") and not isinstance(inter.get(itype), dict):
+                    issues.append(f"[Bad Interaction] {sc['id']}: a '{itype}' interaction needs its `{itype}` spec")
+                sl = inter.get("slide") or {}
+                if sl.get("reveal") and str(sl["reveal"]).removeprefix("bg:") not in ((data.get("assets") or {}).get("backgrounds") or {}):
+                    issues.append(f"[Missing Asset] {sc['id']}/slide: reveal '{sl['reveal']}' is not in assets.backgrounds")
+                if sl and sl.get("from") == sl.get("to"):
+                    issues.append(f"[Bad Interaction] {sc['id']}/slide: `from` and `to` are the same point")
+                tn = inter.get("turn") or {}
+                if tn and (tn.get("from") == tn.get("to") or not tn.get("r")):
+                    issues.append(f"[Bad Interaction] {sc['id']}/turn: needs a radius `r` and `from` != `to`")
                 hold_item = (inter.get("hold") or {}).get("item")
                 if hold_item and hold_item not in ((data.get("assets") or {}).get("items") or {}):
                     issues.append(f"[Missing Item] {sc['id']}/hold: '{hold_item}' is not in assets.items")
@@ -595,6 +613,10 @@ def validate_story_folder(
             n_done = (1 if inter.get("doneLine") else 0) + len(inter.get("doneLines") or [])
             for ci, cue in enumerate(sc.get("cues") or []):
                 where = f"{sc.get('id')}/cues[{ci}]"
+                unknown = sorted(set(cue) - CUE_KEYS)
+                if unknown:
+                    issues.append(f"[Bad Cue] {where}: unknown keys {unknown} (the engine ignores them; "
+                                  "anchors: at | line | doneLine | done | choice | spot, effects: set | people | backdrop | actors)")
                 if "line" in cue and not 0 <= int(cue["line"]) < n_lines:
                     issues.append(f"[Bad Cue] {where}: line {cue['line']} does not exist ({n_lines} lines)")
                 if "doneLine" in cue and not 0 <= int(cue["doneLine"]) < n_done:
@@ -617,6 +639,14 @@ def validate_story_folder(
                       *[sp["line"] for sp in inter.get("spots") or [] if sp.get("line")],
                       *[ch["responseLine"] for ch in (sc.get("minigame") or {}).get("choices") or [] if ch.get("responseLine")]]
             for ln in spoken:
+                th = ln.get("thought") if isinstance(ln.get("thought"), dict) else None
+                for pic in (th or {}).get("images") or []:
+                    if pic.get("item") and pic["item"] not in ((data.get("assets") or {}).get("items") or {}):
+                        issues.append(f"[Bad Thought] {sc.get('id')}/{ln.get('id')}: item '{pic['item']}' is not in assets.items")
+                    if pic.get("sprite") and pic["sprite"] not in ((data.get("assets") or {}).get("sprites") or {}):
+                        issues.append(f"[Bad Thought] {sc.get('id')}/{ln.get('id')}: sprite '{pic['sprite']}' is not in assets.sprites")
+                if th and th.get("who") and th["who"] not in people:
+                    issues.append(f"[Bad Thought] {sc.get('id')}/{ln.get('id')}: who '{th['who']}' is not in scene.people")
                 if ln.get("emoteWho") and ln["emoteWho"] not in people:
                     issues.append(f"[Bad Cue] {sc.get('id')}/{ln.get('id')}: emoteWho '{ln['emoteWho']}' is not in scene.people")
             bd = str(sc.get("backdrop", ""))

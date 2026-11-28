@@ -146,6 +146,21 @@ All coordinates below are in the 320x200 virtual frame. Example: `hanami-first`.
   `drag` (items from `from` to `to`, dotted arc hint + target glow), `tap` (find `spots`, optional `line` per spot),
   `hold` (press-and-hold meter for `durationSec`, optional `item` sprite + pixel `streamTo`). `doneLine` plays on completion.
   In `autoplay` / exported videos a pixel cursor performs the interaction, so MP4s show the whole game.
+- Objects that change with the player's hand (the reference player's lever / dial / gauges):
+  - `slide` `{ from, to, label?, panel?, reveal? }`: drag a handle along a track (a sliding door, a lever, a
+    curtain). `panel` (a rect of the painting) moves with the handle and `reveal` (another backdrop) shows where
+    it was, so a fusuma really opens on the next room (tsuru `slide_fusuma`: the crane appears in the gap; a done
+    cue `backdrop` then cuts to that room).
+  - `turn` `{ x, y, r, from, to, kind: "clock" | "knob", turns?, unit?, label? }`: turn a big dial by dragging
+    around it. `clock`: `from` / `to` in hours (4.8 = 4:48), the minute hand turns once per hour, and the readout
+    under the dial says the time in Japanese with furigana as it turns (4時48分 -> 5時半: hachiko `every_evening`).
+    `knob`: `from` -> `to` in `unit` over `turns` turns (a stove, a radio).
+  - A prop with STATES (a candle off / lit, a lever down / up) is a `kind: "poses"` sheet like a character (base
+    painting + "change only the X" edits), shown as a `people` entry and driven with `interaction.drive`.
+- Lines: `thought` `{ images: [{ item } | { sprite, frame, crop? }], who?, side?, at?, bg? }` shows a thought bubble
+  (a framed picture + 3 growing dots from the thinker's head) while the line plays: what someone wishes or
+  imagines (〜たい, 〜たかった; kasa-jizo market: ojiisan pictures obaasan smiling beside mochi). Thinker: `who`
+  (a scene person), else `side` (a bust), else `emoteWho` / the speaker.
 - `assets.items`: small palette-locked object sprites (`pixellab_clean_sprite` on an `art-src/` raw image) used by interactions.
 - `titleCard`: intro panel `{ title, subtitle, credit }` (falls back to `bannerTitle` / `bannerSubtitle` / story title).
 - `overlays[]`: several atmospheric layers in order (`light_rays`, `petals`, `snow`, `rain`, `bath_steam`); `overlay` still works.
@@ -241,7 +256,8 @@ the world changes with the story. Example: `hachiko` (ported from the old standa
   feet stay planted at any `speed`; the sprite is mirrored when it faces the other way). People also work on painted
   `bg:` scenes (e.g. `hanami-first` intro: Minh and Yui walk into the park; prompts in `art-src/hanami-first/PROMPTS-walk.md`).
   The validator warns `[Sprite Clips]` (no idle / no walk clip) and `[Foot Slide]` (walk clip without `stridePx`).
-- `cues`: `{ at | line | doneLine | done | choice, ifChoice, delay, set: {...}, backdrop, people: [{ who, walkTo, speed,
+- `cues` (the validator fails on any other key: a cue the engine cannot read does nothing):
+  `{ at | line | doneLine | done | choice | spot, ifChoice, delay, set: {...}, backdrop, actors, people: [{ who, walkTo, speed,
   then: pose|"exit", x, face, pose, show, fadeOut, hop }] }` — anchors are recorded as the scene plays, so videos are
   deterministic. `choice: "<id>"` fires when that answer is picked; `ifChoice` keeps a cue only if that answer was picked
   earlier in the story. `backdrop: "bg:loom"` cuts to another picture (a door slides open on another room); the scene's own

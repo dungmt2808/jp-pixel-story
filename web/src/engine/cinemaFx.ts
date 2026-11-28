@@ -191,3 +191,131 @@ export function drawStream(ctx: CanvasRenderingContext2D, from: Vec, to: Vec, t:
     ctx.fillRect(Math.round(sx), Math.round(sy), 1, 1);
   }
 }
+
+// ---------------------------------------------------------------------------------------------
+// Slide track and turn dial (interaction types "slide" / "turn")
+// ---------------------------------------------------------------------------------------------
+
+/** Filled pixel disc (midpoint rows, no anti-aliasing). */
+function disc(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, color: string): void {
+  ctx.fillStyle = color;
+  for (let dy = -r; dy <= r; dy++) {
+    const w = Math.floor(Math.sqrt(r * r - dy * dy + r * 0.8));
+    ctx.fillRect(cx - w, cy + dy, 2 * w + 1, 1);
+  }
+}
+
+function thickLine(ctx: CanvasRenderingContext2D, a: Vec, b: Vec, color: string, w = 1): void {
+  ctx.fillStyle = color;
+  for (const [x, y] of pixelLine(a, b)) ctx.fillRect(x - Math.floor((w - 1) / 2), y - Math.floor((w - 1) / 2), w, w);
+}
+
+/** Dotted track + a round handle at u (0..1). Lit dots run ahead of the handle while it is idle. */
+export function drawSlideTrack(ctx: CanvasRenderingContext2D, from: Vec, to: Vec, u: number, t: number, dragging: boolean): void {
+  const n = Math.max(4, Math.round(Math.hypot(to[0] - from[0], to[1] - from[1]) / 5));
+  const lit = Math.floor(t * 8) % (n + 3);
+  for (let i = 1; i < n; i++) {
+    const k = i / n;
+    if (k < u) continue;
+    const x = Math.round(from[0] + (to[0] - from[0]) * k);
+    const y = Math.round(from[1] + (to[1] - from[1]) * k);
+    ctx.fillStyle = !dragging && i === lit ? GOLD : CREAM;
+    ctx.fillRect(x - 1, y - 1, 2, 2);
+  }
+  // target bracket
+  const [tx, ty] = [Math.round(to[0]), Math.round(to[1])];
+  ctx.fillStyle = GOLD;
+  ctx.fillRect(tx - 1, ty - 5, 3, 1);
+  ctx.fillRect(tx - 1, ty + 5, 3, 1);
+  ctx.fillRect(tx, ty - 5, 1, 11);
+  const hx = Math.round(from[0] + (to[0] - from[0]) * u);
+  const hy = Math.round(from[1] + (to[1] - from[1]) * u);
+  const pulse = dragging ? 0 : Math.round((Math.sin(t * 6) + 1) / 2);
+  disc(ctx, hx, hy, 5 + pulse, OUTLINE);
+  disc(ctx, hx, hy, 4 + pulse, dragging ? GOLD : CREAM);
+  ctx.fillStyle = OUTLINE;
+  ctx.fillRect(hx - 1, hy - 2, 1, 5);
+  ctx.fillRect(hx + 1, hy - 2, 1, 5);
+}
+
+/**
+ * A big dial: a clock face (12 ticks, short hour hand, long red minute hand) or a knob (ticks over its
+ * sweep, one pointer). `angle` is the hand / pointer angle (0 = 12 o'clock, clockwise). A gold knob
+ * at the tip shows where to grab; dotted marks ahead of it show the way to turn.
+ */
+export function drawDial(
+  ctx: CanvasRenderingContext2D,
+  c: Vec,
+  r: number,
+  opts: { kind: "clock" | "knob"; hours?: number; angle: number; targetAngle?: number; t: number; dragging: boolean }
+): void {
+  const [cx, cy] = [Math.round(c[0]), Math.round(c[1])];
+  disc(ctx, cx + 1, cy + 2, r + 2, "rgba(16,19,34,0.55)"); // drop shadow
+  disc(ctx, cx, cy, r + 2, OUTLINE);
+  disc(ctx, cx, cy, r + 1, "#c78b56"); // brass rim
+  disc(ctx, cx, cy, r - 1, CREAM);
+  const at = (ang: number, rr: number): Vec => [Math.round(cx + Math.sin(ang) * rr), Math.round(cy - Math.cos(ang) * rr)];
+  const ticks = opts.kind === "clock" ? 12 : 8;
+  for (let i = 0; i < ticks; i++) {
+    const ang = (i / ticks) * Math.PI * 2;
+    thickLine(ctx, at(ang, r - 2), at(ang, r - (i % 3 === 0 ? 6 : 4)), OUTLINE, 1);
+  }
+  // the way to go: dotted arc from the hand to the target
+  if (opts.targetAngle !== undefined && !opts.dragging) {
+    const span = opts.targetAngle - opts.angle;
+    const steps = Math.max(2, Math.round(Math.abs(span) / 0.22));
+    const lit = Math.floor(opts.t * 8) % (steps + 2);
+    for (let i = 1; i <= steps; i++) {
+      const [x, y] = at(opts.angle + (span * i) / steps, r + 6);
+      ctx.fillStyle = i === lit ? GOLD : CREAM;
+      ctx.fillRect(x - 1, y - 1, 2, 2);
+    }
+  }
+  if (opts.kind === "clock") {
+    const hourAng = (((opts.hours ?? 0) % 12) / 12) * Math.PI * 2;
+    thickLine(ctx, [cx, cy], at(hourAng, Math.round(r * 0.5)), OUTLINE, 2);
+    thickLine(ctx, [cx, cy], at(opts.angle, r - 5), "#b8382c", 2);
+  } else {
+    thickLine(ctx, [cx, cy], at(opts.angle, r - 5), OUTLINE, 2);
+  }
+  disc(ctx, cx, cy, 2, OUTLINE);
+  // grab knob at the tip
+  const [kx, ky] = at(opts.angle, r - 5);
+  const pulse = opts.dragging ? 0 : Math.round((Math.sin(opts.t * 6) + 1) / 2);
+  disc(ctx, kx, ky, 3 + pulse, OUTLINE);
+  disc(ctx, kx, ky, 2 + pulse, GOLD);
+}
+
+/**
+ * Thought bubble frame: trail dots appear one by one (age 0 / 0.1 / 0.2 s), then the panel (0.3 s).
+ * Returns the inner content origin once the panel is up (the caller draws the pictures), else null.
+ */
+export function drawThoughtFrame(
+  ctx: CanvasRenderingContext2D,
+  layout: { box: [number, number, number, number]; dots: { at: Vec; r: number }[] },
+  age: number,
+  bg = "#fff8ea"
+): Vec | null {
+  layout.dots.forEach((d, i) => {
+    if (age < i * 0.1) return;
+    disc(ctx, d.at[0], d.at[1], d.r + 1, OUTLINE);
+    disc(ctx, d.at[0], d.at[1], d.r, CREAM);
+  });
+  if (age < 0.3) return null;
+  const [x0, y0, x1, y1] = layout.box;
+  const W = x1 - x0;
+  const H = y1 - y0;
+  // a rect with its 4 corner pixels left out (rounded look, nothing cleared from the frame)
+  const rounded = (x: number, y: number, w: number, h: number, color: string) => {
+    ctx.fillStyle = color;
+    ctx.fillRect(x + 1, y, w - 2, h);
+    ctx.fillRect(x, y + 1, w, h - 2);
+  };
+  rounded(x0 + 2, y0 + 2, W, H, "rgba(16,19,34,0.55)");
+  rounded(x0, y0, W, H, OUTLINE);
+  ctx.fillStyle = CREAM;
+  ctx.fillRect(x0 + 1, y0 + 1, W - 2, H - 2);
+  ctx.fillStyle = bg;
+  ctx.fillRect(x0 + 2, y0 + 2, W - 4, H - 4);
+  return [x0 + 2, y0 + 2];
+}

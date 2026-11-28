@@ -4,6 +4,9 @@ import { resolveBgmTheme, sfxUrl } from "../audio/themes";
 import { LEGACY_BADGE_OVERLAY, OVERLAYS, drawBackdrop } from "../engine/cinemaBackdrops";
 import {
   drawArcHint,
+  drawDial,
+  drawSlideTrack,
+  drawThoughtFrame,
   drawCursor,
   drawDitherVignette,
   drawLeaderLine,
@@ -24,7 +27,17 @@ import {
   type Side,
 } from "../engine/cinemaModel";
 import {
+  angleStep,
+  dialAngle,
   driveFrame,
+  jaClockRuby,
+  slidePoint,
+  slideProgress,
+  THOUGHT_GAP,
+  THOUGHT_PAD,
+  thoughtLayout,
+  turnTotal,
+  turnValue,
   dropDragItem,
   HOLD_ITEM_DY,
   HOLD_METER_W,
@@ -255,6 +268,10 @@ export function CinemaStage({
   const dragIdxRef = useRef(-1);
   const pointerRef = useRef<Vec>([0, 0]);
   const holdRef = useRef({ progress: 0, holding: false });
+  // slide (door / lever) and turn (dial): live progress 0..1 and whether the player is dragging it
+  const slideRef = useRef({ u: 0, dragging: false });
+  const turnRef = useRef({ acc: 0, last: 0, dragging: false });
+  const [turnReadout, setTurnReadout] = useState<number | null>(null);
   // interaction.drive: steps done so far, when the last one happened, the frame drawn last
   const stepCountRef = useRef(0);
   const stepAtRef = useRef<number | null>(null);
@@ -302,6 +319,9 @@ export function CinemaStage({
     dragRef.current = initDrag(currentScene.interaction?.items ?? []);
     dragIdxRef.current = -1;
     holdRef.current = { progress: 0, holding: false };
+    slideRef.current = { u: 0, dragging: false };
+    turnRef.current = { acc: 0, last: 0, dragging: false };
+    setTurnReadout(currentScene.interaction?.turn ? currentScene.interaction.turn.from : null);
     stepCountRef.current = 0;
     stepAtRef.current = null;
     driveFrameRef.current = null;
@@ -495,19 +515,62 @@ export function CinemaStage({
         }
       } else if (interaction.type === "hold") {
         holdRef.current.holding = true;
+      } else if (interaction.type === "slide" && interaction.slide) {
+        const sl = interaction.slide;
+        const [hx, hy] = slidePoint(sl.from, sl.to, slideRef.current.u);
+        if (slideRef.current.u < 1 && Math.hypot(p[0] - hx, p[1] - hy) <= 14) {
+          slideRef.current.dragging = true;
+          retroAudio.playClick();
+        }
+      } else if (interaction.type === "turn" && interaction.turn) {
+        const tn = interaction.turn;
+        if (Math.hypot(p[0] - tn.x, p[1] - tn.y) <= tn.r + 10) {
+          turnRef.current.dragging = true;
+          turnRef.current.last = dialAngle([tn.x, tn.y], p);
+          retroAudio.playClick();
+        }
       }
     },
     [interaction, playVoiceLine, registerProgress]
   );
 
-  const moveTo = useCallback((p: Vec) => {
-    pointerRef.current = p;
-  }, []);
+  const moveTo = useCallback(
+    (p: Vec) => {
+      pointerRef.current = p;
+      if (phaseRef.current !== "interact" || !interaction) return;
+      if (interaction.type === "slide" && interaction.slide && slideRef.current.dragging) {
+        const u = slideProgress(interaction.slide.from, interaction.slide.to, p);
+        slideRef.current.u = u >= 0.97 ? 1 : u;
+        if (u >= 0.97) {
+          slideRef.current.dragging = false;
+          retroAudio.playBeepScan();
+          registerProgressRef.current(1);
+        }
+      } else if (interaction.type === "turn" && interaction.turn && turnRef.current.dragging) {
+        const tn = interaction.turn;
+        const tr = turnRef.current;
+        const ang = dialAngle([tn.x, tn.y], p);
+        const total = turnTotal(tn);
+        tr.acc = Math.max(0, Math.min(total, tr.acc + angleStep(tr.last, ang)));
+        tr.last = ang;
+        setTurnReadout(turnValue(tn, tr.acc / total));
+        if (tr.acc >= total * 0.995) {
+          tr.acc = total;
+          tr.dragging = false;
+          retroAudio.playBeepScan();
+          registerProgressRef.current(1);
+        }
+      }
+    },
+    [interaction]
+  );
 
   const releaseAt = useCallback(
     (p: Vec) => {
       pointerRef.current = p;
       holdRef.current.holding = false;
+      slideRef.current.dragging = false;
+      turnRef.current.dragging = false;
       const i = dragIdxRef.current;
       if (i < 0) return;
       dragIdxRef.current = -1;
@@ -593,6 +656,40 @@ export function CinemaStage({
             const spotLine = s.line ? voiceHoldMs(s.line.durationSec) + 300 : 650;
             await sleep(spotLine);
           }
+        } else if (interaction.type === "slide" && interaction.slide) {
+          const sl = interaction.slide;
+          await moveCursor(sl.from, 550, false);
+          if (cancelled) return;
+          c.down = true;
+          pressAt(sl.from);
+          for (let k = 1; k <= 30 && !cancelled; k++) {
+            const q = slidePoint(sl.from, sl.to, easeOutCubic(k / 30));
+            c.x = q[0];
+            c.y = q[1];
+            moveTo(q);
+            await sleep(33);
+          }
+          releaseAt(sl.to);
+          c.down = false;
+        } else if (interaction.type === "turn" && interaction.turn) {
+          const tn = interaction.turn;
+          const total = turnTotal(tn);
+          const start = (tn.kind ?? "clock") === "clock" ? ((tn.from % 1) + 1) % 1 * Math.PI * 2 : 0;
+          const tip = (ang: number): Vec => [tn.x + Math.sin(ang) * (tn.r - 5), tn.y - Math.cos(ang) * (tn.r - 5)];
+          await moveCursor(tip(start), 550, false);
+          if (cancelled) return;
+          c.down = true;
+          pressAt(tip(start));
+          const steps = Math.max(20, Math.round(total / 0.12));
+          for (let k = 1; k <= steps && !cancelled; k++) {
+            const q = tip(start + (total * 1.01 * k) / steps);
+            c.x = q[0];
+            c.y = q[1];
+            moveTo(q);
+            await sleep(33);
+          }
+          releaseAt(tip(start + total));
+          c.down = false;
         } else if (interaction.type === "hold" && interaction.hold) {
           await moveCursor([interaction.hold.x, interaction.hold.y + 12], 500, false);
           if (cancelled) return;
@@ -737,6 +834,23 @@ export function CinemaStage({
         ctx.fillStyle = "#101322";
         ctx.fillRect(0, 0, VIRTUAL_W, VIRTUAL_H);
       }
+      // slide: the panel (a rect of the painting) moves with the handle; the next room shows where it was
+      const sl = inter?.type === "slide" ? inter.slide : undefined;
+      if (sl?.panel && backdropRef === baseBackdrop && bgImg) {
+        const u = phaseRef.current === "interact" ? slideRef.current.u : phaseRef.current === "lines" ? 0 : 1;
+        if (u > 0) {
+          const [x0, y0, x1, y1] = sl.panel;
+          const dx = Math.round((sl.to[0] - sl.from[0]) * u);
+          const dy = Math.round((sl.to[1] - sl.from[1]) * u);
+          const reveal = sl.reveal ? imgs[sl.reveal.startsWith("bg:") ? sl.reveal : `bg:${sl.reveal}`] : undefined;
+          if (reveal) ctx.drawImage(reveal, x0, y0, x1 - x0, y1 - y0, x0, y0, x1 - x0, y1 - y0);
+          else {
+            ctx.fillStyle = "#100807";
+            ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+          }
+          ctx.drawImage(bgImg, x0, y0, x1 - x0, y1 - y0, x0 + dx, y0 + dy, x1 - x0, y1 - y0);
+        }
+      }
       const anchored = motion.map((fx) =>
         fx.type === "mover" && fx.startOn
           ? { ...fx, delaySec: (cueTime(fx.startOn, anchorsRef.current) ?? 1e9) + (fx.delaySec ?? 0) }
@@ -762,8 +876,18 @@ export function CinemaStage({
           if (drv && sheet && inter) {
             const steps = inter.type === "drag" ? inter.items?.length ?? 1 : inter.type === "tap" ? inter.spots?.length ?? 1 : 1;
             const finished = phaseNow === "doneLine" || phaseNow === "ready";
-            const progress01 = finished ? 1 : inter.type === "hold" ? holdRef.current.progress : stepCountRef.current / Math.max(1, steps);
-            const active = phaseNow === "interact" && (inter.type === "hold" ? holdRef.current.holding : dragIdxRef.current >= 0);
+            const live =
+              inter.type === "hold" ? holdRef.current.progress
+              : inter.type === "slide" ? slideRef.current.u
+              : inter.type === "turn" && inter.turn ? turnRef.current.acc / turnTotal(inter.turn)
+              : stepCountRef.current / Math.max(1, steps);
+            const progress01 = finished ? 1 : live;
+            const active =
+              phaseNow === "interact" &&
+              (inter.type === "hold" ? holdRef.current.holding
+                : inter.type === "slide" ? slideRef.current.dragging
+                : inter.type === "turn" ? turnRef.current.dragging
+                : dragIdxRef.current >= 0);
             const stepAge = stepAtRef.current === null ? null : (now - stepAtRef.current) / 1000;
             frame = driveFrame(poseFrames(sheet.meta, drv.pose), drv.by, {
               active, progress: progress01, t, stepAge, fps: drv.fps, stepSec: drv.stepSec,
@@ -842,6 +966,17 @@ export function CinemaStage({
             ctx.fillRect(Math.round(s.x) - 2, Math.round(s.y), 5, 1);
           }
         }
+      } else if (inter?.type === "slide" && inter.slide && interacting) {
+        drawSlideTrack(ctx, inter.slide.from, inter.slide.to, slideRef.current.u, t, slideRef.current.dragging);
+      } else if (inter?.type === "turn" && inter.turn && interacting) {
+        const tn = inter.turn;
+        const total = turnTotal(tn);
+        const p01 = turnRef.current.acc / total;
+        const clock = (tn.kind ?? "clock") === "clock";
+        const value = turnValue(tn, p01);
+        const angle = clock ? (value % 1) * Math.PI * 2 : -0.75 * Math.PI + p01 * total;
+        const target = clock ? angle + (total - turnRef.current.acc) : -0.75 * Math.PI + total;
+        drawDial(ctx, [tn.x, tn.y], tn.r, { kind: clock ? "clock" : "knob", hours: value, angle, targetAngle: target, t, dragging: turnRef.current.dragging });
       } else if (inter?.type === "hold" && inter.hold) {
         const h = inter.hold;
         const hr = holdRef.current;
@@ -876,6 +1011,52 @@ export function CinemaStage({
 
       // one light grade over the whole world layer (backdrop, actors, items) = one time of day
       drawLightGrade(ctx, currentScene.light);
+
+      // thought bubble of the line being spoken (〜たい / 〜たかった: what the speaker wishes),
+      // drawn after the light grade so the imagined picture keeps its own colours at night
+      const th = vLine?.thought;
+      if (th && th.images.length) {
+        const pics = th.images.flatMap((pic) => {
+          if (pic.item) {
+            const img = imgs[`i:${pic.item}`];
+            if (!img) return [];
+            const k = Math.max(1, Math.floor(pic.scale ?? 2));
+            const [w, h] = [img.naturalWidth * k, img.naturalHeight * k];
+            return [{ w, h, draw: (x: number, y: number) => drawPixelImage(ctx, img, x, y, w, h) }];
+          }
+          const sheet = pic.sprite ? spritesRef.current[pic.sprite] : undefined;
+          if (!sheet) return [];
+          const fw = sheet.meta.frameWidth;
+          const [c0, c1, c2, c3] = pic.crop ?? [0, 0, fw, sheet.meta.frameHeight];
+          const k = Math.max(1, Math.floor(pic.scale ?? 1));
+          const [w, h] = [(c2 - c0) * k, (c3 - c1) * k];
+          const sx = (pic.frame ?? 0) * fw + c0;
+          return [{ w, h, draw: (x: number, y: number) => ctx.drawImage(sheet.image, sx, c1, c2 - c0, c3 - c1, x, y, w, h) }];
+        });
+        if (pics.length) {
+          const thinker = th.who ?? vLine?.emoteWho;
+          const pst = thinker ? peopleStateRef.current[thinker] : undefined;
+          const pdef = thinker ? currentScene.people?.[thinker] : undefined;
+          let head: Vec = [VIRTUAL_W / 2, 120];
+          if (pst && pdef) {
+            head = [Math.round(pst.x), Math.round(pst.y - personBox(pdef.kind, spritesRef.current).h + 2)];
+          } else {
+            const side = th.side ?? speakerSide;
+            const b = side ? actorBox(side) : null;
+            if (b) head = [b.x, b.top + Math.round(b.h * 0.15)];
+          }
+          const w = pics.reduce((a, pic) => a + pic.w, 0) + THOUGHT_GAP * (pics.length - 1);
+          const h = Math.max(...pics.map((pic) => pic.h));
+          const origin = drawThoughtFrame(ctx, thoughtLayout(head, w, h, th.at), vAge, th.bg);
+          if (origin) {
+            let x = origin[0] + THOUGHT_PAD;
+            for (const pic of pics) {
+              pic.draw(x, origin[1] + THOUGHT_PAD + Math.round((h - pic.h) / 2));
+              x += pic.w + THOUGHT_GAP;
+            }
+          }
+        }
+      }
       if (vLine?.emote && who && whoDef) {
         const box = personBox(whoDef.kind, spritesRef.current);
         drawEmote(ctx, vLine.emote, who.x + (who.face === "right" ? 4 : -4), who.y - box.h - 2, vAge, 1);
@@ -1054,6 +1235,24 @@ export function CinemaStage({
               </div>
             ) : null
           )}
+        {interaction?.type === "slide" && phase === "interact" && interaction.slide?.label && (
+          <div className={`cine-tag ${tagEdge(interaction.slide.from[0])}`} style={toPct(interaction.slide.from[0], interaction.slide.from[1] - 16)}>
+            <RubyText segments={interaction.slide.label} showFurigana={showFurigana} />
+          </div>
+        )}
+        {interaction?.type === "turn" && phase === "interact" && interaction.turn && turnReadout !== null && (
+          <div className="cine-tag cine-readout" style={toPct(interaction.turn.x, interaction.turn.y + interaction.turn.r + 9)}>
+            {interaction.turn.label && (
+              <span className="cine-tag-sub">
+                <RubyText segments={interaction.turn.label} showFurigana={showFurigana} />
+              </span>
+            )}
+            <RubyText
+              segments={(interaction.turn.kind ?? "clock") === "clock" ? jaClockRuby(turnReadout) : `${Math.round(turnReadout)}${interaction.turn.unit ?? ""}`}
+              showFurigana={showFurigana}
+            />
+          </div>
+        )}
         {interaction?.type === "hold" && phase === "interact" && interaction.hold && (
           <div className={`cine-tag ${tagEdge(interaction.hold.x)}`} style={toPct(interaction.hold.x, interaction.hold.y - 12)}>
             <RubyText segments={interaction.hold.label} showFurigana={showFurigana} />

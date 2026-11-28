@@ -150,6 +150,108 @@ export function driveFrame(
 }
 
 // ---------------------------------------------------------------------------------------------
+// Slide (doors, levers) and turn (clock hands, knobs)
+// ---------------------------------------------------------------------------------------------
+
+/** Where `p` projects on the track from -> to, as 0..1. */
+export function slideProgress(from: Vec, to: Vec, p: Vec): number {
+  const dx = to[0] - from[0];
+  const dy = to[1] - from[1];
+  const len2 = dx * dx + dy * dy || 1;
+  return Math.max(0, Math.min(1, ((p[0] - from[0]) * dx + (p[1] - from[1]) * dy) / len2));
+}
+
+export function slidePoint(from: Vec, to: Vec, u: number): Vec {
+  return [Math.round(from[0] + (to[0] - from[0]) * u), Math.round(from[1] + (to[1] - from[1]) * u)];
+}
+
+/** Clock-face angle of `p` around `c`: 0 at 12 o'clock, growing clockwise (radians, -PI..PI]. */
+export function dialAngle(c: Vec, p: Vec): number {
+  return Math.atan2(p[0] - c[0], -(p[1] - c[1]));
+}
+
+/** Shortest signed step between two dial angles (clockwise > 0), so crossing 12 o'clock never jumps. */
+export function angleStep(prev: number, next: number): number {
+  let d = next - prev;
+  while (d > Math.PI) d -= 2 * Math.PI;
+  while (d <= -Math.PI) d += 2 * Math.PI;
+  return d;
+}
+
+/** Radians the player must turn: a clock's minute hand turns once per hour; a knob `turns` times. */
+export function turnTotal(spec: { kind?: string; from: number; to: number; turns?: number }): number {
+  return (spec.kind ?? "clock") === "clock" ? Math.abs(spec.to - spec.from) * 2 * Math.PI : (spec.turns ?? 0.75) * 2 * Math.PI;
+}
+
+export function turnValue(spec: { from: number; to: number }, progress: number): number {
+  return spec.from + (spec.to - spec.from) * Math.max(0, Math.min(1, progress));
+}
+
+const HOUR_NUM = ["じゅうに", "いち", "に", "さん", "よ", "ご", "ろく", "しち", "はち", "く", "じゅう", "じゅういち", "じゅうに"];
+const TENS_KANA = ["", "じゅう", "にじゅう", "さんじゅう", "よんじゅう", "ごじゅう"];
+const TENS_FUN = ["", "じゅっぷん", "にじゅっぷん", "さんじゅっぷん", "よんじゅっぷん", "ごじゅっぷん"];
+const ONES_FUN = ["", "いっぷん", "にふん", "さんぷん", "よんぷん", "ごふん", "ろっぷん", "ななふん", "はっぷん", "きゅうふん"];
+
+/** Reading of N分 (1..59): いっぷん, にふん, さんぷん ... じゅっぷん, よんじゅうはっぷん. */
+export function minuteKana(m: number): string {
+  const t = Math.floor(m / 10);
+  const o = m % 10;
+  return o === 0 ? TENS_FUN[t] : TENS_KANA[t] + ONES_FUN[o];
+}
+
+/**
+ * A clock time (hours, 4.8 = 4:48) as ruby for the readout, one ruby per part so a long reading never
+ * stretches the digits apart: "{4|よ}{時|じ}{48|よんじゅうはっ}{分|ぷん}", "{5|ご}{時|じ}{半|はん}" at half past,
+ * "{9|く}{時|じ}ちょうど" on the hour. 12-hour, to the minute.
+ */
+export function jaClockRuby(hours: number): string {
+  let h = Math.floor(hours);
+  let m = Math.round((hours - h) * 60);
+  if (m === 60) {
+    h += 1;
+    m = 0;
+  }
+  const h12 = ((h % 12) + 12) % 12 || 12;
+  const hour = `{${h12}|${HOUR_NUM[h12]}}{時|じ}`;
+  if (m === 0) return `${hour}ちょうど`;
+  if (m === 30) return `${hour}{半|はん}`;
+  const kana = minuteKana(m);
+  const fun = kana.slice(-2); // ふん / ぷん
+  return `${hour}{${m}|${kana.slice(0, -2)}}{分|${fun}}`;
+}
+
+// ---------------------------------------------------------------------------------------------
+// Thought bubble layout
+// ---------------------------------------------------------------------------------------------
+
+export const THOUGHT_PAD = 4;
+export const THOUGHT_GAP = 5;
+
+/**
+ * Where a thought panel of `w` x `h` (content size) goes for a thinker whose head is at `head`:
+ * `at` if given, else above the head shifted toward the frame centre, kept inside the frame and
+ * below the top hint row. Returns the panel box (border included) and the 3 trail dots.
+ */
+export function thoughtLayout(head: Vec, w: number, h: number, at?: Vec): { box: Box; dots: { at: Vec; r: number }[] } {
+  const W = w + 2 * THOUGHT_PAD + 4;
+  const H = h + 2 * THOUGHT_PAD + 4;
+  const toward = head[0] < VW / 2 ? 1 : -1;
+  let cx = at ? at[0] : head[0] + toward * Math.round(W / 2 + 10);
+  let cy = at ? at[1] : head[1] - 22 - Math.round(H / 2);
+  cx = Math.max(Math.ceil(W / 2) + 2, Math.min(VW - Math.ceil(W / 2) - 2, cx));
+  cy = Math.max(Math.ceil(H / 2) + 20, Math.min(VH - Math.ceil(H / 2) - 2, cy));
+  const box: Box = [Math.round(cx - W / 2), Math.round(cy - H / 2), Math.round(cx - W / 2) + W, Math.round(cy - H / 2) + H];
+  // trail: from just above the head to the panel corner nearest to it
+  const corner: Vec = [head[0] < cx ? box[0] + 6 : box[2] - 6, head[1] < cy ? box[1] : box[3]];
+  const start: Vec = [head[0] + toward * 3, head[1] - 4];
+  const dots = [0.25, 0.55, 0.85].map((k, i) => ({
+    at: [Math.round(start[0] + (corner[0] - start[0]) * k), Math.round(start[1] + (corner[1] - start[1]) * k)] as Vec,
+    r: i + 1,
+  }));
+  return { box, dots };
+}
+
+// ---------------------------------------------------------------------------------------------
 // Stage layout boxes (shared by the stage drawing and the "never cover a face" test)
 // ---------------------------------------------------------------------------------------------
 
@@ -215,6 +317,21 @@ export function dragBoxes(drag: { from: Vec; to: Vec }, item: { w: number; h: nu
     Math.round(x + item.w / 2),
     Math.round(y + item.h / 2),
   ]);
+}
+
+/** A slide: its whole track (the handle travels along it) and its moving panel. */
+export function slideBoxes(slide: { from: Vec; to: Vec; panel?: [number, number, number, number] }): Box[] {
+  const pad = 7; // the handle knob
+  const out: Box[] = [[
+    Math.min(slide.from[0], slide.to[0]) - pad, Math.min(slide.from[1], slide.to[1]) - pad,
+    Math.max(slide.from[0], slide.to[0]) + pad, Math.max(slide.from[1], slide.to[1]) + pad,
+  ]];
+  return out;
+}
+
+/** A turn dial and its readout tag underneath. */
+export function turnBoxes(turn: { x: number; y: number; r: number }): Box[] {
+  return [[turn.x - turn.r - 2, turn.y - turn.r - 2, turn.x + turn.r + 2, turn.y + turn.r + 16]];
 }
 
 /** The tappable circle of a tap spot, as a box. */

@@ -612,6 +612,27 @@ def test_validator_cut_cues_spot_anchors_and_reaction_targets(tmp_path: Path) ->
     assert not any(t in joined for t in ("[Bad Cue]", "[Bad Actors]", "[Double Character]", "[Unknown Pose]")), joined
 
 
+def test_validator_slide_turn_thought_and_unknown_cue_keys(tmp_path: Path) -> None:
+    pub, sdir = _setup_mock_catalog(tmp_path, "acts", category="story")
+    line = {"id": "l1", "voice": "ji", "jaPlain": "x", "jaRuby": "x", "vi": "x",
+            "thought": {"who": "ghost", "images": [{"item": "mochi"}, {"sprite": "nobody"}]}}
+    scenes = [
+        {"id": "door", "lines": [line], "people": {"ji": {"kind": "sensei", "x": 10}},
+         "cues": [{"on": {"line": 0}, "move": {"who": "ji", "walkTo": 50}}],
+         "interaction": {"type": "slide", "hint": "kéo", "slide": {"from": [10, 10], "to": [10, 10], "reveal": "bg:room"}}},
+        {"id": "clock", "lines": [], "interaction": {"type": "turn", "hint": "xoay", "turn": {"x": 50, "y": 50, "from": 4, "to": 4}}},
+        {"id": "pump", "lines": [], "interaction": {"type": "pump", "hint": "bơm"}},
+    ]
+    story = {"id": "acts", "engine": "cinema", "assets": {"backgrounds": {}, "portraits": {}, "items": {"mochi": "/x.png"}},
+             "scenes": scenes, "reading": {"sentences": [], "vocab": [], "grammar": [], "quiz": []}}
+    (sdir / "story.json").write_text(json.dumps(story), encoding="utf-8")
+    issues = " | ".join(validate_story_folder(sdir, web_public_dir=pub)["issues"])
+    for tag in ("unknown keys ['move', 'on']", "reveal 'bg:room' is not in assets.backgrounds", "`from` and `to` are the same",
+                "turn: needs a radius", "type 'pump'", "sprite 'nobody' is not in assets.sprites", "who 'ghost' is not in scene.people"):
+        assert tag in issues, tag
+    assert "item 'mochi'" not in issues
+
+
 def test_validator_allows_shared_sprite_cast_and_castPortrait_without_static_portraits(tmp_path: Path) -> None:
     pub, sdir = _setup_mock_catalog(tmp_path, "kotoba_ep1", category="story")
     for key in ("stackchan_neutral", "stackchan_happy"):

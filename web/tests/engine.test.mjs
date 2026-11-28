@@ -600,6 +600,46 @@ test("cue `spot` anchors on a found tap spot; cue `actors` cuts the shot; people
   assert.equal(people.personAt(def, moves, 6).alpha, 1);
 });
 
+test("slide and turn: projection on the track, dial angles across 12 o'clock, clock totals", () => {
+  assert.equal(ui.slideProgress([242, 98], [208, 98], [225, 120]), 0.5);
+  assert.equal(ui.slideProgress([242, 98], [208, 98], [260, 98]), 0); // behind the start
+  assert.deepEqual(ui.slidePoint([242, 98], [208, 98], 1), [208, 98]);
+  const c = [100, 100];
+  assert.ok(Math.abs(ui.dialAngle(c, [100, 50])) < 1e-9); // 12 o'clock
+  assert.ok(Math.abs(ui.dialAngle(c, [150, 100]) - Math.PI / 2) < 1e-9); // 3 o'clock, clockwise
+  // from 11:59 to 12:01 is a small clockwise step, not almost a full turn back
+  assert.ok(Math.abs(ui.angleStep(-0.05, 0.05) - 0.1) < 1e-9);
+  assert.ok(Math.abs(ui.angleStep(3.1, -3.1) - (2 * Math.PI - 6.2)) < 1e-9);
+  // 4:48 -> 5:30 = 42 minutes of minute hand = 0.7 turn
+  assert.ok(Math.abs(ui.turnTotal({ kind: "clock", from: 4.8, to: 5.5 }) - 0.7 * 2 * Math.PI) < 1e-9);
+  assert.equal(ui.turnTotal({ kind: "knob", from: 0, to: 3, turns: 0.5 }), Math.PI);
+  assert.equal(ui.turnValue({ from: 4.8, to: 5.5 }, 0.5), 5.15);
+});
+
+test("clock readout in Japanese: hour and minute readings with furigana", () => {
+  assert.equal(ui.jaClockRuby(4.8), "{4|よ}{時|じ}{48|よんじゅうはっ}{分|ぷん}");
+  assert.equal(ui.jaClockRuby(5.5), "{5|ご}{時|じ}{半|はん}");
+  assert.equal(ui.jaClockRuby(9), "{9|く}{時|じ}ちょうど");
+  assert.equal(ui.jaClockRuby(16 + 7 / 60), "{4|よ}{時|じ}{7|なな}{分|ふん}"); // 12-hour face
+  assert.equal(ui.jaClockRuby(0 + 1 / 60), "{12|じゅうに}{時|じ}{1|いっ}{分|ぷん}");
+  const readings = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 34, 59].map((m) => ui.minuteKana(m));
+  assert.deepEqual(readings, ["いっぷん", "にふん", "さんぷん", "よんぷん", "ごふん", "ろっぷん", "ななふん", "はっぷん",
+    "きゅうふん", "じゅっぷん", "にじゅっぷん", "さんじゅうよんぷん", "ごじゅうきゅうふん"]);
+});
+
+test("thought bubble: above the thinker toward the centre, inside the frame, trail dots grow", () => {
+  const lay = ui.thoughtLayout([112, 105], 100, 44);
+  const [x0, y0, x1, y1] = lay.box;
+  assert.ok(x0 >= 0 && x1 <= 320 && y0 >= 20 && y1 <= 200);
+  assert.ok((x0 + x1) / 2 > 112); // toward the centre (thinker on the left half)
+  assert.ok(y1 < 105); // above the head
+  assert.deepEqual(lay.dots.map((d) => d.r), [1, 2, 3]);
+  const pinned = ui.thoughtLayout([300, 120], 40, 30, [250, 60]).box;
+  assert.equal(Math.round((pinned[0] + pinned[2]) / 2), 250);
+  const edge = ui.thoughtLayout([310, 30], 120, 60).box; // pushed back inside the frame
+  assert.ok(edge[2] <= 320 && edge[1] >= 20);
+});
+
 test("tags near the frame edge hang inwards instead of being cut off", () => {
   assert.equal(ui.tagEdge(20), "edge-l");
   assert.equal(ui.tagEdge(160), "");
@@ -608,7 +648,7 @@ test("tags near the frame edge hang inwards instead of being cut off", () => {
 
 // --- authoring guardrail: interactions never cover a face (AGENTS.md rule 5) --------------------
 
-test("no hold / drag / tap target of any cinema story covers an on-stage character's face", () => {
+test("no hold / drag / tap / slide / turn target of any cinema story covers an on-stage character's face", () => {
   const publicDir = path.join(webRoot, "public");
   const pngSize = (url) => {
     const b = fs.readFileSync(path.join(publicDir, url.replace(/^\//, "")));
@@ -638,11 +678,33 @@ test("no hold / drag / tap target of any cinema story covers an on-stage charact
         // inactive actors step 4 px outward, so keep 4 px of slack on both sides
         if (face) faces.push({ side, box: [face[0] - 4, face[1], face[2] + 4, face[3]] });
       }
+      // full-body sprite people on stage while the player acts: their head (top of the figure)
+      const dragged = new Set((inter.items ?? []).map((it) => it.person).filter(Boolean));
+      for (const [pid, def] of Object.entries(scene.people ?? {})) {
+        if (!String(def.kind).startsWith("sprite:") || dragged.has(pid) || def.hideWhileInteract) continue;
+        if (def.hidden && !def.onlyWhileInteract) continue; // appears later, by a cue
+        const metaUrl = story.assets?.sprites?.[def.kind.slice(7)];
+        if (!metaUrl) continue;
+        const meta = JSON.parse(fs.readFileSync(path.join(publicDir, metaUrl.replace(/^\//, "")), "utf8"));
+        let [x, y] = [def.x, def.y ?? 150];
+        for (const cue of scene.cues ?? []) {
+          if (cue.line === undefined && cue.at === undefined) continue; // only moves made before the game
+          for (const mv of cue.people ?? []) {
+            if (mv.who !== pid) continue;
+            x = mv.walkTo ?? mv.x ?? x;
+            y = mv.walkToY ?? mv.y ?? y;
+          }
+        }
+        const h = meta.pivot?.y ?? meta.frameHeight;
+        faces.push({ side: `person ${pid}`, box: [x - 12, y - h, x + 12, y - h + 24] });
+      }
       const targets = [];
       const itemSize = (k) => (k && story.assets?.items?.[k] ? pngSize(story.assets.items[k]) : { w: 16, h: 16 });
       if (inter.hold) ui.holdBoxes(inter.hold, inter.hold.item ? itemSize(inter.hold.item) : undefined).forEach((b) => targets.push(["hold", b]));
       for (const it of inter.items ?? []) ui.dragBoxes(it, itemSize(it.item)).forEach((b) => targets.push([`drag ${it.id}`, b]));
       for (const sp of inter.spots ?? []) targets.push([`tap ${sp.id}`, ui.tapBox(sp)]);
+      if (inter.slide) ui.slideBoxes(inter.slide).forEach((b) => targets.push(["slide", b]));
+      if (inter.turn) ui.turnBoxes(inter.turn).forEach((b) => targets.push(["turn", b]));
       for (const f of faces) {
         for (const [what, b] of targets) {
           checked += 1;

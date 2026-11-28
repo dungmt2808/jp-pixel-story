@@ -3252,6 +3252,12 @@ rt {
   padding: 0.1cqw 0.55cqw;
 }
 
+/* turn dial readout (a clock in Japanese with furigana, or a value + unit): the gauge's number */
+.cine-tag.cine-readout {
+  font-size: max(13px, 2.1cqw);
+  padding: 0.15cqw 0.9cqw;
+}
+
 .cine-tag-sub {
   display: block;
   font-family: var(--font-pixel-vi);
