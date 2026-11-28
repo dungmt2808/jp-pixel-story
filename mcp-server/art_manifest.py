@@ -284,7 +284,8 @@ def _apply_pose_sheet(
     url = f"{url_base}/sprites/{key}/meta.json"
     entry: dict[str, Any] = {"key": key, "kind": "poses", "sprite": url, "poses": list(poses)}
     if not dry_run:
-        budget = ch.get("max_colors", (manifest.get("palette_build") or {}).get("sprite_max_colors", 0))
+        budget = ch.get("max_colors", (manifest.get("palette_build") or {}).get(
+            "sprite_max_colors", manifest.get("sprite_max_colors", 0)))
         try:
             res = process_pose_sheet(
                 next(iter(poses.values()))[0], assets_dir / "sprites" / key,
@@ -433,7 +434,8 @@ def _apply_characters(
         source = {"kind": "art-manifest", "manifest": manifest_path.name, "character": key}
         common = dict(palette_name=palette, bg_mode=ch.get("bg_mode", "chroma_green"), cleanup=True,
                       split="gaps", source=source,
-                      max_colors=int(ch.get("max_colors", (manifest.get("palette_build") or {}).get("sprite_max_colors", 0))))
+                      max_colors=int(ch.get("max_colors", (manifest.get("palette_build") or {}).get(
+                          "sprite_max_colors", manifest.get("sprite_max_colors", 0)))))
         try:
             if kind == "bust":
                 if ch.get("frame"):

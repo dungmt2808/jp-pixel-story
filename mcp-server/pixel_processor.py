@@ -337,10 +337,12 @@ def _outline_for_palette(outline_color: str | None, palette_name: str) -> str | 
     return "#%02x%02x%02x" % tuple(int(v) for v in pal[idx])
 
 
-def _cleanup(img: Image.Image, outline_color: str | None, palette_name: str) -> tuple[Image.Image, dict[str, Any]]:
+def _cleanup(
+    img: Image.Image, outline_color: str | None, palette_name: str, max_colors: int = 0
+) -> tuple[Image.Image, dict[str, Any]]:
     from pixel_quality import cleanup_sprite_image
 
-    return cleanup_sprite_image(img, outline_hex=_outline_for_palette(outline_color, palette_name))
+    return cleanup_sprite_image(img, outline_hex=_outline_for_palette(outline_color, palette_name), max_colors=max_colors)
 
 
 def _used_colors(img: Image.Image) -> int:
@@ -363,6 +365,7 @@ def process_pixel_sprite(
     grid: str = "none",
     cleanup: bool = False,
     outline_color: str | None = "#241712",
+    max_colors: int = 0,
     record_provenance: bool = True,
     source: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
@@ -384,14 +387,18 @@ def process_pixel_sprite(
     locked = quantize_to_palette(fitted, palette_name)
     cleanup_report = None
     if cleanup:
-        locked, cleanup_report = _cleanup(locked, outline_color, palette_name)
+        locked, cleanup_report = _cleanup(locked, outline_color, palette_name, max_colors)
+    elif max_colors:
+        from pixel_quality import limit_colors
+
+        locked = Image.fromarray(limit_colors(np.array(locked.convert("RGBA")), max_colors)[0], mode="RGBA")
     locked.save(out, format="PNG")
     if record_provenance:
         provenance.record(
             "process_pixel_sprite",
             dict(target_width=target_width, target_height=target_height, palette_name=palette_name, bg_mode=bg_mode,
                  tolerance=tolerance, align_bottom=align_bottom, fit_mode=fit_mode, grid=grid, cleanup=cleanup,
-                 outline_color=outline_color),
+                 outline_color=outline_color, **({"max_colors": max_colors} if max_colors else {})),
             output=out, input_path=inp, source=source,
         )
 

@@ -55,7 +55,9 @@ def _rebuildable(entry: dict[str, Any]) -> bool:
     return isinstance(first, dict) and provenance._resolve(first["path"]).exists()
 
 
-def _params(step: dict[str, Any], palette: str, dither: float | None, sprite_max_colors: int) -> dict[str, Any]:
+def _params(
+    step: dict[str, Any], palette: str, dither: float | None, sprite_max_colors: int, item_colors: int = 0
+) -> dict[str, Any]:
     p = dict(step.get("params") or {})
     if "palette_name" in p:
         p["palette_name"] = palette
@@ -63,6 +65,10 @@ def _params(step: dict[str, Any], palette: str, dither: float | None, sprite_max
         p["dither_strength"] = float(dither)
     if step["op"] == "process_sprite_sheet" and sprite_max_colors and not p.get("max_colors"):
         p["max_colors"] = int(sprite_max_colors)
+    if step["op"] == "process_pixel_sprite" and item_colors and not p.get("max_colors"):
+        # a small prop keeps the colour count it was designed with: a richer palette must not add
+        # near-identical shades (on a 15x15 sprite one extra highlight pixel is 1 % of "noise")
+        p["max_colors"] = int(item_colors)
     return p
 
 
@@ -125,6 +131,8 @@ def repalette_story(
         raise ValueError(f"'{palette}' is a built-in palette: give the story its own name")
     records = _records(root)
     rebuild = [(pf, n, e) for pf, n, e in records if _rebuildable(e)]
+    item_colors = {(pf.parent / n).resolve(): len(_colours(pf.parent / n)) for pf, n, e in rebuild
+                   if (pf.parent / n).is_file() and e["steps"][0]["op"] == "process_pixel_sprite"}
     rebuilt_outputs = {(pf.parent / n).resolve() for pf, n, _ in rebuild}
     # rigs are cut from a sheet: rebuild them (after their sheet) when the sheet is rebuilt
     for pf, n, e in records:
@@ -155,7 +163,8 @@ def repalette_story(
             if any(s["op"] == "build_rig" for s in entry["steps"]):
                 continue  # rigs are cut from the sheets: no colours of their own
             tgt = Path(td) / f"{i}_{name}"
-            _replay(entry, tgt, lambda s: _params(s, "none", dither, sprite_max_colors))
+            budget = item_colors.get((pf.parent / name).resolve(), 0)
+            _replay(entry, tgt, lambda s: _params(s, "none", dither, sprite_max_colors, budget))
             out = tgt / "spritesheet.png" if tgt.is_dir() else tgt
             if out.exists():
                 groups[_group(out)].append(out)
@@ -176,12 +185,13 @@ def repalette_story(
         real = pf.parent / name
         with tempfile.TemporaryDirectory(prefix="repalette_") as td:
             tgt = Path(td) / name
-            _replay(entry, tgt, lambda s: _params(s, palette, dither, sprite_max_colors))
+            budget = item_colors.get(real.resolve(), 0)
+            _replay(entry, tgt, lambda s: _params(s, palette, dither, sprite_max_colors, budget))
             _install(tgt, real)
         doc = by_file.setdefault(pf, json.loads(pf.read_text(encoding="utf-8")))
         rec = doc["assets"][name]
         for step in rec["steps"]:
-            step["params"] = _params(step, palette, dither, sprite_max_colors)
+            step["params"] = _params(step, palette, dither, sprite_max_colors, item_colors.get(real.resolve(), 0))
             step["at"] = now
         rec["output"] = {"sha": provenance.path_sha(real)}
         pf.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

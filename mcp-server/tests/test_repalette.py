@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw
 
 import palettes
 import provenance
-from pixel_processor import process_pixel_background, process_sprite_sheet
+from pixel_processor import process_pixel_background, process_pixel_sprite, process_sprite_sheet
 from pixel_rig import build_rig
 from repalette import repalette_story
 
@@ -49,6 +49,16 @@ def test_repalette_rebuilds_from_provenance_and_keeps_legacy_assets(tmp_path: Pa
                          registration="bust", bg_mode="chroma_green", split="gaps", cleanup=True,
                          lock_expressions=True)
     build_rig(assets / "sprites" / "yui")
+    # a small prop with a raw source: it keeps the colour count it was designed with
+    prop_raw = tmp_path / "raw_item_cup.png"
+    prop = Image.new("RGB", (120, 60), (0, 255, 0))
+    for x in range(20, 100):
+        ImageDraw.Draw(prop).line((x, 10, x, 50), fill=(200 - x, 120 + x // 2, 60 + x))
+    prop.save(prop_raw)
+    (assets / "items").mkdir()
+    process_pixel_sprite(prop_raw, assets / "items" / "cup.png", target_width=24, target_height=12,
+                         palette_name="jp_story_master", bg_mode="chroma_green", cleanup=True)
+    prop_colours = len(_colours(assets / "items" / "cup.png"))
 
     dry = repalette_story(story, "demo_pal", n_colors=40, dry_run=True)
     assert dry["fixed_assets"] == ["assets/bg_old.png"] and not (tmp_path / "palettes_custom.json").exists()
@@ -74,5 +84,9 @@ def test_repalette_rebuilds_from_provenance_and_keeps_legacy_assets(tmp_path: Pa
             res = provenance.reprocess(pf)
             assert res["ok"], res
         assert rep["kept_from_fixed_assets"] == len(_colours(assets / "bg_old.png") - {"#241712"})
+        assert len(_colours(assets / "items" / "cup.png")) <= prop_colours
+        cup_step = json.loads((assets / "items" / "provenance.json").read_text())["assets"]["cup.png"]["steps"][0]
+        assert cup_step["params"]["max_colors"] == prop_colours
+        assert provenance.reprocess(assets / "items" / "provenance.json")["ok"]
     finally:
         palettes.PALETTES.pop("demo_pal", None)
