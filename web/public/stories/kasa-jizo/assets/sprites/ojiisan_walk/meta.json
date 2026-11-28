@@ -3,7 +3,7 @@
   "frameWidth": 40,
   "frameHeight": 64,
   "frameCount": 8,
-  "palette": "jp_story_master",
+  "palette": "kasa_jizo",
   "frames": [
     "frame_00.png",
     "frame_01.png",

@@ -1,26 +1,27 @@
 {
   "story": "kasa-jizo",
-  "palette": "jp_story_master",
+  "palette": "kasa_jizo",
+  "palette_build": { "n_colors": 64, "chroma_boost": 4.0, "sprite_max_colors": 32 },
   "backgrounds": [
     {
       "key": "hut_hearth",
       "raw": "raw_bg_hut_hearth.png",
-      "dither": 18
+      "dither": 0
     },
     {
       "key": "village_market",
       "raw": "raw_bg_village_market.png",
-      "dither": 18
+      "dither": 0
     },
     {
       "key": "jizo_road",
       "raw": "raw_bg_jizo_road.png",
-      "dither": 18
+      "dither": 0
     },
     {
       "key": "hut_morning",
       "raw": "raw_bg_hut_morning.png",
-      "dither": 18
+      "dither": 0
     }
   ],
   "characters": [

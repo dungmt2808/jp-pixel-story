@@ -10,7 +10,7 @@
             "rows": 1,
             "frame_width": 96,
             "frame_height": 96,
-            "palette_name": "jp_story_master",
+            "palette_name": "kasa_jizo",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -75,13 +75,14 @@
                 50
               ]
             },
-            "split": "gaps"
+            "split": "gaps",
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/kasa-jizo/raw_sheet_ojiisan_warm.png",
             "sha": "bd332fc21c3fc2e9"
           },
-          "at": "2026-11-27T18:18:23+00:00",
+          "at": "2026-11-28T02:54:40+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -90,7 +91,7 @@
         }
       ],
       "output": {
-        "sha": "6545de839a99680e"
+        "sha": "753d40cb71e8d1f1"
       }
     },
     "obaasan": {
@@ -102,7 +103,7 @@
             "rows": 1,
             "frame_width": 96,
             "frame_height": 96,
-            "palette_name": "jp_story_master",
+            "palette_name": "kasa_jizo",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -167,13 +168,14 @@
                 47
               ]
             },
-            "split": "gaps"
+            "split": "gaps",
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/kasa-jizo/raw_sheet_obaasan_warm.png",
             "sha": "9a24f864b5151b26"
           },
-          "at": "2026-11-27T18:18:24+00:00",
+          "at": "2026-11-28T02:54:42+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -182,7 +184,7 @@
         }
       ],
       "output": {
-        "sha": "3b1f0ff69dac9e33"
+        "sha": "0d2f25ac6ad90b01"
       }
     },
     "ojiisan_walk": {
@@ -194,7 +196,7 @@
             "rows": 1,
             "frame_width": 40,
             "frame_height": 64,
-            "palette_name": "jp_story_master",
+            "palette_name": "kasa_jizo",
             "bg_mode": "chroma_green",
             "tolerance": 48,
             "align_bottom": true,
@@ -238,13 +240,14 @@
             "lock_expressions": false,
             "expression_region": null,
             "facing": "right",
-            "split": "gaps"
+            "split": "gaps",
+            "max_colors": 32
           },
           "input": {
             "path": "art-src/kasa-jizo/raw_walk_ojiisan.png",
             "sha": "796edef7771b174a"
           },
-          "at": "2026-11-27T18:18:24+00:00",
+          "at": "2026-11-28T02:54:42+00:00",
           "source": {
             "kind": "art-manifest",
             "manifest": "art.json",
@@ -253,7 +256,7 @@
         }
       ],
       "output": {
-        "sha": "ade78cf75157d722"
+        "sha": "f9e2164114fae703"
       }
     }
   }

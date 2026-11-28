@@ -7,7 +7,8 @@
    rebuilds the true low-resolution image (one output pixel per fake pixel).
 2. Cleanup passes for sprites: despeckle (noise specks), outline enforcement (Art Bible outline
    colour), pixel-perfect outlines (remove L-shaped double corners), colour-count limit.
-3. Palette extraction (greedy extension of a base palette, or k-means) for new mood palettes.
+3. Palette extraction: greedy extension of a base palette (mood palettes), and `build_story_palette`
+   (one palette per story / series from its own processed art, saturated accents kept).
 """
 
 from __future__ import annotations
@@ -507,3 +508,87 @@ def extract_palette(
         chosen.append(j)
         cur = np.vstack([cur, lab[j]])
     return ["#%02x%02x%02x" % tuple(int(v) for v in uniq[i]) for i in chosen]
+
+
+def build_story_palette(
+    groups: dict[str, list[str | Path]],
+    n_colors: int = 64,
+    *,
+    keep: list[str] | None = None,
+    group_weights: dict[str, float] | None = None,
+    chroma_boost: float = 4.0,
+    weight_power: float = 0.75,
+    bits: int = 5,
+    max_candidates: int = 2000,
+) -> list[str]:
+    """One palette for a whole story (or series pack), built from its own processed art.
+
+    Why: a fixed 40-colour master palette has no warm stone grey, cold snow white or deep fire
+    orange for some scenes, so locking to it (plus Bayer dither) turns grey statues into an
+    orange/blue checkerboard. A palette taken from the story's own images keeps every scene's
+    real colours while all assets of the story still share ONE palette (one world).
+
+    - `groups`: images per kind, e.g. {"backgrounds": [...], "characters": [...], "items": [...]};
+      each group gets `group_weights[kind]` of the total weight, split equally between its images,
+      so a few small character sheets are not drowned by 64 000 background pixels.
+    - `chroma_boost`: saturated colours (fire, sunset, a red bib) weigh more, so small accents keep
+      a palette entry instead of being merged into the surrounding browns/greys.
+    - Colours are real colours of the images (never averages); `keep` colours (the Art Bible
+      outline) are always included. Deterministic: same images -> same palette.
+    """
+    keep = [k.lower() for k in (keep or [])]
+    default_weights = {"backgrounds": 0.55, "characters": 0.35, "items": 0.10}
+    weights = {**default_weights, **(group_weights or {})}
+    shift = 8 - bits
+    bin_rep: dict[int, tuple[int, float]] = {}  # bin -> (best colour key, best colour weight)
+    bin_w: dict[int, float] = {}
+    present = [g for g, ps in groups.items() if ps]
+    total_share = sum(weights.get(g, 0.1) for g in present) or 1.0
+    color_w: dict[int, float] = {}
+    for g in present:
+        share = weights.get(g, 0.1) / total_share / len(groups[g])
+        for p in groups[g]:
+            a = np.array(Image.open(p).convert("RGBA"))
+            px = a[a[:, :, 3] >= 128][:, :3].astype(np.int64)
+            if not len(px):
+                continue
+            keys, cnt = np.unique((px[:, 0] << 16) | (px[:, 1] << 8) | px[:, 2], return_counts=True)
+            w = cnt.astype(np.float64) ** weight_power
+            w *= share / w.sum()
+            for k, wk in zip(keys.tolist(), w.tolist()):
+                color_w[k] = color_w.get(k, 0.0) + wk
+    if not color_w:
+        return keep[:n_colors]
+    for k, wk in color_w.items():
+        b = (((k >> 16) & 255) >> shift << (2 * bits)) | (((k >> 8) & 255) >> shift << bits) | ((k & 255) >> shift)
+        bin_w[b] = bin_w.get(b, 0.0) + wk
+        if b not in bin_rep or wk > bin_rep[b][1] or (wk == bin_rep[b][1] and k < bin_rep[b][0]):
+            bin_rep[b] = (k, wk)
+    bins = sorted(bin_w)
+    reps = np.array([bin_rep[b][0] for b in bins], dtype=np.int64)
+    rgb = np.stack([(reps >> 16) & 255, (reps >> 8) & 255, reps & 255], axis=1).astype(np.float64)
+    lab = srgb_to_oklab(rgb)
+    chroma = np.sqrt(lab[:, 1] ** 2 + lab[:, 2] ** 2)
+    W = np.array([bin_w[b] for b in bins]) * (1.0 + chroma_boost * chroma)
+    cand = np.argsort(-W, kind="stable")[:max_candidates]
+    dc = ((lab[:, None, :] - lab[None, cand, :]) ** 2).sum(-1).astype(np.float32)  # (N, C), computed once
+    if keep:
+        cur = srgb_to_oklab(np.array([hex_to_rgb(k) for k in keep], dtype=np.float64))
+        dcur = ((lab[:, None, :] - cur[None]) ** 2).sum(-1).min(1).astype(np.float32)
+    else:
+        dcur = np.full(len(lab), np.inf, dtype=np.float32)
+    chosen: list[int] = []
+    Wf = W.astype(np.float32)
+    for _ in range(max(0, n_colors - len(keep))):
+        gain = (np.maximum(0, np.minimum(dcur[:, None], 1e9) - dc) * Wf[:, None]).sum(0)
+        best = int(np.argmax(gain))
+        if gain[best] <= 0:
+            break
+        chosen.append(int(cand[best]))
+        dcur = np.minimum(dcur, dc[:, best])
+    out = list(keep)
+    for i in chosen:
+        hx = "#%02x%02x%02x" % tuple(int(v) for v in rgb[i])
+        if hx not in out:
+            out.append(hx)
+    return out

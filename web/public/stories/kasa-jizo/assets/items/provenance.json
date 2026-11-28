@@ -6,17 +6,17 @@
         {
           "op": "relock_palette",
           "params": {
-            "palette_name": "jp_story_master"
+            "palette_name": "kasa_jizo"
           },
           "input": {
             "path": "art-src/kasa-jizo/raw_item_straw_hat.png",
             "sha": "ba36f1a94dc15d44"
           },
-          "at": "2026-11-27T18:17:37+00:00"
+          "at": "2026-11-28T02:54:42+00:00"
         }
       ],
       "output": {
-        "sha": "ba36f1a94dc15d44"
+        "sha": "16ab988c1f915651"
       }
     },
     "tenugui.png": {
@@ -24,17 +24,17 @@
         {
           "op": "relock_palette",
           "params": {
-            "palette_name": "jp_story_master"
+            "palette_name": "kasa_jizo"
           },
           "input": {
             "path": "art-src/kasa-jizo/raw_item_tenugui.png",
             "sha": "fc49052fb7e20139"
           },
-          "at": "2026-11-27T18:17:37+00:00"
+          "at": "2026-11-28T02:54:42+00:00"
         }
       ],
       "output": {
-        "sha": "fc49052fb7e20139"
+        "sha": "8c780b8d943e7291"
       }
     },
     "mochi_gift.png": {
@@ -42,17 +42,17 @@
         {
           "op": "relock_palette",
           "params": {
-            "palette_name": "jp_story_master"
+            "palette_name": "kasa_jizo"
           },
           "input": {
             "path": "art-src/kasa-jizo/raw_item_mochi_gift.png",
             "sha": "15211a90de0d5d4c"
           },
-          "at": "2026-11-27T18:06:24+00:00"
+          "at": "2026-11-28T02:54:42+00:00"
         }
       ],
       "output": {
-        "sha": "15211a90de0d5d4c"
+        "sha": "407453bb36d346d4"
       }
     },
     "rice_bale.png": {
@@ -60,17 +60,17 @@
         {
           "op": "relock_palette",
           "params": {
-            "palette_name": "jp_story_master"
+            "palette_name": "kasa_jizo"
           },
           "input": {
             "path": "art-src/kasa-jizo/raw_item_rice_bale.png",
             "sha": "6742696263d1161c"
           },
-          "at": "2026-11-27T18:06:24+00:00"
+          "at": "2026-11-28T02:54:42+00:00"
         }
       ],
       "output": {
-        "sha": "6742696263d1161c"
+        "sha": "4f4aa34caa46505f"
       }
     }
   }

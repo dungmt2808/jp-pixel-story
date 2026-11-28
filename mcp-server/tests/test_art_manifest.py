@@ -149,3 +149,95 @@ def test_art_manifest_shared_pack_builds_reusable_cast_and_backgrounds(tmp_path:
     assert (public / "shared" / "kotoba-mura" / "bg_garden.png").exists()
     assert (public / "shared" / "kotoba-mura" / "provenance.json").exists()
     assert (public / "shared" / "kotoba-mura" / "sprites" / "provenance.json").exists()
+
+
+def _grey_scene_with_fire(path: Path) -> None:
+    """A mostly grey/blue scene with a tiny saturated fire: the kind of accent a fixed palette loses."""
+    im = Image.new("RGB", (640, 400), (92, 96, 104))
+    d = ImageDraw.Draw(im)
+    d.rectangle((0, 0, 640, 180), fill=(52, 64, 92))  # dusk sky
+    d.rectangle((0, 300, 640, 400), fill=(226, 232, 242))  # snow
+    d.rectangle((40, 200, 200, 280), fill=(100, 104, 112))  # big patch, almost the wall colour
+    d.rectangle((300, 250, 316, 266), fill=(250, 150, 30))  # 8x8 px fire after 320x200
+    im.save(path)
+
+
+def test_build_story_palette_keeps_outline_real_colours_and_small_accents(tmp_path: Path) -> None:
+    from pixel_quality import build_story_palette
+
+    raw = tmp_path / "bg.png"
+    _grey_scene_with_fire(raw)
+    small = tmp_path / "bg_small.png"
+    Image.open(raw).resize((320, 200), Image.Resampling.NEAREST).save(small)
+    pal = build_story_palette({"backgrounds": [small]}, 5, keep=["#241712"])
+    assert pal[0] == "#241712" and len(pal) == 5
+    real = {"#%02x%02x%02x" % c for _, c in Image.open(small).convert("RGB").getcolors()}
+    assert set(pal[1:]) <= real  # real colours only, never invented averages
+    # the 0.1% fire beats a 10x bigger grey patch that the wall colour already covers
+    assert "#fa961e" in pal and "#646870" not in pal
+    assert build_story_palette({"backgrounds": [small]}, 5, keep=["#241712"]) == pal  # deterministic
+
+
+def test_art_manifest_palette_build_locks_the_story_to_its_own_palette(tmp_path: Path, monkeypatch) -> None:
+    import palettes
+    from pixel_quality import quality_metrics
+
+    monkeypatch.setattr(palettes, "CUSTOM_PALETTES_FILE", tmp_path / "palettes_custom.json")
+    public = tmp_path / "public"
+    sdir = public / "stories" / "demo"
+    sdir.mkdir(parents=True)
+    (sdir / "story.json").write_text(json.dumps({
+        "id": "demo", "engine": "cinema", "palette": "jp_story_master",
+        "assets": {"backgrounds": {}}, "scenes": [{"id": "s1", "lines": []}],
+    }), encoding="utf-8")
+    art = tmp_path / "art"
+    art.mkdir()
+    _grey_scene_with_fire(art / "raw_bg_road.png")
+    hat = Image.new("RGBA", (20, 10), (0, 0, 0, 0))
+    ImageDraw.Draw(hat).rectangle((2, 2, 17, 8), fill=(205, 168, 118), outline=(36, 23, 18))
+    hat.save(art / "raw_item_hat.png")
+    (art / "art.json").write_text(json.dumps({
+        "story": "demo", "palette": "demo_story", "palette_build": {"n_colors": 8},
+        "backgrounds": [{"key": "road", "raw": "raw_bg_road.png", "dither": 0, "use": ["s1"]}],
+        "items": [{"key": "hat", "raw": "raw_item_hat.png", "size": [18, 9]}],
+    }), encoding="utf-8")
+    try:
+        res = apply_art_manifest(art / "art.json", public_root=public)
+        assert res["palette_built"]["palette"] == "demo_story" and res["problems"] == []
+        saved_pal = json.loads((tmp_path / "palettes_custom.json").read_text())["demo_story"]["colors"]
+        assert saved_pal[0] == "#241712" and len(saved_pal) <= 8
+        story = json.loads((sdir / "story.json").read_text())
+        assert story["palette"] == "demo_story"
+        assert story["assets"]["items"]["hat"] == "/stories/demo/assets/items/hat.png"
+        allowed = set(saved_pal)
+        for png in (sdir / "assets" / "bg_road.png", sdir / "assets" / "items" / "hat.png"):
+            used = {"#%02x%02x%02x" % c[1][:3] for c in Image.open(png).convert("RGBA").getcolors() if c[1][3]}
+            assert used <= allowed, png
+        hat_out = Image.open(sdir / "assets" / "items" / "hat.png")
+        assert hat_out.size == (20, 10)  # hand-made pixel item: re-locked at its own size, not refitted
+        assert quality_metrics(hat_out)["colors"] <= 2
+        # the saved palette is reused (not rebuilt) on the next run, so outputs stay byte-identical
+        before = (sdir / "assets" / "bg_road.png").read_bytes()
+        again = apply_art_manifest(art / "art.json", public_root=public)
+        assert "palette_built" not in again and (sdir / "assets" / "bg_road.png").read_bytes() == before
+    finally:
+        palettes.PALETTES.pop("demo_story", None)
+
+
+def test_sprite_sheet_colour_budget_is_shared_by_every_frame(tmp_path: Path) -> None:
+    import shutil
+
+    from pixel_processor import process_sprite_sheet
+
+    repo = Path(__file__).resolve().parents[2]
+    raw = tmp_path / "raw_sheet_yui.png"
+    shutil.copy(repo / "art-src" / "hanami-first" / "raw_sheet_yui.png", raw)
+    out = tmp_path / "yui"
+    process_sprite_sheet(raw, out, cols=4, frame_width=96, frame_height=96, registration="bust",
+                         bg_mode="chroma_green", split="gaps", cleanup=True, max_colors=12, record_provenance=False)
+    sheet = Image.open(out / "spritesheet.png").convert("RGBA")
+    colours = {c[1][:3] for c in sheet.getcolors(1 << 16) if c[1][3]}
+    assert len(colours) <= 12
+    for i in range(4):  # every frame draws from the same 12 colours (no per-frame flicker)
+        fr = Image.open(out / f"frame_{i:02d}.png").convert("RGBA")
+        assert {c[1][:3] for c in fr.getcolors(1 << 16) if c[1][3]} <= colours

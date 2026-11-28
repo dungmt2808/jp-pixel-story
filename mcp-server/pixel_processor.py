@@ -511,6 +511,7 @@ def process_sprite_sheet(
     facing: str = "",
     split: str = "grid",
     pixel_pitch: float = 0.0,
+    max_colors: int = 0,
 ) -> dict[str, Any]:
     """Slice a raw AI spritesheet grid into registered, pixel-perfect animation frames.
 
@@ -645,6 +646,22 @@ def process_sprite_sheet(
         frames.append(locked)
         frame_files.append(str(frame_path))
 
+    if max_colors and frames:
+        # ONE colour budget for the whole sheet (like a hand-made sprite's ramps): the rarest colours
+        # merge into their nearest kept colour with the same mapping in every frame, so nothing flickers
+        from pixel_quality import despeckle, limit_colors
+
+        sheet_arr = np.concatenate([np.array(f.convert("RGBA")) for f in frames], axis=1)
+        merged, _ = limit_colors(sheet_arr, int(max_colors))
+        frames = []
+        for i in range(len(frame_files)):
+            fr = np.ascontiguousarray(merged[:, i * frame_width : (i + 1) * frame_width])
+            if cleanup:  # merged shades can leave 1px specks: one more despeckle pass
+                fr, _ = despeckle(fr)
+            frames.append(Image.fromarray(fr, mode="RGBA"))
+        for fr, fp in zip(frames, frame_files):
+            fr.save(fp, format="PNG")
+
     # 4. Uniform horizontal strip.
     strip = Image.new("RGBA", (frame_width * len(frames), frame_height), (0, 0, 0, 0))
     for i, fr in enumerate(frames):
@@ -692,7 +709,8 @@ def process_sprite_sheet(
                  **({"frame_regions": frame_regions} if frame_regions else {}),
                  **({"facing": facing} if facing else {}),
                  **({"split": split} if split != "grid" else {}),
-                 **({"pixel_pitch": pixel_pitch} if pixel_pitch else {})),
+                 **({"pixel_pitch": pixel_pitch} if pixel_pitch else {}),
+                 **({"max_colors": max_colors} if max_colors else {})),
             output=out_dir, input_path=inp, source=source,
         )
 

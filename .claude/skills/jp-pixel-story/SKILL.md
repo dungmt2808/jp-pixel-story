@@ -69,7 +69,7 @@ Read schema references before creating files:
 ## Workflow Steps
 
 1. **Author compact JSON** using `{漢字|かんじ}` strings (~75% fewer tokens than segment arrays). Reference example: `web/public/stories/hanami-first/story.json`.
-2. **Process Art & Exam Cards** (master palette `jp_story_master`, the tools' default). Keep raw sources in `art-src/<story-id>/` and pass `source={"prompt": ..., "model": ..., "seed": ...}` so every asset gets a `provenance.json` record and can be rebuilt with `pixellab_reprocess`.
+2. **Process Art & Exam Cards** (new painted stories: the story's OWN palette via art.json `palette_build` + backgrounds `"dither": 0`, see art-style.md §2; code-drawn worlds and older stories: master palette `jp_story_master`, the tools' default). Keep raw sources in `art-src/<story-id>/` and pass `source={"prompt": ..., "model": ..., "seed": ...}` so every asset gets a `provenance.json` record and can be rebuilt with `pixellab_reprocess`.
    - AI "pixel art" inputs: `grid="auto"` (default) detects the fake-pixel grid and rebuilds the TRUE pixels first (`pixellab_detect_grid` / `pixellab_depixelize` to inspect). Non-pixel-art images are left alone automatically.
    - Backgrounds: `pixellab_clean_background(...)` -> `320x200`.
    - Characters (recommended, best animation): ONE expression sheet per character on pure `#00FF00` (frames: neutral, talk, blink, happy):

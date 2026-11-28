@@ -11,14 +11,34 @@ Crisp chunky pixel clusters, clean 3-tone cel shading, cozy nostalgic lighting.
 NO text, NO watermarks, NO speech bubbles, NO UI frames, NO blurry bloom gradients.
 ```
 
-## 2. Master Palette Lock (`jp_story_master` — 40 colors)
+## 2. Palette Lock — ONE palette per story (or series pack)
 
-All generated assets MUST be post-processed through **Mini-PixelLab MCP** locked to the master palette
-(`palette_name="jp_story_master"`, the tools' default; defined in `mcp-server/palettes.py`). It is the 24 `ramen_midnight`
-colors + 12 neutral greys / slate blues / earth browns + 4 seasonal accents (sakura pinks, spring green), so ramen-era
-assets remain compliant. `story_validate_catalog` fails on any `[Off-Palette Asset]`; fix with `pixellab_relock_palette`.
+All generated assets MUST be post-processed through **Mini-PixelLab MCP** and locked to the story's palette
+(story.json `palette`). `story_validate_catalog` fails on any `[Off-Palette Asset]`; fix with `pixellab_relock_palette`.
 Colour matching is perceptual (OKLab).
-- **Backgrounds (`320×200`):** `pixellab_clean_background(..., dither_strength=18.0)` — subtle Bayer 4×4 dithering.
+
+**New painted stories (route A / C): build the story's own palette** in `art-src/<story>/art.json`:
+```json
+"palette": "kasa_jizo",
+"palette_build": { "n_colors": 64, "chroma_boost": 4.0, "sprite_max_colors": 32 },
+"backgrounds": [{ "key": "road", "raw": "raw_bg_road.png", "dither": 0 }]
+```
+`pixellab_apply_art_manifest` first processes every background, character sheet and item WITHOUT a palette, picks
+64 real colours from those results (`#241712` outline always kept, saturated accents such as fire, sunsets and red
+bibs weighted up), saves them in `mcp-server/palettes_custom.json`, then locks every asset to them. Series packs
+(`"shared": ...`) do the same, so every episode shares the pack's palette. After new art arrives, re-run with
+`rebuild_palette=True` (CLI `--rebuild-palette`) so the palette includes it.
+- Why: the 40-colour `jp_story_master` has no warm stone grey, cold snow white or deep ember orange. Locked to it
+  (plus Bayer dither) kasa-jizo's grey Jizō statues became an orange/blue checkerboard and the snow turned pink.
+- **`dither: 0`** for backgrounds with a story palette: the palette already holds each scene's shades; Bayer dots only
+  add noise. Flat sky bands are fine (classic pixel art); keep dither only for the old master-palette stories.
+- **`sprite_max_colors: 32`**: one colour budget per character sheet, shared by every frame (no flicker), like the
+  ramps of a hand-made sprite: clean clusters instead of 1px noise from near-identical shades.
+
+`jp_story_master` (40 colours, the tools' default) stays for code-drawn worlds (`proc:` / `set:`) and older stories:
+the 24 `ramen_midnight` colours + 12 neutral greys / slate blues / earth browns + 4 seasonal accents.
+- **Backgrounds (`320×200`):** `pixellab_clean_background(...)`; `dither_strength=0` with a story palette,
+  `18.0` (subtle Bayer 4×4) only on the 40-colour master palette.
 - **Characters:** one expression sheet per character via `pixellab_slice_spritesheet(..., bg_mode="chroma_green", registration="bust")`
   — shared scale + anchor across frames (no stretch, no jitter), hard binary alpha, `meta.json` with pivot/fps/clips.
 - **Props / single images:** `pixellab_clean_sprite` (aspect ratio preserved; `fit_mode="frame"` keeps the source framing).
